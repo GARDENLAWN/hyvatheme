@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Live Chat for Magento 2
+ */-->
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="img-src">
+            <values>
+                <value id="gl-core-1" type="host">https://gardenlawn.s3.eu-central-1.amazonaws.com</value>
+            </values>
+        </policy>
+        <policy id="style-src-elem">
+            <values>
+                <value id="gl-core-2" type="host">https://gardenlawn.s3.eu-central-1.amazonaws.com</value>
+                <value id="gl-core-9" type="host">self</value>
+                <value id="gl-core-10" type="host">unsafe-inline</value>
+            </values>
+        </policy>
+        <policy id="script-src-elem">
+            <values>
+                <value id="gl-core-3" type="host">https://gardenlawn.s3.eu-central-1.amazonaws.com</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+        <values>
+            <value id="gl-core-4" type="host">https://base.local</value>
+            <value id="gl-core-5" type="host">https://default.local</value>
+            <value id="gl-core-6" type="host">https://gardenlawn.local</value>
+            <value id="gl-core-7" type="host">https://amrobots.local</value>
+            <value id="gl-core-8" type="host">https://finnpolska.local</value>
+        </values>
+    </policy>
+    </policies>
+</csp_whitelist>

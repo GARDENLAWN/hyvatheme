@@ -1,0 +1,64 @@
+@layer components {
+    .btn {
+        --btn-stroke: transparent;
+        --btn-bg: theme("colors.gray.500");
+        --btn-color: theme("colors.white");
+        @apply flex justify-center items-center gap-1.5 border-2 shadow-md rounded-lg px-4 py-2 text-base font-medium select-none cursor-pointer align-middle;
+        border-color: var(--btn-stroke);
+        background-color: var(--btn-bg);
+        color: var(--btn-color);
+
+        &:hover {
+            border-color: var(--btn-hover-stroke, var(--btn-stroke));
+            background-color: var(--btn-hover-bg, var(--btn-bg));
+            color: var(--btn-hover-color, var(--btn-color));
+        }
+
+        &:focus-visible {
+            @apply outline outline-4 outline-primary/50 outline-offset-0;
+        }
+
+        &:active {
+            border-color: var(--btn-active-stroke, var(--btn-stroke));
+            background-color: var(--btn-active-bg, var(--btn-bg));
+            color: var(--btn-active-color, var(--btn-color));
+        }
+
+        &:disabled {
+            @apply opacity-70 cursor-not-allowed shadow-none hover:shadow-none;
+            border-color: var(--btn-disabled-stroke, theme("colors.gray.200"));
+            background-color: var(--btn-disabled-bg, theme("colors.white"));
+            color: var(--btn-disabled-color, theme("colors.gray.600"));
+        }
+    }
+
+    .btn-primary {
+        --btn-bg: theme("backgroundColor.primary.DEFAULT");
+        --btn-color: theme("colors.white");
+        --btn-hover-bg: theme("backgroundColor.primary.lighter");
+        --btn-active-bg: theme("backgroundColor.primary.darker");
+
+        &:hover {
+            @apply shadow-lg;
+        }
+    }
+
+    .btn-secondary {
+        --btn-stroke: theme("borderColor.primary.lighter");
+        --btn-bg: theme("colors.white");
+        --btn-color: theme("colors.black");
+        --btn-hover-stroke: theme("borderColor.primary.darker");
+
+        &:hover {
+            @apply shadow-lg;
+        }
+    }
+
+    .btn-size-lg {
+        @apply px-10 py-4 text-lg;
+    }
+
+    .btn-size-sm {
+        @apply px-2 py-2 text-sm;
+    }
+}
