@@ -15,7 +15,15 @@
                 <value id="default-src-gardenlawn" type="host">gardenlawn.local</value>
                 <value id="default-src-amrobots" type="host">amrobots.local</value>
                 <value id="default-src-finnpolska" type="host">finnpolska.local</value>
-                <value id="default-src-base" type="host">base.local</value>
+            </values>
+        </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="frame-src-s3" type="host">gardenlawn.s3.eu-central-1.amazonaws.com</value>
+                <value id="frame-src-self" type="host">'self'</value>
+                <value id="frame-src-gardenlawn" type="host">gardenlawn.local</value>
+                <value id="frame-src-amrobots" type="host">amrobots.local</value>
+                <value id="frame-src-finnpolska" type="host">finnpolska.local</value>
             </values>
         </policy>
         <policy id="img-src">
@@ -25,7 +33,6 @@
                 <value id="img-src-gardenlawn" type="host">gardenlawn.local</value>
                 <value id="img-src-amrobots" type="host">amrobots.local</value>
                 <value id="img-src-finnpolska" type="host">finnpolska.local</value>
-                <value id="img-src-base" type="host">base.local</value>
             </values>
         </policy>
         <policy id="style-src">
@@ -36,7 +43,6 @@
                 <value id="style-src-amrobots" type="host">amrobots.local</value>
                 <value id="style-src-finnpolska" type="host">finnpolska.local</value>
                 <value id="style-src-geowidget" type="host">geowidget.easypack24.net</value>
-                <value id="style-src-base" type="host">base.local</value>
             </values>
         </policy>
         <policy id="script-src">
@@ -46,7 +52,6 @@
                 <value id="script-src-gardenlawn" type="host">gardenlawn.local</value>
                 <value id="script-src-amrobots" type="host">amrobots.local</value>
                 <value id="script-src-finnpolska" type="host">finnpolska.local</value>
-                <value id="script-src-base" type="host">base.local</value>
             </values>
         </policy>
         <policy id="connect-src">
@@ -56,7 +61,6 @@
                 <value id="connect-src-gardenlawn" type="host">gardenlawn.local</value>
                 <value id="connect-src-amrobots" type="host">amrobots.local</value>
                 <value id="connect-src-finnpolska" type="host">finnpolska.local</value>
-                <value id="connect-src-base" type="host">base.local</value>
             </values>
         </policy>
         <policy id="font-src">
@@ -67,7 +71,6 @@
                 <value id="font-src-amrobots" type="host">amrobots.local</value>
                 <value id="font-src-finnpolska" type="host">finnpolska.local</value>
                 <value id="font-src-geowidget" type="host">geowidget.easypack24.net</value>
-                <value id="font-src-base" type="host">base.local</value>
             </values>
         </policy>
     </policies>
