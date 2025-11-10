@@ -1,27 +1,38 @@
-/* purgecss start ignore */
-@import "tailwindcss/base";
-@import "tailwindcss/components";
+/**
+ * Welcome to your Hyvä Theme!
+ *
+ * This is the main entry file for your theme's CSS, processed by Tailwind CSS.
+ *
+ * If you're new to TailwindCSS, get started with the official documentation:
+ * https://tailwindcss.com/
+ *
+ * To learn about creating a Hyvä Theme, check out the build guide:
+ * https://docs.hyva.io/hyva-themes/building-your-theme/index.html
+ *
+ * For Hyvä-specific topics, such as merging module CSS or using design tokens,
+ * please refer to the documentation:
+ * https://docs.hyva.io/hyva-themes/working-with-tailwindcss/index.html
+ */
 
-@import url(components/category-page.css);
-@import url(components/product-prices.css);
-@import url(components/cart.css);
-@import url(components/customer.css);
-@import url(components/forms.css);
-@import url(components/messages.css);
-@import url(components/product-list.css);
-@import url(components/product-page.css);
-@import url(components/wishlist.css);
-@import url(components/modal.css);
-@import url(components/slider.css);
-@import url(components/structure.css);
-@import url(components/swatches.css);
-@import url(components/button.css);
-@import url(components/theming.css);
-@import url(components/transitions.css);
-@import url(components/typography.css);
-@import url(components/page-builder.css);
+@import "@hyva-themes/hyva-modules/css";
+@import "tailwindcss" source(none);
+@source "../../**/*.phtml";
+@source "../../**/*.xml";
 
-/* purgecss end ignore */
+/* Custom styles */
+@import "./base";
+@import "./components";
+@import "./theme";
+@import "./utilities";
 
-@import "tailwindcss/utilities";
-@import "theme.css";
+/* Import generated styles for Hyvä Compatible Modules and Design Tokens */
+@import "./generated/hyva-source.css";
+@import "./generated/hyva-tokens.css";
+@import "../../../../../../../vendor/amasty/module-gdpr-cookie-hyva/view/frontend/tailwind/tailwind-source.css";
+
+@theme {
+    --color-bg: var(--color-slate-50);
+    --color-fg: var(--color-slate-950);
+    --color-fg-secondary: var(--color-slate-600);
+    --color-surface: var(--color-white);
+}
