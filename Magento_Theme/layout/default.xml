@@ -1,8 +1,5 @@
 <?xml version="1.0"?>
 <page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <head>
-        <link src="js/gdpr-sso-trigger.js"/>
-    </head>
     <body>
         <referenceContainer name="header.container">
             <block class="Magento\Framework\View\Element\Template"
@@ -15,11 +12,7 @@
             </block>
         </referenceContainer>
         <referenceContainer name="before.body.end">
-            <block class="Magento\Framework\View\Element\Template" name="sso.config.script" template="GardenLawn_Sso::script.phtml">
-                <arguments>
-                    <argument name="view_model" xsi:type="object">GardenLawn\Sso\ViewModel\Config</argument> <!-- Poprawiono z viewModel na view_model -->
-                </arguments>
-            </block>
+            <block class="Magento\Framework\View\Element\Template" name="gardenlawn.sso.synchronizer" template="GardenLawn_Sso::synchronizer.phtml" />
         </referenceContainer>
     </body>
 </page>
