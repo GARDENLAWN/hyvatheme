@@ -31,6 +31,7 @@ function transferSession() {
 
     const allowedDomains = window.ssoConfig.allowedDomains;
     const currentDomain = window.location.hostname;
+    const currentProtocol = window.location.protocol; // Get current protocol (http: or https:)
 
     fetch('/sso/transfer/token')
         .then(response => response.json())
@@ -39,7 +40,8 @@ function transferSession() {
                 allowedDomains.forEach(domain => {
                     if (domain !== currentDomain) {
                         const iframe = document.createElement('iframe');
-                        iframe.src = `https://${domain}/sso/transfer/index?token=${data.token}`;
+                        // Use the current protocol for the iframe src
+                        iframe.src = `${currentProtocol}//${domain}/sso/transfer/index?token=${data.token}`;
                         iframe.style.display = 'none';
                         document.body.appendChild(iframe);
                     }
