@@ -1,5 +1,0 @@
-@layer components {
-    .ambar-action-btn {
-        @apply btn-primary;
-    }
-}

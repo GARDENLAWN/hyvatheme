@@ -1,7 +1,12 @@
 {
   "tailwind": {
-    "include": [],
-    "exclude": []
+    "include": [
+    ],
+    "exclude": [
+      {
+        "src": "vendor/amasty/module-gdpr-cookie-hyva"
+      }
+    ]
   },
   "tokens": {
     "values": {
