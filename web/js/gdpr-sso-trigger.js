@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function transferSession() {
+    console.log(window.ssoConfig);
     if (!window.ssoConfig || !window.ssoConfig.allowedDomains) {
         console.error('[GL-SSO] SSO configuration not found.');
         return;
