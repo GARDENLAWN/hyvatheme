@@ -6,37 +6,8 @@
  * please exclude them in your theme using the hyva.config.json configuration.
  */
 
-@source "../../../../../../../../vendor/hyva-themes/magento2-theme-module/src/**/*.phtml";
-@source "../../../../../../../../vendor/hyva-themes/magento2-theme-module/src/**/*.xml";
-@source "../../../../../../../../vendor/amasty/module-clarity-consent-mode-hyva/**/*.phtml";
-@source "../../../../../../../../vendor/amasty/module-clarity-consent-mode-hyva/**/*.xml";
-@source "../../../../../../../../vendor/amasty/module-google-consent-mode-hyva/**/*.phtml";
-@source "../../../../../../../../vendor/amasty/module-google-consent-mode-hyva/**/*.xml";
-@source "../../../../../../../../vendor/amasty/module-mega-menu-lite-hyva/**/*.phtml";
-@source "../../../../../../../../vendor/amasty/module-mega-menu-lite-hyva/**/*.xml";
-@source "../../../../../../../../vendor/amasty/module-seo-html-sitemap-hyva/**/*.phtml";
-@source "../../../../../../../../vendor/amasty/module-seo-html-sitemap-hyva/**/*.xml";
-@source "../../../../../../../../vendor/amasty/module-gdpr-hyva/**/*.phtml";
-@source "../../../../../../../../vendor/amasty/module-gdpr-hyva/**/*.xml";
-@source "../../../../../../../../vendor/mollie/magento2-hyva-compatibility/src/Mollie_HyvaCompatibility/**/*.phtml";
-@source "../../../../../../../../vendor/mollie/magento2-hyva-compatibility/src/Mollie_HyvaCompatibility/**/*.xml";
-@source "../../../../../../../../vendor/snowdog/module-hyva-checkout-inpost/src/**/*.phtml";
-@source "../../../../../../../../vendor/snowdog/module-hyva-checkout-inpost/src/**/*.xml";
-@source "../../../../../../../../vendor/snowdog/module-hyva-checkout-santander/src/**/*.phtml";
-@source "../../../../../../../../vendor/snowdog/module-hyva-checkout-santander/src/**/*.xml";
-@source "../../../../../../../../vendor/snowdog/module-hyva-checkout-tpay/src/**/*.phtml";
-@source "../../../../../../../../vendor/snowdog/module-hyva-checkout-tpay/src/**/*.xml";
-@source "../../../../../../../../vendor/magewirephp/magewire/src/**/*.phtml";
-@source "../../../../../../../../vendor/magewirephp/magewire/src/**/*.xml";
-@source "../../../../../../../../vendor/hyva-themes/magento2-hyva-widgets/src/**/*.phtml";
-@source "../../../../../../../../vendor/hyva-themes/magento2-hyva-widgets/src/**/*.xml";
-@source "../../../../../../../../vendor/amasty/module-gdpr-hyva-checkout/**/*.phtml";
-@source "../../../../../../../../vendor/amasty/module-gdpr-hyva-checkout/**/*.xml";
+@source "../../../../../../../../vendor/hyva-themes/magento2-default-theme/**/*.phtml";
+@source "../../../../../../../../vendor/hyva-themes/magento2-default-theme/**/*.xml";
 
-@import "../../../../../../../../vendor/amasty/module-mega-menu-lite-hyva/view/frontend/tailwind/tailwind-source.css";
-@import "../../../../../../../../vendor/amasty/module-gdpr-hyva/view/frontend/tailwind/tailwind-source.css";
-@import "../../../../../../../../vendor/mollie/magento2-hyva-compatibility/src/Mollie_HyvaCompatibility/view/frontend/tailwind/tailwind-source.css";
-@import "../../../../../../../../vendor/magewirephp/magewire/src/view/frontend/tailwind/tailwind-source.css";
 
-@import "../../../../../../../../vendor/hyva-themes/magento2-hyva-checkout/src/view/frontend/tailwind/module.css";
 
