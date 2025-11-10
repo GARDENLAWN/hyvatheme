@@ -6,8 +6,8 @@
  * please exclude them in your theme using the hyva.config.json configuration.
  */
 
-@source "../../../../../../../../vendor/hyva-themes/magento2-default-theme/**/*.phtml";
-@source "../../../../../../../../vendor/hyva-themes/magento2-default-theme/**/*.xml";
+@source "../../../../../../../../vendor/hyva-themes/magento2-default-theme-csp/**/*.phtml";
+@source "../../../../../../../../vendor/hyva-themes/magento2-default-theme-csp/**/*.xml";
 
 
 

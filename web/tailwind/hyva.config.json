@@ -2,7 +2,7 @@
   "tailwind": {
     "include": [
       {
-        "src": "vendor/hyva-themes/magento2-default-theme"
+        "src": "vendor/hyva-themes/magento2-default-theme-csp"
       }
     ],
     "exclude": [
