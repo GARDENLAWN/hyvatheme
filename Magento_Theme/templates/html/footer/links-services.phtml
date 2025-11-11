@@ -1,0 +1,43 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Customer;
+use Hyva\Theme\ViewModel\StoreConfig;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var Customer $customer */
+$customer = $viewModels->require(Customer::class);
+/** @var StoreConfig $storeConfig */
+$storeConfig = $viewModels->require(StoreConfig::class);
+?>
+
+<nav aria-label="<?= $escaper->escapeUrl($escaper->escapeHtmlAttr('CUSTOMER SERVICE')) ?>">
+    <ul>
+        <li>
+            <a href="<?= $escaper->escapeUrl($block->getUrl('kontakt')) ?>"
+               class="block py-1.5 hover:underline">
+                <?= $escaper->escapeHtml(__('Contact')) ?>
+            </a>
+        </li>
+        <?php if (!$customer->customerLoggedIn()): ?>
+            <li>
+                <a href="<?= $escaper->escapeUrl($block->getUrl('zamowienia-i-zwroty')) ?>"
+                   class="block py-1.5 hover:underline">
+                    <?= $escaper->escapeHtml(__('Orders and Returns')) ?>
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</nav>

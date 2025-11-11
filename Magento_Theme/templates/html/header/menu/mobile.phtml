@@ -1,0 +1,462 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use GardenLawn\Core\Utils\Utils;
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\Navigation;
+use Hyva\Theme\ViewModel\Store;
+use Hyva\Theme\ViewModel\StoreSwitcher;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Magento\Store\ViewModel\SwitcherUrlProvider;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+/** @var Navigation $viewModelNavigation */
+$viewModelNavigation = $viewModels->require(Navigation::class, $block);
+
+/** @var SwitcherUrlProvider $switcherUrlProvider */
+$switcherUrlProvider = $viewModels->require(SwitcherUrlProvider::class);
+
+/** @var Store $storeViewModel */
+$storeViewModel = $viewModels->require(Store::class);
+
+/** @var StoreSwitcher $storeSwitcherViewModel */
+$storeSwitcherViewModel = $viewModels->require(StoreSwitcher::class);
+
+$currentStore = $storeSwitcherViewModel->getStore();
+
+$uniqueId = '_' . uniqid();
+
+$url = $escaper->escapeUrl("/");
+
+// Order is important here: 1. build the menu data, 2. then set the cache tags from the view model identities
+$menuItems = [];
+
+foreach ($viewModelNavigation->getNavigation(4) as $key => $item) {
+    array_push($menuItems, $item);
+}
+
+$menuItems2 = [
+    [
+        'name' => 'Producenci',
+        'id' => 'partners',
+        'url' => false,
+        'is_category' => false,
+        'childData' => [
+            [
+                'name' => 'Finn',
+                'id' => 'finn',
+                'url' => 'https://gardenlawn.finndealers.com/',
+                'targetblank' => true,
+                'is_category' => false
+            ],
+            [
+                'name' => 'AM-robots',
+                'id' => 'automow',
+                'url' => 'https://am-robots.com/pl/',
+                'targetblank' => true,
+                'is_category' => false
+            ],
+            [
+                'name' => 'Trawnik Producent',
+                'id' => 'trawnikproducent',
+                'url' => 'https://trawnikproducent.pl/',
+                'targetblank' => true,
+                'is_category' => false
+            ],
+            [
+                'name' => 'Barenbrug',
+                'id' => 'barenbrug',
+                'url' => 'https://www.barenbrug.pl/',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/BB_logo_LS_yellow_RGB.jpg'
+            ],
+            [
+                'name' => 'FXLuminaire',
+                'id' => 'fxluminaire',
+                'url' => 'https://www.fxl.com/',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/hunter_fx_logo_100black_v.png'
+            ],
+            [
+                'name' => 'Hunter',
+                'id' => 'hunter',
+                'url' => 'https://www.hunterindustries.com/pl',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/Hunter_Logo_Hunter-Black.png'
+            ],
+            [
+                'name' => 'Hydrawise',
+                'id' => 'hydrawise',
+                'url' => 'https://www.hunterindustries.com/pl',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/Hunter-Hydrawise_logo.jpg'
+            ],
+            [
+                'name' => 'Rainbird',
+                'id' => 'rainbird',
+                'url' => 'https://www.rainbird.com/pl/eur',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/rblogo_pms348.png'
+            ],
+            [
+                'name' => 'Ambrogio',
+                'id' => 'ambrogio',
+                'url' => 'https://www.ambrogiorobot.com/pl',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/rblogo_pms348.png'
+            ],
+            [
+                'name' => 'Techline',
+                'id' => 'techline',
+                'url' => 'https://www.techlinerobots.com/pl/',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/rblogo_pms348.png'
+            ],
+            [
+                'name' => 'Nemh2o',
+                'id' => 'nemh2o',
+                'url' => 'https://www.nemorobot.it/pl/',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/rblogo_pms348.png'
+            ],
+            [
+                'name' => 'Landfx',
+                'id' => 'landfx',
+                'url' => 'https://www.landfx.com/',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/?'
+            ],
+            [
+                'name' => 'Toro',
+                'id' => 'toro',
+                'url' => 'http://www.toro.com/en',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/toro-logo-RGB-for-digital.png'
+            ],
+            [
+                'name' => 'Eko-Bord',
+                'id' => 'ekobord',
+                'url' => 'https://www.ekobord.pl/',
+                'targetblank' => true,
+                'is_category' => false
+            ],
+            [
+                'name' => 'Graf',
+                'id' => 'graf',
+                'url' => 'https://www.graf.info/pl/',
+                'targetblank' => true,
+                'is_category' => false
+            ],
+            [
+                'name' => 'Marseplast',
+                'id' => 'marseplast',
+                'url' => 'https://marseplast.com/',
+                'targetblank' => true,
+                'is_category' => false
+            ],
+            [
+                'name' => 'Target',
+                'id' => 'target',
+                'url' => 'http://www.target.com.pl/',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/target_cmyk.png'
+            ]
+        ]
+    ]
+];
+
+if ($storeSwitcherViewModel->getCurrentGroupId() == 2) {
+    foreach ($menuItems2 as $key => $item) {
+        array_push($menuItems, $item);
+    }
+}
+
+$block->setData('cache_tags', $viewModelNavigation->getIdentities());
+
+$array = $storeSwitcherViewModel->getGroups();
+foreach ($array as $key => $row) {
+    $new_published[$key] = $row['default_store_id'];
+}
+array_multisort($new_published, SORT_DESC, $array);
+?>
+<nav
+    x-data="<?= "initMenuMobile" . $escaper->escapeHtml($uniqueId) ?>"
+    @load.window="setActiveMenu($root)"
+    @keydown.window.escape="closeMenu()"
+    class="z-20 order-2 sm:order-1 lg:order-2 navigation lg:hidden w-12 h-12"
+    aria-label="<?= $escaper->escapeHtmlAttr(__('Site navigation')) ?>"
+    role="navigation"
+>
+    <!-- mobile -->
+    <button
+        x-ref="mobileMenuTrigger"
+        @click="openMenu()"
+        :class="{'overflow-x-hidden overflow-y-auto fixed top-0 left-0 w-full' : open}"
+        type="button"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Open menu')) ?>"
+        aria-haspopup="menu"
+        :aria-expanded="open"
+        :hidden="open"
+    >
+        <?= $heroicons->menuHtml('p-3', 48, 48, [":class" => "{ 'hidden' : open, 'block': !open }", "aria-hidden" => "true"]) ?>
+    </button>
+    <div
+        x-ref="mobileMenuNavLinks"
+        title="WYBRANY SKLEP"
+        class="
+            fixed top-0 right-0 w-full h-full p-1 hidden
+            flex-col border-t border-container bg-container-lighter
+            overflow-y-auto overflow-x-hidden
+        "
+        :class="{ 'flex': open, 'hidden': !open }"
+        :aria-hidden="open ? 'false' : 'true'"
+        role="dialog"
+        aria-modal="true"
+    >
+
+        <div style="text-align: center; margin-top: 50px;">
+            <b>WYBRANY SKLEP</b>
+            <?php if (count($array) > 1): ?>
+                <?php foreach ($array as $group): ?>
+                    <?php $url = "https://gardenlawn.pl/";
+                    switch ($group->getCode()) {
+                        case "finn":
+                            $url = "https://finnpolska.pl/";
+                            break;
+                        case "automow":
+                            $url = "https://am-robots.pl/";
+                            break;
+                    }
+                    if (Utils::isLocal()) {
+                        $url = $escaper->escapeUrl($switcherUrlProvider->getTargetStoreRedirectUrl($group->getDefaultStore()));
+                    }
+                    ?>
+                    <a href="<?= $url ?>"
+                       class="block px-4 py-2 lg:px-5 lg:py-2 hover:bg-gray-100 <?= $group->getId() == $storeSwitcherViewModel->getCurrentGroupId() ? "bg-gray-200" : "" ?>"
+                       style="display: block ruby;"
+                       title="<?= $group->getName() ?>"
+                    >
+                        <?php
+                        $logoUrl = "/static/frontend/GardenLawn/Hyvatheme/pl_PL/images/logo.svg";
+                        switch ($group->getCode()) {
+                            case "finn":
+                                $logoUrl = Utils::getFileMediaUrl("producers/finn");
+                                break;
+                            case "automow":
+                                $logoUrl = Utils::getFileMediaUrl("producers/am-robots");
+                                break;
+                        }
+                        ?>
+                        <img alt="<?= $logoUrl ?>" src="<?= $logoUrl ?>"
+                             style="height: 20px; vertical-align: text-top;"/>
+                        <?= $escaper->escapeHtml($group->getName()) ?>
+                    </a>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+
+        <ul
+            class="border-t flex flex-col gap-y-1 mt-3"
+            aria-label="<?= $escaper->escapeHtmlAttr(__('Site navigation links')) ?>"
+        >
+            <?php foreach ($menuItems
+
+            as $index => $menuItem): ?>
+            <li
+                data-child-id="id-<?= $escaper->escapeHtmLAttr($index) ?>-main"
+                class="level-0"
+            >
+                <div
+                    class="flex items-center transition-transform duration-150 ease-in-out transform"
+                    :class="{
+                            '-translate-x-full' : mobilePanelActiveId,
+                            'translate-x-0' : !mobilePanelActiveId
+                        }"
+                >
+                    <<?= $escaper->escapeUrl($menuItem['url']) ? 'a' : 'button' ?>
+                    class="flex items-center w-full px-8 py-4 border-b cursor-pointer
+                    bg-container-lighter border-container level-0 uppercase
+                    "
+                    <?php if ($menuItem['url']): ?>
+                        href="<?= $escaper->escapeUrl($menuItem['url']) ?>"
+                    <?php endif; ?>
+                    title="<?= $escaper->escapeHtmlAttr($menuItem['name']) ?>"
+                    @click="openSubcategory('id-<?= /* @noEscape */
+                    $index ?>')"
+                    <?php if ($menuItem['targetblank'] ?? false): ?> target="_blank" <?php endif; ?>
+                    >
+                    <?php if ($menuItem['name'] == 'Trawa w rolce'): ?>
+                        <img class="float-left"
+                             style="height: 40px;"
+                             src="<?php echo $block->getViewFileUrl('producers/trawnikproducent.png'); ?>"
+                             alt=""/>
+                    <?php else: ?>
+                        <?= $escaper->escapeHtml($menuItem['name']) ?>
+                    <?php endif; ?>
+                </<?= $escaper->escapeUrl($menuItem['url']) ? 'a' : 'button' ?>>
+                <?php if (!empty($menuItem['childData'])): ?>
+                    <button
+                        @click="openSubcategory('id-<?= /* @noEscape */
+                        $index ?>')"
+                        class="absolute right-0 flex items-center justify-center w-11 h-11 mr-8 cursor-pointer
+                                bg-container-lighter border-container"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Open %1 subcategories', $menuItem['name'])) ?>"
+                        aria-haspopup="true"
+                        :aria-expanded="mobilePanelActiveId === 'id-<?= /* @noEscape */
+                        (string)$index ?>'"
+                    >
+                        <div class="w-8 h-8 border rounded">
+                            <?= $heroicons->chevronRightHtml('w-full h-full p-1', 24, 24, ["aria-hidden" => "true"]) ?>
+                        </div>
+                    </button>
+                <?php endif; ?>
+    </div>
+    <?php if (!empty($menuItem['childData'])): ?>
+        <div
+            data-child-id="id-<?= $escaper->escapeHtmLAttr($index) ?>"
+            class="absolute top-0 right-0 z-10 flex flex-col gap-1 w-full h-full p-1 bg-container-lighter"
+            :class="{
+                                'hidden': mobilePanelActiveId !== 'id-<?= /* @noEscape */
+            (string)$index ?>'
+                            }"
+        >
+            <ul
+                class="mt-16 transition-transform duration-200 ease-in-out translate-x-full transform submenu"
+                :class="{
+                                    'translate-x-full' : mobilePanelActiveId !== 'id-<?= /* @noEscape */
+                (string)$index ?>',
+                                    'translate-x-0' : mobilePanelActiveId === 'id-<?= /* @noEscape */
+                (string)$index ?>',
+                                }"
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Subcategories')) ?>"
+            >
+                <li>
+                    <button
+                        type="button"
+                        class="flex items-center px-8 py-4 border-b cursor-pointer bg-container border-container w-full border-t"
+                        @click="backToMainCategories('id-<?= /* @noEscape */
+                        $index ?>-main')"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Back to main categories')) ?>"
+                    >
+                        <?= $heroicons->chevronLeftHtml('', 24, 24, ["aria-hidden" => "true"]); ?>
+                        <span class="ml-4">
+                                            <?= $escaper->escapeHtml($menuItem['name']) ?>
+                                        </span>
+                    </button>
+                </li>
+                <?php foreach ($menuItem['childData'] as $subMenuItem): ?>
+                    <li>
+                        <a
+                            href="<?= $escaper->escapeUrl($subMenuItem['url']) ?>"
+                            title="<?= $escaper->escapeHtmlAttr($subMenuItem['name']) ?>"
+                            class="flex items-center w-full px-8 py-4 border-b cursor-pointer
+                                                bg-container-lighter border-container
+                                            "
+                            <?php if ($subMenuItem['targetblank'] ?? false): ?> target="_blank" <?php endif; ?>
+                        >
+                                            <span class="ml-10 text-base text-gray-700">
+                                                <?= $subMenuItem['targetblank'] ?? false ? $heroicons->externalLinkHtml('w-5 h-5') : '' ?>
+                                                <?= $escaper->escapeHtml($subMenuItem['name']) ?>
+                                            </span>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+            <button
+                @click="closeMenu()"
+                class="absolute flex justify-end w-16 self-end mb-1 transition-none"
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Close menu')) ?>"
+            >
+                <?= $heroicons->xHtml('hidden p-4', 64, 64, [":class" => "{ 'hidden' : !open, 'block': open }", "aria-hidden" => "true"]) ?>
+            </button>
+        </div>
+    <?php endif; ?>
+    </li>
+    <?php endforeach; ?>
+    </ul>
+    <button
+        @click="closeMenu()"
+        class="absolute flex justify-end w-16 self-end mb-1"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Close menu')) ?>"
+        type="button"
+    >
+        <?= $heroicons->xHtml('hidden p-4', 64, 64, [":class" => "{ 'hidden' : !open, 'block': open }", "aria-hidden" => "true"]) ?>
+    </button>
+    </div>
+</nav>
+<script>
+    'use strict';
+
+    const initMenuMobile<?= $escaper->escapeHtml($uniqueId) ?> = () => {
+        return {
+            mobilePanelActiveId: null,
+            open: false,
+            setActiveMenu(menuNode) {
+                Array.from(menuNode.querySelectorAll('a')).filter(link => {
+                    return link.href === window.location.href.split('?')[0];
+                }).map(item => {
+                    item.children[0]?.classList.add('link-underline');
+                    item.closest('li.level-0') &&
+                    item.closest('li.level-0').querySelector('a.level-0').classList.add('link-underline');
+                    item.closest('li.level-0') &&
+                    item.closest('li.level-0').children[0]?.children[1]?.classList.add('link-underline');
+                    item.closest('ul.submenu') &&
+                    item.closest('ul.submenu').children[0]?.classList.add('link-underline');
+                });
+            },
+            openMenu() {
+                this.open = true;
+                this.$nextTick(() => hyva.trapFocus(this.$refs['mobileMenuNavLinks']));
+                // Prevent from body scrolling while mobile menu opened
+                document.body.style.position = 'fixed';
+            },
+            closeMenu() {
+                document.body.style.position = '';
+
+                if (this.open) {
+                    this.$nextTick(() => this.$refs['mobileMenuTrigger'].focus() || hyva.releaseFocus());
+                }
+
+                this.open = false;
+                this.mobilePanelActiveId = null;
+            },
+            openSubcategory(index) {
+                const menuNodeRef = document.querySelector('[data-child-id=' + index + ']');
+                this.mobilePanelActiveId = this.mobilePanelActiveId === index ? 0 : index;
+                this.$nextTick(() => hyva.trapFocus(menuNodeRef));
+            },
+            backToMainCategories(index) {
+                const menuNodeRef = document.querySelector('[data-child-id=' + index + ']');
+                this.mobilePanelActiveId = 0;
+                this.$nextTick(() => {
+                    hyva.trapFocus(this.$refs['mobileMenuNavLinks']);
+                    menuNodeRef.querySelector('a').focus();
+                });
+            },
+        };
+    };
+</script>

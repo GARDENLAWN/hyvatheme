@@ -1,0 +1,414 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use GardenLawn\Core\Utils\Utils;
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\Navigation;
+use Hyva\Theme\ViewModel\Store;
+use Hyva\Theme\ViewModel\StoreSwitcher;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Magento\Store\ViewModel\SwitcherUrlProvider;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var Navigation $viewModelNavigation */
+$viewModelNavigation = $viewModels->require(Navigation::class, $block);
+
+/** @var HeroiconsSolid $heroiconsSolid */
+$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsSolid $heroiconsSolid */
+$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+/** @var SwitcherUrlProvider $switcherUrlProvider */
+$switcherUrlProvider = $viewModels->require(SwitcherUrlProvider::class);
+
+/** @var Store $storeViewModel */
+$storeViewModel = $viewModels->require(Store::class);
+
+/** @var StoreSwitcher $storeSwitcherViewModel */
+$storeSwitcherViewModel = $viewModels->require(StoreSwitcher::class);
+
+$currentStore = $storeSwitcherViewModel->getStore();
+
+$uniqueId = '_' . uniqid();
+
+$url = $escaper->escapeUrl("/");
+
+// Order is important here: 1. build the menu data, 2. then set the cache tags from the view model identities
+$menuItems = [];
+
+foreach ($viewModelNavigation->getNavigation(4) as $key => $item) {
+    array_push($menuItems, $item);
+}
+
+$menuItems2 = [
+    [
+        'name' => 'Producenci',
+        'id' => 'partners',
+        'url' => false,
+        'is_category' => false,
+        'childData' => [
+            [
+                'name' => 'Finn',
+                'id' => 'finn',
+                'url' => 'https://gardenlawn.finndealers.com/',
+                'targetblank' => true,
+                'is_category' => false
+            ],
+            [
+                'name' => 'AM-Robots',
+                'id' => 'automow',
+                'url' => 'https://am-robots.com/pl/',
+                'targetblank' => true,
+                'is_category' => false
+            ],
+            [
+                'name' => 'Trawnik Producent',
+                'id' => 'trawnikproducent',
+                'url' => 'https://trawnikproducent.pl/',
+                'targetblank' => true,
+                'is_category' => false
+            ],
+            [
+                'name' => 'Barenbrug',
+                'id' => 'barenbrug',
+                'url' => 'https://www.barenbrug.pl/',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/BB_logo_LS_yellow_RGB.jpg'
+            ],
+            [
+                'name' => 'FXLuminaire',
+                'id' => 'fxluminaire',
+                'url' => 'https://www.fxl.com/',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/hunter_fx_logo_100black_v.png'
+            ],
+            [
+                'name' => 'Hunter',
+                'id' => 'hunter',
+                'url' => 'https://www.hunterindustries.com/pl',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/Hunter_Logo_Hunter-Black.png'
+            ],
+            [
+                'name' => 'Hydrawise',
+                'id' => 'hydrawise',
+                'url' => 'https://www.hunterindustries.com/pl',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/Hunter-Hydrawise_logo.jpg'
+            ],
+            [
+                'name' => 'Rainbird',
+                'id' => 'rainbird',
+                'url' => 'https://www.rainbird.com/pl/eur',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/rblogo_pms348.png'
+            ],
+            [
+                'name' => 'Ambrogio',
+                'id' => 'ambrogio',
+                'url' => 'https://www.ambrogiorobot.com/pl',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/rblogo_pms348.png'
+            ],
+            [
+                'name' => 'Techline',
+                'id' => 'techline',
+                'url' => 'https://www.techlinerobots.com/pl/',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/rblogo_pms348.png'
+            ],
+            [
+                'name' => 'Nemh2o',
+                'id' => 'nemh2o',
+                'url' => 'https://www.nemorobot.it/pl/',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/rblogo_pms348.png'
+            ],
+            [
+                'name' => 'Landfx',
+                'id' => 'landfx',
+                'url' => 'https://www.landfx.com/',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/?'
+            ],
+            [
+                'name' => 'Toro',
+                'id' => 'toro',
+                'url' => 'http://www.toro.com/en',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/toro-logo-RGB-for-digital.png'
+            ],
+            [
+                'name' => 'Eko-Bord',
+                'id' => 'ekobord',
+                'url' => 'https://www.ekobord.pl/',
+                'targetblank' => true,
+                'is_category' => false
+            ],
+            [
+                'name' => 'Graf',
+                'id' => 'graf',
+                'url' => 'https://www.graf.info/pl/',
+                'targetblank' => true,
+                'is_category' => false
+            ],
+            [
+                'name' => 'Marseplast',
+                'id' => 'marseplast',
+                'url' => 'https://marseplast.com/',
+                'targetblank' => true,
+                'is_category' => false
+            ],
+            [
+                'name' => 'Target',
+                'id' => 'target',
+                'url' => 'http://www.target.com.pl/',
+                'targetblank' => true,
+                'is_category' => false,
+                //'imgsrc' => 'images/target_cmyk.png'
+            ]
+        ]
+    ]
+];
+
+if ($storeSwitcherViewModel->getCurrentGroupId() == 2) {
+    foreach ($menuItems2 as $key => $item) {
+        array_push($menuItems, $item);
+    }
+}
+
+$block->setData('cache_tags', $viewModelNavigation->getIdentities());
+
+$array = $storeSwitcherViewModel->getGroups();
+foreach ($array as $key => $row) {
+    $new_published[$key] = $row['default_store_id'];
+}
+array_multisort($new_published, SORT_DESC, $array);
+?>
+<div x-data="initMenuDesktop<?= $escaper->escapeHtml($uniqueId) ?>" style="display: flex;"
+     class="z-20 order-2 sm:order-1 lg:order-2 navigation hidden lg:flex uppercase bold menu">
+    <!-- desktop -->
+    <div x-ref="nav-desktop"
+         @load.window="setActiveMenu($root)"
+         class="hidden lg:block lg:relative lg:min-h-0 lg:px-8 lg:w-auto lg:pt-0"
+    >
+        <div style="display: block ruby; text-align: center;">
+            <?php if (count($array) > 1): ?>
+                <?php foreach ($array as $group): ?>
+                    <?php $url = "https://gardenlawn.pl/";
+                    switch ($group->getCode()) {
+                        case "finn":
+                            $url = "https://finnpolska.pl/";
+                            break;
+                        case "automow":
+                            $url = "https://am-robots.pl/";
+                            break;
+                    }
+                    if (Utils::isLocal()) {
+                        $url = $escaper->escapeUrl($switcherUrlProvider->getTargetStoreRedirectUrl($group->getDefaultStore()));
+                    }
+                    ?>
+                    <a href="<?= $url ?>"
+                       class="block px-4 py-2 lg:px-5 lg:py-2 hover:bg-gray-100 <?= $group->getId() == $storeSwitcherViewModel->getCurrentGroupId() ? "bg-gray-200" : "" ?>"
+                       style="display: block ruby;"
+                       title="<?= $group->getName() ?>"
+                    >
+                        <?php
+                        $logoUrl = "/static/frontend/GardenLawn/Hyvatheme/pl_PL/images/logo.svg";
+                        switch ($group->getCode()) {
+                            case "finn":
+                                $logoUrl = Utils::getFileMediaUrl("producers/finn");
+                                break;
+                            case "automow":
+                                $logoUrl = Utils::getFileMediaUrl("producers/am-robots");
+                                break;
+                        }
+                        ?>
+                        <img alt="<?= $logoUrl ?>" src="<?= $logoUrl ?>"
+                             style="height: 20px; vertical-align: text-top;"/>
+                        <?= $escaper->escapeHtml($group->getName()) ?>
+                    </a>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+        <nav
+            class="duration-150 ease-in-out transform w-auto relative min-h-0 transition-display"
+            aria-label="<?= $escaper->escapeHtmlAttr(__('Main menu')) ?>"
+        >
+            <ul class="flex justify-start">
+                <?php foreach ($menuItems as $index => $menuItem): ?>
+                    <li class="relative mr-2 level-0"
+                        @mouseenter="openMenuOnClick('<?= /* @noEscape */
+                        (string)$index ?>')"
+                        @mouseleave="hoverPanelActiveId = 0"
+                        @keyup.escape="hoverPanelActiveId = 0"
+                    >
+                        <span class="flex items-center gap-1 p-3 text-md bg-opacity-95"
+                            <?php if ($menuItem['name'] == 'Trawa w rolce____________'): ?>
+                                style="padding: 0;align-content: center;"
+                            <?php endif; ?>
+                        >
+                            <<?= $escaper->escapeUrl($menuItem['url']) ? 'a' : 'button' ?> class="w-full py-3 text-base text-gray-700 level-0"
+                                 <?php if ($menuItem['url']): ?>
+                                     href="<?= $escaper->escapeUrl($menuItem['url']) ?>"
+                                 <?php endif; ?>
+                               title="<?= $escaper->escapeHtmlAttr($menuItem['name']) ?>"
+                                    @focus="hoverPanelActiveId = 0"
+                                    @click="openMenuOnClick('<?= /* @noEscape */
+                            (string)$index ?>')"
+                               <?php if ($menuItem['targetblank'] ?? false): ?> target="_blank" <?php endif; ?>
+                            >
+                                <?php if ($menuItem['name'] == 'Trawa w rolce__________'): ?>
+                                    <span class="hover-underline-animation">
+                                    <img class="float-left"
+                                         style="height: 40px; margin: 3px;"
+                                         src="<?php echo $block->getViewFileUrl('producers/trawnikproducent.png'); ?>"
+                                         alt=""/></span>
+                                <?php else: ?>
+                                    <span
+                                        class="hover-underline-animation uppercase"><?= $escaper->escapeHtml($menuItem['name']) ?></span>
+                                <?php endif; ?>
+                            </<?= $escaper->escapeUrl($menuItem['url']) ? 'a' : 'button' ?>>
+                        <?php if (!empty($menuItem['childData'])): ?>
+                            <button
+                                type="button"
+                                data-sr-button-id="<?= $escaper->escapeHtmlAttr($index) ?>"
+                                :aria-expanded="hoverPanelActiveId === '<?= /* @noEscape */
+                                (string)$index ?>' ? 'true' : 'false'"
+                                @click="openMenuOnClick('<?= /* @noEscape */
+                                (string)$index ?>')"
+                            >
+                                <?= $heroiconsSolid->chevronDownHtml("flex self-center h-5 w-5", 25, 25, ['aria-hidden' => 'true']) ?>
+                                <span class="sr-only">
+                                        <?= $escaper->escapeHtml(__('Show submenu for %1 category', $menuItem['name'])) ?>
+                                    </span>
+                            </button>
+                        <?php endif; ?>
+                        </span>
+                        <?php if (!empty($menuItem['childData'])): ?>
+                            <ul
+                                class="absolute z-10 hidden px-6 py-4 -ml-6 shadow-lg bg-container-lighter/95 menu-ul"
+                                :class="{
+                                    'hidden' : hoverPanelActiveId !== '<?= /* @noEscape */
+                                (string)$index ?>',
+                                    'block' : hoverPanelActiveId === '<?= /* @noEscape */
+                                (string)$index ?>'
+                                }"
+                            >
+                                <?php foreach ($menuItem['childData'] as $subMenuItem): ?>
+                                    <li class="list-dot">
+                                        <a href="<?= $escaper->escapeUrl($subMenuItem['url']) ?>"
+                                           title="<?= $escaper->escapeHtmlAttr($subMenuItem['name']) ?>"
+                                           class="block w-full px-3 py-1 my-1 whitespace-nowrap first:mt-0"
+                                           @keyup.escape="$nextTick(() => document.querySelector('[data-sr-button-id=<?= $escaper->escapeJs($index) ?>]').focus())"
+                                            <?php if ($subMenuItem['targetblank'] ?? false): ?> target="_blank" <?php endif; ?>
+                                        >
+                                            <span class="text-base text-gray-700 hover-underline-animation">
+                                                   <?php if ($subMenuItem['img'] ?? false): ?>
+                                                       <img class="float-left"
+                                                            src="<?php echo $block->getViewFileUrl($subMenuItem['img']); ?>"
+                                                            alt=""/>
+                                                   <?php endif; ?>
+                                                <?= $subMenuItem['targetblank'] ?? false ? $heroiconsSolid->externalLinkHtml('w-5 h-5') : '' ?>
+                                                <?= $escaper->escapeHtml(' ' . $subMenuItem['name']) ?>
+                                            </span>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </nav>
+    </div>
+</div>
+<script>
+    'use strict';
+
+    let initMenuDesktop<?= $escaper->escapeHtml($uniqueId) ?> = () => {
+        return {
+            hoverPanelActiveId: null,
+            setActiveMenu(menuNode) {
+                Array.from(menuNode.querySelectorAll('a')).filter(link => {
+                    return link.href === window.location.href.split('?')[0];
+                }).map(item => {
+                    item.children[0]?.classList.add('link-underline');
+                    item.closest('li.level-0') &&
+                    item.closest('li.level-0').querySelector('a.level-0').classList.add('link-underline');
+                    item.closest('li.level-0') &&
+                    item.closest('li.level-0').querySelector('a.level-0').closest('span').classList.add('link-underline');
+                });
+            },
+            openMenuOnClick(menuNode) {
+                if (menuNode === this.hoverPanelActiveId) {
+                    this.hoverPanelActiveId = 0;
+                } else {
+                    this.hoverPanelActiveId = menuNode;
+                }
+
+                for (let i in document.getElementsByClassName('menu-ul')) {
+                    let clientHeight = document.documentElement.clientHeight;
+                    let submenu = document.getElementsByClassName('menu-ul')[i];
+                    let submenuHeight = getHiddenHeight(submenu);
+
+                    if (submenuHeight > 0) {
+                        if (submenuHeight + 150 > clientHeight) {
+                            submenu.style.height = (clientHeight - 150) + 'px';
+                        } else {
+                            submenu.style.height = null;
+                        }
+                    }
+                }
+            },
+        };
+    };
+
+    function getHiddenHeight(el) {
+        if (!el?.cloneNode) {
+            return null;
+        }
+
+        const clone = el.cloneNode(true);
+
+        Object.assign(clone.style, {
+            overflow: 'visible',
+            height: 'auto',
+            maxHeight: 'none',
+            opacity: '0',
+            visibility: 'hidden',
+            display: 'block',
+        });
+
+        el.after(clone);
+        const height = clone.offsetHeight;
+
+        clone.remove();
+
+        return height;
+    }
+
+</script>

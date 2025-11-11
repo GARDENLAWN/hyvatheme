@@ -1,4 +1,8 @@
-<theme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/theme.xsd">
+<theme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/theme.xsd">
     <title>GardenLawn Hyva Theme</title>
     <parent>Hyva/default-csp</parent>
+    <sequence>
+        <theme>Hyva/default-csp</theme>
+    </sequence>
 </theme>

@@ -1,0 +1,72 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "Header"}} @-->
+<!--@vars {
+"var logo_url":"Email Logo Image URL",
+"var logo_alt":"Email Logo Alt Text",
+"var logo_height":"Email Logo Image Height",
+"var logo_width":"Email Logo Image Width",
+"var template_styles|raw":"Template CSS"
+} @-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="initial-scale=1.0, width=device-width" name="viewport"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <style type="text/css">
+        {
+        {
+            var template_styles | raw
+        }
+        }
+        {
+        {
+            css file = "css/email.css"
+        }
+        }
+        .div-bordered {
+            border-radius: 10px 100px / 120px;
+            padding: 40px;
+            margin-top: 10px;
+            border: 2px solid white;
+        }
+    </style>
+</head>
+<body>
+{{inlinecss file="css/email-inline.css"}}
+<!-- Begin wrapper table -->
+<div class="div-bordered">
+    <table class="wrapper" width="100%">
+        <tr>
+            <td align="center" class="wrapper-inner">
+                <table align="center" class="main">
+                    <tr>
+                        <td class="header">
+                            <a class="logo" href="{{store url=""}}">
+                            <img
+                                logo_width}} width="{{var logo_width}}"
+                                width="180"
+                                {{
+                                {{else}}
+                                {{if/if}}
+
+                            {{if logo_height}}
+                            height="{{var logo_height}}"
+                            {{/if}}
+
+                            src="https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/images/logo.png"
+                            alt="Garden Lawn & Irrigation"
+                            border="0"
+                            />
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="main-content">
+                            <!-- Begin Content -->

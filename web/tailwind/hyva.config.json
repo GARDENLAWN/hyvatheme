@@ -25,31 +25,7 @@
         "src": "vendor/amasty/module-gdpr-hyva"
       },
       {
-        "src": "vendor/mollie/magento2-hyva-compatibility/src/Mollie_HyvaCompatibility"
-      },
-      {
-        "src": "vendor/snowdog/module-hyva-checkout-inpost/src"
-      },
-      {
-        "src": "vendor/snowdog/module-hyva-checkout-santander/src"
-      },
-      {
-        "src": "vendor/snowdog/module-hyva-checkout-tpay/src"
-      },
-      {
-        "src": "vendor/magewirephp/magewire/src"
-      },
-      {
-        "src": "vendor/amasty/module-gdpr-hyva-checkout"
-      },
-      {
-        "src": "vendor/hyva-themes/magento2-hyva-widgets/src"
-      },
-      {
         "src": "vendor/hyva-themes/magento2-hyva-checkout/src"
-      },
-      {
-        "src": "vendor/hyva-themes/magento2-theme-module/src"
       }
     ]
   },
