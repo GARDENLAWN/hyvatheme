@@ -24,6 +24,7 @@
                 <value id="frame-src-gardenlawn" type="host">gardenlawn.local</value>
                 <value id="frame-src-amrobots" type="host">amrobots.local</value>
                 <value id="frame-src-finnpolska" type="host">finnpolska.local</value>
+                <value id="frame-src-geowidget" type="host">geowidget-app.inpost.pl</value>
             </values>
         </policy>
         <policy id="img-src">
@@ -33,6 +34,7 @@
                 <value id="img-src-gardenlawn" type="host">gardenlawn.local</value>
                 <value id="img-src-amrobots" type="host">amrobots.local</value>
                 <value id="img-src-finnpolska" type="host">finnpolska.local</value>
+                <value id="img-src-tpay" type="host">secure.tpay.com</value>
             </values>
         </policy>
         <policy id="style-src">
@@ -42,7 +44,8 @@
                 <value id="style-src-gardenlawn" type="host">gardenlawn.local</value>
                 <value id="style-src-amrobots" type="host">amrobots.local</value>
                 <value id="style-src-finnpolska" type="host">finnpolska.local</value>
-                <value id="style-src-geowidget" type="host">geowidget.easypack24.net</value>
+                <value id="style-src-easypack24" type="host">*.easypack24.net</value>
+                <value id="style-src-inpost" type="host">*.inpost.pl</value>
             </values>
         </policy>
         <policy id="script-src">
@@ -52,6 +55,10 @@
                 <value id="script-src-gardenlawn" type="host">gardenlawn.local</value>
                 <value id="script-src-amrobots" type="host">amrobots.local</value>
                 <value id="script-src-finnpolska" type="host">finnpolska.local</value>
+                <value id="script-src-maps" type="host">maps.googleapis.com</value>
+                <value id="script-src-player" type="host">player.vimeo.com</value>
+                <value id="script-src-newrelic" type="host">*.newrelic.com</value>
+                <value id="script-src-nrdata" type="host">*.nr-data.net</value>
             </values>
         </policy>
         <policy id="connect-src">
