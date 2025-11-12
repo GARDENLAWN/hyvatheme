@@ -9,7 +9,7 @@
     "require": {
         "php": ">=8.3.0",
         "magento/product-community-edition": "^2.4.8",
-        "hyva-themes/magento2-theme-module-csp": "*"
+        "hyva-themes/magento2-default-theme-csp": "*"
     },
     "autoload": {
         "files": [
