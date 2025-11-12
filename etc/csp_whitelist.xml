@@ -5,7 +5,7 @@
         <policy id="default-src">
             <values>
                 <value id="default-src-s3" type="host">gardenlawn.s3.eu-central-1.amazonaws.com</value>
-                <value id="default-src-self" type="host">'self'</value>
+                <value id="default-src-self" type="host">self</value>
                 <value id="default-src-gardenlawn" type="host">*.gardenlawn.pl</value>
                 <value id="default-src-amrobots" type="host">*.am-robots.pl</value>
                 <value id="default-src-finnpolska" type="host">*.finnpolska.pl</value>
@@ -14,7 +14,7 @@
         <policy id="frame-src">
             <values>
                 <value id="frame-src-s3" type="host">gardenlawn.s3.eu-central-1.amazonaws.com</value>
-                <value id="frame-src-self" type="host">'self'</value>
+                <value id="frame-src-self" type="host">self</value>
                 <value id="frame-src-gardenlawn" type="host">*.gardenlawn.pl</value>
                 <value id="frame-src-amrobots" type="host">*.am-robots.pl</value>
                 <value id="frame-src-finnpolska" type="host">*.finnpolska.pl</value>
@@ -24,7 +24,7 @@
         <policy id="img-src">
             <values>
                 <value id="img-src-s3" type="host">gardenlawn.s3.eu-central-1.amazonaws.com</value>
-                <value id="img-src-self" type="host">'self'</value>
+                <value id="img-src-self" type="host">self</value>
                 <value id="img-src-gardenlawn" type="host">*.gardenlawn.pl</value>
                 <value id="img-src-amrobots" type="host">*.am-robots.pl</value>
                 <value id="img-src-finnpolska" type="host">*.finnpolska.pl</value>
@@ -37,7 +37,7 @@
         <policy id="style-src">
             <values>
                 <value id="style-src-s3" type="host">gardenlawn.s3.eu-central-1.amazonaws.com</value>
-                <value id="style-src-self" type="host">'self'</value>
+                <value id="style-src-self" type="host">self</value>
                 <value id="style-src-gardenlawn" type="host">*.gardenlawn.pl</value>
                 <value id="style-src-amrobots" type="host">*.am-robots.pl</value>
                 <value id="style-src-finnpolska" type="host">*.finnpolska.pl</value>
@@ -48,7 +48,7 @@
         <policy id="script-src">
             <values>
                 <value id="script-src-s3" type="host">gardenlawn.s3.eu-central-1.amazonaws.com</value>
-                <value id="script-src-self" type="host">'self'</value>
+                <value id="script-src-self" type="host">self</value>
                 <value id="script-src-gardenlawn" type="host">*.gardenlawn.pl</value>
                 <value id="script-src-amrobots" type="host">*.am-robots.pl</value>
                 <value id="script-src-finnpolska" type="host">*.finnpolska.pl</value>
@@ -58,15 +58,15 @@
                 <value id="script-src-nrdata" type="host">*.nr-data.net</value>
                 <value id="script-src-paypal" type="host">*.paypal.com</value>
                 <value id="script-src-paypalobjects" type="host">*.paypalobjects.com</value>
-                <value id="script-src-hash-1" type="hash">'sha256-BlchBu6mrisHS6kLSIdwDGFrUSxv847nFYnY8x0Z1Rg='</value>
-                <value id="script-src-hash-2" type="hash">'sha256-3TDhoQp79nwMxDbQh3lo6ambV9ctoHQswjyWPakhCJ8='</value>
-                <value id="script-src-hash-3" type="hash">'sha256-SviyM+lRbnIJzxfxqWHy3FaoHRF8y9TF6psS7PtSvPU='</value>
+                <value id="script-src-hash-1" type="hash">sha256-BlchBu6mrisHS6kLSIdwDGFrUSxv847nFYnY8x0Z1Rg=</value>
+                <value id="script-src-hash-2" type="hash">sha256-3TDhoQp79nwMxDbQh3lo6ambV9ctoHQswjyWPakhCJ8=</value>
+                <value id="script-src-hash-3" type="hash">sha256-SviyM+lRbnIJzxfxqWHy3FaoHRF8y9TF6psS7PtSvPU=</value>
             </values>
         </policy>
         <policy id="connect-src">
             <values>
                 <value id="connect-src-s3" type="host">gardenlawn.s3.eu-central-1.amazonaws.com</value>
-                <value id="connect-src-self" type="host">'self'</value>
+                <value id="connect-src-self" type="host">self</value>
                 <value id="connect-src-gardenlawn" type="host">*.gardenlawn.pl</value>
                 <value id="connect-src-amrobots" type="host">*.am-robots.pl</value>
                 <value id="connect-src-finnpolska" type="host">*.finnpolska.pl</value>
@@ -75,7 +75,7 @@
         <policy id="font-src">
             <values>
                 <value id="font-src-s3" type="host">gardenlawn.s3.eu-central-1.amazonaws.com</value>
-                <value id="font-src-self" type="host">'self'</value>
+                <value id="font-src-self" type="host">self</value>
                 <value id="font-src-gardenlawn" type="host">gardenlawn.pl</value>
                 <value id="font-src-amrobots" type="host">*.am-robots.pl</value>
                 <value id="font-src-finnpolska" type="host">*.finnpolska.pl</value>
