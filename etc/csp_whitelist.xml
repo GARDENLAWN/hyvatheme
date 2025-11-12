@@ -34,7 +34,10 @@
                 <value id="img-src-gardenlawn" type="host">gardenlawn.local</value>
                 <value id="img-src-amrobots" type="host">amrobots.local</value>
                 <value id="img-src-finnpolska" type="host">finnpolska.local</value>
-                <value id="img-src-tpay" type="host">secure.tpay.com</value>
+                <value id="img-src-tpay" type="host">*.tpay.com</value>
+                <value id="img-src-paypal" type="host">*.paypal.com</value>
+                <value id="img-src-unsplash" type="host">*.unsplash.com</value>
+                <value id="img-src-paypalobjects" type="host">*.paypalobjects.com</value>
             </values>
         </policy>
         <policy id="style-src">
@@ -59,6 +62,8 @@
                 <value id="script-src-player" type="host">player.vimeo.com</value>
                 <value id="script-src-newrelic" type="host">*.newrelic.com</value>
                 <value id="script-src-nrdata" type="host">*.nr-data.net</value>
+                <value id="script-src-paypal" type="host">*.paypal.com</value>
+                <value id="script-src-paypalobjects" type="host">*.paypalobjects.com</value>
             </values>
         </policy>
         <policy id="connect-src">
