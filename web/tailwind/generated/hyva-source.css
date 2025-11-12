@@ -8,6 +8,16 @@
 
 @source "../../../../../../../../vendor/hyva-themes/magento2-theme-module/src/**/*.phtml";
 @source "../../../../../../../../vendor/hyva-themes/magento2-theme-module/src/**/*.xml";
+@source "../../../../../../../../vendor/amasty/module-clarity-consent-mode-hyva/**/*.phtml";
+@source "../../../../../../../../vendor/amasty/module-clarity-consent-mode-hyva/**/*.xml";
+@source "../../../../../../../../vendor/amasty/module-google-consent-mode-hyva/**/*.phtml";
+@source "../../../../../../../../vendor/amasty/module-google-consent-mode-hyva/**/*.xml";
+@source "../../../../../../../../vendor/amasty/module-mega-menu-lite-hyva/**/*.phtml";
+@source "../../../../../../../../vendor/amasty/module-mega-menu-lite-hyva/**/*.xml";
+@source "../../../../../../../../vendor/amasty/module-seo-html-sitemap-hyva/**/*.phtml";
+@source "../../../../../../../../vendor/amasty/module-seo-html-sitemap-hyva/**/*.xml";
+@source "../../../../../../../../vendor/amasty/module-gdpr-hyva/**/*.phtml";
+@source "../../../../../../../../vendor/amasty/module-gdpr-hyva/**/*.xml";
 @source "../../../../../../../../vendor/mollie/magento2-hyva-compatibility/src/Mollie_HyvaCompatibility/**/*.phtml";
 @source "../../../../../../../../vendor/mollie/magento2-hyva-compatibility/src/Mollie_HyvaCompatibility/**/*.xml";
 @source "../../../../../../../../vendor/snowdog/module-hyva-checkout-inpost/src/**/*.phtml";
@@ -25,7 +35,10 @@
 @source "../../../../../../../../vendor/hyva-themes/magento2-default-theme-csp/**/*.phtml";
 @source "../../../../../../../../vendor/hyva-themes/magento2-default-theme-csp/**/*.xml";
 
+@import "../../../../../../../../vendor/amasty/module-mega-menu-lite-hyva/view/frontend/tailwind/tailwind-source.css";
+@import "../../../../../../../../vendor/amasty/module-gdpr-hyva/view/frontend/tailwind/tailwind-source.css";
 @import "../../../../../../../../vendor/mollie/magento2-hyva-compatibility/src/Mollie_HyvaCompatibility/view/frontend/tailwind/tailwind-source.css";
 @import "../../../../../../../../vendor/magewirephp/magewire/src/view/frontend/tailwind/tailwind-source.css";
 
+@import "../../../../../../../../vendor/hyva-themes/magento2-hyva-checkout/src/view/frontend/tailwind/module.css";
 

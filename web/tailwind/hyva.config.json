@@ -7,25 +7,7 @@
     ],
     "exclude": [
       {
-        "src": "vendor/amasty/module-clarity-consent-mode-hyva"
-      },
-      {
-        "src": "vendor/amasty/module-google-consent-mode-hyva"
-      },
-      {
-        "src": "vendor/amasty/module-mega-menu-lite-hyva"
-      },
-      {
-        "src": "vendor/amasty/module-seo-html-sitemap-hyva"
-      },
-      {
         "src": "vendor/amasty/module-gdpr-cookie-hyva"
-      },
-      {
-        "src": "vendor/amasty/module-gdpr-hyva"
-      },
-      {
-        "src": "vendor/hyva-themes/magento2-hyva-checkout/src"
       }
     ]
   },
