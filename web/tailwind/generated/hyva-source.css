@@ -18,10 +18,10 @@
 @source "../../../../../../../../vendor/snowdog/module-hyva-checkout-tpay/src/**/*.xml";
 @source "../../../../../../../../vendor/magewirephp/magewire/src/**/*.phtml";
 @source "../../../../../../../../vendor/magewirephp/magewire/src/**/*.xml";
-@source "../../../../../../../../vendor/hyva-themes/magento2-hyva-widgets/src/**/*.phtml";
-@source "../../../../../../../../vendor/hyva-themes/magento2-hyva-widgets/src/**/*.xml";
 @source "../../../../../../../../vendor/amasty/module-gdpr-hyva-checkout/**/*.phtml";
 @source "../../../../../../../../vendor/amasty/module-gdpr-hyva-checkout/**/*.xml";
+@source "../../../../../../../../vendor/hyva-themes/magento2-hyva-widgets/src/**/*.phtml";
+@source "../../../../../../../../vendor/hyva-themes/magento2-hyva-widgets/src/**/*.xml";
 @source "../../../../../../../../vendor/hyva-themes/magento2-default-theme-csp/**/*.phtml";
 @source "../../../../../../../../vendor/hyva-themes/magento2-default-theme-csp/**/*.xml";
 
