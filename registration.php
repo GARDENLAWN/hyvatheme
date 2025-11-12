@@ -9,3 +9,4 @@
 use Magento\Framework\Component\ComponentRegistrar;
 
 ComponentRegistrar::register(ComponentRegistrar::THEME, 'frontend/GardenLawn/Hyvatheme', __DIR__);
+ComponentRegistrar::register(ComponentRegistrar::MODULE, 'GardenLawn_Hyvatheme', __DIR__);
