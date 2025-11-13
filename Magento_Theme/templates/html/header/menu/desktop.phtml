@@ -1,0 +1,201 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\Navigation;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\Escaper;
+use Magento\Cms\Block\BlockByIdentifier as CmsBlock;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** @var Navigation $viewModelNavigation */
+$viewModelNavigation = $viewModels->require(Navigation::class, $block);
+
+/** @var HeroiconsSolid $heroiconsSolid */
+$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+$canOpenOnHover = $block->getOpenTopLevelMenuOnHover();
+$showTopLevelAllLink = $block->getShowTopLevelAllLink() !== null ? $block->getShowTopLevelAllLink() : true;
+$topMenuCtaItem = $block->getTopMenuCtaItem();
+
+// Order is important here: 1. build the menu data, 2. then set the cache tags from the view model identities
+$menu = $viewModelNavigation->getNavigation(5);
+$block->setData('cache_tags', $viewModelNavigation->getIdentities());
+?>
+
+<nav
+    class="navigation hidden lg:block"
+    aria-label="<?= $escaper->escapeHtmlAttr(__('Main menu')) ?>"
+    x-data="initMenuDesktop"
+    x-ref="nav-desktop"
+    @load.window="setActiveMenu"
+>
+    <ul class="flex flex-wrap gap-x-8">
+        <?php foreach ($menu as $item): ?>
+            <?php if (!empty($item['childData'])): ?>
+                <li
+                    class="level-0"
+                    x-data="initMenuDesktopItem"
+                    @click.outside="close"
+                    @keydown.escape="close"
+                    <?php if ($canOpenOnHover): ?>
+                        @mouseenter="canHoverOpen"
+                        @mouseleave="canHoverClose"
+                    <?php endif ?>
+                >
+                    <?php $menuId = 'desktop-menu-' . str_replace('-node', '', $item['id']) ?>
+                    <button
+                        type="button"
+                        class="level-0 group w-full flex justify-between items-center gap-1 pt-4 pb-[calc(theme(padding.4)_-_3px)]
+                            border-b-[3px] border-transparent hover:border-blue-500 transition
+                            aria-expanded:text-blue-500 aria-expanded:border-blue-500
+                            data-[has-current]:aria-expanded:border-blue-500
+                            data-[has-current]:border-slate-400 data-[has-current]:hover:border-blue-500"
+                        @click="toggle"
+                        aria-expanded="false"
+                        :aria-expanded="open"
+                        aria-controls="<?= $escaper->escapeHtml($menuId) ?>"
+                    >
+                        <?= $escaper->escapeHtml($item['name']) ?>
+                        <?= $heroiconsSolid->chevronDownHtml(
+                            'transition group-aria-expanded:rotate-180 text-slate-400 group-aria-expanded:text-inherit',
+                            24,
+                            24,
+                            ['aria-hidden' => 'true']
+                        ) ?>
+                    </button>
+                    <div
+                        id="<?= $escaper->escapeHtml($menuId) ?>"
+                        class="z-30 absolute inset-x-0 flex gap-8 container py-6 min-h-64 border-t border-slate-100
+                            rounded-b-md bg-white shadow-md overflow-auto"
+                        x-show="open"
+                        x-transition
+                        x-cloak
+                    >
+                        <div class="grow flex flex-col justify-between">
+                            <ul class="columns-xs gap-8">
+                                <?php foreach ($item['childData'] as $subMenu): ?>
+                                    <li class="break-inside-avoid pb-4">
+                                        <a
+                                            href="<?= $escaper->escapeUrl($subMenu['url']) ?>"
+                                            class="level-1 block py-1 font-medium hover:underline aria-[current=page]:underline"
+                                        ><?= $escaper->escapeHtml($subMenu['name']) ?></a>
+                                        <?php if (!empty($subMenu['childData'])): ?>
+                                            <ul>
+                                                <?php foreach ($subMenu['childData'] as $subMenuItems): ?>
+                                                    <li>
+                                                        <a
+                                                            href="<?= $escaper->escapeUrl($subMenuItems['url']) ?>"
+                                                            class="level-2 block py-1 hover:underline aria-[current=page]:underline"
+                                                        ><?= $escaper->escapeHtml($subMenuItems['name']) ?></a>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        <?php endif; ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                            <?php if ($showTopLevelAllLink): ?>
+                                <div class="mt-4 border-t border-slate-100">
+                                    <a
+                                        href="<?= $escaper->escapeUrl($item['url']) ?>"
+                                        class="level-0 block pt-3 hover:underline aria-[current=page]:underline"
+                                    ><?= $escaper->escapeHtml(__('See all %1', $item['name'])) ?></a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <?php
+                            $cmsBlockHtml = $this->getLayout()
+                                ->createBlock(CmsBlock::class)
+                                ->setIdentifier($menuId)
+                                ->toHtml();
+                            if (!empty($cmsBlockHtml)):
+                        ?>
+                            <div class="max-w-[50%]">
+                                <?= /** @noEscape */ $cmsBlockHtml ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </li>
+            <?php else: ?>
+                <li>
+                    <a
+                        href="<?= $escaper->escapeUrl($item['url']) ?>"
+                        title="<?= $escaper->escapeHtmlAttr($item['name']) ?>"
+                        class="level-0 flex pt-4 pb-[calc(theme(padding.4)_-_3px)] border-b-[3px]
+                            border-transparent hover:border-blue-500
+                            aria-[current=page]:border-slate-400 aria-[current=page]:hover:border-blue-500
+                            <?= $item['name'] === $topMenuCtaItem ? 'text-red-700' : '' ?>"
+                    >
+                        <?= $escaper->escapeHtml($item['name']) ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </ul>
+</nav>
+<script>
+    function initMenuDesktop() {
+        return {
+            setActiveMenu() {
+                Array.from(this.$root.querySelectorAll('a'))
+                    .filter(link => link.href === window.location.href.split('?')[0])
+                    .forEach(item => {
+                        item.setAttribute('aria-current', 'page');
+
+                        for (let level = 0; level < 3; level++) {
+                            const closestMenu = item.closest(`.level-${level}`);
+
+                            if (closestMenu) {
+                                const button = closestMenu.querySelector('button');
+                                if (button) {
+                                    button.setAttribute('data-has-current', '');
+                                }
+                            }
+                        }
+                    }
+                );
+            }
+        }
+    }
+
+    function initMenuDesktopItem() {
+        return {
+            open: false,
+            canHover(func) {
+                return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            },
+            canHoverOpen() {
+                if (!this.canHover()) return;
+                this.open = true;
+            },
+            canHoverClose() {
+                if (!this.canHover()) return;
+                this.open = false;
+            },
+            toggle() {
+                this.open = !this.open;
+            },
+            close() {
+                this.open = false;
+            }
+        }
+    }
+
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('initMenuDesktop', initMenuDesktop);
+        Alpine.data('initMenuDesktopItem', initMenuDesktopItem);
+    }, { once: true })
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

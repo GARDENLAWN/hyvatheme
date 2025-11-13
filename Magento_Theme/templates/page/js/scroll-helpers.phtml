@@ -1,0 +1,51 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Escaper $escaper */
+/** @var Template $block */
+/** @var HyvaCsp $hyvaCsp */
+
+?>
+
+<script>
+    (() => {
+        window.lastPageYOffset = window.pageYOffset;
+        document.documentElement.dataset.scrollDirY = 'initial';
+
+        const throttle = (fn, wait) => {
+            let timer;
+            return function () {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(() => { fn.apply(context, args) }, wait);
+            };
+        };
+
+        const setScrollDirY = () => {
+            const lastScrollPosition = window.lastPageYOffset;
+            const newScrollPosition = window.pageYOffset;
+            const scrollDir = newScrollPosition < 1
+                ? 'initial'
+                : newScrollPosition > lastScrollPosition ? 'down' : 'up';
+
+            document.documentElement.dataset.scrollDirY = scrollDir;
+            window.lastPageYOffset = newScrollPosition;
+            window.dispatchEvent(new Event('scrollPosition'));
+        }
+
+        window.addEventListener('scroll', throttle(setScrollDirY, 30));
+    })();
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
