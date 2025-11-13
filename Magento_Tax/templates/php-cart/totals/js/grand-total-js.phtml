@@ -1,0 +1,45 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\MagentoMetadata;
+
+/** @var HyvaCsp $hyvaCsp */
+
+/** @var ViewModelRegistry $viewModels */
+$magento = $viewModels->require(MagentoMetadata::class);
+
+/**
+ * The AlpineJS scope of this file is the method `initCartTotals()` in Magento_Checkout::php-cart/totals.phtml
+ */
+?>
+    <script>
+        function initGrandTotalSegment() {
+            return {
+                isGrandTotalAndIncl() {
+                    return this.segment.code === 'grand_total' && window.checkoutConfig.includeTaxInGrandTotal;
+                },
+                isGrandTotalAndExcl() {
+                    return this.segment.code === 'grand_total' && !window.checkoutConfig.includeTaxInGrandTotal;
+                },
+                formatGrandTotal() {
+                    return hyva.formatPrice(this.segment.value);
+                },
+                formatGrandTotalExclTax() {
+                    <?php /* All Mage-OS releases with a version < 2.4.6 match Magento code >= 2.4.6 */ ?>
+                    <?php if ($magento->versionCompare('<', '2.4.6') && $magento->getDistributionName() === 'Magento'): ?>
+                    return hyva.formatPrice(window.checkoutConfig.totalsData.grand_total); // Zmieniono z 'this.totalsData'
+                    <?php else: ?>
+                    return hyva.formatPrice(window.checkoutConfig.totalsData.grand_total - window.checkoutConfig.totalsData.tax_amount); // Zmieniono z 'totalsData'
+                    <?php endif; ?>
+                }
+            }
+        }
+        window.addEventListener('alpine:init', () => Alpine.data('initGrandTotalSegment', initGrandTotalSegment), {once: true})
+    </script>
+<?php $hyvaCsp->registerInlineScript() ?>
