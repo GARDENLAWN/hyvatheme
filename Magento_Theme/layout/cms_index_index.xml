@@ -19,56 +19,6 @@
                 </arguments>
             </block>
         </referenceContainer>
-        <referenceBlock name="topmenu_desktop">
-            <arguments>
-                <argument name="open_top_level_menu_on_hover" xsi:type="boolean">true</argument> <!-- Also open on hover (true/false)-->
-                <argument name="show_top_level_all_link" xsi:type="boolean">false</argument> <!-- Show view all link for top level (true/false) -->
-                <argument name="top_menu_cta_item" xsi:type="string" translate="true">Sale</argument> <!-- Top Menu Item to Highlight -->
-            </arguments>
-        </referenceBlock>
-        <referenceBlock name="topmenu_mobile">
-            <block name="topmenu_mobile_item" template="Magento_Theme::html/header/menu/mobile-item.phtml"/>
-            <arguments>
-                <argument name="max_level" xsi:type="number">4</argument> <!-- Max Menu depth to show -->
-                <argument name="show_search" xsi:type="boolean">true</argument> <!-- Show Search (true/false) -->
-                <argument name="show_socials" xsi:type="boolean">true</argument> <!-- Show Social Icons (true/false) -->
-                <argument name="show_settings_nav" xsi:type="boolean">true</argument> <!-- Show Settings Nav (true/false) -->
-
-                <argument name="additional_menu_items_before" xsi:type="array">
-                    <item name="home" xsi:type="array">
-                        <item name="url" xsi:type="string">/</item>
-                        <item name="name" xsi:type="string" translate="true">Home</item>
-                    </item>
-                </argument>
-
-                <argument name="additional_menu_items" xsi:type="array">
-                    <item name="contact" xsi:type="array">
-                        <item name="url" xsi:type="string">contact</item>
-                        <item name="name" xsi:type="string" translate="true">Contact</item>
-                    </item>
-                </argument>
-            </arguments>
-
-            <block
-                class="Magento\Theme\Block\Html\Header\Logo"
-                name="topmenu_mobile.logo"
-                template="Magento_Theme::html/header/menu/mobile-logo.phtml"
-                as="logo"
-            >
-                <arguments>
-                    <argument name="max_width" xsi:type="number">104</argument>
-                    <argument name="max_height" xsi:type="number">48</argument>
-                </arguments>
-            </block>
-            <block name="topmenu_mobile.search" as="search" template="Magento_Theme::html/header/simple-search.phtml"/>
-            <block name="topmenu_mobile.social" as="socials" template="Magento_Theme::html/header/social-icons.phtml"/>
-
-            <container name="topmenu_mobile.additional.wrapper" as="additional">
-                <block name="topmenu_mobile.cta" template="Magento_Theme::html/header/menu/mobile-cta.phtml"/>
-                <container name="topmenu_mobile.additional" label="Mobile Menu Footer"/>
-            </container>
-        </referenceBlock>
-
         <referenceContainer name="head.additional">
             <block name="js.sticky.header" template="Magento_Theme::page/js/sticky-header.phtml">
                 <arguments>
@@ -80,6 +30,56 @@
         </referenceContainer>
         <referenceContainer name="before.body.end">
             <block name="js.scroll.helpers" template="Magento_Theme::page/js/scroll-helpers.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block name="accordion" template="Magento_Theme::elements/accordion/accordion.phtml">
+                <arguments>
+                    <argument name="multiselectable" xsi:type="boolean">false</argument> <!-- Allow multiple items to be open (true/false) -->
+                    <argument name="divider" xsi:type="boolean">true</argument> <!-- Show divider (true/false) -->
+                </arguments>
+
+                <block name="accordion-item-1">
+                    <arguments>
+                        <argument name="title" xsi:type="string" translate="true">Question 1</argument>
+                        <argument name="content" xsi:type="string" translate="true">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</argument>
+                    </arguments>
+                </block>
+                <block name="accordion-item-2">
+                    <arguments>
+                        <argument name="title" xsi:type="string" translate="true">Question 2</argument>
+                        <argument name="content" xsi:type="string" translate="true">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</argument>
+                        <argument name="open" xsi:type="boolean">true</argument>
+                        <argument name="icon" xsi:type="string">heroicons/outline/speakerphone</argument>
+                    </arguments>
+                </block>
+                <block name="accordion-item-3">
+                    <arguments>
+                        <argument name="title" xsi:type="string" translate="true">Question 3</argument>
+                    </arguments>
+                    <block class="Magento\Framework\View\Element\Text">
+                        <arguments>
+                            <argument name="text" xsi:type="string"><![CDATA[
+                                <div class="prose">
+                                    <p class="lead">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+                                    <p>Iusto itaque voluptatibus iste minima libero harum repellat!</p>
+                                <div>
+                            ]]></argument>
+                        </arguments>
+                    </block>
+                </block>
+            </block>
+            <block name="slider-a" template="Magento_Theme::elements/slider-a.phtml">
+                <arguments>
+                    <argument name="show_arrows" xsi:type="string">end</argument> <!-- Show Slider nav arrows (true/false/start/end) -->
+                    <argument name="show_dots" xsi:type="boolean">true</argument> <!-- Show dots (true/false) -->
+                    <argument name="load_first_eager" xsi:type="boolean">false</argument> <!-- Load the first slider image eager (true/false) -->
+                </arguments>
+            </block>
+            <block name="slider-b" template="Magento_Theme::elements/slider-b.phtml">
+                <arguments>
+                    <argument name="show_title" xsi:type="boolean">true</argument> <!-- Show Title above the Slider -->
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

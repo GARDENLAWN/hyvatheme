@@ -11,11 +11,12 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
 >
-    <body>
-        <referenceBlock name="product.info.addtocart.sticky">
-            <arguments>
-                <argument name="is_cart_configure" xsi:type="boolean">true</argument>
-            </arguments>
-        </referenceBlock>
-    </body>
+    <referenceContainer name="footer">
+        <block
+            class="Magento\Newsletter\Block\Subscribe"
+            name="modal.subscribe"
+            template="Magento_Newsletter::modal.phtml"
+            ifconfig="newsletter/general/active"
+        />
+    </referenceContainer>
 </page>
