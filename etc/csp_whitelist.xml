@@ -49,6 +49,7 @@
             <values>
                 <value id="script-src-s3" type="host">gardenlawn.s3.eu-central-1.amazonaws.com</value>
                 <value id="script-src-self" type="host">'self'</value>
+                <value id="script-src-unsafe" type="host">'unsafe-eval'</value>
                 <value id="script-src-gardenlawn" type="host">*.gardenlawn.pl</value>
                 <value id="script-src-amrobots" type="host">*.am-robots.pl</value>
                 <value id="script-src-finnpolska" type="host">*.finnpolska.pl</value>
