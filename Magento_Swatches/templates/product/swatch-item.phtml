@@ -1,0 +1,133 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Magento\Swatches\ViewModel\Product\Renderer\Configurable as ConfigurableViewModel;
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var ConfigurableViewModel $configurableViewModel */
+$configurableViewModel = $viewModels->require(ConfigurableViewModel::class);
+
+/** @var HeroiconsSolid $heroiconsSolid */
+$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+$productId = $block->getProductId();
+$attributeId = $block->getAttributeId();
+
+if (!$productId || !$attributeId) {
+    return '';
+}
+
+$swatchClasses = "swatch-option bg-white flex justify-center text-slate-800 font-medium transition outline-none";
+
+$textSwatchClasses = "type-text py-2 px-2.5 !border-2 rounded-md border-slate-200 text-sm font-medium" // standard
+    . " hover:border-blue-300 focus-within:border-blue-300" // hover - focus
+    . " data-[checked]:focus-within:border-blue-400 data-[checked]:focus-within:ring data-[checked]:focus-within:ring-blue-100" // focus+selected
+    . " data-[checked]:border-blue-500 [&[data-checked]:not(:focus-within)]:bg-blue-50 data-[checked]:text-blue-800" // selected
+    . " active:border-blue-500"; // active
+
+$colorSwatchClasses = "type-color w-8 h-8 !mr-2 !min-w-0 rounded-full !border-0" // standard
+    . " shadow-[inset_0_0_0_1px_rgba(0,0,0,0.32)]" // border
+    . " hover:ring-2 hover:ring-blue-300 [&:hover:not([data-checked])]:ring-offset-2" // hover
+    . " focus-within:ring-2 focus-within:ring-blue-300 [&:focus-within:not([data-checked])]:ring-offset-2" // focus
+    . " data-[checked]:focus-within:ring-2 data-[checked]:focus-within:ring-blue-500 data-[checked]:focus-within:ring-offset-2 data-[checked]:focus-within:ring-offset-blue-200" // focus+selected
+    . " data-[checked]:ring-2 data-[checked]:ring-blue-500 [&[data-checked]:not(:focus-within)]:ring-offset-2" // selected
+    . " active:ring-2 active:ring-blue-500 [&:active:not([data-checked])]:ring-offset-2"; // active
+
+$imageSwatchClasses = "type-image w-8 h-8 !mr-2 border-slate-200 !p-0 rounded-md aspect-square !border-2 !min-w-0" // standard
+    . " focus-within:ring-2 focus-within:ring-blue-300 [&:focus-within:not([data-checked])]:ring-offset-2" // focus
+    . " hover:ring-2 hover:ring-blue-300 [&:hover:not([data-checked])]:ring-offset-2" // hover
+    . " data-[checked]:focus-within:ring-2 data-[checked]:focus-within:ring-blue-500 data-[checked]:focus-within:ring-offset-2 data-[checked]:focus-within:ring-offset-blue-200" // focus+selected
+    . " data-[checked]:ring-2 data-[checked]:ring-blue-500 [&[data-checked]:not(:focus-within)]:ring-offset-2" // selected
+    . " active:ring-2 active:ring-blue-500 [&:active:not([data-checked])]:ring-offset-2"; // active
+?>
+
+<div x-id="getSwatchOptionHtmlIdGroup">
+    <template x-if="isOptionEnabledAndInStock">
+        <label
+            :for="getSwatchOptionHtmlId"
+            class="relative cursor-pointer <?= $swatchClasses ?>"
+            :class="setClassesByType"
+            data-class-text="<?= $textSwatchClasses ?>"
+            data-class-color="<?= $colorSwatchClasses ?>"
+            data-class-image="<?= $imageSwatchClasses ?>"
+            :style="getSwatchBackgroundStyle"
+            :data-checked="isSelected"
+            <?php if ($configurableViewModel->getShowSwatchTooltip()): ?>
+                @mouseenter.self="setActiveTooltipItem"
+                @mouseleave.self="unsetActiveTooltipItem"
+            <?php endif; ?>
+        >
+            <input
+                :id="getSwatchOptionHtmlId"
+                :value="item.id"
+                :checked="isSelected"
+                name="super_attribute[<?= (int) $attributeId ?>]"
+                type="radio"
+                class="inline-block absolute p-0 border-0 focus:border-0 focus:ring-0 product-option-value-input"
+                style="z-index:-1"
+                @focus="onFocusSwatchItem"
+                @blur="blurLabel"
+                @change="onChangeOption"
+                @click="clearOptionIfActive"
+                :required="isSwatchRequired"
+                :data-option-id="item.id"
+                :aria-label="getSwatchText"
+                aria-describedby="attribute-label-<?= $escaper->escapeHtmlAttr($productId . '-' . $attributeId) ?>"
+            >
+            <template x-if="isTextSwatch">
+                <div
+                    :data-option-id="item.id"
+                    x-html="getSwatchText"
+                    class="pointer-events-none select-none whitespace-nowrap"
+                    aria-hidden="true"
+                ></div>
+            </template>
+        </label>
+    </template>
+
+    <template x-if="isOptionEnabledAndOutOfStock">
+        <div
+            class="relative cursor-not-allowed <?= $swatchClasses ?>"
+            :class="setClassesByType"
+            data-class-text="<?= $textSwatchClasses ?> opacity-75"
+            data-class-color="<?= $colorSwatchClasses ?> opacity-50"
+            data-class-image="<?= $imageSwatchClasses ?> opacity-50"
+            :style="getSwatchBackgroundStyle"
+            data-disabled
+        >
+            <div
+                x-show="isTextSwatch"
+                x-html="getSwatchText"
+                :data-option-id="item.id"
+                class="pointer-events-none select-none whitespace-nowrap"
+                aria-hidden="true"
+            ></div>
+            <div class="absolute inset-0 flex justify-center items-center rounded-[inherit]">
+                <template x-if="isTextSwatch">
+                    <svg viewbox="0 0 24 24" width="24" height="24" class="w-full h-full">
+                        <line x1="0" y1="100%" x2="100%" y2="0" stroke="currentColor" stroke-width="1"></line>
+                    </svg>
+                </template>
+                <template x-if="isVisualSwatch">
+                    <?= $heroiconsSolid->xHtml('shrink-0 rounded-[inherit] p-0.5 bg-white text-red-600', 20, 20)?>
+                </template>
+            </div>
+        </div>
+    </template>
+</div>

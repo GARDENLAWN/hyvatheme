@@ -1,0 +1,245 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\ViewModel\StoreConfig;
+use Magento\Checkout\Block\Cart\Sidebar as SidebarCart;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Escaper $escaper */
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+/** @var HeroiconsSolid $heroiconsSolid */
+$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+/** @var StoreConfig $storeConfig */
+$storeConfig = $viewModels->require(StoreConfig::class);
+$showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDEBAR_DISPLAY);
+
+$showCompare = $block->getShowCompare() !== null ? (bool) $block->getShowCompare() : true;
+$showWishlist = $block->getShowWishlist() !== null ? (bool) $block->getShowWishlist() : true;
+$showLanguage = $block->getShowLanguage() !== null ? (bool) $block->getShowLanguage() : true;
+?>
+<script>
+    function initHeader () {
+        return {
+            searchOpen: false,
+            cart: {},
+            init() {
+                this.checkHeaderSize();
+            },
+            checkHeaderSize() {
+                const pageHeader = document.querySelector('.page-header');
+                if (!pageHeader) return;
+                document.documentElement.style.setProperty("--page-header-height", `${pageHeader.offsetHeight}px`);
+            },
+            summaryCount() {
+                return this.cart.summary_count || 0;
+            },
+            isCartOpen: false,
+            getData() {
+                const data = this.$event.detail.data;
+                if (data.cart) { this.cart = data.cart }
+            },
+            ariaLabel() {
+                return '<?= $escaper->escapeJs($showMiniCart ? __('Toggle minicart') : __('View cart')) ?>, ' +
+                    (this.isCartEmpty() ? '<?= $escaper->escapeJs(__('Cart is empty')) ?>' : (
+                        Math.abs(this.summaryCount()) > 1 ?
+                            hyva.str('<?= $escaper->escapeJs(__('%1 items')) ?>', this.summaryCount()) :
+                            hyva.str('<?= $escaper->escapeJs(__('%1 item')) ?>', this.summaryCount())
+                    ))
+            },
+            isCartEmpty() {
+                return !this.summaryCount()
+            },
+            openCart() {
+                this.$dispatch('toggle-cart', {
+                    isOpen: true
+                })
+            },
+            toggleCart() {
+                const event = this.$event;
+                if (event.detail && event.detail.isOpen !== undefined) {
+                    this.isCartOpen = event.detail.isOpen
+                    if (!this.isCartOpen && this.$refs && this.$refs.cartButton) {
+                        this.$refs.cartButton.focus()
+                    }
+                } else {
+                    <?php
+                    /*
+                     * The toggle-cart event was previously dispatched without parameter to open the drawer (not toggle).
+                     * Keeping this in here for backwards compatibility.
+                     */
+                    ?>
+                    this.isCartOpen = true
+                }
+            },
+            searchClosed() {
+                return !this.searchOpen;
+            },
+            toggleSearchForm() {
+                this.searchOpen = !this.searchOpen;
+                this.$dispatch('search-open');
+            },
+            searchClose() {
+                this.searchOpen = false;
+            },
+            searchEscape() {
+                this.searchOpen = false;
+                this.$refs.searchButton.focus();
+            }
+        }
+    }
+
+    function initCompareHeader() {
+        return {
+            compareProducts: null,
+            itemCount: 0,
+            hiddenIfEmpty() {
+                return {
+                    'hidden': this.itemCount < 1
+                }
+            },
+            linkAriaLabel() {
+                const countLabel = this.itemCount > 1
+                    ? hyva.str('<?= $escaper->escapeJs(__('%1 Items')) ?>', this.itemCount)
+                    : hyva.str('<?= $escaper->escapeJs(__('%1 Item')) ?>', this.itemCount);
+                return `<?= $escaper->escapeJs(__('Compare Products')) ?> (${countLabel})`;
+            },
+            receiveCompareData() {
+                const data = this.$event.detail.data;
+                if (data['compare-products'] && data['compare-products'].count) {
+                    this.compareProducts = data['compare-products'];
+                    this.itemCount = this.compareProducts.count;
+                }
+            },
+            itemCountLabel() {
+                return `(${this.itemCount})`;
+            }
+        }
+    }
+
+    function initWishlistHeader() {
+        return {
+            wishlistProducts: null,
+            itemCount: 0,
+            linkAriaLabel() {
+                const countLabel = this.itemCount > 1
+                    ? hyva.str('<?= $escaper->escapeJs(__('%1 Items')) ?>', this.itemCount)
+                    : hyva.str('<?= $escaper->escapeJs(__('%1 Item')) ?>', this.itemCount);
+                return `<?= $escaper->escapeJs(__('Wishlist Products')) ?> (${countLabel})`;
+            },
+            receiveWishlistData() {
+                const data = this.$event.detail.data;
+
+                this.itemCount = data.wishlist && data.wishlist.items
+                    ? data.wishlist.items.length
+                    : 0;
+            }
+        }
+    }
+
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('initHeader', initHeader);
+        Alpine.data('initCompareHeader', initCompareHeader);
+        Alpine.data('initWishlistHeader', initWishlistHeader);
+    }, { once: true })
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
+<div
+    id="header"
+    class="z-30 relative bg-white"
+    x-data="initHeader"
+    @private-content-loaded.window="getData"
+    @resize.window.debounce="checkHeaderSize"
+>
+    <div class="container pt-3.5 lg:pb-3.5 grid grid-cols-[auto_minmax(0px,1fr)_auto]
+        lg:grid-cols-[auto_minmax(0px,1fr)_auto] gap-y-3.5 lg:gap-y-0 gap-x-4 lg:gap-x-10 items-center">
+        <?= $block->getChildHtml('mobilemenu') ?>
+        <?= $block->getChildHtml('logo'); ?>
+
+        <div class="ml-auto flex gap-0.5 items-center lg:order-2">
+            <?php if ($showCompare): ?>
+                <?= $block->getChildHtml('compare'); ?>
+            <?php endif; ?>
+
+            <?php if ($showLanguage): ?>
+                <?= $block->getChildHtml('store-language-switcher'); ?>
+            <?php endif; ?>
+
+            <?= $block->getChildHtml('additional') ?>
+
+            <?= $block->getChildHtml('customer') ?>
+
+            <?php if ($showWishlist): ?>
+                <?= $block->getChildHtml('wishlist') ?>
+            <?php endif ?>
+
+            <?php if ($showMiniCart): ?>
+                <button
+            <?php else: ?>
+                <a
+            <?php endif ?>
+                id="menu-cart-icon"
+                class="relative inline-block rounded p-1 hover:bg-primary/10 outline-offset-2"
+                x-ref="cartButton"
+                :aria-disabled="isCartEmpty"
+                :aria-label="ariaLabel"
+                <?php if ($showMiniCart): ?>
+                    @click.prevent="openCart"
+                    @toggle-cart.window="toggleCart"
+                    :aria-expanded="isCartOpen"
+                    aria-haspopup="dialog"
+                <?php else: ?>
+                    href="<?= $escaper->escapeUrl($block->getUrl('checkout/cart/index')) ?>"
+                    title="<?= $escaper->escapeHtmlAttr(__('View cart')) ?>"
+                <?php endif ?>
+            >
+                <?= $heroicons->shoppingCartHtml('', 24, 24, ["aria-hidden" => "true"]) ?>
+                <span
+                    x-text="summaryCount"
+                    x-show="summaryCount"
+                    x-cloak
+                    class="absolute -top-1.5 -right-1.5 px-2 py-0.5 rounded-full bg-green-200 text-green-800
+                        text-xs font-semibold leading-none text-center uppercase tabular-nums"
+                    aria-hidden="true"
+                ></span>
+            <?php if ($showMiniCart): ?>
+                </button>
+            <?php else: ?>
+                </a>
+            <?php endif ?>
+        </div>
+
+        <?php // The bg is set using border-image (full-bleed method) ?>
+        <div class="col-span-full py-4 lg:py-0 lg:col-auto lg:order-1
+            [border-image:conic-gradient(theme(colors.slate.200)_0_0)_fill_0//0_100vw] lg:[border-image:none]">
+            <?= $block->getChildHtml('header-search'); ?>
+        </div>
+    </div>
+
+    <div class="bg-slate-200 hidden lg:block">
+        <div class="container">
+            <?= $block->getChildHtml('topmenu') ?>
+        </div>
+    </div>
+
+    <?= $block->getChildHtml('cart-drawer'); ?>
+    <?= $block->getChildHtml('authentication-popup'); ?>
+</div>

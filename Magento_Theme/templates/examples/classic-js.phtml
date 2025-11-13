@@ -1,0 +1,80 @@
+<?php declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** @var HeroiconsSolid $heroIcons */
+$heroIcons = $viewModels->require(HeroiconsSolid::class);
+
+$dialogName = 'example';
+?>
+
+<div x-data="initModal">
+    <button type="button" class="btn" @click="openModal">
+        <?= $escaper->escapeHtml(__('Simple Modal')) ?>
+    </button>
+
+    <div
+        class="fixed w-full h-full top-0 left-0 z-30 bg-black/50"
+        data-dialog-ref-name="<?= $escaper->escapeJs($dialogName) ?>"
+        x-bind="overlay"
+        x-cloak
+    >
+        <div class="fixed flex justify-center items-center text-left z-10 inset-0">
+            <div
+                role="dialog"
+                class="inline-block bg-white shadow-xl lg:max-w-3xl max-h-screen overflow-auto rounded-xl m-4"
+                aria-labelledby="<?= $escaper->escapeHtmlAttr($dialogName) ?>-label"
+                aria-modal="true"
+                x-ref="<?= $escaper->escapeHtmlAttr($dialogName) ?>"
+            >
+                <div class="p-7 flex flex-col lg:flex-row lg:gap-5">
+                    <div class="text-center text-yellow-400">
+                        <?= $heroIcons->exclamationHtml('inline-block fill-current', 68, 68) ?>
+                    </div>
+                    <div class="text-center lg:text-left">
+                        <div
+                            id="<?= $escaper->escapeHtmlAttr($dialogName) ?>-label"
+                            class="text-xl leading-7 font-bold text-gray-800 mb-3"
+                        >
+                            <?= $escaper->escapeHtml(__('Hi! I’m a modal title.')) ?>
+                        </div>
+                        <div class="text-gray-600">
+                            <?= $escaper->escapeHtml(__('
+                                Additional information about this modal. Lorem ipsum dolor sit amet,
+                                consectetur adipiscing elit. Etiam massa augue, pretium.
+                            ')) ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-100 p-7 flex flex-col gap-4 lg:flex-row-reverse">
+                    <button class="btn btn-primary" x-focus-first @click="hide">
+                        <?= $escaper->escapeHtml(__('Main action')) ?>
+                    </button>
+                    <button class="btn" @click="hide">
+                        <?= $escaper->escapeHtml(__('Secondary action')) ?>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function initModal() {
+        return Object.assign(hyva.modal.call(this), {
+            openModal(event) {
+                this.show('<?= $escaper->escapeJs($dialogName) ?>', event)
+            }
+        });
+    }
+
+    window.addEventListener('alpine:init', () => Alpine.data('initModal', initModal), { once: true })
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

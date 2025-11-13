@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+-->
+<page
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
+>
+    <body>
+        <referenceBlock name="header-content">
+            <block
+                name="header.store-language-switcher"
+                as="store-language-switcher"
+                template="Magento_Store::header/languages.phtml"
+            >
+                <arguments>
+                    <argument name="show_label" xsi:type="boolean">true</argument> <!-- Show label next to the button (true/false) -->
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <!-- Optionally remove the default one, in the footer -->
+        <!-- <referenceBlock name="store-language-switcher" remove="true"/> -->
+    </body>
+</page>

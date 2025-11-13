@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+-->
+<page
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
+>
+    <body>
+        <referenceBlock name="review_list">
+            <arguments>
+                <argument name="show_avatar" xsi:type="boolean">true</argument> <!-- Show avatar of reviewer (true/false) -->
+                <argument name="rating_star_size" xsi:type="number">20</argument> <!-- Rating start size, in px value -->
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

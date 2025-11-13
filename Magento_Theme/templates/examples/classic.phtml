@@ -1,0 +1,70 @@
+<?php declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\Modal;
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** @var Modal $modelViewModel */
+$modelViewModel = $viewModels->require(Modal::class);
+
+/** @var HeroiconsSolid $heroIcons */
+$heroIcons = $viewModels->require(HeroiconsSolid::class);
+
+$modal = $modelViewModel->createModal()
+    ->positionCenter()
+    ->removeDialogClass('p-10', 'rounded-lg')
+    ->addDialogClass('rounded-xl m-4 lg:max-w-3xl')
+    ->withAriaLabelledby('modal-title');
+?>
+
+<div x-data="initModal">
+    <button type="button" class="btn" @click="show">
+        <?= $escaper->escapeHtml(__('Show modal')) ?>
+    </button>
+
+    <?= /** @noEscape */ $modal->withContent(<<<END_OF_CONTENT
+        <div class="p-7 flex flex-col lg:flex-row lg:gap-5">
+            <div class="text-center text-yellow-400">
+                {$heroIcons->exclamationHtml('inline-block fill-current', 68, 68)}
+            </div>
+            <div class="text-center lg:text-left">
+                <div
+                    id="modal-title"
+                    class="text-xl leading-7 font-bold text-gray-800 mb-3"
+                >
+                    {$escaper->escapeHtml(__('Hi! I’m a modal title.'))}
+                </div>
+                <div class="text-gray-600">
+                    {$escaper->escapeHtml(__('
+                        Additional information about this modal. Lorem ipsum dolor sit amet,
+                        consectetur adipiscing elit. Etiam massa augue, pretium.
+                    '))}
+                </div>
+            </div>
+        </div>
+        <div class="bg-gray-100 p-7 flex flex-col gap-4 lg:flex-row-reverse">
+            <button class="btn btn-primary" @click="hide" x-focus-first>
+                {$escaper->escapeHtml(__('Main action'))}
+            </button>
+            <button class="btn" @click="hide">
+                {$escaper->escapeHtml(__('Secondary action'))}
+            </button>
+        </div>
+END_OF_CONTENT
+    );?>
+</div>
+
+<script>
+    window.addEventListener('alpine:init', () => Alpine.data(
+        'initModal',
+        () => hyva.modal.call(this)),
+        { once: true }
+    );
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

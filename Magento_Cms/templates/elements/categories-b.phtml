@@ -1,0 +1,87 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+
+/**
+ * You can also get an image from `web/images/` in your theme:
+ * $escaper->escapeHtmlAttr($block->getViewFileUrl('images/banner.jpg'))
+ */
+$categories = [
+    [
+        'label' => __('New arrivals'),
+        'url' => $block->getUrl('home'),
+        'classes' => 'bg-wiggle bg-pink-500'
+    ],
+    [
+        'label' => __('Women'),
+        'url' => $block->getUrl('home'),
+    ],
+    [
+        'label' => __('Men'),
+        'url' => $block->getUrl('home'),
+    ],
+    [
+        'label' => __('Gear'),
+        'url' => $block->getUrl('home'),
+    ],
+    [
+        'label' => __('Training'),
+        'url' => $block->getUrl('home'),
+    ],
+];
+
+$useSlider = $block->getUseSlider() !== null ? $block->getUseSlider() : true;
+?>
+
+<style>
+    .bg-wiggle {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='26'%3E %3Cpath fill='%23fff4' fill-rule='evenodd' d='M10 10c0-2.21-1.79-4-4-4a6 6 0 0 1-6-6h2c0 2.21 1.79 4 4 4a6 6 0 0 1 6 6c0 2.21 1.79 4 4 4a6 6 0 0 1 6 6c0 2.21 1.79 4 4 4v2a6 6 0 0 1-6-6c0-2.21-1.79-4-4-4a6 6 0 0 1-6-6zm25.464-1.95 8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E %3C/svg%3E");
+    }
+
+    .bg-bank-note {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='20'%3E %3Cpath fill='%230004' fill-rule='evenodd' d='M21.184 20c.357-.13.72-.264 1.088-.402l1.768-.661C33.64 15.347 39.647 14 50 14c10.271 0 15.362 1.222 24.629 4.928.955.383 1.869.74 2.75 1.072h6.225c-2.51-.73-5.139-1.691-8.233-2.928C65.888 13.278 60.562 12 50 12c-10.626 0-16.855 1.397-26.66 5.063l-1.767.662c-2.475.923-4.66 1.674-6.724 2.275h6.335Zm0-20C13.258 2.892 8.077 4 0 4V2c5.744 0 9.951-.574 14.85-2h6.334ZM77.38 0C85.239 2.966 90.502 4 100 4V2c-6.842 0-11.386-.542-16.396-2h-6.225ZM0 14c8.44 0 13.718-1.21 22.272-4.402l1.768-.661C33.64 5.347 39.647 4 50 4c10.271 0 15.362 1.222 24.629 4.928C84.112 12.722 89.438 14 100 14v-2c-10.271 0-15.362-1.222-24.629-4.928C65.888 3.278 60.562 2 50 2 39.374 2 33.145 3.397 23.34 7.063l-1.767.662C13.223 10.84 8.163 12 0 12v2Z' /%3E %3C/svg%3E");
+    }
+</style>
+
+<div class="my-10">
+    <div class="flex-wrap flex justify-between items-baseline mb-2">
+        <div class="text-3xl leading-9 font-bold mr-1">
+            <?= $escaper->escapeHtml(__('Shop by category')) ?>
+        </div>
+        <a
+            href="<?= $escaper->escapeUrl($block->getUrl('home')) ?>"
+            class="block text-lg leading-7 font-semibold text-blue-700"
+        ><?= $escaper->escapeHtml(__('Browse all')) ?> →</a>
+    </div>
+    <div class="gap-4 <?= $useSlider
+        ? 'snap flex overflow-x-auto py-6 md:snap-none md:overflow-x-visible md:gap-4 md:grid md:grid-cols-2'
+        : 'grid grid-cols-2' ?>">
+        <?php foreach ($categories as $item): ?>
+            <a
+                href="<?= $escaper->escapeUrl($item['url']) ?>"
+                class="shadow-lg rounded-md overflow-hidden flex items-center justify-center h-72 md:h-80 md:first:h-40
+                    md:hover:shadow-2xl md:hover:scale-[1.02] transition duration-300
+                    <?= $item['classes'] ?? 'bg-bank-note bg-blue-800' ?>
+                    <?= $useSlider
+                        ? 'w-[calc(100%-theme(spacing.7))] sm:w-[calc(50%-theme(spacing.5))] md:w-full md:first:col-span-full shrink-0 snap-start'
+                        : 'first:col-span-full first:h-40' ?>"
+            >
+                <div class="drop-shadow-lg text-white text-xl leading-10 font-bold uppercase sm:text-2xl md:text-3xl lg:text-4xl">
+                    <?= $escaper->escapeHtml($item['label']) ?>
+                </div>
+            </a>
+        <?php endforeach; ?>
+    </div>
+</div>

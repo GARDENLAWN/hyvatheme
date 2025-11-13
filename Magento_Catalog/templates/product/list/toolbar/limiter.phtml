@@ -1,0 +1,43 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Catalog\Block\Product\ProductList\Toolbar;
+use Magento\Framework\Escaper;
+use Hyva\Theme\Model\LocaleFormatter;
+
+/** @var Toolbar $block */
+/** @var Escaper $escaper */
+/** @var LocaleFormatter $localeFormatter */
+
+$availableLimitOptions = $block->getAvailableLimit();
+
+?>
+
+<?php if (count($availableLimitOptions) > 1): ?>
+    <label class="toolbar-limiter text-slate-800 inline-flex items-center gap-2.5">
+        <span
+            class="text-sm"
+            aria-label="<?= $escaper->escapeHtmlAttr(__('Show items per page')) ?>"
+        ><?= $escaper->escapeHtml(__('Show')) ?></span>
+        <select
+            class="form-select limiter-options max-w-full"
+            @change="changeLimit"
+        >
+            <?php foreach ($block->getAvailableLimit() as $key => $limit): ?>
+                <option
+                    value="<?= $escaper->escapeHtmlAttr($key) ?>"
+                    <?php if ($block->isLimitCurrent($key)): ?>selected<?php endif ?>
+                ><?= $escaper->escapeHtml(is_numeric($limit)
+                    ? $localeFormatter->formatNumber($limit)
+                    : $limit) ?></option>
+            <?php endforeach; ?>
+        </select>
+    </label>
+<?php endif; ?>

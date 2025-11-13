@@ -1,0 +1,189 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\Customer\ReviewList;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use Magento\Framework\Escaper;
+use Magento\Review\Block\Product\View as ProductReview;
+use Magento\Theme\Block\Html\Pager;
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
+/** @var ProductReview $block */
+/** @var SecureHtmlRenderer $secureRenderer */
+/** @var Escaper $escaper */
+/** @var Pager $toolbar */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+/** @var HeroiconsSolid $heroiconsSolid */
+$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+/** @var ReviewList $reviewList */
+$reviewList = $viewModels->require(ReviewList::class);
+
+$reviewCollection = $block->getReviewsCollection();
+
+// Note: Setting the collection on the toolbar block applies pagination, so it has to happen before collection loading.
+if ($toolbar = $block->getChildBlock('review_list.toolbar')) {
+    $toolbar->setCollection($reviewCollection);
+}
+$reviewCollection->load()->addRateVotes();
+
+$items = $reviewCollection->getItems();
+$format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
+$formatLong = $block->getDateFormat() ?: \IntlDateFormatter::LONG;
+$headingTag = (string) $block->getData('heading_tag') ?: 'h3';
+$ratingStarSize = (int) $block->getData('rating_star_size') ?: 20;
+$productName = $block->getProduct()->getName();
+if (!method_exists($reviewList, 'getCustomerEmailsForReviews')) {
+    /**
+     * The method below was introduced in version 1.3.3 of the Hyva_Theme module:
+     * \Hyva\Theme\ViewModel\Customer\ReviewList:getCustomerEmailsForReviews()
+     * Please upgrade to enable Avatar display
+     */
+    $showAvatar = false;
+    $customerEmails = [];
+} else {
+    $showAvatar = $block->getData('show_avatar') !== null ? $block->getData('show_avatar') : true;
+    $customerEmails = $reviewList->getCustomerEmailsForReviews($items);
+}
+?>
+<?php if (count($items)): ?>
+    <div
+        class="mx-auto py-6 items-center"
+        id="customer-review-list"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Customer Reviews')) ?>"
+        tabindex="-1"
+        role="group"
+    >
+        <div class="container mx-auto flex pt-6 pb-3 mb-6 md:flex-row border-b-2 border-gray-300">
+            <?php if (!$block->getHideTitle()): ?>
+                <<?= /* @noEscape */ $headingTag ?> class="text-gray-900 text-2xl title-font font-base text-center md:text-left w-full">
+                    <?= $escaper->escapeHtml(__('Customer Reviews')) ?>
+                </<?= /* @noEscape */ $headingTag ?>>
+            <?php endif ?>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-6">
+            <?php foreach ($items as $review): ?>
+                <?php
+                    if ($showAvatar) {
+                        $customerEmail = '';
+
+                        if ($review->getCustomerId()) {
+                            $customerEmail = $customerEmails[$review->getCustomerId()];
+                        }
+
+                        /**
+                         * @var $gravatarArgs d = fallback image, r = rating, s = size
+                         * @source https://gravatar.com/site/implement/images/php/
+                         */
+                        $gravatarArgs = '?d=mp&r=g&s=64';
+                        $gravatarUrl = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($customerEmail))) . $gravatarArgs;
+                    }
+                ?>
+                <div
+                    class="py-6 md:py-8 border-b border-slate-200"
+                    itemscope
+                    itemprop="review"
+                    itemtype="http://schema.org/Review"
+                >
+                    <div class="flex items-start gap-4 mb-6">
+                        <?php if ($showAvatar): ?>
+                            <div class="shrink-0">
+                                <img
+                                    src="<?= /* @noEscape */ $gravatarUrl ?>"
+                                    alt="<?= $escaper->escapeHtml(__('Profile Picture of %1', $review->getNickname())) ?>"
+                                    width="64"
+                                    height="64"
+                                    loading="lazy"
+                                    class="rounded-full"
+                                >
+                            </div>
+                        <?php endif; ?>
+                        <div class="grow self-center space-y-2">
+                            <div class="text-slate-600 text-sm">
+                                <span><?= $escaper->escapeHtml(__('Review by')) ?></span>
+                                <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+                                    <span class="font-bold" itemprop="name"><?= $escaper->escapeHtml($review->getNickname()) ?></span>
+                                </span>
+                                <time
+                                    class="text-gray-700 inline-block ml-2"
+                                    itemprop="datePublished"
+                                    datetime="<?= $escaper->escapeHtmlAttr($block->formatDate($review->getCreatedAt(), $format)); ?>"
+                                >
+                                    <span class="sr-only">
+                                        <?= $escaper->escapeHtml($block->formatDate($review->getCreatedAt(), $formatLong)) ?>
+                                    </span>
+                                    <span aria-hidden="true">
+                                        <?= $escaper->escapeHtml($block->formatDate($review->getCreatedAt(), $format)) ?>
+                                    </span>
+                                </time>
+                            </div>
+                            <?php if (count($review->getRatingVotes())): ?>
+                                <dl class="table">
+                                    <?php foreach ($review->getRatingVotes() as $vote): ?>
+                                        <?php
+                                            $rating = $vote->getPercent();
+                                            $ratingSteps = 5;
+                                            $starsFilled = is_numeric($rating) ? floor($rating / 100 * $ratingSteps) : 0;
+                                            $starsEmpty = floor($ratingSteps - $starsFilled);
+                                        ?>
+                                        <div
+                                            class="table-row"
+                                            itemprop="reviewRating"
+                                            itemscope
+                                            itemtype="http://schema.org/Rating"
+                                        >
+                                            <dt class="table-cell pr-4 align-middle text-left text-slate-600 text-sm font-bold <?= count($review->getRatingVotes()) > 1 ? '' : 'sr-only' ?>">
+                                                <?= $escaper->escapeHtml($vote->getRatingCode()) ?>
+                                            </dt>
+                                            <dd>
+                                                <span class="hidden" itemprop="ratingValue"><?= /** @noEscape */ $starsFilled; ?></span>
+                                                <div
+                                                    class="flex flex-row"
+                                                    role="img"
+                                                    aria-label="<?= $escaper->escapeHtmlAttr(__('%1 rating. %2 out of %3 stars', $productName, $starsFilled, $ratingSteps))?>"
+                                                >
+                                                    <?php $i = 0; ?>
+                                                    <?php while ($i < $starsFilled): ?>
+                                                        <?= $heroiconsSolid->starHtml('text-amber-400', $ratingStarSize, $ratingStarSize, ["aria-hidden" => "true"]); ?>
+                                                        <?php $i++; ?>
+                                                    <?php endwhile; ?>
+                                                    <?php $i = 0; ?>
+                                                    <?php while ($i < $starsEmpty): ?>
+                                                        <?= $heroiconsSolid->starHtml('text-slate-200', $ratingStarSize, $ratingStarSize, ["aria-hidden" => "true"]); ?>
+                                                        <?php $i++; ?>
+                                                    <?php endwhile; ?>
+                                                </div>
+                                            </dd>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </dl>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="prose prose-slate prose-lead:text-lg prose-lead:font-bold">
+                        <strong class="lead" itemprop="name"><?= $escaper->escapeHtml($review->getTitle()) ?></strong>
+                        <div itemprop="description"><?= /* @noEscape */ nl2br($escaper->escapeHtml($review->getDetail())) ?></div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <?php if ($toolbar): ?>
+            <div class="toolbar review-toolbar mt-4">
+                <?= $toolbar->toHtml() ?>
+            </div>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

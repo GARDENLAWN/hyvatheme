@@ -1,0 +1,25 @@
+<?php declare(strict_types=1);
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Magento\Checkout\Block\Registration;
+use Magento\Framework\Escaper;
+
+/** @var Registration $block */
+/** @var Escaper $escaper */
+?>
+
+<div class="my-12">
+    <p><?= $escaper->escapeHtml(__('You can track your order status by creating an account.')) ?></p>
+    <p><?= $escaper->escapeHtml(__('Email Address:')) ?> <?= $escaper->escapeHtml($block->getEmailAddress()) ?></p>
+    <div class="mt-6">
+        <a
+            class="inline-flex w-full sm:w-auto btn btn-primary"
+            href="<?= $escaper->escapeUrl($block->getCreateAccountUrl()) ?>"
+        ><?= $escaper->escapeHtml(__('Create an Account')) ?></a>
+    </div>
+</div>

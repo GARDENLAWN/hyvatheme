@@ -1,0 +1,108 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\Store;
+use Hyva\Theme\ViewModel\StoreSwitcher;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Magento\Store\ViewModel\SwitcherUrlProvider;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** @var HeroiconsOutline $heroiconsOutline */
+$heroiconsOutline = $viewModels->require(HeroiconsOutline::class);
+
+/** @var HeroiconsSolid $heroiconsSolid */
+$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+/** @var SwitcherUrlProvider $switcherUrlProvider */
+$switcherUrlProvider = $viewModels->require(SwitcherUrlProvider::class);
+
+/** @var Store $storeViewModel */
+$storeViewModel = $viewModels->require(Store::class);
+
+/** @var StoreSwitcher $storeSwitcherViewModel */
+$storeSwitcherViewModel = $viewModels->require(StoreSwitcher::class);
+$currentStore = $storeSwitcherViewModel->getStore();
+
+$showLabel = $block->getShowLabel() !== null ? (bool) $block->getShowLabel() : true;
+
+if (count($storeSwitcherViewModel->getStores()) <= 1) {
+    return '';
+}
+?>
+
+<div
+    class="relative"
+    x-data="initHeaderLangSwitcher"
+    @click.outside="close"
+    @keydown.escape="close"
+>
+    <button
+        type="button"
+        @click="toggle"
+        class="group flex items-center rounded p-1 hover:bg-primary/10 outline-offset-2 text-slate-800 text-xs"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Language') . ': ' . $currentStore->getName()) ?>"
+        aria-haspopup="menu"
+        :aria-expanded="open"
+    >
+        <?= $heroiconsOutline->globeHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+        <?php if ($showLabel): ?>
+            <span class="hidden md:inline text-slate-500 mx-1">
+                <?= $escaper->escapeHtml($currentStore->getName()) ?>
+            </span>
+        <?php endif; ?>
+        <?= $heroiconsSolid->chevronDownHtml('transition group-aria-expanded:rotate-180', 18, 18, ['aria-hidden' => 'true']) ?>
+    </button>
+
+    <nav
+        class="z-30 absolute -right-4 w-48 sm:w-56 mt-2 py-2 px-1 overflow-auto
+            rounded shadow-lg lg:mt-3 bg-container-lighter"
+        aria-label="<?= $escaper->escapeHtml(__('Choose your language')) ?>"
+        x-show="open"
+        x-transition
+        x-cloak
+    >
+        <div class="my-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+            <?php foreach ($storeSwitcherViewModel->getStores() as $lang): ?>
+                <?php if ($lang->getId() != $storeViewModel->getStoreId()): ?>
+                    <a
+                        href="<?= $escaper->escapeUrl($switcherUrlProvider->getTargetStoreRedirectUrl($lang)) ?>"
+                        class="block px-4 py-2 lg:px-5 lg:py-2 hover:bg-gray-100"
+                    ><?= $escaper->escapeHtml($lang->getName()) ?></a>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+    </nav>
+</div>
+
+<script>
+    function initHeaderLangSwitcher() {
+        return {
+            open: false,
+            toggle() {
+                this.open = !this.open;
+            },
+            close() {
+                this.open = false;
+            }
+        }
+    }
+
+    window.addEventListener('alpine:init', () => Alpine.data('initHeaderLangSwitcher', initHeaderLangSwitcher), { once: true })
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

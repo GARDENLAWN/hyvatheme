@@ -1,0 +1,173 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\StoreConfig;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Messages;
+use Hyva\Theme\ViewModel\HyvaCsp;
+
+/** @var Messages $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** @var HeroiconsSolid $heroicons */
+$heroIcons = $viewModels->require(HeroiconsSolid::class);
+
+/** @var StoreConfig $storeConfig */
+$storeConfig = $viewModels->require(StoreConfig::class);
+
+$defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general/messages/success_message_timeout');
+$displayMode = (string) $block->getDisplayMode() ?: 'default';
+$showIcon = (bool) $block->getShowIcon();
+?>
+<script>
+    <?php if ($defaultSuccessMessageTimeout): ?>
+    window.defaultSuccessMessageTimeout = <?= (int) $defaultSuccessMessageTimeout ?>;
+    <?php endif; ?>
+    function initMessages() {
+        "use strict";
+        return {
+            messages: window.mageMessages || [],
+            isEmpty() {
+                return this.messages.reduce(
+                    function (isEmpty, message) {
+                        return isEmpty && message === undefined
+                    }, true
+                )
+            },
+            hasMessages() {
+                return !this.isEmpty();
+            },
+            hasMessage() {
+                return !!this.message;
+            },
+            removeMessage() {
+                this.messages[this.index] = undefined;
+            },
+            addMessages(messages, hideAfter) {
+                messages.map((message) => {
+                    this.messages = this.messages.concat(message);
+                    if (hideAfter === undefined && message.type === 'success' && window.defaultSuccessMessageTimeout) {
+                        hideAfter = window.defaultSuccessMessageTimeout;
+                    }
+                    if (hideAfter) {
+                        this.setHideTimeOut(this.messages.length -1, hideAfter);
+                    }
+                });
+            },
+            setHideTimeOut(messageIndex, hideAfter) {
+                setTimeout((messageIndex) => {
+                    this.messages[messageIndex] = undefined;
+                }, hideAfter, messageIndex);
+            },
+            getIcon() {
+                switch (this.message.type) {
+                    case 'success':
+                        return <?= /** @noEscape */ json_encode($heroIcons->checkCircleHtml('', 32, 32)) ?>;
+                    case 'error':
+                    case 'warning':
+                        return <?= /** @noEscape */ json_encode($heroIcons->exclamationHtml('', 32, 32)) ?>;
+                    default:
+                        return <?= /** @noEscape */ json_encode($heroIcons->informationCircleHtml('', 32, 32)) ?>;
+                }
+            },
+            getMessageStyle() {
+                switch (this.message.type) {
+                    case 'success':
+                        return '[--message-lighter:theme(colors.green.100)] [--message:theme(colors.green.500)] [--message-darker:theme(colors.green.900)]'
+                    case 'error':
+                        return '[--message-lighter:theme(colors.red.100)] [--message:theme(colors.red.500)] [--message-darker:theme(colors.red.900)]'
+                    case 'warning':
+                        return '[--message-lighter:theme(colors.yellow.100)] [--message:theme(colors.yellow.500)] [--message-darker:theme(colors.yellow.900)]'
+                    case 'notice':
+                    case 'info':
+                        return '[--message-lighter:theme(colors.blue.100)] [--message:theme(colors.blue.500)] [--message-darker:theme(colors.blue.900)]'
+                    default:
+                        return '[--message-lighter:theme(colors.slate.100)] [--message:theme(colors.slate.500)] [--message-darker:theme(colors.slate.900)]'
+                }
+            },
+            getMessageUiId() {
+                return 'message-' + this.message.type;
+            },
+            eventListeners: {
+                ['@messages-loaded.window'](event) {
+                    this.addMessages(event.detail.messages, event.detail.hideAfter)
+                },
+                ['@private-content-loaded.window'](event) {
+                    const data = event.detail.data;
+                    if (
+                        data.messages &&
+                        data.messages.messages &&
+                        data.messages.messages.length
+                    ) {
+                        this.addMessages(data.messages.messages);
+                    }
+                },
+                ['@clear-messages.window']() {
+                    this.messages = [];
+                }
+            }
+        }
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('initMessages', initMessages), {once: true})
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
+<section
+    id="messages"
+    x-data="initMessages"
+    x-bind="eventListeners"
+    aria-live="assertive"
+    role="alert"
+>
+    <template x-if="hasMessages">
+        <div class="messages container py-3">
+            <template x-for="(message, index) in messages" :key="index">
+                <template x-if="hasMessage">
+                    <div
+                        class="message items-stretch gap-4 rounded-xl shadow-lg font-bold mb-6
+                            <?= $displayMode === 'tag' || $displayMode === 'blank'
+                                ? 'bg-white text-slate-800'
+                                : 'bg-[var(--message-lighter)] text-[var(--message-darker)]' ?>
+                            <?= $displayMode === 'tag' ? 'p-0' : 'py-6 px-8' ?>"
+                        :ui-id="getMessageUiId"
+                        :class="getMessageStyle"
+                    >
+                        <?php if ($displayMode === 'tag'): ?>
+                            <div class="pl-4 rounded-l-xl bg-[var(--message)]">
+                                <?php if ($showIcon): ?>
+                                    <div class="py-6 pr-4 text-white" x-html="getIcon"></div>
+                                <?php endif ?>
+                            </div>
+                        <?php endif ?>
+                        <div class="grow flex items-center <?= $displayMode === 'tag' ? 'gap-6 py-6 pr-8' : 'gap-6' ?>">
+                            <?php if ($showIcon && $displayMode !== 'tag'): ?>
+                                <span x-html="getIcon"<?= $displayMode === 'blank' ? 'class="text-[var(--message)]"' : '' ?>></span>
+                            <?php endif ?>
+                            <span x-html="message.text"></span>
+                            <button
+                                type="button"
+                                class="ml-auto transition-colors <?= $displayMode === 'tag' || $displayMode === 'blank'
+                                    ? 'text-slate-500 hover:text-slate-900'
+                                    : 'text-[var(--message)] hover:text-[var(--message-darker)]' ?>"
+                                aria-label="<?= $escaper->escapeHtml(__('Close message')) ?>"
+                                @click.prevent="removeMessage"
+                            >
+                                <?= $heroIcons->xHtml('', 32, 32, ['aria-hidden' => 'true']); ?>
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </template>
+</section>

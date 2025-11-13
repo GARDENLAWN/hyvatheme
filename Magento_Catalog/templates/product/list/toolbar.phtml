@@ -1,0 +1,128 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Catalog\Block\Product\ProductList\Toolbar;
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+/** @var Toolbar $block */
+/** @var HyvaCsp $hyvaCsp */
+
+$additionalOptions = ['page' => 'p'];
+?>
+<script>
+    function initToolbar() {
+        const toolbarOptions = JSON.parse(this.$el.dataset.options);
+
+        return {
+            options: toolbarOptions.productListToolbarForm || {},
+            getUrlParams: function () {
+                let decode = window.decodeURIComponent,
+                    urlPaths = this.options.url.split('?'),
+                    urlParams = urlPaths[1] ? urlPaths[1].split('&') : [],
+                    params = {},
+                    parameters, i;
+
+                for (i = 0; i < urlParams.length; i++) {
+                    parameters = urlParams[i].split('=');
+                    params[decode(parameters[0])] = parameters[1] !== undefined ?
+                        decode(parameters[1].replace(/\+/g, '%20')) :
+                        '';
+                }
+
+                return params;
+            },
+            getCurrentLimit: function () {
+                return this.getUrlParams()[this.options.limit] || this.options.limitDefault;
+            },
+            getCurrentPage: function () {
+                return this.getUrlParams()[this.options.page] || 1;
+            },
+            changeLimit() {
+                const limit = this.$event.currentTarget.options[this.$event.currentTarget.selectedIndex].value;
+                this.changeUrl('product_list_limit', limit, this.options.limitDefault);
+            },
+            changeSortBy() {
+                const sortBy = this.$event.currentTarget.options[this.$event.currentTarget.selectedIndex].value;
+                this.changeUrl('product_list_order', sortBy, this.options.orderDefault);
+            },
+            sortAscending() {
+                this.changeUrl('product_list_dir', 'asc', this.options.directionDefault);
+            },
+            sortDescending() {
+                this.changeUrl('product_list_dir', 'desc', this.options.directionDefault);
+            },
+            changeListMode() {
+                this.changeUrl('product_list_mode', this.$el.dataset.listMode, this.options.modeDefault)
+            },
+            changeUrl(paramName, paramValue, defaultValue) {
+                let urlPaths = this.options.url.split('?'),
+                    baseUrl = urlPaths[0],
+                    paramData = this.getUrlParams(),
+                    currentPage = this.getCurrentPage(),
+                    newPage;
+
+                /**
+                 * calculates the page on which the first item of the current page will
+                 * be with the new limit and sets that number as the new page
+                 */
+                if (currentPage > 1 && paramName === this.options.limit) {
+                    newPage = Math.floor(this.getCurrentLimit() * (currentPage - 1) / paramValue) + 1;
+
+                    if (newPage > 1) {
+                        paramData[this.options.page] = newPage;
+                    } else {
+                        delete paramData[this.options.page];
+                    }
+                }
+
+                paramData[paramName] = paramValue;
+
+                if (this.options.post) {
+                    hyva.postForm({action: baseUrl, data: paramData, skipUenc: true});
+                } else {
+                    if (paramValue === defaultValue.toString()) {
+                        delete paramData[paramName];
+                    }
+                    paramData = Object.keys(paramData).length === 0
+                        ? ''
+                        : '?' + (new URLSearchParams(paramData));
+                    location.href = baseUrl + paramData
+                }
+            }
+        }
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('initToolbar', initToolbar), {once: true})
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
+<?php if ($block->getCollection()->getSize()): ?>
+    <div x-data="initToolbar"
+         data-options="<?= $escaper->escapeHtmlAttr($block->getWidgetOptionsJson($additionalOptions)) ?>"
+         class="toolbar toolbar-products gap-2 <?= ($block->getIsBottom()
+            ? 'grid items-center grid-cols-2 lg:grid-cols-[minmax(0px,1fr)_minmax(0px,3fr)_minmax(0px,1fr)]'
+            : 'flex justify-between items-center') ?>"
+    >
+        <?php if ($block->getIsBottom()): ?>
+            <?= $block->getPagerHtml() ?>
+            <div class="lg:order-first">
+                <?= /** @noEscape */  $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
+            </div>
+            <div class="justify-self-end">
+                <?= /** @noEscape */ $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>
+            </div>
+        <?php else: ?>
+            <?php if ($block->isExpanded()): ?>
+                <?= /** @noEscape */ $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
+                <?= /** @noEscape */ $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
+            <?php endif ?>
+        <?php endif ?>
+    </div>
+<?php endif ?>

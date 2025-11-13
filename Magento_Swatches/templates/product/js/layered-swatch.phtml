@@ -1,0 +1,92 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Swatches\Model\Swatch;
+
+/** @var Escaper $escaper */
+/** @var HyvaCsp $hyvaCsp */
+/** @var ViewModelRegistry $viewModels */
+?>
+
+<script>
+    function initLayeredSwatch() {
+        return {
+            getSwatchType(typeNumber) {
+                switch ("" + typeNumber) {
+                    case '<?= /** @noEscape */ Swatch::SWATCH_TYPE_VISUAL_COLOR ?>':
+                        return "color"
+                    case '<?= /** @noEscape */ Swatch::SWATCH_TYPE_VISUAL_IMAGE ?>':
+                        return "image"
+                    case '<?= /** @noEscape */ Swatch::SWATCH_TYPE_TEXTUAL ?>':
+                    default:
+                        return "text"
+                }
+            },
+            activeTooltipItem: false,
+            tooltipPositionElement: false,
+            isTooltipVisible() {
+                return this.activeTooltipItem
+            },
+            isFirstItemCol() {
+                const left = this.tooltipPositionElement.offsetLeft;
+                const leftParent = this.tooltipPositionElement.parentNode.offsetLeft;
+                const width = this.tooltipPositionElement.offsetWidth;
+                return left - leftParent < width;
+            },
+            getTooltipImageStyle() {
+                const type = this.activeTooltipItem.type;
+
+                if (this.getSwatchType(type) === "color") {
+                    return 'background-color:' + this.activeTooltipItem.value + '; width: 110px; height: 90px;';
+                } else if (this.getSwatchType(type) === "image") {
+                    return "background: #ffffff url('" + this.activeTooltipItem.thumb +
+                        "') center center no-repeat; width: 110px; height: 90px;";
+                } else {
+                    return 'display:none';
+                }
+            },
+            getTooltipPosition() {
+                return this.tooltipPositionElement ?
+                    (
+                        `top: ${this.tooltipPositionElement.offsetTop}px;` +
+                        `left: ${this.tooltipPositionElement.offsetLeft}px;`
+                    ) : ''
+            },
+            getTooltipLabel() {
+                return this.activeTooltipItem.label || ''
+            },
+            isVisualSwatch() {
+                return this.getSwatchType(this.activeTooltipItem.type) !== 'text'
+            },
+            onMouseEnter() {
+                this.activeTooltipItem = {
+                    attribute: this.$el.dataset.swatchValue,
+                    type: this.$el.dataset.swatchType,
+                    id: this.$el.dataset.swatchOption,
+                    label: this.$el.dataset.swatchLabel,
+                    thumb: this.$el.dataset.swatchThumb,
+                    value: this.$el.dataset.swatchValue
+                };
+                this.tooltipPositionElement = this.$event.target;
+            },
+            onMouseLeave() {
+                this.activeTooltipItem = false;
+            },
+            getTooltipWrapperClasses() {
+                return {
+                    '-translate-x-5': this.isFirstItemCol()
+                }
+            }
+        }
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('initLayeredSwatch', initLayeredSwatch), { once: true })
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

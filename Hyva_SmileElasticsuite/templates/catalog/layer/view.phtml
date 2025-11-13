@@ -1,0 +1,127 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Magento\Framework\Escaper;
+use Magento\LayeredNavigation\Block\Navigation;
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
+/** @var Navigation $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+/** @var HeroiconsSolid $heroiconsSolid */
+$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+$activeFilterStyle = $block->getActiveStyle();
+$activeIsOpen = $block->getActiveOpen();
+?>
+
+<?php if ($block->canShowBlock()): ?>
+    <div
+        class="my-6"
+        role="region"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Product filters')) ?>"
+        x-data="initLayeredNavigation()"
+        x-defer="intersect"
+        x-bind="eventListeners"
+    >
+        <h2 id="filters-heading" class="block-title">
+            <button
+                type="button"
+                @click="blockOpen = !blockOpen"
+                class="btn btn-secondary gap-2 justify-between w-full text-start text-lg font-medium
+                    md:p-0 md:border-0 md:!shadow-none md:!bg-transparent md:!text-current md:text-2xl"
+                aria-controls="filters-content"
+                :aria-expanded="blockOpen"
+                :aria-disabled="!isMobile"
+                :disabled="!isMobile ? '' : null"
+            >
+                <span><?= $escaper->escapeHtml(__('Shop By')) ?></span>
+                <?= $heroicons->adjustmentsHtml('md:!hidden', 24, 24, [
+                    "x-ref" => "LayeredNavigationMobileToggleIcon",
+                    "aria-hidden" => "true"
+                ]); ?>
+            </button>
+        </h2>
+        <a href="#product-list" class="block sr-only focus:not-sr-only">
+            <span class="block my-2 py-2.5 px-4 bg-blue-600 text-white text-center rounded-sm"><?= $escaper->escapeHtml(__('Skip to product list')) ?></span>
+        </a>
+        <div
+            id="filters-content"
+            class="block-content filter-content hidden md:block mt-4 py-2 px-6 bg-white border border-slate-200 rounded"
+            :class="{ 'hidden': !blockOpen }"
+        >
+            <?= $block->getChildBlock('state')->setOpen($activeIsOpen)->setFilterStyle($activeFilterStyle)->toHtml(); ?>
+            <?php
+                $filterIndex = 0;
+                $activeFilters = json_decode($block->getActiveFilters())
+            ?>
+            <?php foreach ($block->getFilters() as $filter): ?>
+                <?php if ($filter->getItemsCount()): ?>
+                    <?php $showOpen = in_array($filterIndex, $activeFilters) ?>
+                    <details
+                        id="<?= $escaper->escapeHtmlAttr($filter->getRequestVar()) ?>"
+                        class="filter-option group py-2 border-b border-slate-200 last:border-b-0"
+                        <?= $showOpen ? 'open': ''; ?>
+                    >
+                        <summary
+                            class="block-title [&::-webkit-details-marker]:hidden py-2 flex items-center justify-between font-medium md:text-lg cursor-pointer outline-offset-2"
+                            aria-label="<?= $escaper->escapeHtml(__('%1 filter', $filter->getName())) ?>"
+                        >
+                            <h3><?= $escaper->escapeHtml(__($filter->getName())) ?></h3>
+                            <span class="text-blue-700 transition-transform transform duration-300 ease-in-out group-open:rotate-180">
+                                <?= $heroiconsSolid->chevronDownHtml('', 20, 20, ["aria-hidden" => "true"]); ?>
+                            </span>
+                        </summary>
+                        <div class="filter-options-content py-2">
+                            <?= /* @noEscape */ $block->getChildBlock('renderer')
+                                ->setFilterTitle($filter->getName())
+                                ->setFilterId($filter->getRequestVar())
+                                ->render($filter) ?>
+                        </div>
+                    </details>
+                    <?php $filterIndex++ ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <script>
+        function initLayeredNavigation() {
+            return {
+                isMobile: false,
+                blockOpen: false,
+                init() {
+                    this.checkIsMobileResolution();
+                },
+                checkIsMobileResolution() {
+                    const mobileElement = this.$refs.LayeredNavigationMobileToggleIcon;
+                    this.isMobile = mobileElement
+                        ? getComputedStyle(mobileElement).display !== "none"
+                        : window.matchMedia('(max-width: 767px)').matches; // Fallback to `md` breakpoint
+                },
+                eventListeners: {
+                    ['@resize.window.debounce']() {
+                        this.checkIsMobileResolution();
+                    },
+                    ['@visibilitychange.window.debounce']() {
+                        this.checkIsMobileResolution();
+                    },
+                },
+            }
+        }
+    </script>
+<?php endif; ?>

@@ -1,0 +1,97 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use Magento\Swatches\Block\LayeredNavigation\RenderLayered;
+use Magento\Swatches\Model\Swatch;
+use Magento\Swatches\ViewModel\Product\Renderer\Configurable as ConfigurableViewModel;
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
+/** @var RenderLayered $block */
+/** @var SecureHtmlRenderer $secureRenderer */
+/** @var Escaper $escaper */
+/** @var HyvaCsp $hyvaCsp */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var ConfigurableViewModel $configurableViewModel */
+$configurableViewModel = $viewModels->require(ConfigurableViewModel::class);
+
+$swatchData = $block->getSwatchData();
+
+$swatchClasses = "swatch-option-link-layered swatch-option bg-white flex justify-center text-slate-800 font-medium transition outline-none";
+
+$textSwatchClasses = "type-text py-2 px-2.5 !border-2 rounded-md border-slate-200 text-sm font-medium" // standard
+    . " hover:border-blue-300 focus:border-blue-300" // hover - focus
+    . " active:border-blue-500"; // active
+
+$colorSwatchClasses = "type-color w-8 h-8 !mr-2 !min-w-0 rounded-full !border-0" // standard
+    . " shadow-[inset_0_0_0_1px_rgba(0,0,0,0.32)]" // border
+    . " hover:ring-2 hover:ring-blue-300 hover:ring-offset-2" // hover
+    . " focus:ring-2 focus:ring-blue-300 focus:ring-offset-2" // focus
+    . " active:ring-2 active:ring-blue-500 active:ring-offset-2"; // active
+
+$imageSwatchClasses = "type-image w-8 h-8 !mr-2 border-slate-200 !p-0 rounded-md aspect-square !border-2 !min-w-0" // standard
+    . " focus:ring-2 focus:ring-blue-300 focus:ring-offset-2" // focus
+    . " hover:ring-2 hover:ring-blue-300 hover:ring-offset-2" // hover
+    . " active:ring-2 active:ring-blue-500 active:ring-offset-2"; // active
+?>
+<div class="swatch-attribute swatch-layered <?= $escaper->escapeHtmlAttr($swatchData['attribute_code']) ?>"
+     x-data="initLayeredSwatch"
+>
+    <div class="swatch-attribute-options gap-2">
+        <?php foreach ($swatchData['options'] as $option => $label):
+            // check required if attribute property "is_filterable" is set to "Filterable (no results)"
+            if (!isset($swatchData['swatches'][$option])):
+                continue;
+            endif; ?>
+            <?php
+            $swatchType = (int) $swatchData['swatches'][$option]['type'];
+            $swatchValue = (string) $swatchData['swatches'][$option]['value'];
+            $isImageSwatch = $swatchType === Swatch::SWATCH_TYPE_VISUAL_IMAGE;
+            $isColorSwatch = $swatchType === Swatch::SWATCH_TYPE_VISUAL_COLOR;
+            $isVisualSwatch = $isColorSwatch || $isImageSwatch;
+            ?>
+            <a href="<?= $escaper->escapeUrl($label['link']) ?>" rel="nofollow"
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Filter %1 %2', $swatchData['attribute_label'], $label['label'])) ?>"
+                <?php if($isColorSwatch): ?>
+                    style="background-color: <?= $swatchValue ?>"
+                    class="<?= $escaper->escapeHtmlAttr($swatchClasses . " " . $colorSwatchClasses) ?>"
+                <?php elseif ($isImageSwatch): ?>
+                    style="background: #fff url('<?= $escaper->escapeUrl($block->getSwatchPath('swatch_image', $swatchValue)) ?>') center no-repeat"
+                    class="<?= $escaper->escapeHtmlAttr($swatchClasses . " " . $imageSwatchClasses) ?>"
+                <?php else: ?>
+                    class="<?= $escaper->escapeHtmlAttr($swatchClasses . " " . $textSwatchClasses) ?>"
+                <?php endif; ?>
+                <?php if ($configurableViewModel->getShowSwatchTooltip()): ?>
+                    <?php if ($isVisualSwatch): ?>
+                        <?php $swatchThumbPath = $isImageSwatch ? $block->getSwatchPath('swatch_thumb', $swatchValue) : ''; ?>
+                    <?php endif; ?>
+                    data-swatch-label="<?= $escaper->escapeHtmlAttr($label['label']) ?>"
+                    data-swatch-thumb="<?= $escaper->escapeHtmlAttr($swatchThumbPath ?? '') ?>"
+                    data-swatch-type="<?= $escaper->escapeHtmlAttr($swatchType) ?>"
+                    data-swatch-value="<?= $escaper->escapeHtmlAttr($swatchValue) ?>"
+                    data-swatch-image="<?= $isImageSwatch ? $escaper->escapeHtmlAttr($block->getSwatchPath('swatch_image', $swatchValue)) : '' ?>"
+                    data-swatch-option="<?= $escaper->escapeHtmlAttr($option) ?>"
+                    @mouseenter.self="onMouseEnter"
+                    @mouseleave.self="onMouseLeave"
+                <?php endif; ?>
+            >
+                <?php if (!$isVisualSwatch): ?>
+                    <?= $escaper->escapeHtml($swatchValue ?: $label['label']) ?>
+                <?php endif; ?>
+            </a>
+        <?php endforeach; ?>
+    </div>
+    <?php if ($configurableViewModel->getShowSwatchTooltip()): ?>
+        <?= /* @noEscape */ $block->getBlockHtml('product.swatch.tooltip'); ?>
+    <?php endif; ?>
+</div>

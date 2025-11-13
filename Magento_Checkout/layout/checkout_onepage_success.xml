@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+-->
+<page
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
+>
+    <body>
+        <referenceBlock name="page.main.title">
+            <arguments>
+                <argument name="maybe_purged_tailwind_section_classes" xsi:type="string">container flex flex-col md:flex-row flex-wrap my-6 md:mb-3 font-bold lg:mt-8</argument>
+                <argument name="css_class" xsi:type="string">text-4xl</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceContainer name="order.success.additional.info">
+            <block
+                class="Magento\Checkout\Block\Onepage\Success"
+                name="checkout.success.actions"
+                template="Magento_Checkout::success/actions.phtml"
+                cacheable="false"
+            />
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block name="checkout.widget.separator" template="Magento_Checkout::success/separator.phtml" after="checkout.registration"/>
+        </referenceContainer>
+    </body>
+</page>

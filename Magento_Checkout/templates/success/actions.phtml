@@ -1,0 +1,80 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\StoreConfig;
+use Magento\Checkout\Block\Onepage\Success;
+use Magento\Framework\Escaper;
+
+/** @var ViewModelRegistry $viewModels */
+/** @var Success $block */
+/** @var Escaper $escaper */
+
+/** @var HeroiconsSolid $heroiconsSolid */
+$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+/** @var StoreConfig $storeConfig */
+$storeConfig = $viewModels->require(StoreConfig::class);
+
+$iconSize = 36;
+$storeEmail = $storeConfig->getStoreConfig('trans_email/ident_support/email') ?? '';
+?>
+
+<ol class="mt-10 mb-12 flex flex-col gap-8">
+    <li class="flex gap-6 items-start">
+        <span class="border border-blue-100 bg-blue-50 text-blue-700 rounded-full p-3.5 shrink-0">
+            <?= $heroiconsSolid->checkHtml('', $iconSize, $iconSize, ['aria-hidden' => 'true']); ?>
+        </span>
+        <div class="grow">
+            <h2 class="text-3xl font-bold mb-1.5"><?= $escaper->escapeHtml(__('Order confirmed')) ?></h2>
+            <?php if ($block->getOrderId()): ?>
+                <p>
+                    <?= $escaper->escapeHtml(__('Your order number is:')) ?>
+                    <strong>
+                        <?php if ($block->getCanViewOrder()): ?>
+                            <a
+                                href="<?= $escaper->escapeUrl($block->getViewOrderUrl()) ?>"
+                            ><?= $escaper->escapeHtml($block->getOrderId()) ?></a>
+                        <?php else: ?>
+                            <?= $escaper->escapeHtml($block->getOrderId()) ?>
+                        <?php endif; ?>
+                    </strong>
+                </p>
+            <?php else: ?>
+                <p><?= $escaper->escapeHtml(__('We’re on it!')) ?></p>
+            <?php endif; ?>
+        </div>
+    </li>
+    <li class="flex gap-6 items-start">
+        <span class="border border-blue-100 bg-blue-50 text-blue-700 rounded-full p-3.5 shrink-0">
+            <?= $heroiconsSolid->truckHtml('', $iconSize, $iconSize, ['aria-hidden' => 'true']); ?>
+        </span>
+        <div class="grow">
+            <h2 class="text-3xl font-bold mb-1.5"><?= $escaper->escapeHtml(__('Order updates')) ?></h2>
+            <p><?= $escaper->escapeHtml(__('You will receive order and shipping updates via email.')) ?></p>
+        </div>
+    </li>
+    <li class="flex gap-6 items-start">
+        <span class="border border-blue-100 bg-blue-50 text-blue-700 rounded-full p-3.5 shrink-0">
+            <?= $heroiconsSolid->questionMarkCircleHtml('', $iconSize, $iconSize, ['aria-hidden' => 'true']); ?>
+        </span>
+        <div class="grow">
+            <h2 class="text-3xl font-bold mb-1.5"><?= $escaper->escapeHtml(__('Need help?')) ?></h2>
+            <p>
+                <?= $escaper->escapeHtml(__('We’re here to be of service.')) ?>
+                <?= $escaper->escapeHtml(__(
+                    'Reach out to our customer service at %1',
+                    sprintf('<a href="mailto:%s"><strong>%s</strong></a>', $storeEmail, $storeEmail)
+                ), ['a', 'strong']) ?>
+            </p>
+        </div>
+    </li>
+</ol>

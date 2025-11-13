@@ -1,0 +1,69 @@
+<?php declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Magento\Framework\Escaper;
+use Hyva\Theme\ViewModel\HyvaCsp;
+
+/** @var HyvaCsp $hyvaCsp */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HeroiconsSolid $heroIcons */
+
+$heroIcons = $viewModels->require(HeroiconsSolid::class);
+?>
+
+<div x-data="modal">
+    <button
+        type="button"
+        class="btn btn-primary"
+        @click="toggle"
+    >
+        <?= $escaper->escapeHtml(__('Show confirmation dialog')) ?>
+    </button>
+
+    <dialog
+        x-show="isOpen"
+        x-transition
+        x-htmldialog.noscroll="close"
+        class="rounded-xl p-0 shadow-xl lg:max-w-3xl"
+    >
+        <div class="p-7 flex flex-col items-center gap-4 text-center lg:flex-row lg:items-start lg:text-left lg:gap-6">
+            <?= $heroIcons->exclamationHtml('inline-block shrink-0 text-yellow-400', 68, 68, ['aria-hidden' => 'true']); ?>
+            <div>
+                <p class="text-xl mb-2">
+                    <strong><?= $escaper->escapeHtml(__('Hi! I’m a modal title.')) ?></strong>
+                </p>
+                <div class="text-slate-600 text-pretty">
+                    <?= $escaper->escapeHtml(__('Additional information about this modal. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam massa augue, pretium.')) ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-100 p-7 flex flex-col gap-4 lg:flex-row lg:justify-end">
+            <button class="btn border-slate-300 text-slate-600 flex-1 lg:flex-initial" @click="close">
+                <?= $escaper->escapeHtml(__('Secondary action')) ?>
+            </button>
+            <button class="btn btn-primary flex-1 lg:flex-initial" @click="close">
+                <?= $escaper->escapeHtml(__('Main action')) ?>
+            </button>
+        </div>
+    </dialog>
+</div>
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('modal', () => ({
+            isOpen: false,
+            toggle() {
+                this.isOpen = !this.isOpen;
+            },
+            open() {
+                this.isOpen = true;
+            },
+            close() {
+                this.isOpen = false;
+            },
+        }));
+    });
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

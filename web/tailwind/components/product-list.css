@@ -1,0 +1,19 @@
+.product-item {
+    .price-container {
+        .price {
+            @apply text-2xl leading-8;
+        }
+    }
+
+    .special-price .price-container .price-label {
+        @apply sr-only;
+    }
+
+    .old-price .price-container {
+        @apply text-gray-500;
+
+        .price {
+            @apply font-normal text-base;
+        }
+    }
+}

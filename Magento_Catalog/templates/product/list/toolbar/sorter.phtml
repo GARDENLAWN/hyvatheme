@@ -1,0 +1,56 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Magento\Catalog\Block\Product\ProductList\Toolbar;
+use Magento\Framework\Escaper;
+
+/** @var Toolbar $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+?>
+<div class="toolbar-sorter sorter flex items-center min-w-0 rounded-md border border-gray-300 bg-white">
+    <label class="min-w-0">
+        <select
+            data-role="sorter"
+            class="form-select sorter-options rounded-md border-0 max-w-full"
+            aria-label="<?= $escaper->escapeHtmlAttr(__('Sort By')) ?>"
+            @change="changeSortBy"
+        >
+            <?php foreach ($block->getAvailableOrders() as $orderCode => $orderLabel):?>
+                <option
+                    value="<?= $escaper->escapeHtmlAttr($orderCode) ?>"
+                    <?php if ($block->isOrderCurrent($orderCode)): ?>selected<?php endif; ?>
+                ><?= $escaper->escapeHtml(__($orderLabel)) ?></option>
+            <?php endforeach; ?>
+        </select>
+    </label>
+    <?php if ($block->getCurrentDirection() == 'desc'): ?>
+        <button
+            class="p-1.5 sort-desc"
+            aria-label="<?= $escaper->escapeHtmlAttr(__('Set Ascending Direction')) ?>"
+            @click.prevent="sortAscending"
+        >
+            <?= $heroicons->sortAscendingHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
+        </button>
+    <?php else: ?>
+        <button
+            class="p-1.5 sort-asc"
+            aria-label="<?= $escaper->escapeHtmlAttr(__('Set Descending Direction')) ?>"
+            @click.prevent="sortDescending"
+        >
+            <?= $heroicons->sortDescendingHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
+        </button>
+    <?php endif; ?>
+</div>

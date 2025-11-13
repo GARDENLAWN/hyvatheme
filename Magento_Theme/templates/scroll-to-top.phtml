@@ -1,0 +1,96 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Escaper $escaper */
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** @var HeroiconsSolid $heroiconsSolid */
+$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+$visibleOffset = (int) $block->getVisibleOffset() ?: 200;
+$visibleOnlyToTop = $block->getVisibleOnlyToTop() !== null ? (bool) $block->getVisibleOnlyToTop() : true;
+$hideOnInactivity = $block->getHideOnInactivity() !== null ? (int) $block->getHideOnInactivity() : 4000;
+$hasStickyHeader = $block->getHasStickyHeader() !== null ? (bool) $block->getHasStickyHeader() : false;
+?>
+
+<div
+    id="scroll-to-top"
+    class="z-30 fixed top-6 left-1/2 -translate-x-1/2 mx-4 transition"
+    x-data="initScrollToTop"
+    x-cloak
+    x-show="visible"
+    x-transition:enter="duration-300"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="duration-150"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    x-bind="eventListeners"
+>
+    <button
+        type="button"
+        class="btn btn-secondary"
+        @click="scrollToTop"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Scroll back to the top of the page')); ?>"
+    >
+        <?= $heroiconsSolid->arrowUpHtml('', 18, 18, ['aria-hidden' => 'true']); ?>
+        <?= $escaper->escapeHtml(__('Back to Top')) ?>
+    </button>
+
+    <?php if ($hasStickyHeader): ?>
+        <style>
+            [data-scroll-dir-y="up"] #scroll-to-top {
+                --tw-translate-y: var(--page-header-height, 0px);
+            }
+        </style>
+    <?php endif; ?>
+
+    <script>
+        function initScrollToTop() {
+            return {
+                visible: false,
+                scrollOffset: <?= $visibleOffset ?>,
+                scrollPosition: 0,
+                init() {
+                    scrollPosition = document.documentElement.scrollTop;
+                    this.$watch('scrollPosition', (pos, prevPos) => {
+                        this.visible = <?= $visibleOnlyToTop
+                            ? 'pos > this.scrollOffset && pos < prevPos'
+                            : 'pos > this.scrollOffset' ?>;
+                    });
+                },
+                scrollToTop() {
+                    this.visible = false;
+                    document.documentElement.scrollIntoView({ behavior: 'smooth' })
+                },
+                eventListeners: {
+                    ['@scroll.window.throttle.50ms']() {
+                        this.scrollPosition = document.documentElement.scrollTop;
+                    },
+                    <?php if ($hideOnInactivity > 0): ?>
+                        ['@scroll.window.debounce.<?= $escaper->escapeHtmlAttr($hideOnInactivity); ?>ms']() {
+                            this.visible = false;
+                        }
+                    <?php endif; ?>
+                }
+            }
+        }
+        window.addEventListener('alpine:init', () => Alpine.data('initScrollToTop', initScrollToTop), { once: true });
+    </script>
+    <?php $hyvaCsp->registerInlineScript() ?>
+</div>
