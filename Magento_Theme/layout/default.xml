@@ -60,59 +60,6 @@
             </block>
             <block name="alpine-plugin-collapse" template="Magento_Theme::page/js/plugins/collapse.phtml"/>
         </referenceBlock>
-        <referenceBlock name="breadcrumbs">
-            <arguments>
-                <argument name="show_back_btn" xsi:type="boolean">true
-                </argument> <!-- Show back button on mobile (true/false) -->
-                <argument name="overflow_style" xsi:type="string">sticky
-                </argument> <!-- Overflow style (normal/sticky) -->
-            </arguments>
-        </referenceBlock>
-        <referenceContainer name="footer-content-before">
-            <block name="footer-cta" template="Magento_Theme::html/footer/cta.phtml"/>
-        </referenceContainer>
-        <referenceContainer name="footer-content-after">
-            <block name="footer-usps" template="Magento_Theme::html/footer/usps.phtml" before="-"/>
-        </referenceContainer>
-        <referenceBlock name="after.body.start">
-            <block name="header-notification" template="Magento_Theme::html/header/notification.phtml"
-                   after="global_notices"/>
-        </referenceBlock>
-        <referenceBlock name="header-content">
-            <arguments>
-                <argument name="show_compare" xsi:type="boolean">true
-                </argument> <!-- Show compare button (true/false) -->
-                <argument name="show_wishlist" xsi:type="boolean">true
-                </argument> <!-- Show wishlist button (true/false) -->
-                <argument name="show_language" xsi:type="boolean">true
-                </argument> <!-- Show language select (true/false) -->
-            </arguments>
-            <block name="header.compare" as="compare" template="Magento_Theme::html/header/compare.phtml"/>
-            <block
-                name="topmenu_mobile_wrapper"
-                as="mobilemenu"
-                template="Magento_Theme::html/header/mobilemenu.phtml"
-                ttl="3600"
-            >
-                <arguments>
-                    <argument name="cache_lifetime" xsi:type="string">3600</argument>
-                </arguments>
-            </block>
-        </referenceBlock>
-        <move element="topmenu_mobile" destination="topmenu_mobile_wrapper"/>
-        <referenceBlock name="top.container">
-            <block name="header-usps" template="Magento_Theme::html/header/usps.phtml" before="-"/>
-        </referenceBlock>
-        <referenceBlock name="topmenu_desktop">
-            <arguments>
-                <argument name="open_top_level_menu_on_hover" xsi:type="boolean">true
-                </argument> <!-- Also open on hover (true/false)-->
-                <argument name="show_top_level_all_link" xsi:type="boolean">true
-                </argument> <!-- Show view all link for top level (true/false) -->
-                <argument name="top_menu_cta_item" xsi:type="string" translate="true">Sale
-                </argument> <!-- Top Menu Item to Highlight -->
-            </arguments>
-        </referenceBlock>
         <referenceBlock name="cart-drawer">
             <arguments>
                 <argument name="show_sku" xsi:type="boolean">true
