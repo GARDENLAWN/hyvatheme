@@ -1,0 +1,26 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2022-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Checkout\Magewire\Checkout\TermsConditions;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var TermsConditions $magewire */
+
+$availableTerms = $magewire->getAgreements();
+$viewType = $magewire->getSystemConfig()->getTermsAndConditionsType();
+?>
+<div class="space-y-6">
+    <div>
+        <?php if ($childBlock = $block->getChildBlock($viewType)): ?>
+            <?= $childBlock->setData(['terms' => $availableTerms])->toHtml() ?>
+        <?php endif; ?>
+    </div>
+</div>
