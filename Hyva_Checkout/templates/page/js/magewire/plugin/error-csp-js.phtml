@@ -1,0 +1,92 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Magewirephp\Magewire\ViewModel\Magewire as MagewireViewModel;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+/** @var MagewireViewModel $magewireScripts */
+$magewireScripts = $viewModels->require(MagewireViewModel::class);
+
+/** Generated with hyva-csp-helper.php */
+?>
+<script>
+    (() => {
+        const magewireOriginOnErrorCallback = Magewire.components.onErrorCallback;
+
+        Magewire.onError((status, response) => {
+            magewireOriginOnErrorCallback(status, response)
+
+            <?php if ($magewireScripts->isProductionMode()): ?>
+            response.clone().text().then(result => {
+                result = JSON.parse(result)
+
+                <?php // phpcs:ignore ?>
+                const message = '<?= $escaper->escapeJs(__('Unfortunately, something went wrong while trying to update a component on the page. As a result, a page refresh is required to attempt to resolve this issue. By clicking OK, the page will automatically reload itself. We apologize for this inconvenience and thank you for your patience.')) ?>'
+
+                hyvaCheckout.message.dialog(message, `${ result.code }: <?= $escaper->escapeJs(__('Something went wrong')) ?>`, 'error', () => window.location.reload())
+            }).catch((exception) => {
+                console.error(exception)
+            })
+
+            return false
+            <?php endif ?>
+        })
+    })();
+
+    function hyvaCheckoutMagewirePluginError() {
+        return Object.assign(
+            hyva.modal.apply(this), {
+                reloadPage() {
+                    this.show().then(result => {
+                        if (result) {
+                            window.location.reload(true)
+                        }
+                    })
+                }
+            }
+        )
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('hyvaCheckoutMagewirePluginError', hyvaCheckoutMagewirePluginError), {once: true})
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
+
+<script>
+function srcViewFrontendTemplatesPageJsMagewirePluginErrorMovedScript0() {
+    const el = this.$el,
+          wire = this.$wire;
+
+    // @todo Implement interaction with the original code ^^
+<?php /** Variables from "src/view/frontend/templates/page/js/magewire/plugin/error.phtml" */ ?>
+<?php /** References (`$magewireScripts->isProductionMode(...)`) */ ?>
+
+    return {
+        init() {}
+    }
+}
+window.addEventListener('alpine:init', () => Alpine.data('srcViewFrontendTemplatesPageJsMagewirePluginErrorMovedScript0', srcViewFrontendTemplatesPageJsMagewirePluginErrorMovedScript0), {once: true});
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
+<script>
+<?php /** Generated with hyva-csp-helper.php */ ?>
+function hyvaCheckoutPageJsMagewirePluginError() {
+    return Object.assign(
+        hyvaCheckoutMagewirePluginError.call(this)
+    )
+}
+window.addEventListener('alpine:init', () => Alpine.data('hyvaCheckoutPageJsMagewirePluginError', hyvaCheckoutPageJsMagewirePluginError), {once: true});
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
