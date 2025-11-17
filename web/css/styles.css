@@ -3704,6 +3704,11 @@
       background-color: var(--color-container);
     }
   }
+  .even\:bg-container-darker {
+    &:nth-child(even) {
+      background-color: var(--color-container-darker);
+    }
+  }
   .even\:bg-gray-50 {
     &:nth-child(even) {
       background-color: var(--color-gray-50);
