@@ -18,6 +18,8 @@
             <module name="Magento_Theme"/>
             <module name="Magento_Csp"/>
             <module name="Hyva_Checkout"/>
+            <module name="Hyva_Theme"/>
+            <module name="Magewirephp_Magewire"/>
             <module name="Paynow_PaymentGateway"/>
         </sequence>
     </module>
