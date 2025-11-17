@@ -26,6 +26,6 @@ $label = $block->getLabel() ? $block->getLabel() : __('Create an Account');
 <?php if ($customerRegistration->isAllowed()): ?>
     <a
         class="block py-1.5 hover:underline"
-        href="<?= $escaper->escapeUrl($block->getUrl('rejestracja')) ?>"
+        href="<?= $escaper->escapeUrl($customerRegistration->getRegisterUrl()) ?>"
     ><?= $escaper->escapeHtml($label) ?></a>
 <?php endif; ?>

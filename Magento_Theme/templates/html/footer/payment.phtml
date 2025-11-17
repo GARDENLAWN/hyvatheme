@@ -25,15 +25,15 @@ $paymentIconsHeight = 32;
 ?>
 
 <div
-    class="container flex gap-4 flex-wrap justify-center" style="align-items: center;"
+    class="container flex gap-4 flex-wrap justify-center"
     aria-label="<?= $escaper->escapeHtml(__('Payment Providers')) ?>"
 >
-    <img src="/static/frontend/GardenLawn/Hyvatheme/pl_PL/images/tpay.svg" alt="tPay" style="height: 80px;">
-    <img src="/static/frontend/GardenLawn/Hyvatheme/pl_PL/images/blik.svg" alt="blik" style="height: 28px;">
+    <?= $paymentIcons->idealHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
     <?= $paymentIcons->visaHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
     <?= $paymentIcons->mastercardHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
     <?= $paymentIcons->paypalHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
+    <?= $paymentIcons->klarnaHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
     <?= $paymentIcons->applePayHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
     <?= $paymentIcons->googlePayHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
-    <img src="/static/frontend/GardenLawn/Hyvatheme/pl_PL/images/eraty.webp" alt="eservice" style="height: 45px;">
+    <?= $paymentIcons->bitcoinHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
 </div>

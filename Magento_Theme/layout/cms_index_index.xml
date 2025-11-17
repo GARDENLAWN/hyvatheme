@@ -76,5 +76,11 @@
                 <argument name="show_icon" xsi:type="boolean">true</argument> <!-- Show icon (true/false) -->
             </arguments>
         </referenceBlock>
+        <referenceContainer name="footer-content-before">
+            <block name="footer-cta" template="Magento_Theme::html/footer/cta.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="footer-content-after">
+            <block name="footer-usps" template="Magento_Theme::html/footer/usps.phtml" before="-"/>
+        </referenceContainer>
     </body>
 </page>
