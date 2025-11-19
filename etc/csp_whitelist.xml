@@ -32,6 +32,8 @@
                 <value id="img-src-paypal" type="host">*.paypal.com</value>
                 <value id="img-src-unsplash" type="host">*.unsplash.com</value>
                 <value id="img-src-paypalobjects" type="host">*.paypalobjects.com</value>
+                <value id="img-src-inpost" type="host">*.inpost.pl</value>
+                <value id="img-src-paynow" type="host">*.paynow.pl</value>
             </values>
         </policy>
         <policy id="style-src">
@@ -59,6 +61,8 @@
                 <value id="script-src-nrdata" type="host">*.nr-data.net</value>
                 <value id="script-src-paypal" type="host">*.paypal.com</value>
                 <value id="script-src-paypalobjects" type="host">*.paypalobjects.com</value>
+                <value id="script-src-inpost" type="host">*.inpost.pl</value>
+                <value id="script-src-paynow" type="host">*.paynow.pl</value>
                 <value id="script-src-hash-1" type="hash" algorithm="sha256">BlchBu6mrisHS6kLSIdwDGFrUSxv847nFYnY8x0Z1Rg=</value>
                 <value id="script-src-hash-2" type="hash" algorithm="sha256">3TDhoQp79nwMxDbQh3lo6ambV9ctoHQswjyWPakhCJ8=</value>
                 <value id="script-src-hash-3" type="hash" algorithm="sha256">SviyM+lRbnIJzxfxqWHy3FaoHRF8y9TF6psS7PtSvPU=</value>
