@@ -42,11 +42,11 @@ $footerColumns = array_diff(
         <?= $block->getChildHtml('copyright') ?>
         <nav class="text-slate-600" aria-label="<?= $escaper->escapeHtml(__('Legal Menu')) ?>">
             <a
-                href="<?= $escaper->escapeUrl($block->getUrl('privacy-policy-cookie-restriction-mode')) ?>"
+                href="<?= $escaper->escapeUrl($block->getUrl('regulamin')) ?>"
                 class="inline-block py-1 px-2 sm:px-0 sm:mr-4 sm:last:mr-0 hover:underline"
             ><?= $escaper->escapeHtml(__('Terms & Conditions')) ?></a>
             <a
-                href="<?= $escaper->escapeUrl($block->getUrl('privacy-policy-cookie-restriction-mode')) ?>"
+                href="<?= $escaper->escapeUrl($block->getUrl('polityka-prywatnosci')) ?>"
                 class="inline-block py-1 px-2 sm:px-0 sm:mr-4 sm:last:mr-0 hover:underline"
             ><?= $escaper->escapeHtml(__('Privacy Policy')) ?></a>
         </nav>

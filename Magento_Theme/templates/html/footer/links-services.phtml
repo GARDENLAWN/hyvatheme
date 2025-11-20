@@ -18,34 +18,26 @@ use Magento\Framework\View\Element\Template;
 <nav aria-label="<?= $escaper->escapeUrl($escaper->escapeHtmlAttr('Customer Services')) ?>">
     <ul>
         <li>
-            <a
-                href="<?= $escaper->escapeUrl($block->getUrl('home')) ?>"
-                class="block py-1.5 hover:underline"
-            ><?= $escaper->escapeHtml(__('Shipment of your order')) ?></a>
+            <a href="<?= $escaper->escapeUrl($block->getUrl('kontakt')) ?>"
+               class="block py-1.5 hover:underline">
+                <?= $escaper->escapeHtml(__('Contact')) ?>
+            </a>
         </li>
         <li>
-            <a
-                href="<?= $escaper->escapeUrl($block->getUrl('home')) ?>"
-                class="block py-1.5 hover:underline"
-            ><?= $escaper->escapeHtml(__('Payment options')) ?></a>
+            <a href="<?= $escaper->escapeUrl($block->getUrl('zamowienia-i-zwroty')) ?>"
+               class="block py-1.5 hover:underline">
+                <?= $escaper->escapeHtml(__('Orders and Returns')) ?>
+            </a>
         </li>
         <li>
-            <a
-                href="<?= $escaper->escapeUrl($block->getUrl('home')) ?>"
+            <a href="<?= $escaper->escapeUrl($block->getUrl('regulamin')) ?>"
                 class="block py-1.5 hover:underline"
-            ><?= $escaper->escapeHtml(__('Returns and replacements')) ?></a>
+            ><?= $escaper->escapeHtml(__('Terms & Conditions')) ?></a>
         </li>
         <li>
-            <a
-                href="<?= $escaper->escapeUrl($block->getUrl('home')) ?>"
+            <a href="<?= $escaper->escapeUrl($block->getUrl('polityka-prywatnosci')) ?>"
                 class="block py-1.5 hover:underline"
-            ><?= $escaper->escapeHtml(__('Warranty and repairs')) ?></a>
-        </li>
-        <li>
-            <a
-                href="<?= $escaper->escapeUrl($block->getUrl('home')) ?>"
-                class="block py-1.5 hover:underline"
-            ><?= $escaper->escapeHtml(__('Get in touch')) ?></a>
+            ><?= $escaper->escapeHtml(__('Privacy Policy')) ?></a>
         </li>
     </ul>
 </nav>
