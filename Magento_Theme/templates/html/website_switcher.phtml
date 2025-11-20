@@ -33,6 +33,7 @@ try {
                 <button @click="gardenLawnHyvathemeHtmlWebsiteSwitcherClick1"
                         class="flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm hover:bg-gray-50"
                         :aria-expanded="open">
+                    <img src="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteLogo($currentWebsite)) ?>" alt="<?= $escaper->escapeHtmlAttr($currentWebsite->getName()) ?>" class="h-6 w-auto" />
                     <span><?= $escaper->escapeHtml($currentWebsite->getName()) ?></span>
                     <svg class="h-4 w-4 transition-transform" :class="gardenLawnHyvathemeHtmlWebsiteSwitcherClass2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -46,11 +47,13 @@ try {
                     <?php foreach ($websites as $website): ?>
                         <?php if ($website->getId() == $currentWebsite->getId()): ?>
                             <div class="cursor-default bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-700">
+                                <img src="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteLogo($website)) ?>" alt="<?= $escaper->escapeHtmlAttr($website->getName()) ?>" class="h-6 w-auto inline-block mr-2" />
                                 <?= $escaper->escapeHtml($website->getName()) ?>
                             </div>
                         <?php else: ?>
                             <a href="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteUrl($website)) ?>"
                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <img src="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteLogo($website)) ?>" alt="<?= $escaper->escapeHtmlAttr($website->getName()) ?>" class="h-6 w-auto inline-block mr-2" />
                                 <?= $escaper->escapeHtml($website->getName()) ?>
                             </a>
                         <?php endif; ?>
@@ -63,12 +66,14 @@ try {
                 <?php foreach ($websites as $website): ?>
                     <?php if ($website->getId() == $currentWebsite->getId()): ?>
                         <span class="flex-1 basis-0 min-w-0 inline-flex justify-center items-center rounded-md border border-primary-600 bg-primary-50 px-3 py-2 text-sm font-semibold text-primary-700 cursor-default truncate" title="<?= $escaper->escapeHtmlAttr($website->getName()) ?>">
+                            <img src="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteLogo($website)) ?>" alt="<?= $escaper->escapeHtmlAttr($website->getName()) ?>" class="h-6 w-auto mr-2" />
                             <?= $escaper->escapeHtml($website->getName()) ?>
                         </span>
                     <?php else: ?>
                         <a href="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteUrl($website)) ?>"
                            class="flex-1 basis-0 min-w-0 inline-flex justify-center items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 truncate"
                            title="<?= $escaper->escapeHtmlAttr($website->getName()) ?>">
+                            <img src="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteLogo($website)) ?>" alt="<?= $escaper->escapeHtmlAttr($website->getName()) ?>" class="h-6 w-auto mr-2" />
                             <?= $escaper->escapeHtml($website->getName()) ?>
                         </a>
                     <?php endif; ?>
