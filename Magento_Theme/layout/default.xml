@@ -113,5 +113,35 @@
                 <block name="footer-payment" template="Magento_Theme::html/footer/payment.phtml"/>
             </container>
         </referenceBlock>
+        <referenceBlock name="after.body.start">
+            <block name="header-notification" template="Magento_Theme::html/header/notification.phtml" after="global_notices"/>
+        </referenceBlock>
+
+        <referenceBlock name="header-content">
+            <arguments>
+                <argument name="show_compare" xsi:type="boolean">true</argument> <!-- Show compare button (true/false) -->
+                <argument name="show_wishlist" xsi:type="boolean">true</argument> <!-- Show wishlist button (true/false) -->
+                <argument name="show_language" xsi:type="boolean">true</argument> <!-- Show language select (true/false) -->
+            </arguments>
+
+            <block name="header.compare" as="compare" template="Magento_Theme::html/header/compare.phtml"/>
+
+            <block
+                name="topmenu_mobile_wrapper"
+                as="mobilemenu"
+                template="Magento_Theme::html/header/mobilemenu.phtml"
+                ttl="3600"
+            >
+                <arguments>
+                    <argument name="cache_lifetime" xsi:type="string">3600</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <move element="topmenu_mobile" destination="topmenu_mobile_wrapper"/>
+
+        <referenceBlock name="top.container">
+            <block name="header-usps" template="Magento_Theme::html/header/usps.phtml" before="-"/>
+        </referenceBlock>
     </body>
 </page>
