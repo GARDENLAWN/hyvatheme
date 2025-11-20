@@ -56,8 +56,7 @@ $logoSrc = $logoPathResolver && method_exists($logoPathResolver, 'getLogoSrc')
     title="<?= $escaper->escapeHtmlAttr(__('Go to Home page')) ?>"
     x-data="logoData()"
     @toggle-logo.window="handleToggle"
-    :class="{ 'hidden': switcherOpen }"
-    class="inline-block align-middle lg:inline-block"
+    :class="{'hidden lg:!inline-block': switcherOpen, 'inline-block align-middle': !switcherOpen}"
     x-cloak
 >
     <?php if ($logoSrc): ?>
