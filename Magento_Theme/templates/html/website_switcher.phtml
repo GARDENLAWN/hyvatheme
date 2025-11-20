@@ -19,9 +19,6 @@ try {
 } catch (Exception $e) {
     return;
 }
-//echo "Aktualna domyślna strefa czasowa PHP: <strong>" . date_default_timezone_get() . "</strong><br>";
-//echo "Czas wg PHP (używając tej strefy): <strong>" . date('Y-m-d H:i:s T') . "</strong><br>";
-//phpinfo();
 ?>
 
 <div class="website-switcher-container border-b border-gray-200 bg-gray-50 py-2" x-data="gardenLawnHyvathemeHtmlWebsiteSwitcher">
@@ -29,21 +26,23 @@ try {
         <div class="flex w-full">
 
             <!-- Mobile Dropdown -->
-            <div class="relative lg:hidden">
-                <button @click="gardenLawnHyvathemeHtmlWebsiteSwitcherClick1"
-                        class="flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm hover:bg-gray-50"
+            <div class="relative lg:hidden w-full">
+                <button @click="toggle"
+                        class="flex w-full items-center justify-between gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm hover:bg-gray-50"
                         :aria-expanded="open">
-                    <img src="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteLogo($currentWebsite)) ?>" alt="<?= $escaper->escapeHtmlAttr($currentWebsite->getName()) ?>" class="h-6 w-auto" />
-                    <span><?= $escaper->escapeHtml($currentWebsite->getName()) ?></span>
-                    <svg class="h-4 w-4 transition-transform" :class="gardenLawnHyvathemeHtmlWebsiteSwitcherClass2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex items-center gap-2">
+                        <img src="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteLogo($currentWebsite)) ?>" alt="<?= $escaper->escapeHtmlAttr($currentWebsite->getName()) ?>" class="h-6 w-auto" />
+                        <span><?= $escaper->escapeHtml($currentWebsite->getName()) ?></span>
+                    </div>
+                    <svg class="h-4 w-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
 
                 <div x-show="open"
-                     @click.away="gardenLawnHyvathemeHtmlWebsiteSwitcherClickAway3"
+                     @click.away="open = false"
                      x-transition
-                     class="absolute right-0 z-50 mt-2 w-48 rounded-md border border-gray-200 bg-white shadow-lg">
+                     class="absolute left-0 right-0 z-50 mt-2 w-full rounded-md border border-gray-200 bg-white shadow-lg">
                     <?php foreach ($websites as $website): ?>
                         <?php if ($website->getId() == $currentWebsite->getId()): ?>
                             <div class="cursor-default bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-700">
@@ -83,16 +82,14 @@ try {
     </div>
 </div>
 <script>
-<?php /** Generated with hyva-csp-helper.php */ ?>
 function gardenLawnHyvathemeHtmlWebsiteSwitcher() {
-    return Object.assign(
-        { open: false }
-        ,{
-            ['gardenLawnHyvathemeHtmlWebsiteSwitcherClass2']() {return { 'rotate-180': this.open }},
-            ['gardenLawnHyvathemeHtmlWebsiteSwitcherClick1'](event) {return this.open = !this.open},
-            ['gardenLawnHyvathemeHtmlWebsiteSwitcherClickAway3'](event) {return this.open = false},
+    return {
+        open: false,
+        toggle() {
+            this.open = !this.open;
+            window.dispatchEvent(new CustomEvent('toggle-logo', { detail: { open: this.open } }));
         }
-    )
+    }
 }
 window.addEventListener('alpine:init', () => Alpine.data('gardenLawnHyvathemeHtmlWebsiteSwitcher', gardenLawnHyvathemeHtmlWebsiteSwitcher), {once: true});
 </script>

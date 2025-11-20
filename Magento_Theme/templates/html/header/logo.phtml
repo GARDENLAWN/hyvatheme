@@ -38,11 +38,27 @@ $logoSrc = $logoPathResolver && method_exists($logoPathResolver, 'getLogoSrc')
     ? $logoPathResolver->getLogoSrc($block->getData('logo_file'))
     : $block->getLogoSrc();
 ?>
-
+<script>
+    function logoData() {
+        return {
+            switcherOpen: false,
+            handleToggle(event) {
+                this.switcherOpen = event.detail.open;
+            }
+        }
+    }
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('logoData', logoData);
+    }, { once: true });
+</script>
 <a
-    class="inline-block align-middle"
     href="<?= $escaper->escapeUrl($block->getUrl()) ?>"
     title="<?= $escaper->escapeHtmlAttr(__('Go to Home page')) ?>"
+    x-data="logoData()"
+    @toggle-logo.window="handleToggle"
+    :class="{ 'hidden': switcherOpen }"
+    class="inline-block align-middle lg:inline-block"
+    x-cloak
 >
     <?php if ($logoSrc): ?>
         <img
