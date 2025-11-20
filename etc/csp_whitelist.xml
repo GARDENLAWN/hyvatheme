@@ -5,6 +5,7 @@
         <policy id="default-src">
             <values>
                 <value id="default-src-s3" type="host">*.amazonaws.com</value>
+                <value id="default-src-cloudfront" type="host">*.cloudfront.net</value>
                 <value id="default-src-self" type="host">'self'</value>
                 <value id="default-src-gardenlawn" type="host">*.gardenlawn.pl</value>
                 <value id="default-src-amrobots" type="host">*.am-robots.pl</value>
@@ -14,6 +15,7 @@
         <policy id="frame-src">
             <values>
                 <value id="frame-src-s3" type="host">*.amazonaws.com</value>
+                <value id="frame-src-cloudfront" type="host">*.cloudfront.net</value>
                 <value id="frame-src-self" type="host">'self'</value>
                 <value id="frame-src-gardenlawn" type="host">*.gardenlawn.pl</value>
                 <value id="frame-src-amrobots" type="host">*.am-robots.pl</value>
@@ -24,6 +26,7 @@
         <policy id="img-src">
             <values>
                 <value id="img-src-s3" type="host">*.amazonaws.com</value>
+                <value id="img-src-cloudfront" type="host">*.cloudfront.net</value>
                 <value id="img-src-self" type="host">'self'</value>
                 <value id="img-src-gardenlawn" type="host">*.gardenlawn.pl</value>
                 <value id="img-src-amrobots" type="host">*.am-robots.pl</value>
