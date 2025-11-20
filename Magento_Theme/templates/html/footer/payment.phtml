@@ -28,12 +28,11 @@ $paymentIconsHeight = 32;
     class="container flex gap-4 flex-wrap justify-center"
     aria-label="<?= $escaper->escapeHtml(__('Payment Providers')) ?>"
 >
-    <?= $paymentIcons->idealHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
+    <?= $paymentIcons->paynowHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
     <?= $paymentIcons->visaHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
     <?= $paymentIcons->mastercardHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
     <?= $paymentIcons->paypalHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
-    <?= $paymentIcons->klarnaHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
+    <?= $paymentIcons->blikHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
     <?= $paymentIcons->applePayHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
     <?= $paymentIcons->googlePayHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
-    <?= $paymentIcons->bitcoinHtml('', $paymentIconsWidth, $paymentIconsHeight) ?>
 </div>
