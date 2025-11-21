@@ -116,7 +116,7 @@ $productName = $catalogOutputHelper->productAttribute($product, $product->getNam
             tabindex="-1"
         >
             <?= $block->getImage($product, $imageDisplayArea)
-                ->setTemplate('Magento_Catalog::product/list/image.phtml')
+                ->setTemplate('Magento_Catalog::product/list/image-cps.phtml')
                 ->setData('custom_attributes', $imageCustomAttributes)
                 ->setProductId($productId)
                 ->toHtml(); ?>
