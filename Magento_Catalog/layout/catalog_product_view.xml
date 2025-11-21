@@ -12,6 +12,7 @@
     xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
 >
     <body>
+        <move element="product.info.price" destination="product.info" before="product.info.addtocart"/>
         <referenceContainer name="main.content">
             <block
                 class="Magento\Catalog\Block\Product\View"
