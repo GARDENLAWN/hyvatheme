@@ -21,6 +21,8 @@
                 <value id="frame-src-amrobots" type="host">*.am-robots.pl</value>
                 <value id="frame-src-finnpolska" type="host">*.finnpolska.pl</value>
                 <value id="frame-src-geowidget" type="host">*.inpost.pl</value>
+                <value id="frame-src-youtube" type="host">*.youtube.com</value>
+                <value id="frame-src-google" type="host">*.google.com</value>
             </values>
         </policy>
         <policy id="img-src">
@@ -37,6 +39,8 @@
                 <value id="img-src-paypalobjects" type="host">*.paypalobjects.com</value>
                 <value id="img-src-inpost" type="host">*.inpost.pl</value>
                 <value id="img-src-paynow" type="host">*.paynow.pl</value>
+                <value id="img-src-youtube" type="host">*.youtube.com</value>
+                <value id="img-src-google" type="host">*.google.com</value>
             </values>
         </policy>
         <policy id="style-src">
@@ -66,6 +70,8 @@
                 <value id="script-src-paypalobjects" type="host">*.paypalobjects.com</value>
                 <value id="script-src-inpost" type="host">*.inpost.pl</value>
                 <value id="script-src-paynow" type="host">*.paynow.pl</value>
+                <value id="script-src-youtube" type="host">*.youtube.com</value>
+                <value id="script-src-google" type="host">*.google.com</value>
                 <value id="script-src-hash-1" type="hash" algorithm="sha256">BlchBu6mrisHS6kLSIdwDGFrUSxv847nFYnY8x0Z1Rg=</value>
                 <value id="script-src-hash-2" type="hash" algorithm="sha256">3TDhoQp79nwMxDbQh3lo6ambV9ctoHQswjyWPakhCJ8=</value>
                 <value id="script-src-hash-3" type="hash" algorithm="sha256">SviyM+lRbnIJzxfxqWHy3FaoHRF8y9TF6psS7PtSvPU=</value>
@@ -81,6 +87,8 @@
                 <value id="connect-src-gardenlawn" type="host">*.gardenlawn.pl</value>
                 <value id="connect-src-amrobots" type="host">*.am-robots.pl</value>
                 <value id="connect-src-finnpolska" type="host">*.finnpolska.pl</value>
+                <value id="connect-src-youtube" type="host">*.youtube.com</value>
+                <value id="connect-src-google" type="host">*.google.com</value>
             </values>
         </policy>
         <policy id="font-src">
