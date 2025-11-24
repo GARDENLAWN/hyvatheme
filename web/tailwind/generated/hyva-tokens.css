@@ -4,12 +4,12 @@
  */
 
 @theme {
-	--color-primary-lighter: oklch(52% 0.2 265);
-	--color-primary: oklch(46% 0.2 265);
-	--color-primary-darker: oklch(28% 0.2 265);
-	--color-secondary-lighter: oklch(72% 0.2 150);
-	--color-secondary: oklch(53% 0.15 150);
-	--color-secondary-darker: oklch(39% 0.1 153);
+	--color-primary-lighter: #63c00c;
+	--color-primary: #58aa09;
+	--color-primary-darker: #3e7808;
+	--color-secondary-lighter: #218fde;
+	--color-secondary: #208ad8;
+	--color-secondary-darker: #1e81c8;
 	--color-on-primary: #fff;
 	--color-on-secondary: #fff;
 	--form-radius: var(--radius-lg);

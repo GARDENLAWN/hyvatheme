@@ -21,14 +21,14 @@
     "values": {
       "color": {
         "primary": {
-          "lighter": "oklch(52% 0.2 265)",
-          "DEFAULT": "oklch(46% 0.2 265)",
-          "darker": "oklch(28% 0.2 265)"
+          "lighter": "#63c00c",
+          "DEFAULT": "#58aa09",
+          "darker": "#3e7808"
         },
         "secondary": {
-          "lighter": "oklch(72% 0.2 150)",
-          "DEFAULT": "oklch(53% 0.15 150)",
-          "darker": "oklch(39% 0.1 153)"
+          "lighter": "#218fde",
+          "DEFAULT": "#208ad8",
+          "darker": "#1e81c8"
         },
         "on": {
           "primary": "#fff",
