@@ -37,10 +37,10 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
 
 $additionalMenuItemsBefore = $block->getAdditionalMenuItemsBefore() ?: [];
 $additionalMenuItemsAfter = $block->getAdditionalMenuItems() ?: [
-    'contact' => [
+    /*'contact' => [
         'name' => __('Contact'),
         'url' => '/contact'
-    ],
+    ],*/
 ];
 
 $showSettingsNav = $block->getShowSettingsNav() !== null ? $block->getShowSettingsNav() : true;
@@ -73,7 +73,7 @@ $itemIconSize = 20;
         x-transition:leave-end="-translate-x-full"
     >
         <div class="border-b border-slate-200">
-            <div class="flex items-center gap-2 py-4 px-6">
+            <div class="flex justify-between items-center gap-2 py-4 px-6">
                 <div><?= $block->getChildHtml('logo') ?></div>
                 <button
                     type="button"
