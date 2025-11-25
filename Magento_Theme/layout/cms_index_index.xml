@@ -34,6 +34,12 @@
                 </arguments>
             </block>
         </referenceContainer>
+        <referenceBlock name="breadcrumbs">
+            <arguments>
+                <argument name="show_back_btn" xsi:type="boolean">true</argument> <!-- Show back button on mobile (true/false) -->
+                <argument name="overflow_style" xsi:type="string">sticky</argument> <!-- Overflow style (normal/sticky) -->
+            </arguments>
+        </referenceBlock>
         <referenceContainer name="before.body.end">
             <block name="js.scroll.helpers" template="Magento_Theme::page/js/scroll-helpers.phtml"/>
             <block name="scroll.to.top" template="Magento_Theme::scroll-to-top.phtml">
