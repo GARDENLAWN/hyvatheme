@@ -14,6 +14,10 @@
         --price-font-size: 1em;
     }
 
+    & .old-price-excl-tax {
+        --price-font-size: 0.75em;
+    }
+
     .product-grouped-options,
     .price-from,
     .price-to {

@@ -14,7 +14,16 @@
     }
 
     & .old-price {
-        --price-font-size: 0.875em;
+        --price-font-size: var(--price-font-size, var(--text-base));
+        --price-font-weight: normal;
+
+        .price {
+            text-decoration: line-through;
+        }
+    }
+
+    & .old-price-excl-tax {
+        --price-font-size: var(--price-font-size, var(--text-base));
         --price-font-weight: normal;
 
         .price {
