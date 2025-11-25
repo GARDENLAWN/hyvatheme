@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Logo\LogoSizeResolver;
-use Hyva\Theme\ViewModel\Logo\LogoPathResolver;
+use Hyva\Theme\ViewModel\Store;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Framework\Escaper;
 use Magento\Theme\Block\Html\Header\Logo;
@@ -31,36 +31,28 @@ $logoWidth = $logoSizeResolver && $logoSizeResolver->getWidth()
 $logoHeight = $logoSizeResolver && $logoSizeResolver->getHeight()
     ? $logoSizeResolver->getHeight()
     : ($block->getLogoHeight() ?: 150);
-
-/** @var LogoPathResolver $logoPathResolver */
-$logoPathResolver = $block->getData('logoPathResolver');
-$logoSrc = $logoPathResolver && method_exists($logoPathResolver, 'getLogoSrc')
-    ? $logoPathResolver->getLogoSrc($block->getData('logo_file'))
-    : $block->getLogoSrc();
+/** @var Store $store */
+$store = $viewModels->require(Store::class);
+$storeCode = $store->getStoreCode();
+$logoSrc = "https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/images/logo.webp";
+switch ($storeCode) {
+    case 'amrobots':
+        $logoSrc = "https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/am-robots.webp";
+        break;
+    case 'finnpolska':
+        $logoSrc = "https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/finn.webp";
+        break;
+}
 ?>
-<script>
-    function logoData() {
-        return {
-            switcherOpen: false,
-            handleToggle(event) {
-                this.switcherOpen = event.detail.open;
-            }
-        }
-    }
-    window.addEventListener('alpine:init', () => {
-        Alpine.data('logoData', logoData);
-    }, { once: true });
-</script>
+
 <a
+    class="inline-block align-middle"
     href="<?= $escaper->escapeUrl($block->getUrl()) ?>"
     title="<?= $escaper->escapeHtmlAttr(__('Go to Home page')) ?>"
-    x-data="logoData()"
-    @toggle-logo.window="handleToggle"
-    :class="{'hidden lg:!inline-block': switcherOpen, 'inline-block align-middle': !switcherOpen}"
-    x-cloak
 >
     <?php if ($logoSrc): ?>
         <img
+            class="hidden md:block"
             src="<?= $escaper->escapeUrl($logoSrc) ?>"
             alt="<?= $escaper->escapeHtmlAttr($block->getLogoAlt() ?: $storeName) ?>"
             width="<?= $escaper->escapeHtmlAttr($logoWidth) ?>"
