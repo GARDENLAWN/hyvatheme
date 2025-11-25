@@ -17,5 +17,6 @@
                 <argument name="is_cart_configure" xsi:type="boolean">true</argument>
             </arguments>
         </referenceBlock>
+
     </body>
 </page>

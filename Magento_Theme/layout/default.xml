@@ -37,7 +37,7 @@
         <referenceBlock name="breadcrumbs">
             <arguments>
                 <argument name="show_back_btn" xsi:type="boolean">true</argument> <!-- Show back button on mobile (true/false) -->
-                <argument name="overflow_style" xsi:type="string">normal</argument> <!-- Overflow style (normal/sticky) -->
+                <argument name="overflow_style" xsi:type="string">sticky</argument> <!-- Overflow style (normal/sticky) -->
             </arguments>
         </referenceBlock>
         <referenceContainer name="before.body.end">
