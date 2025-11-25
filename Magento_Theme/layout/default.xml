@@ -124,8 +124,6 @@
                 <argument name="show_language" xsi:type="boolean">true</argument> <!-- Show language select (true/false) -->
             </arguments>
 
-            <block name="header.compare" as="compare" template="Magento_Theme::html/header/compare.phtml"/>
-
             <block
                 name="topmenu_mobile_wrapper"
                 as="mobilemenu"
