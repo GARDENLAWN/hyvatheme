@@ -31,7 +31,7 @@ try {
                         class="flex w-full items-center justify-between gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm hover:bg-gray-50"
                         :aria-expanded="open">
                     <div class="flex items-center gap-2">
-                        <img src="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteLogo($currentWebsite)) ?>" alt="<?= $escaper->escapeHtmlAttr($currentWebsite->getName()) ?>" class="h-6 w-auto" />
+                        <img src="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteLogo($currentWebsite)) ?>" alt="<?= $escaper->escapeHtmlAttr($currentWebsite->getName()) ?>" class="h-14 w-auto" />
                         <span><?= $escaper->escapeHtml($currentWebsite->getName()) ?></span>
                     </div>
                     <svg class="h-4 w-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
