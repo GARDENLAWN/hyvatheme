@@ -7,3 +7,7 @@
         display: none;
     }
 }
+
+@utility ambar-action-btn {
+    @apply rounded-sm text-center text-sm transition-colors focus:drop-shadow hover:drop-shadow px-2 py-4;
+}

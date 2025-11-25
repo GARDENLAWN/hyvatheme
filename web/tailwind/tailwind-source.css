@@ -35,3 +35,6 @@
     --color-fg-secondary: var(--color-slate-600);
     --color-surface: var(--color-white);
 }
+
+@config "../../../../../../../vendor/amasty/module-gdpr-hyva/view/frontend/tailwind/tailwind.config.js";
+@config "../../../../../../../vendor/amasty/module-gdpr-cookie-hyva/view/frontend/tailwind/tailwind.config.js";

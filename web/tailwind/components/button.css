@@ -86,3 +86,7 @@
 .btn-size-sm {
     @apply px-2 py-2 text-sm;
 }
+
+button {
+    background-position: center;
+}

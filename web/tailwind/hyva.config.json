@@ -9,12 +9,6 @@
       }
     ],
     "exclude": [
-      {
-        "src": "vendor/amasty/module-gdpr-cookie-hyva"
-      },
-      {
-        "src": "vendor/hyva-themes/magento2-hyva-checkout/src"
-      }
     ]
   },
   "tokens": {
