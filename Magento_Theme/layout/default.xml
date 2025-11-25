@@ -53,6 +53,7 @@
                     </argument> <!-- Add support for sticky header (true/false) -->
                 </arguments>
             </block>
+            <block name="splide-js" template="Magento_Theme::page/js/splide-js.phtml"/>
         </referenceContainer>
         <referenceBlock name="script-alpine-js">
             <block name="alpine-plugin-ajax-cart" template="Magento_Theme::page/js/plugins/ajax-cart.phtml">
@@ -65,6 +66,8 @@
                 </arguments>
             </block>
             <block name="alpine-plugin-collapse" template="Magento_Theme::page/js/plugins/collapse.phtml"/>
+            <block name="alpine-plugin-htmldialog" template="Magento_Theme::page/js/plugins/htmldialog.phtml"/>
+            <block name="alpine-plugin-snap-slider" template="Magento_Theme::page/js/plugins/snap-slider.phtml"/>
         </referenceBlock>
         <referenceBlock name="cart-drawer">
             <arguments>
@@ -189,10 +192,6 @@
                 <block name="topmenu_mobile.cta" template="Magento_Theme::html/header/menu/mobile-cta.phtml"/>
                 <container name="topmenu_mobile.additional" label="Mobile Menu Footer"/>
             </container>
-        </referenceBlock>
-
-        <referenceBlock name="script-alpine-js">
-            <block name="alpine-plugin-htmldialog" template="Magento_Theme::page/js/plugins/htmldialog.phtml"/>
         </referenceBlock>
     </body>
 </page>

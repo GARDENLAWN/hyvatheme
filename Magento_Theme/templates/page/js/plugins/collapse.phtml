@@ -2,13 +2,18 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
 /** @var Escaper $escaper */
 /** @var Template $block */
+/** @var HyvaCsp $hyvaCsp */
 
-/** @source https://github.com/alpinejs/alpine/tree/main/packages/collapse */
+/**
+ * @version 3.14.9
+ * @source https://github.com/alpinejs/alpine/tree/main/packages/collapse
+ */
 ?>
 <script>
     (() => {
@@ -118,3 +123,4 @@ use Magento\Framework\View\Element\Template;
         });
     })();
 </script>
+<?php $hyvaCsp->registerInlineScript() ?>
