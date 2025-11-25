@@ -107,7 +107,7 @@ $searchConfig = $viewModels->require(SearchConfig::class);
     window.addEventListener('alpine:init', () => Alpine.data('initMiniSearch', initMiniSearch), {once: true})
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
-<div class="container relative px-0" x-data="initMiniSearch">
+<div class="hidden md:block container relative px-0" x-data="initMiniSearch">
     <search title="<?= $escaper->escapeHtmlAttr(__('Store')) ?>" role="search">
         <form
             id="search_mini_form"

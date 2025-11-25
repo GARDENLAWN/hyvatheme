@@ -143,5 +143,52 @@
         <referenceBlock name="top.container">
             <block name="header-usps" template="Magento_Theme::html/header/usps.phtml" before="-"/>
         </referenceBlock>
+
+        <referenceBlock name="topmenu_mobile">
+            <block name="topmenu_mobile_item" template="Magento_Theme::html/header/menu/mobile-item.phtml"/>
+            <arguments>
+                <argument name="max_level" xsi:type="number">4</argument> <!-- Max Menu depth to show -->
+                <argument name="show_search" xsi:type="boolean">true</argument> <!-- Show Search (true/false) -->
+                <argument name="show_socials" xsi:type="boolean">false</argument> <!-- Show Social Icons (true/false) -->
+                <argument name="show_settings_nav" xsi:type="boolean">true</argument> <!-- Show Settings Nav (true/false) -->
+
+                <argument name="additional_menu_items_before" xsi:type="array">
+                    <item name="home" xsi:type="array">
+                        <item name="url" xsi:type="string">/</item>
+                        <item name="name" xsi:type="string" translate="true">Home</item>
+                    </item>
+                </argument>
+
+                <argument name="additional_menu_items" xsi:type="array">
+                    <!-- <item name="contact" xsi:type="array">
+                        <item name="url" xsi:type="string">contact</item>
+                        <item name="name" xsi:type="string" translate="true">Contact</item>
+                    </item> -->
+                </argument>
+            </arguments>
+
+            <block
+                class="Magento\Theme\Block\Html\Header\Logo"
+                name="topmenu_mobile.logo"
+                template="Magento_Theme::html/header/menu/mobile-logo.phtml"
+                as="logo"
+            >
+                <arguments>
+                    <argument name="max_width" xsi:type="number">104</argument>
+                    <argument name="max_height" xsi:type="number">48</argument>
+                </arguments>
+            </block>
+            <block name="topmenu_mobile.search" as="search" template="Magento_Theme::html/header/simple-search.phtml"/>
+            <block name="topmenu_mobile.social" as="socials" template="Magento_Theme::html/header/social-icons.phtml"/>
+
+            <container name="topmenu_mobile.additional.wrapper" as="additional">
+                <block name="topmenu_mobile.cta" template="Magento_Theme::html/header/menu/mobile-cta.phtml"/>
+                <container name="topmenu_mobile.additional" label="Mobile Menu Footer"/>
+            </container>
+        </referenceBlock>
+
+        <referenceBlock name="script-alpine-js">
+            <block name="alpine-plugin-htmldialog" template="Magento_Theme::page/js/plugins/htmldialog.phtml"/>
+        </referenceBlock>
     </body>
 </page>
