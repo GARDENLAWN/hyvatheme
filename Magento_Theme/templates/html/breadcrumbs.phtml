@@ -115,7 +115,7 @@ $overflowStyleSticky = $block->getOverflowStyle() === "sticky";
                     ]
                 ];
             } ?>
-        <?php $crumbsCount++; endforeach; ?>
+            <?php $crumbsCount++; endforeach; ?>
     </ol>
 </nav>
 
@@ -126,33 +126,33 @@ $overflowStyleSticky = $block->getOverflowStyle() === "sticky";
 <?php endif; ?>
 
 <?php if ($overflowStyleSticky): ?>
-<script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('initBreadcrumbs', () => ({
-            isSticky: false,
-            init() {
-                this.checkIfIsSticky();
-            },
-            setIsStickyClasses() {
-                const baseClasses = 'sticky bg-container right-[calc((theme(container.padding)*-1)-1px)]'
-                    + ' after:absolute after:inset-y-0 after:left-full after:w-[theme(container.padding)] after:bg-container';
-                const isStickyClasses = '[&>svg]:hidden pr-[theme(container.padding)] before:absolute before:inset-y-0 before:right-full before:w-8'
-                    + ' before:bg-gradient-to-l before:from-[theme(backgroundColor.container.DEFAULT)]';
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('initBreadcrumbs', () => ({
+                isSticky: false,
+                init() {
+                    this.checkIfIsSticky();
+                },
+                setIsStickyClasses() {
+                    const baseClasses = 'sticky bg-container right-[calc((theme(container.padding)*-1)-1px)]'
+                        + ' after:absolute after:inset-y-0 after:left-full after:w-[theme(container.padding)] after:bg-container';
+                    const isStickyClasses = '[&>svg]:hidden pr-[theme(container.padding)] before:absolute before:inset-y-0 before:right-full before:w-8'
+                        + ' before:bg-gradient-to-l before:from-[theme(backgroundColor.container.DEFAULT)]';
 
-                return this.isSticky ? baseClasses + ' ' + isStickyClasses : baseClasses;
-            },
-            checkIfIsSticky() {
-                const el = this.$refs.lastItem;
-                if (!el) return;
+                    return this.isSticky ? baseClasses + ' ' + isStickyClasses : baseClasses;
+                },
+                checkIfIsSticky() {
+                    const el = this.$refs.lastItem;
+                    if (!el) return;
 
-                new IntersectionObserver(([e]) => {
-                    const rect = e.target.getBoundingClientRect();
-                    this.isSticky = e.intersectionRatio < 1;
-                }, { threshold: [0, 1] }).observe(el);
-            }
-        }));
-    });
-</script>
-<?php $hyvaCsp->registerInlineScript() ?>
+                    new IntersectionObserver(([e]) => {
+                        const rect = e.target.getBoundingClientRect();
+                        this.isSticky = e.intersectionRatio < 1;
+                    }, { threshold: [0, 1] }).observe(el);
+                }
+            }));
+        });
+    </script>
+    <?php $hyvaCsp->registerInlineScript() ?>
 <?php endif; ?>
 

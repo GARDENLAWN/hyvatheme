@@ -134,10 +134,10 @@ $overflowStyleSticky = $block->getOverflowStyle() === "sticky";
         }];
         const categoryUrl = (() => {
             <?php if ($breadcrumbsViewModel->isCategoryUsedInProductUrl()): ?>
-                const productUrl = window.location.href.split('?')[0];
-                return productUrl.substring(0, productUrl.lastIndexOf('/')) + '<?= $escaper->escapeJs($categoryUrlSuffix) ?>';
+            const productUrl = window.location.href.split('?')[0];
+            return productUrl.substring(0, productUrl.lastIndexOf('/')) + '<?= $escaper->escapeJs($categoryUrlSuffix) ?>';
             <?php else: ?>
-                return document.referrer.split('?')[0]
+            return document.referrer.split('?')[0]
             <?php endif; ?>
         })();
         const category = Object.values(categories).find(cat => cat.url === categoryUrl);
@@ -157,12 +157,12 @@ $overflowStyleSticky = $block->getOverflowStyle() === "sticky";
         }
 
         <?php if ($product): ?>
-            breadcrumbs.push({
-                name: 'product',
-                label: '<?= $escaper->escapeJs($product->getName()) ?>',
-                title: null,
-                link: BASE_URL + '<?= $escaper->escapeJs($product->getUrlKey()) ?>' + '<?= $escaper->escapeJs($productUrlSuffix) ?>',
-            });
+        breadcrumbs.push({
+            name: 'product',
+            label: '<?= $escaper->escapeJs($product->getName()) ?>',
+            title: null,
+            link: BASE_URL + '<?= $escaper->escapeJs($product->getUrlKey()) ?>' + '<?= $escaper->escapeJs($productUrlSuffix) ?>',
+        });
         <?php endif; ?>
 
         return breadcrumbs;
@@ -178,11 +178,11 @@ $overflowStyleSticky = $block->getOverflowStyle() === "sticky";
                 this.previousPage = this.breadcrumbs[this.breadcrumbs.length - 2];
 
                 <?php if (! $skipLinkedDataJsonSchema): ?>
-                    this.createJsonLd(this.breadcrumbs);
+                this.createJsonLd(this.breadcrumbs);
                 <?php endif; ?>
 
                 <?php if ($overflowStyleSticky): ?>
-                    this.$nextTick(() => this.checkIfIsSticky())
+                this.$nextTick(() => this.checkIfIsSticky())
                 <?php endif; ?>
             },
             createJsonLd(breadcrumbs) {
