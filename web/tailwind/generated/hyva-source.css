@@ -28,8 +28,6 @@
 @source "../../../../../../../../vendor/gardenlawn/module-hyva-checkout-paynow/**/*.xml";
 @source "../../../../../../../../vendor/gardenlawn/module-hyva-checkout-santander/**/*.phtml";
 @source "../../../../../../../../vendor/gardenlawn/module-hyva-checkout-santander/**/*.xml";
-@source "../../../../../../../../vendor/gardenlawn/module-hyva-checkout-tpay/**/*.phtml";
-@source "../../../../../../../../vendor/gardenlawn/module-hyva-checkout-tpay/**/*.xml";
 @source "../../../../../../../../vendor/magewirephp/magewire/src/**/*.phtml";
 @source "../../../../../../../../vendor/magewirephp/magewire/src/**/*.xml";
 @source "../../../../../../../../vendor/amasty/module-gdpr-hyva-checkout/**/*.phtml";
