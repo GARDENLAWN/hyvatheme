@@ -30,6 +30,7 @@
     height: revert !important;
     width: revert !important;
     min-height: 30px !important;
+    max-height: 40px !important;
 }
 
 /* For AlpineJS */
