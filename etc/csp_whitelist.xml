@@ -73,7 +73,6 @@
                 <value id="script-src-paynow" type="host">*.paynow.pl</value>
                 <value id="script-src-youtube" type="host">*.youtube.com</value>
                 <value id="script-src-google" type="host">*.google.com</value>
-                <value id="script-src-allow_unsafe_hashes">'unsafe-hashes'</value>
                 <value id="script-src-hash-1" type="hash" algorithm="sha256">BlchBu6mrisHS6kLSIdwDGFrUSxv847nFYnY8x0Z1Rg=</value>
                 <value id="script-src-hash-2" type="hash" algorithm="sha256">3TDhoQp79nwMxDbQh3lo6ambV9ctoHQswjyWPakhCJ8=</value>
                 <value id="script-src-hash-3" type="hash" algorithm="sha256">SviyM+lRbnIJzxfxqWHy3FaoHRF8y9TF6psS7PtSvPU=</value>
