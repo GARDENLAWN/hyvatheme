@@ -27,19 +27,26 @@ $paymentIconsHeight = 32;
     class="container flex gap-8 flex-wrap justify-center"
     aria-label="<?= $escaper->escapeHtml(__('Payment Providers')) ?>"
 >
-    <img style="height: 40px; margin-top: 20px;"
-         src="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/PayNow/PayNow.png'); ?>" alt="PayNow"/>
+    <div class="w-full flex justify-center">
+        <picture>
+            <source media="(max-width: 767px)"
+                    srcset="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/PayNow/PayNow.png'); ?>">
+            <source media="(min-width: 768px)"
+                    srcset="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/PayNow/PayNowBanner.png'); ?>">
+            <img style="max-height: 150px;"
+                src="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/PayNow/PayNowBanner.png'); ?>"
+                alt="PayNow"/>
+        </picture>
+    </div>
     <img style="height: 40px; margin-top: 20px;"
          src="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/PayNow/PayPo.svg'); ?>" alt="PayPo"/>
     <img style="height: 40px; margin-top: 20px;"
-         src="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/E-Raty/e-raty.svg'); ?>" alt="E-Raty"/>
+         src="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/E-Raty/e-raty.svg'); ?>"
+         alt="E-Raty"/>
     <img style="height: 70px;"
          src="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/InPost/InPostPay.svg'); ?>"
          alt="InPost"/>
     <img style="height: 70px;"
          src="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/InPost/InPost.png'); ?>"
          alt="InPost"/>
-    <img style="max-height: 160px;"
-        src="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/PayNow/PayNowBanner.png'); ?>"
-        alt="PayNow"/>
 </div>
