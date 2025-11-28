@@ -40,6 +40,10 @@
     max-height: 40px !important;
 }
 
+#paynow_blik_code{
+    width: auto !important;
+}
+
 /* For AlpineJS */
 [x-cloak] {
     display: none !important;
