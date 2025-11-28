@@ -22,6 +22,12 @@
 @source "../../../../../../../../vendor/amasty/module-gdpr-hyva/**/*.xml";
 @source "../../../../../../../../vendor/mollie/magento2-hyva-compatibility/src/Mollie_HyvaCompatibility/**/*.phtml";
 @source "../../../../../../../../vendor/mollie/magento2-hyva-compatibility/src/Mollie_HyvaCompatibility/**/*.xml";
+@source "../../../../../../../../vendor/gardenlawn/module-hyva-checkout-inpost/**/*.phtml";
+@source "../../../../../../../../vendor/gardenlawn/module-hyva-checkout-inpost/**/*.xml";
+@source "../../../../../../../../vendor/gardenlawn/module-hyva-checkout-paynow/**/*.phtml";
+@source "../../../../../../../../vendor/gardenlawn/module-hyva-checkout-paynow/**/*.xml";
+@source "../../../../../../../../vendor/gardenlawn/module-hyva-checkout-santander/**/*.phtml";
+@source "../../../../../../../../vendor/gardenlawn/module-hyva-checkout-santander/**/*.xml";
 @source "../../../../../../../../vendor/magewirephp/magewire/src/**/*.phtml";
 @source "../../../../../../../../vendor/magewirephp/magewire/src/**/*.xml";
 @source "../../../../../../../../vendor/amasty/module-gdpr-hyva-checkout/**/*.phtml";
