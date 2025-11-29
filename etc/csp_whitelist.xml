@@ -53,6 +53,7 @@
                 <value id="style-src-finnpolska" type="host">*.finnpolska.pl</value>
                 <value id="style-src-easypack24" type="host">*.easypack24.net</value>
                 <value id="style-src-inpost" type="host">*.inpost.pl</value>
+                <value id="style-src-googleapis" type="host">https://fonts.googleapis.com</value>
             </values>
         </policy>
         <policy id="script-src">
@@ -102,6 +103,8 @@
                 <value id="font-src-amrobots" type="host">*.am-robots.pl</value>
                 <value id="font-src-finnpolska" type="host">*.finnpolska.pl</value>
                 <value id="font-src-geowidget" type="host">*.easypack24.net</value>
+                <value id="font-src-googleapis" type="host">https://fonts.googleapis.com</value>
+                <value id="font-src-gstatic" type="host">https://fonts.gstatic.com</value>
             </values>
         </policy>
     </policies>
