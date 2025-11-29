@@ -38,6 +38,7 @@
     width: revert !important;
     min-height: 30px !important;
     max-height: 40px !important;
+    max-width: revert !important;
 }
 
 #paynow_blik_code{
