@@ -35,8 +35,6 @@
             </block>
         </referenceBlock>
 
-        <move element="topmenu_mobile" destination="topmenu_mobile_wrapper"/>
-
         <referenceContainer name="header.container">
             <block class="Magento\Framework\View\Element\Template"
                    name="gardenlawn.website.switcher"
@@ -198,7 +196,6 @@
                 <arguments>
                     <argument name="title" xsi:type="string" translate="true">My Account</argument>
                 </arguments>
-                <block name="footer_menu_4" template="Magento_Theme::html/footer/menu-account.phtml"/>
             </block>
             <container name="footer-content-after">
                 <block name="footer-payment" template="Magento_Theme::html/footer/payment.phtml"/>
