@@ -30,7 +30,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
 ?>
 
 <script>
-    function initShippingEstimation(){
+    function initShippingEstimation() {
         return {
             showEstimateShipping: false,
             cart: false,
@@ -44,7 +44,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                     regionId: window.checkoutConfig.defaultRegionId,
                     postcode: window.checkoutConfig.defaultPostcode
                 },
-                cartVersion: Math.floor(Date.now()/1000),
+                cartVersion: Math.floor(Date.now() / 1000),
                 rates: [],
                 shippingCarrierCode: null,
                 shippingMethodCode: null,
@@ -113,7 +113,9 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                     .then(result => {
                         this.availableShippingMethods = result.filter(method => method.method_code);
 
-                        if (!this.availableShippingMethods.find(method => { return method.carrier_code + '_' + method.method_code === this.shippingMethod})) {
+                        if (!this.availableShippingMethods.find(method => {
+                            return method.carrier_code + '_' + method.method_code === this.shippingMethod
+                        })) {
                             this.$dispatch('update-shipping-method', {method: false});
                             this.shippingMethod = false;
                         }
@@ -237,7 +239,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                     this.fetchShippingMethods();
                 }
             },
-            setCountry(){
+            setCountry() {
                 const countryId = this.$event.target.value;
                 this.cartData.address = {
                     countryId: countryId,
@@ -272,7 +274,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                 if (type === 'select') {
                     const countryId = this.cartData.address.countryId;
                     const regionId = value || 0;
-                    const regionData = this.directoryData[countryId].regions[regionId] || { code: '', name: ''};
+                    const regionData = this.directoryData[countryId].regions[regionId] || {code: '', name: ''};
 
                     this.cartData.address.regionId = regionId;
                     this.cartData.address.regionCode = regionData.code;
@@ -310,7 +312,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
             hasShippingRateCarriers() {
                 return this.getEstimatedShippingRateCarriers().length > 0;
             },
-            saveToCustomerSectionData(){
+            saveToCustomerSectionData() {
                 const browserStorage = hyva.getBrowserStorage();
 
                 const sectionData = JSON.parse(browserStorage.getItem('mage-cache-storage')) || {};
@@ -332,7 +334,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
 
                 if (Object.keys(checkoutAddress).length) {
 
-                    if(
+                    if (
                         (checkoutAddress['country_id'] !== this.cartData.address.countryId) ||
                         (checkoutAddress['region'] !== "" || checkoutAddress['region_id'] !== "" || checkoutAddress['postcode'] !== null)
                     ) {
@@ -342,10 +344,10 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                     }
                 }
             },
-            getSortedCountries(){
+            getSortedCountries() {
                 return Object.keys(this.directoryData)
                     .filter(countryKey => countryKey !== 'data_id' && this.directoryData[countryKey].name)
-                    .sort((a,b) => {
+                    .sort((a, b) => {
                         if (this.directoryData[a].name < this.directoryData[b].name) {
                             return -1
                         }
@@ -367,7 +369,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                     countryId &&
                     this.directoryData[countryId] &&
                     this.directoryData[countryId].regions
-                ){
+                ) {
                     return Object.keys(this.directoryData[countryId].regions).map(regionId => {
                         return {
                             id: regionId,
@@ -403,7 +405,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
 
     window.addEventListener('alpine:init', () => {
         Alpine.data('initShippingEstimation', initShippingEstimation)
-    }, { once: true });
+    }, {once: true});
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
 
@@ -411,7 +413,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
     id="block-shipping"
     class="estimate-shipping-form group"
     x-data="initShippingEstimation"
-    data-is-cart-virtual="<?= (int) $block->getQuote()->isVirtual() ?>"
+    data-is-cart-virtual="<?= (int)$block->getQuote()->isVirtual() ?>"
     @private-content-loaded.window="receiveCustomerData"
     :open="showEstimateShipping"
 >
@@ -448,9 +450,10 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                                 aria-invalid="false"
                                 @change.debounce="setCountry"
                         >
-                            <option value=""> </option>
+                            <option value=""></option>
                             <template x-for="country in getSortedCountries" :key="country.id">
-                                <option :value="country.id" x-text="country.name" :selected="isCountrySelected"></option>
+                                <option :value="country.id" x-text="country.name"
+                                        :selected="isCountrySelected"></option>
                             </template>
                         </select>
 
@@ -473,7 +476,8 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                                     <?= $escaper->escapeHtml(__('Please select a region, state or province.')) ?>
                                 </option>
                                 <template x-for="region in getAvailableRegions" :key="region.id">
-                                    <option :data-code="region.code" :value="region.id" x-text="region.name" :selected="isRegionSelected"></option>
+                                    <option :data-code="region.code" :value="region.id" x-text="region.name"
+                                            :selected="isRegionSelected"></option>
                                 </template>
                             </select>
                         </label>
@@ -498,7 +502,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                 <div class="hidden field mt-2" name="shippingAddress.postcode">
 
                     <label class="label">
-                        <?= $escaper->escapeHtml(__('Zip/Postal Code'))?>
+                        <?= $escaper->escapeHtml(__('Zip/Postal Code')) ?>
 
                         <input class="form-input w-full"
                                type="text"
@@ -533,19 +537,23 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                                         <span x-text="rate.method_title" class="break-words shrink hyphens-auto"></span>
                                         <div class="flex flex-col justify-end ml-auto">
                                             <?php if ($totalsOutput->displayCartShippingInclTax() || $totalsOutput->displayCartShippingBoth()): ?>
-                                                <span
-                                                    x-text="shippingCarrierRateIncl"
-                                                    class="price-including-tax text-right"
-                                                    data-label="<?= $escaper->escapeHtmlAttr(__('Incl. Tax')) ?>"
-                                                ></span>
+                                                <p>
+                                                    <span
+                                                        x-text="shippingCarrierRateIncl"
+                                                        class="price-including-tax text-right"
+                                                        data-label="<?= $escaper->escapeHtmlAttr(__('Incl. Tax')) ?>"
+                                                    ></span> <?= $escaper->escapeHtmlAttr(__('Incl. Tax')) ?>
+                                                </p>
                                             <?php endif; ?>
                                             <?php if ($totalsOutput->displayCartShippingExclTax() || $totalsOutput->displayCartShippingBoth()): ?>
-                                                <span
-                                                    x-text="shippingCarrierRateExcl"
+                                                <p>
+                                                    <span
+                                                        x-text="shippingCarrierRateExcl"
                                                     <?= $totalsOutput->displayCartShippingBoth() ? 'x-show="shippingRateHasTax"' : '' ?>
                                                     class="price-excluding-tax"
-                                                    data-label="<?= $escaper->escapehtmlAttr(__('Excl. Tax')) ?>"
-                                                ></span>
+                                                        data-label="<?= $escaper->escapehtmlAttr(__('Excl. Tax')) ?>"
+                                                    ></span> <?= $escaper->escapeHtmlAttr(__('Excl. Tax')) ?>
+                                                </p>
                                             <?php endif; ?>
                                         </div>
                                     </label>
