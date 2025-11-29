@@ -55,7 +55,7 @@ switch ($storeCode) {
 >
     <?php if ($logoSrc): ?>
         <img
-            class="hidden md:block"
+            class="hidden lg:block"
             src="<?= $escaper->escapeUrl($logoSrc) ?>"
             alt="<?= $escaper->escapeHtmlAttr($block->getLogoAlt() ?: $storeName) ?>"
             width="<?= $escaper->escapeHtmlAttr($logoWidth) ?>"
