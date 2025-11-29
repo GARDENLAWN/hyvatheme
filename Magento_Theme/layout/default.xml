@@ -40,7 +40,7 @@
                     </argument> <!-- Hide sticky header on scroll down (true/false) -->
                     <argument name="scroll_offset" xsi:type="number">100
                     </argument> <!-- Offset before the helper reflects the scrollDir -->
-                    <argument name="enable_css_only_sticky_style" xsi:type="boolean">true
+                    <argument name="enable_css_only_sticky_style" xsi:type="boolean">false
                     </argument> <!-- Enable CSS only solution (true/false) -->
                 </arguments>
             </block>
@@ -178,13 +178,13 @@
             <arguments>
                 <argument name="max_level" xsi:type="number">4</argument> <!-- Max Menu depth to show -->
                 <argument name="show_search" xsi:type="boolean">true</argument> <!-- Show Search (true/false) -->
-                <argument name="show_socials" xsi:type="boolean">false</argument> <!-- Show Social Icons (true/false) -->
+                <argument name="show_socials" xsi:type="boolean">true</argument> <!-- Show Social Icons (true/false) -->
                 <argument name="show_settings_nav" xsi:type="boolean">true</argument> <!-- Show Settings Nav (true/false) -->
 
                 <argument name="additional_menu_items_before" xsi:type="array">
                     <item name="home" xsi:type="array">
                         <item name="url" xsi:type="string">/</item>
-                        <item name="name" xsi:type="string" translate="true">Home</item>
+                        <item name="name" xsi:type="string" translate="true">O nas</item>
                     </item>
                 </argument>
 
@@ -214,6 +214,10 @@
                 <block name="topmenu_mobile.cta" template="Magento_Theme::html/header/menu/mobile-cta.phtml"/>
                 <container name="topmenu_mobile.additional" label="Mobile Menu Footer"/>
             </container>
+        </referenceBlock>
+
+        <referenceBlock name="script-alpine-js">
+            <block name="alpine-plugin-htmldialog" template="Magento_Theme::page/js/plugins/htmldialog.phtml"/>
         </referenceBlock>
     </body>
 </page>

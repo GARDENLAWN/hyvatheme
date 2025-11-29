@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Logo\LogoSizeResolver;
-use Hyva\Theme\ViewModel\Store;
+use Hyva\Theme\ViewModel\Logo\LogoPathResolver;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Framework\Escaper;
 use Magento\Theme\Block\Html\Header\Logo;
@@ -38,18 +38,11 @@ $logoBaseHeight = $logoSizeResolver && $logoSizeResolver->getHeight()
 $logoMaxHeight = $block->getMaxHeight() ?: $logoBaseHeight;
 $logoHeight = $logoBaseHeight > $logoMaxHeight ? $logoBaseHeight : $logoBaseHeight;
 
-/** @var Store $store */
-$store = $viewModels->require(Store::class);
-$storeCode = $store->getStoreCode();
-$logoSrc = "https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/images/logo.webp";
-switch ($storeCode) {
-    case 'amrobots':
-        $logoSrc = "https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/am-robots.webp";
-        break;
-    case 'finnpolska':
-        $logoSrc = "https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/finn.webp";
-        break;
-}
+/** @var LogoPathResolver $logoPathResolver */
+$logoPathResolver = $viewModels->require(LogoPathResolver::class);
+$logoSrc = $logoPathResolver && method_exists($logoPathResolver, 'getLogoSrc')
+    ? $logoPathResolver->getLogoSrc($block->getData('logo_file'))
+    : $block->getLogoSrc();
 ?>
 
 <?php if ($logoSrc): ?>
