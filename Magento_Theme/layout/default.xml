@@ -12,6 +12,17 @@
     xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
 >
     <body>
+        <referenceBlock name="top.container">
+            <block name="header-notification" template="Magento_Theme::html/header/notification.phtml"/>
+        </referenceBlock>
+
+        <referenceBlock name="header-content">
+            <arguments>
+                <argument name="show_compare" xsi:type="boolean">false</argument> <!-- Show compare button (true/false) -->
+                <argument name="show_wishlist" xsi:type="boolean">true</argument> <!-- Show wishlist button (true/false) -->
+            </arguments>
+            <block name="header.compare" as="compare" template="Magento_Theme::html/header/compare.phtml"/>
+        </referenceBlock>
         <referenceContainer name="header.container">
             <block class="Magento\Framework\View\Element\Template"
                    name="gardenlawn.website.switcher"

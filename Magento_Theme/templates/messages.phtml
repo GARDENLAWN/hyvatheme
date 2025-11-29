@@ -84,14 +84,14 @@ $showIcon = (bool) $block->getShowIcon();
             getMessageStyle() {
                 switch (this.message.type) {
                     case 'success':
-                        return '[--message-lighter:theme(colors.green.100)] [--message:theme(colors.green.500)] [--message-darker:theme(colors.green.900)]'
+                        return '[--message-lighter:theme(colors.lime.100)] [--message:theme(colors.lime.500)] [--message-darker:theme(colors.lime.900)]'
                     case 'error':
                         return '[--message-lighter:theme(colors.red.100)] [--message:theme(colors.red.500)] [--message-darker:theme(colors.red.900)]'
                     case 'warning':
-                        return '[--message-lighter:theme(colors.yellow.100)] [--message:theme(colors.yellow.500)] [--message-darker:theme(colors.yellow.900)]'
+                        return '[--message-lighter:theme(colors.amber.100)] [--message:theme(colors.amber.500)] [--message-darker:theme(colors.amber.900)]'
                     case 'notice':
                     case 'info':
-                        return '[--message-lighter:theme(colors.blue.100)] [--message:theme(colors.blue.500)] [--message-darker:theme(colors.blue.900)]'
+                        return '[--message-lighter:theme(colors.sky.100)] [--message:theme(colors.sky.500)] [--message-darker:theme(colors.sky.900)]'
                     default:
                         return '[--message-lighter:theme(colors.slate.100)] [--message:theme(colors.slate.500)] [--message-darker:theme(colors.slate.900)]'
                 }
