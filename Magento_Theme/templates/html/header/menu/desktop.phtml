@@ -89,15 +89,15 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                     <li class="break-inside-avoid pb-4">
                                         <a
                                             href="<?= $escaper->escapeUrl($subMenu['url']) ?>"
-                                            class="level-1 block py-1 font-medium hover:underline aria-[current=page]:underline"
+                                            class="level-1 block py-1 font-semibold text-slate-800 hover:underline aria-[current=page]:underline"
                                         ><?= $escaper->escapeHtml($subMenu['name']) ?></a>
                                         <?php if (!empty($subMenu['childData'])): ?>
-                                            <ul>
+                                            <ul class="pl-3 pt-1">
                                                 <?php foreach ($subMenu['childData'] as $subMenuItems): ?>
                                                     <li>
                                                         <a
                                                             href="<?= $escaper->escapeUrl($subMenuItems['url']) ?>"
-                                                            class="level-2 block py-1 hover:underline aria-[current=page]:underline"
+                                                            class="level-2 block py-1 text-sm text-slate-600 hover:text-blue-500 hover:underline aria-[current=page]:underline"
                                                         ><?= $escaper->escapeHtml($subMenuItems['name']) ?></a>
                                                     </li>
                                                 <?php endforeach; ?>

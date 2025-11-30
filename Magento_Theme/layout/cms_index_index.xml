@@ -65,7 +65,7 @@
             <arguments>
                 <argument name="open_top_level_menu_on_hover" xsi:type="boolean">true
                 </argument> <!-- Also open on hover (true/false)-->
-                <argument name="max_level" xsi:type="number">1</argument> <!-- Max Menu depth to show -->
+                <argument name="max_level" xsi:type="number">4</argument> <!-- Max Menu depth to show -->
                 <argument name="top_menu_cta_item" xsi:type="string" translate="true">Sale
                 </argument> <!-- top Menu Item to Highlight -->
             </arguments>
