@@ -30,8 +30,48 @@ $showTopLevelAllLink = $block->getShowTopLevelAllLink() !== null ? $block->getSh
 $topMenuCtaItem = $block->getTopMenuCtaItem();
 
 // Order is important here: 1. build the menu data, 2. then set the cache tags from the view model identities
-$menu = $viewModelNavigation->getNavigation(5);
+$menu = $viewModelNavigation->getNavigation(10);
 $block->setData('cache_tags', $viewModelNavigation->getIdentities());
+
+$renderSubmenu = function(array $menuItems, int $level) use (&$renderSubmenu, $escaper): string {
+    if (empty($menuItems)) {
+        return '';
+    }
+
+    $ulClasses = 'pl-3';
+    if ($level === 2) {
+        $ulClasses .= ' pt-1';
+    }
+
+    $aClasses = 'block py-1 hover:underline aria-[current=page]:underline';
+    if ($level === 2) {
+        $aClasses .= ' level-2 text-sm text-slate-600 hover:text-blue-500';
+    } else {
+        // For levels 3, 4, 5...
+        $aClasses .= ' level-' . $level . ' text-xs text-slate-500 hover:text-blue-500';
+    }
+
+
+    $output = '<ul class="' . $ulClasses . '">';
+
+    foreach ($menuItems as $item) {
+        $output .= '<li>';
+        $output .= '<a href="' . $escaper->escapeUrl($item['url']) . '" class="' . $aClasses . '">';
+        $output .= $escaper->escapeHtml($item['name']);
+        $output .= '</a>';
+
+        // Recursive call for children
+        if (!empty($item['childData'])) {
+            $output .= $renderSubmenu($item['childData'], $level + 1);
+        }
+
+        $output .= '</li>';
+    }
+
+    $output .= '</ul>';
+
+    return $output;
+};
 ?>
 
 <nav
@@ -92,16 +132,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                             class="level-1 block py-1 font-semibold text-slate-800 hover:underline aria-[current=page]:underline"
                                         ><?= $escaper->escapeHtml($subMenu['name']) ?></a>
                                         <?php if (!empty($subMenu['childData'])): ?>
-                                            <ul class="pl-3 pt-1">
-                                                <?php foreach ($subMenu['childData'] as $subMenuItems): ?>
-                                                    <li>
-                                                        <a
-                                                            href="<?= $escaper->escapeUrl($subMenuItems['url']) ?>"
-                                                            class="level-2 block py-1 text-sm text-slate-600 hover:text-blue-500 hover:underline aria-[current=page]:underline"
-                                                        ><?= $escaper->escapeHtml($subMenuItems['name']) ?></a>
-                                                    </li>
-                                                <?php endforeach; ?>
-                                            </ul>
+                                            <?= /** @noEscape */ $renderSubmenu($subMenu['childData'], 2) ?>
                                         <?php endif; ?>
                                     </li>
                                 <?php endforeach; ?>
