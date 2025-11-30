@@ -1,0 +1,26 @@
+<?php
+/** @var Template $block */
+
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\View\Element\Template;
+
+$cssFile = $block->getViewFileUrl('css/styles.css');
+
+$om = ObjectManager::getInstance();
+$dir = $om->get('Magento\Framework\Filesystem\DirectoryList');
+$rootPath = $dir->getRoot();
+
+$relativePath = '/app/design/frontend/GardenLawn/Hyvatheme/web/css/styles.css';
+
+if (file_exists($rootPath . $relativePath)) {
+    $content = file_get_contents($rootPath . $relativePath);
+} else {
+    $content = '';
+}
+?>
+
+<?php if ($content): ?>
+    <style>
+        <?= /* @noEscape */ $content; ?>
+    </style>
+<?php endif; ?>

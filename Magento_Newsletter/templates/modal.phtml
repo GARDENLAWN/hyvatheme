@@ -35,7 +35,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
     $recaptchaLegalNotice = $newsletterBlock->getBlockHtml($recaptchaData[ReCaptcha::RECAPTCHA_LEGAL_NOTICE_BLOCK]);
 }
 ?>
-<div x-data="initNewsletterFormModal">
+<!--<div x-data="initNewsletterFormModal">
     <template x-if="shouldShowModal">
         <dialog
             id="newsletter-modal"
@@ -167,3 +167,4 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
     //window.addEventListener('alpine:init', () => Alpine.data('initNewsletterFormModal', initNewsletterFormModal), { once: true });
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
+-->
