@@ -41,7 +41,7 @@
     max-width: revert !important;
 }
 
-#paynow_blik_code{
+#paynow_blik_code {
     width: auto !important;
 }
 
@@ -49,6 +49,22 @@
     content: url('https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/GardenLawn_Hyvatheme/images/PayNow/digital-wallet.svg');
     width: auto;
     height: 40px;
+}
+
+.field-lastname, .field-taxvat {
+    grid-column: span 6/span 6 !important;
+}
+
+.field-addresstype {
+    display: none !important;
+}
+
+.img-div {
+    margin-block: calc(var(--spacing) * 4) !important;
+}
+
+.img-content {
+    max-width: 200px !important;
 }
 
 /* For AlpineJS */

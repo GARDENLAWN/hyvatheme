@@ -18,11 +18,13 @@
 
         <referenceBlock name="header-content">
             <arguments>
-                <argument name="show_compare" xsi:type="boolean">true</argument> <!-- Show compare button (true/false) -->
-                <argument name="show_wishlist" xsi:type="boolean">true</argument> <!-- Show wishlist button (true/false) -->
-                <argument name="show_language" xsi:type="boolean">true</argument> <!-- Show language select (true/false) -->
+                <argument name="show_compare" xsi:type="boolean">true
+                </argument> <!-- Show compare button (true/false) -->
+                <argument name="show_wishlist" xsi:type="boolean">true
+                </argument> <!-- Show wishlist button (true/false) -->
+                <argument name="show_language" xsi:type="boolean">true
+                </argument> <!-- Show language select (true/false) -->
             </arguments>
-            <block name="header.compare" as="compare" template="Magento_Theme::html/header/compare.phtml"/>
             <block
                 name="topmenu_mobile_wrapper"
                 as="mobilemenu"
@@ -61,9 +63,11 @@
 
         <referenceBlock name="topmenu_desktop">
             <arguments>
-                <argument name="open_top_level_menu_on_hover" xsi:type="boolean">true</argument> <!-- Also open on hover (true/false)-->
-                <argument name="max_level" xsi:type="number">4</argument> <!-- Max Menu depth to show -->
-                <argument name="top_menu_cta_item" xsi:type="string" translate="true">Sale</argument> <!-- top Menu Item to Highlight -->
+                <argument name="open_top_level_menu_on_hover" xsi:type="boolean">true
+                </argument> <!-- Also open on hover (true/false)-->
+                <argument name="max_level" xsi:type="number">1</argument> <!-- Max Menu depth to show -->
+                <argument name="top_menu_cta_item" xsi:type="string" translate="true">Sale
+                </argument> <!-- top Menu Item to Highlight -->
             </arguments>
             <block
                 name="topmenu_desktop_item"
@@ -76,14 +80,15 @@
             <arguments>
                 <argument name="max_level" xsi:type="number">4</argument> <!-- Max Menu depth to show -->
                 <argument name="show_search" xsi:type="boolean">true</argument> <!-- Show Search (true/false) -->
-                <argument name="show_socials" xsi:type="boolean">true</argument> <!-- Show Social Icons (true/false) -->
-                <argument name="show_settings_nav" xsi:type="boolean">true</argument> <!-- Show Settings Nav (true/false) -->
+                <argument name="show_socials" xsi:type="boolean">false</argument> <!-- Show Social Icons (true/false) -->
+                <argument name="show_settings_nav" xsi:type="boolean">true
+                </argument> <!-- Show Settings Nav (true/false) -->
 
                 <argument name="additional_menu_items_before" xsi:type="array">
-                    <item name="home" xsi:type="array">
+                    <!--<item name="home" xsi:type="array">
                         <item name="url" xsi:type="string">/</item>
                         <item name="name" xsi:type="string" translate="true">O nas</item>
-                    </item>
+                    </item>-->
                 </argument>
 
                 <argument name="additional_menu_items" xsi:type="array">
@@ -116,8 +121,10 @@
 
         <referenceBlock name="breadcrumbs">
             <arguments>
-                <argument name="show_back_btn" xsi:type="boolean">true</argument> <!-- Show back button on mobile (true/false) -->
-                <argument name="overflow_style" xsi:type="string">sticky</argument> <!-- Overflow style (normal/sticky) -->
+                <argument name="show_back_btn" xsi:type="boolean">true
+                </argument> <!-- Show back button on mobile (true/false) -->
+                <argument name="overflow_style" xsi:type="string">sticky
+                </argument> <!-- Overflow style (normal/sticky) -->
             </arguments>
         </referenceBlock>
 
@@ -177,7 +184,8 @@
             <block name="footer_column_1" template="Magento_Theme::html/footer/collapse.phtml">
                 <arguments>
                     <argument name="title" xsi:type="string" translate="true">Shop</argument>
-                    <argument name="open" xsi:type="boolean">true</argument> <!-- Set the collapse to be open by default on mobile (true/false) -->
+                    <argument name="open" xsi:type="boolean">true
+                    </argument> <!-- Set the collapse to be open by default on mobile (true/false) -->
                 </arguments>
             </block>
             <block name="footer_column_2" template="Magento_Theme::html/footer/collapse.phtml" after="footer_column_1">
@@ -203,7 +211,8 @@
         </referenceBlock>
 
         <referenceBlock name="after.body.start">
-            <block name="header-notification" template="Magento_Theme::html/header/notification.phtml" after="global_notices"/>
+            <block name="header-notification" template="Magento_Theme::html/header/notification.phtml"
+                   after="global_notices"/>
         </referenceBlock>
     </body>
 </page>
