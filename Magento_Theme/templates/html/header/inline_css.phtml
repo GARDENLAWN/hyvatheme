@@ -1,21 +1,25 @@
 <?php
 /** @var Template $block */
 
+// 1. Pobieramy Object Managera (w phtml to najszybsza metoda na skróty)
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\View\Element\Template;
 
-$cssFile = $block->getViewFileUrl('css/styles.css');
-
 $om = ObjectManager::getInstance();
-$dir = $om->get('Magento\Framework\Filesystem\DirectoryList');
-$rootPath = $dir->getRoot();
 
-$relativePath = '/app/design/frontend/GardenLawn/Hyvatheme/web/css/styles.css';
+// 2. Pobieramy repozytorium zasobów
+$assetRepository = $om->get('\Magento\Framework\View\Asset\Repository');
 
-if (file_exists($rootPath . $relativePath)) {
-    $content = file_get_contents($rootPath . $relativePath);
-} else {
-    $content = '';
+// 3. Tworzymy asset dla Twojego pliku CSS (tu wpisz ścieżkę ID pliku)
+// Zazwyczaj jest to 'css/styles.css' lub 'Magento_Theme::css/styles.css'
+$asset = $assetRepository->createAsset('css/styles.css');
+
+// 4. Pobieramy ścieżkę fizyczną na dysku
+$sourceFile = $asset->getSourceFile();
+
+$content = '';
+if (file_exists($sourceFile)) {
+    $content = file_get_contents($sourceFile);
 }
 ?>
 
