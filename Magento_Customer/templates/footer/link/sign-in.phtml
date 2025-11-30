@@ -18,30 +18,29 @@ use Magento\Framework\Escaper;
 /** @var HyvaCsp $hyvaCsp */
 
 $label = $block->getLabel() ?: __('Sign In');
+$signInId = $escaper->escapeHtmlAttr($block->getNameInLayout());
 ?>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('<?= $escaper->escapeJs($block->getNameInLayout()) ?>').addEventListener('click', () => {
-            if (hyva.setCookie) {
-                hyva.setCookie(
-                    '<?= $escaper->escapeJs(Redirect::LOGIN_REDIRECT_URL) ?>',
-                    window.location.href,
-                    1
-                );
-            }
-        });
+        const signInLink = document.getElementById('<?= $escaper->escapeJs($signInId) ?>');
+        if (signInLink) {
+            signInLink.addEventListener('click', () => {
+                if (hyva.setCookie) {
+                    hyva.setCookie(
+                        '<?= $escaper->escapeJs(Redirect::LOGIN_REDIRECT_URL) ?>',
+                        window.location.href,
+                        1
+                    );
+                }
+            });
+        }
     });
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
 <a
-    id="<?= $escaper->escapeHtmlAttr($block->getNameInLayout()) ?>"
+    id="<?= $signInId ?>"
     class="block py-1.5 hover:underline"
-    onclick="hyva.setCookie && hyva.setCookie(
-        '<?= $escaper->escapeJs(Redirect::LOGIN_REDIRECT_URL) ?>',
-        window.location.href,
-        1
-    )"
     href="<?= $escaper->escapeUrl($block->getUrl('customer/account/index')) ?>"
 >
     <?= $escaper->escapeHtml($label) ?>
