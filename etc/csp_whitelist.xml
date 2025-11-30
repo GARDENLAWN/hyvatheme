@@ -82,6 +82,10 @@
                 <value id="script-src-hash-6" type="hash" algorithm="sha256">yRuBlU73D077Qzr/NFHOP0yT3A7AUCNYmKCidzqtlaQ=</value>
                 <value id="script-src-hash-7" type="hash" algorithm="sha256">z0wOIIOyqavRKXc2eR7cjNUh8/v2e+/mOCY+y/yq8Ec=</value>
                 <value id="script-src-hash-8" type="hash" algorithm="sha256">G9GeHz6BKbgU/lsFHyBo+Xa6Pkk6Sbcyle8wxHyp71U=</value>
+                <value id="script-src-hash-9" type="hash" algorithm="sha256">ATApatHdOVhJxkkAvb3LciZH2InFy35S7pPoZJSb7Kw=</value>
+                <value id="script-src-hash-10" type="hash" algorithm="sha256">CbuLa419o+4y8bIS2obejA+oy5oQWbCH1/ZZeNb3q1A=</value>
+                <value id="script-src-hash-11" type="hash" algorithm="sha256">AgVEV4hyu5kIsPct8FIv/L6OxluRuzxLe1XEVi+9U5I=</value>
+                <value id="script-src-hash-12" type="hash" algorithm="sha256">V1Q15CZYANZ2yjc6Wc01wfQNcN2vJsYrWZke05BCzjg=</value>
             </values>
         </policy>
         <policy id="connect-src">
