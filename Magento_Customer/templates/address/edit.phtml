@@ -441,8 +441,8 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
             }
             if (validatedPostCodeExamples) {
                 context.addMessages(field, 'postcode-warning', [
-                    '<?= $escaper->escapeJs(__('Provided Zip/Postal Code seems to be invalid.')) ?>',
-                    '<?= $escaper->escapeJs(__(' Example: ')) ?>' + validatedPostCodeExamples.join('; ') + '. '
+                    '<?= $escaper->escapeJs(__('Provided Zip/Postal Code seems to be invalid.')) ?> ',
+                    '<?= $escaper->escapeJs(__('Example:')) ?> ' + validatedPostCodeExamples.join('; ') + '. '
                 ]);
             }
 
