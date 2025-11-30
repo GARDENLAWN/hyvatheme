@@ -45,6 +45,12 @@
     width: auto !important;
 }
 
+.paynow-payment-option img[src*="2005.png"] {
+    content: url('https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/GardenLawn_Hyvatheme/images/PayNow/digital-wallet.svg');
+    width: auto;
+    height: 40px;
+}
+
 /* For AlpineJS */
 [x-cloak] {
     display: none !important;
