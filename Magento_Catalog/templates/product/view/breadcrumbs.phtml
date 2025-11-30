@@ -100,15 +100,6 @@ $overflowStyleSticky = $block->getOverflowStyle() === "sticky";
                         ></span>
                     </template>
                 <?php endif; ?>
-                <template x-if="isItemNotHome">
-                    <a
-                        class="flex items-center gap-1 w-full text-ellipsis overflow-hidden text-slate-500 hover:text-blue-700 hover:underline"
-                        :href="item.link"
-                        aria-current="page"
-                    >
-                        <span class="text-ellipsis overflow-hidden" x-text="item.label"></span>
-                    </a>
-                </template>
                 <template x-if="isItemNotProduct">
                     <a
                         class="flex items-center gap-1 w-full text-ellipsis overflow-hidden hover:text-blue-700 hover:underline"
@@ -117,6 +108,14 @@ $overflowStyleSticky = $block->getOverflowStyle() === "sticky";
                     >
                         <span class="text-ellipsis overflow-hidden" x-text="item.label"></span>
                     </a>
+                </template>
+                <template x-if="isItemProduct">
+                    <span
+                        class="flex items-center gap-1 w-full text-ellipsis overflow-hidden text-slate-500"
+                        aria-current="page"
+                    >
+                        <span class="text-ellipsis overflow-hidden" x-text="item.label"></span>
+                    </span>
                 </template>
             </li>
         </template>
