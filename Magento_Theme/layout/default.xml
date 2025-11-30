@@ -59,6 +59,11 @@
                     </argument> <!-- Enable CSS only solution (true/false) -->
                 </arguments>
             </block>
+            <block class="Magento\Framework\View\Element\Template"
+                   name="network.error.suppressor"
+                   template="Magento_Theme::html/header/error-suppressor.phtml"
+                   before="-"
+            />
         </referenceContainer>
 
         <referenceBlock name="topmenu_desktop">
@@ -80,7 +85,8 @@
             <arguments>
                 <argument name="max_level" xsi:type="number">4</argument> <!-- Max Menu depth to show -->
                 <argument name="show_search" xsi:type="boolean">true</argument> <!-- Show Search (true/false) -->
-                <argument name="show_socials" xsi:type="boolean">false</argument> <!-- Show Social Icons (true/false) -->
+                <argument name="show_socials" xsi:type="boolean">false
+                </argument> <!-- Show Social Icons (true/false) -->
                 <argument name="show_settings_nav" xsi:type="boolean">true
                 </argument> <!-- Show Settings Nav (true/false) -->
 

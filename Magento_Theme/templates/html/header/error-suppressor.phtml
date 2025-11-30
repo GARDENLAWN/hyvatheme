@@ -1,0 +1,17 @@
+<script>
+    (function() {
+        'use strict';
+        window.addEventListener('unhandledrejection', function(event) {
+            const msg = event.reason ? (event.reason.message || event.reason) : '';
+
+            // Wykrywanie błędów przerwanego połączenia (Fetch API)
+            if (msg.toString().includes('NetworkError') ||
+                msg.toString().includes('Failed to fetch') ||
+                msg.toString().includes('The operation was aborted')) {
+
+                // Wyciszamy błąd w konsoli
+                event.preventDefault();
+            }
+        });
+    })();
+</script>
