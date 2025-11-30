@@ -30,8 +30,8 @@
 @source "../../../../../../../../vendor/gardenlawn/module-hyva-checkout-santander/**/*.xml";
 @source "../../../../../../../../vendor/magewirephp/magewire/src/**/*.phtml";
 @source "../../../../../../../../vendor/magewirephp/magewire/src/**/*.xml";
-@source "../../../../../../../../vendor/mageplaza/magento-2-social-login/**/*.phtml";
-@source "../../../../../../../../vendor/mageplaza/magento-2-social-login/**/*.xml";
+@source "../../../../../../../../vendor/gardenlawn/magento-2-social-login/**/*.phtml";
+@source "../../../../../../../../vendor/gardenlawn/magento-2-social-login/**/*.xml";
 @source "../../../../../../../../vendor/hyva-themes/magento2-hyva-widgets/src/**/*.phtml";
 @source "../../../../../../../../vendor/hyva-themes/magento2-hyva-widgets/src/**/*.xml";
 @source "../../../../../../../../vendor/amasty/module-gdpr-hyva-checkout/**/*.phtml";
@@ -46,7 +46,7 @@
 @import "../../../../../../../../vendor/amasty/module-gdpr-hyva/view/frontend/tailwind/tailwind-source.css";
 @import "../../../../../../../../vendor/mollie/magento2-hyva-compatibility/src/Mollie_HyvaCompatibility/view/frontend/tailwind/tailwind-source.css";
 @import "../../../../../../../../vendor/magewirephp/magewire/src/view/frontend/tailwind/tailwind-source.css";
-@import "../../../../../../../../vendor/mageplaza/magento-2-social-login/view/frontend/tailwind/tailwind-source.css";
+@import "../../../../../../../../vendor/gardenlawn/magento-2-social-login/view/frontend/tailwind/tailwind-source.css";
 
 @import "../../../../../../../../vendor/hyva-themes/magento2-hyva-checkout/src/view/frontend/tailwind/module.css";
 
