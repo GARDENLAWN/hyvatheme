@@ -9,6 +9,7 @@ use Magento\Customer\Block\Widget\Company;
 use Magento\Customer\Helper\Address as AddressHelper;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
+use GardenLawn\Company\Helper\Data as CompanyHelper;
 
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
@@ -18,8 +19,9 @@ use Magento\Framework\View\Element\Template;
 /** @var Template $this */
 
 $validationClass = $this->helper(AddressHelper::class)->getAttributeValidationClass('company');
-$disabled = $block->getDisabled();
-
+$companyHelper = $this->helper(CompanyHelper::class);
+$isB2bCustomer = in_array($companyHelper->getCurrentCustomerGroupId(), $companyHelper->getB2bCustomerGroups());
+$disabled = $isB2bCustomer;
 ?>
 <div class="field field-reserved company <?= $block->isRequired() ? 'required' : '' ?>">
     <label for="company" class="label">

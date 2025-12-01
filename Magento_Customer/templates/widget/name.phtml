@@ -20,9 +20,7 @@ $suffix = $block->showSuffix();
 
 $companyHelper = $this->helper(CompanyHelper::class);
 $isB2bCustomer = in_array($companyHelper->getCurrentCustomerGroupId(), $companyHelper->getB2bCustomerGroups());
-$address = $block->getObject();
-$isDefaultBilling = $address && method_exists($address, 'isDefaultBilling') && $address->isDefaultBilling();
-$disabled = $isB2bCustomer && $isDefaultBilling;
+$disabled = $isB2bCustomer;
 ?>
 <?php if ($prefix): ?>
     <div class="field field-reserved w-full field-name-prefix<?= $block->isPrefixRequired() ? ' required' : '' ?>">
