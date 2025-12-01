@@ -9070,3 +9070,6 @@ Return Date: ""","Data zwrotu:"
 "[WEBSITE]","[WITRYNA]"
 "{{base_url}} is not recommended to use in a production environment to declare the Base Unsecure URL / Base Secure URL. We highly recommend changing this value in your Magento <a href=""%1"">configuration</a>.","Nie zaleca się używania {{base_url}} jako bazowego adresu URL w środowisku produkcyjnym. Radzimy zmianę tej wartości w <a href=""%1"">konfiguracji</a>."
 "’Internal Promotions’ for promotions field “Label”.","""Wewnętrzne promocje"" dla promocji w polu ""Etykieta""."
+"The provided address data is not compliant with CEIDG.","Podane dane adresowe nie są zgodne z CEIDG."
+"An error occurred while validating CEIDG data.","Wystąpił błąd podczas weryfikacji danych CEIDG."
+
