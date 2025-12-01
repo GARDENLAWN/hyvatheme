@@ -13,6 +13,7 @@ use Magento\Customer\Block\Address\Edit;
 use Magento\Customer\ViewModel\Address as AddressViewModel;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use GardenLawn\Company\Helper\Data as CompanyHelper;
 
 /** @var Edit $block */
 /** @var Escaper $escaper */
@@ -23,6 +24,7 @@ use Magento\Framework\View\Helper\SecureHtmlRenderer;
 /** @var AddressViewModel $addressViewModel */
 $addressViewModel = $block->getViewModel();
 $directoryViewModel = $viewModels->require(\Hyva\Theme\ViewModel\Directory::class);
+$companyHelper = $viewModels->require(CompanyHelper::class);
 
 $companyBlock = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Company::class);
 $phoneBlock = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Telephone::class);
@@ -30,6 +32,10 @@ $faxBlock = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax:
 $streetLabel = $block->getAttributeData()->getFrontendLabel('street');
 $regionLabel = $block->getAttributeData()->getFrontendLabel('region');
 $showOptionalRegions = $block->getConfig('general/region/display_all');
+
+$isB2bCustomer = in_array($companyHelper->getCurrentCustomerGroupId(), $companyHelper->getB2bCustomerGroups());
+$isDefaultBilling = $block->getAddress()->isDefaultBilling();
+$disabled = $isB2bCustomer && $isDefaultBilling;
 
 ?>
 <div class="text-2xl mb-6">
@@ -56,7 +62,7 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
 
             <?php if ($companyBlock->isEnabled()): ?>
                 <div class="w-full">
-                    <?= $companyBlock->setCompany($block->getAddress()->getCompany())->toHtml() ?>
+                    <?= $companyBlock->setCompany($block->getAddress()->getCompany())->setDisabled($disabled)->toHtml() ?>
                 </div>
             <?php endif ?>
 
@@ -80,33 +86,39 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
 
                 <div class="field field-reserved required">
                     <label for="street_1" class="label">
-                        <span><?= /* @noEscape */ $streetLabel ?></span>
+                        <span><?= /* @noEscape */
+                            $streetLabel ?></span>
                     </label>
                     <div class="control">
                         <input type="text"
                                name="street[]"
                                required
                                value="<?= $escaper->escapeHtmlAttr($block->getStreetLine(1)) ?>"
-                               title="<?= /* @noEscape */ $streetLabel ?>"
+                               title="<?= /* @noEscape */
+                               $streetLabel ?>"
                                id="street_1"
                                class="form-input w-full"
                                @input.debounce="onChange"
+                            <?= $disabled ? 'disabled' : '' ?>
                         >
                     </div>
                 </div>
 
                 <?php for ($i = 1, $n = $addressViewModel->addressGetStreetLines(); $i < $n; $i++): ?>
                     <div class="field additional">
-                        <label class="label" for="street_<?= /* @noEscape */ $i + 1 ?>">
+                        <label class="label" for="street_<?= /* @noEscape */
+                        $i + 1 ?>">
                             <span><?= $escaper->escapeHtml(__('Street Address %1', $i + 1)) ?></span>
                         </label>
                         <div class="control">
                             <input type="text" name="street[]"
                                    value="<?= $escaper->escapeHtmlAttr($block->getStreetLine($i + 1)) ?>"
                                    title="<?= $escaper->escapeHtmlAttr(__('Street Address %1', $i + 1)) ?>"
-                                   id="street_<?= /* @noEscape */ $i + 1 ?>"
+                                   id="street_<?= /* @noEscape */
+                                   $i + 1 ?>"
                                    class="form-input w-full"
                                    @input.debounce="onChange"
+                                <?= $disabled ? 'disabled' : '' ?>
                             >
                         </div>
                     </div>
@@ -116,42 +128,49 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
             <?php if ($addressViewModel->addressIsVatAttributeVisible()): ?>
                 <div class="field field-reserved taxvat w-full">
                     <label class="label" for="vat_id">
-                        <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('vat_id') ?></span>
+                        <span><?= /* @noEscape */
+                            $block->getAttributeData()->getFrontendLabel('vat_id') ?></span>
                     </label>
                     <div class="control">
                         <input type="text"
                                name="vat_id"
                                value="<?= $escaper->escapeHtmlAttr($block->getAddress()->getVatId()) ?>"
-                               title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('vat_id') ?>"
+                               title="<?= /* @noEscape */
+                               $block->getAttributeData()->getFrontendLabel('vat_id') ?>"
                                class="form-input w-full"
                                id="vat_id"
-                               @input.debounce="onChange">
+                               @input.debounce="onChange"
+                            <?= $disabled ? 'disabled' : '' ?>>
                     </div>
                 </div>
             <?php endif; ?>
             <div class="field field-reserved zip w-full" :class="zipFieldClasses">
                 <label class="label" for="zip">
-                    <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?></span>
+                    <span><?= /* @noEscape */
+                        $block->getAttributeData()->getFrontendLabel('postcode') ?></span>
                 </label>
                 <div class="control">
                     <input type="text"
                            name="postcode"
                            x-ref="postcode"
                            value="<?= $escaper->escapeHtmlAttr($block->getAddress()->getPostcode()) ?>"
-                           title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>"
+                           title="<?= /* @noEscape */
+                           $block->getAttributeData()->getFrontendLabel('postcode') ?>"
                            id="zip"
                            placeholder="00-000"
                            maxlength="6"
                            :required="isZipRequired"
                            @input.debounce="onChange"
                            data-validate='{"postcode": true}'
+                        <?= $disabled ? 'disabled' : '' ?>
                            class="form-input w-full">
                 </div>
             </div>
 
             <div class="field field-reserved required city w-full">
                 <label class="label" for="city">
-                    <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?></span>
+                    <span><?= /* @noEscape */
+                        $block->getAttributeData()->getFrontendLabel('city') ?></span>
                 </label>
                 <div class="control">
                     <input type="text"
@@ -161,13 +180,15 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                            title="<?= $escaper->escapeHtmlAttr(__('City')) ?>"
                            class="form-input w-full"
                            id="city"
+                        <?= $disabled ? 'disabled' : '' ?>
                            @input.debounce="onChange">
                 </div>
             </div>
 
             <div class="field field-reserved required country w-full">
                 <label class="label" for="country">
-                    <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('country_id') ?></span>
+                    <span><?= /* @noEscape */
+                        $block->getAttributeData()->getFrontendLabel('country_id') ?></span>
                 </label>
                 <div class="control">
                     <?php $countries = $block
@@ -177,20 +198,25 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                     ?>
                     <select name="country_id"
                             id="country"
-                            title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('country_id') ?>"
+                            title="<?= /* @noEscape */
+                            $block->getAttributeData()->getFrontendLabel('country_id') ?>"
                             required
                             class="form-select"
                             x-ref="country_id"
+                        <?= $disabled ? 'disabled' : '' ?>
                             @input.debounce="changeCountry"
                     >
                         <?php foreach ($countries as $country): ?>
-                            <option name="<?= /** @noEscape */ $country['label'] ?>"
-                                    value="<?= /** @noEscape */ $country['value'] ?>"
+                            <option name="<?= /** @noEscape */
+                            $country['label'] ?>"
+                                    value="<?= /** @noEscape */
+                                    $country['value'] ?>"
                                     data-is-zip-required="<?= (isset($country['is_zipcode_optional'])) ? '0' : '1' ?>"
                                     data-is-region-required="<?= (isset($country['is_region_required'])) ? '1' : '0' ?>"
-                                <?= ($block->getCountryId() ===  $country['value']) ? 'selected="selected"' : '' ?>
+                                <?= ($block->getCountryId() === $country['value']) ? 'selected="selected"' : '' ?>
                             >
-                                <?= /** @noEscape */ $country['label'] ?>
+                                <?= /** @noEscape */
+                                $country['label'] ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -204,18 +230,22 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                 :class="regionFieldClasses"
             >
                 <label class="label" for="region_id">
-                    <span><?= /* @noEscape */ $regionLabel ?></span>
+                    <span><?= /* @noEscape */
+                        $regionLabel ?></span>
                 </label>
                 <div class="control">
                     <template x-if="showRegionField">
                         <select id="region_id" name="region_id"
-                                title="<?= /* @noEscape */ $regionLabel ?>"
+                                title="<?= /* @noEscape */
+                                $regionLabel ?>"
                                 class="form-select validate-select region_id"
+                            <?= $disabled ? 'disabled' : '' ?>
                                 x-ref="region_id"
                                 :required="isRegionRequired"
                                 @input.debounce="onRegionIdChange"
                         >
-                            <option value=""><?= $escaper->escapeHtml(__('Please select a region, state or province.')) ?></option>
+                            <option
+                                value=""><?= $escaper->escapeHtml(__('Please select a region, state or province.')) ?></option>
                             <template x-for="regionId in getAvailableRegionIds">
                                 <?php /* in alpine v3, if the bound props update, the template body gets evaluated before the template condition */ ?>
                                 <?php /* because of this it is required to check if availableRegions[regionId] is set */ ?>
@@ -233,9 +263,11 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                            name="region"
                            x-ref="region"
                            value="<?= $escaper->escapeHtmlAttr($block->getRegion()) ?>"
-                           title="<?= /* @noEscape */ $regionLabel ?>"
+                           title="<?= /* @noEscape */
+                           $regionLabel ?>"
                            class="form-input w-full"
-                           aria-label="<?= /* @noEscape */ $regionLabel ?>"
+                           aria-label="<?= /* @noEscape */
+                           $regionLabel ?>"
                            :required="isRegionInputRequired"
                            @input.debounce="onChange"
                     >
@@ -254,7 +286,7 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                 <?= $escaper->escapeHtml(implode("<br>\n", $isDefaultMessages), ['br']) ?>
             </div>
         <?php endif; ?>
-        <?php if (! $block->isDefaultBilling() && $block->canSetAsDefaultBilling()): ?>
+        <?php if (!$block->isDefaultBilling() && $block->canSetAsDefaultBilling()): ?>
             <div class="field choice set billing">
                 <input type="checkbox" id="primary_billing" name="default_billing" value="1" class="checkbox">
                 <label class="label" for="primary_billing">
@@ -265,7 +297,7 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
             <input type="hidden" name="default_billing" value="1">
         <?php endif; ?>
 
-        <?php if (! $block->isDefaultShipping() && $block->canSetAsDefaultShipping()): ?>
+        <?php if (!$block->isDefaultShipping() && $block->canSetAsDefaultShipping()): ?>
             <div class="field choice set shipping">
                 <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" class="checkbox">
                 <label class="label" for="primary_shipping">
@@ -487,7 +519,7 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                 validatedPostCodeExamples = [],
                 countryPostCodeSpecs = countryId && postCodeSpecs ? postCodeSpecs[countryId] : false;
 
-            if (! postCode || ! countryPostCodeSpecs) return true;
+            if (!postCode || !countryPostCodeSpecs) return true;
 
             for (const postCodeSpec of Object.values(countryPostCodeSpecs)) {
                 if (new RegExp(postCodeSpec.pattern).test(postCode)) return true;
