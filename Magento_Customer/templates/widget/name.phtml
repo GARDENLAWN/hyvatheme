@@ -7,27 +7,22 @@
 
 use Magento\Customer\Block\Widget\Name;
 use Magento\Framework\Escaper;
+use GardenLawn\Company\Helper\Data as CompanyHelper;
+use Magento\Framework\View\Element\Template;
 
 /** @var Name $block */
 /** @var Escaper $escaper */
-
-/*
-<?= $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Name')
-   ->setObject($block->getAddress())
-   ->toHtml() ?>
-
-For checkout/onepage/shipping.phtml:
-
-<?= $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Name')
-   ->setObject($block->getAddress())
-   ->setFieldIdFormat('shipping:%s')
-   ->setFieldNameFormat('shipping[%s]')
-   ->toHtml() ?>
-*/
+/** @var Template $this */
 
 $prefix = $block->showPrefix();
 $middle = $block->showMiddlename();
 $suffix = $block->showSuffix();
+
+$companyHelper = $this->helper(CompanyHelper::class);
+$isB2bCustomer = in_array($companyHelper->getCurrentCustomerGroupId(), $companyHelper->getB2bCustomerGroups());
+$address = $block->getObject();
+$isDefaultBilling = $address && method_exists($address, 'isDefaultBilling') && $address->isDefaultBilling();
+$disabled = $isB2bCustomer && $isDefaultBilling;
 ?>
 <?php if ($prefix): ?>
     <div class="field field-reserved w-full field-name-prefix<?= $block->isPrefixRequired() ? ' required' : '' ?>">
@@ -44,6 +39,7 @@ $suffix = $block->showSuffix();
                        class="form-input w-full
                           <?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('prefix')) ?>"
                         <?= $block->isPrefixRequired() ? ' required' : '' ?>
+                    <?= $disabled ? 'disabled' : '' ?>
                 >
             <?php else: ?>
                 <select id="<?= $escaper->escapeHtmlAttr($block->getFieldId('prefix')) ?>"
@@ -51,7 +47,9 @@ $suffix = $block->showSuffix();
                         <?= $block->isPrefixRequired() ? ' required' : '' ?>
                         title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('prefix')) ?>"
                         class="form-select <?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('prefix')) ?>"
-                        <?= $block->isPrefixRequired() ? ' required' : '' ?> >
+                        <?= $block->isPrefixRequired() ? ' required' : '' ?>
+                    <?= $disabled ? 'disabled' : '' ?>
+                >
                     <?php foreach ($block->getPrefixOptions() as $option): ?>
                         <option value="<?= $escaper->escapeHtmlAttr($option) ?>"
                             <?php if ($block->getObject()->getPrefix() == $option): ?>
@@ -82,6 +80,7 @@ $suffix = $block->showSuffix();
                    ) ?>"
                    @input.debounce="onChange"
                 <?= ($block->getAttributeValidationClass('firstname') == 'required-entry') ? ' required' : '' ?>
+                <?= $disabled ? 'disabled' : '' ?>
             >
         </div>
     </div>
@@ -102,6 +101,7 @@ $suffix = $block->showSuffix();
                      <?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('middlename')) ?>"
                    @input.debounce="onChange"
                    <?= $isMiddlenameRequired ? ' required' : '' ?>
+                   <?= $disabled ? 'disabled' : '' ?>
             >
         </div>
     </div>
@@ -123,6 +123,7 @@ $suffix = $block->showSuffix();
                    ) ?>"
                    @input.debounce="onChange"
                 <?= ($block->getAttributeValidationClass('lastname') == 'required-entry') ? ' required' : '' ?>
+                <?= $disabled ? 'disabled' : '' ?>
             >
         </div>
     </div>
@@ -142,6 +143,7 @@ $suffix = $block->showSuffix();
                        class="form-input w-full
                         <?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('suffix')) ?>"
                     <?= $block->isSuffixRequired() ? ' required' : '' ?>
+                    <?= $disabled ? 'disabled' : '' ?>
                 >
             <?php else: ?>
                 <select id="<?= $escaper->escapeHtmlAttr($block->getFieldId('suffix')) ?>"
@@ -149,6 +151,7 @@ $suffix = $block->showSuffix();
                         title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('suffix')) ?>"
                         class="<?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('suffix')) ?>"
                     <?= $block->isSuffixRequired() ? ' required' : '' ?>
+                    <?= $disabled ? 'disabled' : '' ?>
                 >
                     <?php foreach ($block->getSuffixOptions() as $option): ?>
                         <option value="<?= $escaper->escapeHtmlAttr($option) ?>"

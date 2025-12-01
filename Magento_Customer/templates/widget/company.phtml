@@ -8,14 +8,17 @@
 use Magento\Customer\Block\Widget\Company;
 use Magento\Customer\Helper\Address as AddressHelper;
 use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
 
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
 
 /** @var Escaper $escaper */
 /** @var Company $block */
+/** @var Template $this */
 
 $validationClass = $this->helper(AddressHelper::class)->getAttributeValidationClass('company');
+$disabled = $block->getDisabled();
 
 ?>
 <div class="field field-reserved company <?= $block->isRequired() ? 'required' : '' ?>">
@@ -32,6 +35,7 @@ $validationClass = $this->helper(AddressHelper::class)->getAttributeValidationCl
                value="<?= $escaper->escapeHtmlAttr($block->getCompany()) ?>"
                title="<?= $escaper->escapeHtmlAttr(__('Company')) ?>"
                class="form-input w-full <?= $escaper->escapeHtmlAttr($validationClass) ?>"
+            <?= $disabled ? 'disabled' : '' ?>
          >
     </div>
 </div>

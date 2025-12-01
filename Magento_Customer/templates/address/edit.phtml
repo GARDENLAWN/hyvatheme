@@ -27,6 +27,7 @@ $directoryViewModel = $viewModels->require(\Hyva\Theme\ViewModel\Directory::clas
 $companyHelper = $viewModels->require(CompanyHelper::class);
 
 $companyBlock = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Company::class);
+$taxvatBlock = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Taxvat::class);
 $phoneBlock = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Telephone::class);
 $faxBlock = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::class);
 $streetLabel = $block->getAttributeData()->getFrontendLabel('street');
@@ -125,25 +126,12 @@ $disabled = $isB2bCustomer && $isDefaultBilling;
                 <?php endfor; ?>
             </div>
 
-            <?php if ($addressViewModel->addressIsVatAttributeVisible()): ?>
-                <div class="field field-reserved taxvat w-full">
-                    <label class="label" for="vat_id">
-                        <span><?= /* @noEscape */
-                            $block->getAttributeData()->getFrontendLabel('vat_id') ?></span>
-                    </label>
-                    <div class="control">
-                        <input type="text"
-                               name="vat_id"
-                               value="<?= $escaper->escapeHtmlAttr($block->getAddress()->getVatId()) ?>"
-                               title="<?= /* @noEscape */
-                               $block->getAttributeData()->getFrontendLabel('vat_id') ?>"
-                               class="form-input w-full"
-                               id="vat_id"
-                               @input.debounce="onChange"
-                            <?= $disabled ? 'disabled' : '' ?>>
-                    </div>
+            <?php if ($taxvatBlock->isEnabled()): ?>
+                <div class="w-full">
+                    <?= $taxvatBlock->setTaxvat($block->getAddress()->getVatId())->setDisabled($disabled)->toHtml() ?>
                 </div>
             <?php endif; ?>
+
             <div class="field field-reserved zip w-full" :class="zipFieldClasses">
                 <label class="label" for="zip">
                     <span><?= /* @noEscape */
