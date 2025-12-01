@@ -415,6 +415,60 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
     window.addEventListener('alpine:init', () => Alpine.data('initCustomerAddressEdit', initCustomerAddressEdit), {once: true})
 
     window.addEventListener('DOMContentLoaded', () => {
+        const vatInput = document.getElementById('vat_id');
+        if (vatInput) {
+            vatInput.addEventListener('input', function (event) {
+                clearTimeout(vatInput.timer);
+                vatInput.timer = setTimeout(() => {
+                    const nip = event.target.value.replace(/[^0-9]/g, '');
+                    if (nip.length === 10) {
+                        fetch('/company/index/ceidg?nip=' + nip)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (data) {
+                                    const companyField = document.querySelector('input[name="company"]');
+                                    if (companyField && data.name) {
+                                        companyField.value = data.name;
+                                    }
+
+                                    const street1Field = document.getElementById('street_1');
+                                    if (street1Field && data.street) {
+                                        street1Field.value = data.street;
+                                    }
+
+                                    const postcodeField = document.getElementById('zip');
+                                    if (postcodeField && data.postcode) {
+                                        postcodeField.value = data.postcode;
+                                    }
+
+                                    const cityField = document.getElementById('city');
+                                    if (cityField && data.city) {
+                                        cityField.value = data.city;
+                                    }
+
+                                    const regionField = document.getElementById('region_id');
+                                    if (regionField && data.region_id) {
+
+                                        const optionToSelect = Array.from(regionField.options).find(option => option.text === data.region_id);
+                                        if (optionToSelect) {
+                                            optionToSelect.selected = true;
+                                            optionToSelect.dispatchEvent(new Event('change'));
+                                        }
+                                    }
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error fetching CEIDG data:', error);
+                            });
+                    }
+                }, 500);
+            });
+        }
 
         hyva.formValidation.addRule('telephone', (value, options) => {
             const phoneNumber = value.trim().replace(' ', '');
