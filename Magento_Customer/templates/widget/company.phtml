@@ -27,7 +27,7 @@ $isDisabled = $block->getData('disabled');
                title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('company')) ?>"
                class="form-input input-text"
             <?= $block->isRequired() ? 'required' : '' ?>
-            <?= $isDisabled ? 'disabled' : '' ?>
+            <?= $isDisabled ? 'readonly' : '' ?>
         >
     </div>
 </div>

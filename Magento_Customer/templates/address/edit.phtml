@@ -67,23 +67,23 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
         <input type="hidden" name="error_url" value="<?= $escaper->escapeUrl($block->getErrorUrl()) ?>">
 
         <div class="md:grid grid-cols-2 gap-x-4 gap-y-0">
-            <?= $nameBlock->setData('disabled', $isB2bCustomer)->toHtml() ?>
+            <?= $nameBlock->setData('disabled', $isB2bBillingAddress)->toHtml() ?>
 
             <?php if ($companyBlock->isEnabled()): ?>
                 <div class="w-full">
-                    <?= $companyBlock->setCompany($block->getAddress()->getCompany())->setData('disabled', $isB2bCustomer)->toHtml() ?>
+                    <?= $companyBlock->setCompany($block->getAddress()->getCompany())->setData('disabled', $isB2bBillingAddress)->toHtml() ?>
                 </div>
             <?php endif ?>
 
             <?php if ($phoneBlock->isEnabled()): ?>
                 <div class="w-full">
-                    <?= $phoneBlock->setTelephone($block->getAddress()->getTelephone())->setDisabled($isB2bBillingAddress)->toHtml() ?>
+                    <?= $phoneBlock->setTelephone($block->getAddress()->getTelephone())->setData('disabled', $isB2bBillingAddress)->toHtml() ?>
                 </div>
             <?php endif ?>
 
             <?php if ($faxBlock->isEnabled()): ?>
                 <div class="w-full">
-                    <?= $faxBlock->setFax($block->getAddress()->getFax())->setDisabled($isB2bBillingAddress)->toHtml() ?>
+                    <?= $faxBlock->setFax($block->getAddress()->getFax())->setData('disabled', $isB2bBillingAddress)->toHtml() ?>
                 </div>
             <?php endif ?>
         </div>
@@ -108,7 +108,7 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                                id="street_1"
                                class="form-input w-full"
                                @input.debounce="onChange"
-                            <?= $isB2bBillingAddress ? 'disabled' : '' ?>
+                            <?= $isB2bBillingAddress ? 'readonly' : '' ?>
                         >
                     </div>
                 </div>
@@ -127,17 +127,15 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                                    $i + 1 ?>"
                                    class="form-input w-full"
                                    @input.debounce="onChange"
-                                <?= $isB2bBillingAddress ? 'disabled' : '' ?>
+                                <?= $isB2bBillingAddress ? 'readonly' : '' ?>
                             >
                         </div>
                     </div>
                 <?php endfor; ?>
             </div>
 
-            <?php if ($taxvatBlock->isEnabled() && !$isB2bShippingAddress): ?>
-                <div class="w-full">
-                    <?= $taxvatBlock->setTaxvat($block->getAddress()->getVatId())->setData('disabled', $isB2bCustomer)->toHtml() ?>
-                </div>
+            <?php if ($taxvatBlock->isEnabled()): ?>
+                <?= $taxvatBlock->setTaxvat($block->getAddress()->getVatId())->setData('disabled', $isB2bCustomer)->toHtml() ?>
             <?php endif; ?>
 
             <div class="field field-reserved zip w-full" :class="zipFieldClasses">
@@ -159,7 +157,7 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                            @input.debounce="onChange"
                            data-validate='{"postcode": true}'
                            class="form-input w-full"
-                        <?= $isB2bBillingAddress ? 'disabled' : '' ?>
+                        <?= $isB2bBillingAddress ? 'readonly' : '' ?>
                     >
                 </div>
             </div>
@@ -178,7 +176,7 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                            class="form-input w-full"
                            id="city"
                            @input.debounce="onChange"
-                        <?= $isB2bBillingAddress ? 'disabled' : '' ?>
+                        <?= $isB2bBillingAddress ? 'readonly' : '' ?>
                     >
                 </div>
             </div>
@@ -218,6 +216,10 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                             </option>
                         <?php endforeach; ?>
                     </select>
+                    <?php if ($isB2bBillingAddress): ?>
+                        <input type="hidden" name="country_id"
+                               value="<?= $escaper->escapeHtmlAttr($block->getCountryId()) ?>"/>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -255,6 +257,10 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                                 </option>
                             </template>
                         </select>
+                        <?php if ($isB2bBillingAddress): ?>
+                            <input type="hidden" name="region_id"
+                                   value="<?= $escaper->escapeHtmlAttr($block->getAddress()->getRegionId()) ?>"/>
+                        <?php endif; ?>
                     </template>
                     <input :type="regionFieldInputType"
                            id="region"
@@ -268,7 +274,7 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                            $regionLabel ?>"
                            :required="isRegionInputRequired"
                            @input.debounce="onChange"
-                        <?= $isB2bBillingAddress ? 'disabled' : '' ?>
+                        <?= $isB2bBillingAddress ? 'readonly' : '' ?>
                     >
                 </div>
             </div>
@@ -324,124 +330,124 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
     </div>
 </form>
 <script>
-function initCustomerAddressEdit() {
-    return Object.assign(
-        {
-            directoryData: {},
-            availableRegions: {},
-            messageTime: 5000,
-            fieldsNames: [],
-            selectedRegion: '<?= $escaper->escapeJs($block->getRegion() ?: 0) ?>',
-            isZipRequired: true,
-            isRegionRequired: true,
-            showOptionalRegions: <?= $showOptionalRegions ? 'true' : 'false' ?>,
-            onPrivateContentLoaded() {
-                const data = this.$event.detail.data;
-                this.directoryData = data['directory-data'] || {};
+    function initCustomerAddressEdit() {
+        return Object.assign(
+            {
+                directoryData: {},
+                availableRegions: {},
+                messageTime: 5000,
+                fieldsNames: [],
+                selectedRegion: '<?= $escaper->escapeJs($block->getRegion() ?: 0) ?>',
+                isZipRequired: true,
+                isRegionRequired: true,
+                showOptionalRegions: <?= $showOptionalRegions ? 'true' : 'false' ?>,
+                onPrivateContentLoaded() {
+                    const data = this.$event.detail.data;
+                    this.directoryData = data['directory-data'] || {};
 
-                <?php if ($block->getCountryId()): ?>
-                this.setCountry(this.$refs['country_id'], '<?= $escaper->escapeJs($block->getRegion()) ?>');
-                <?php endif; ?>
+                    <?php if ($block->getCountryId()): ?>
+                    this.setCountry(this.$refs['country_id'], '<?= $escaper->escapeJs($block->getRegion()) ?>');
+                    <?php endif; ?>
 
-            },
-            setRegionInputValue(regionName) {
-                this.$nextTick(() => {
-                    const regionInputElement = this.$refs['region'];
-                    if (regionInputElement) {
-                        regionInputElement.value = regionName;
+                },
+                setRegionInputValue(regionName) {
+                    this.$nextTick(() => {
+                        const regionInputElement = this.$refs['region'];
+                        if (regionInputElement) {
+                            regionInputElement.value = regionName;
+                        }
+                    })
+                },
+                setCountry(countrySelectElement, initialRegion) {
+                    const selectedOption = countrySelectElement.options[countrySelectElement.selectedIndex];
+                    const countryCode = countrySelectElement.value;
+                    const countryData = this.directoryData[countryCode] || false;
+
+                    if (!countryData) {
+                        this.setRegionInputValue('');
+                        return;
                     }
-                })
-            },
-            setCountry(countrySelectElement, initialRegion) {
-                const selectedOption = countrySelectElement.options[countrySelectElement.selectedIndex];
-                const countryCode = countrySelectElement.value;
-                const countryData = this.directoryData[countryCode] || false;
 
-                if (!countryData) {
-                    this.setRegionInputValue('');
-                    return;
-                }
+                    this.isZipRequired = selectedOption.dataset.isZipRequired === '1';
+                    this.isRegionRequired = selectedOption.dataset.isRegionRequired === '1';
 
-                this.isZipRequired = selectedOption.dataset.isZipRequired === '1';
-                this.isRegionRequired = selectedOption.dataset.isRegionRequired === '1';
+                    this.availableRegions = countryData.regions || {};
 
-                this.availableRegions = countryData.regions || {};
+                    const initialRegionId = Object.keys(this.availableRegions).filter(regionId => this.availableRegions[regionId].name === initialRegion)[0];
+                    this.selectedRegion = initialRegionId || '0';
+                    this.setRegionInputValue(initialRegionId && this.availableRegions[initialRegionId].name || '');
 
-                const initialRegionId = Object.keys(this.availableRegions).filter(regionId => this.availableRegions[regionId].name === initialRegion)[0];
-                this.selectedRegion = initialRegionId || '0';
-                this.setRegionInputValue(initialRegionId && this.availableRegions[initialRegionId].name || '');
+                },
+                changeCountry(event, initialRegion) {
+                    this.setCountry(event.target, initialRegion);
+                    this.validateCountryDependentFields();
+                    this.onChange(event);
+                },
+                validateCountryDependentFields() {
+                    this.$nextTick(() => {
+                        <?php /* Reinitialize validation rules for fields that depend on the country */ ?>
+                        this.fields['postcode'] && this.removeMessages(this.fields['postcode'])
+                        this.fields['region'] && this.removeMessages(this.fields['region'])
+                        delete this.fields['postcode'];
+                        delete this.fields['region'];
+                        <?php /* Initialize country_id, too, because the postcode validation depends on it */ ?>
+                        this.setupField(this.$refs['country_id']);
+                        this.setupField(this.$refs['postcode']);
+                        this.setupField(this.$refs['region']);
+                        this.setupField(this.$refs['region_id']);
 
-            },
-            changeCountry(event, initialRegion) {
-                this.setCountry(event.target, initialRegion);
-                this.validateCountryDependentFields();
-                this.onChange(event);
-            },
-            validateCountryDependentFields() {
-                this.$nextTick(() => {
-                    <?php /* Reinitialize validation rules for fields that depend on the country */ ?>
-                    this.fields['postcode'] && this.removeMessages(this.fields['postcode'])
-                    this.fields['region'] && this.removeMessages(this.fields['region'])
-                    delete this.fields['postcode'];
-                    delete this.fields['region'];
-                    <?php /* Initialize country_id, too, because the postcode validation depends on it */ ?>
-                    this.setupField(this.$refs['country_id']);
-                    this.setupField(this.$refs['postcode']);
-                    this.setupField(this.$refs['region']);
-                    this.setupField(this.$refs['region_id']);
-
-                    this.fields['postcode'] && this.validateField(this.fields['postcode']);
-                    this.fields['region'] && this.validateField(this.fields['region']);
-                    this.fields['region_id'] && this.validateField(this.fields['region_id']);
-                })
-            },
-            getAvailableRegionIds() {
-                return Object.keys(this.availableRegions);
-            },
-            hasAvailableRegions() {
-                return Object.keys(this.availableRegions).length > 0;
-            },
-            showRegionFieldLabel() {
-                return (this.hasAvailableRegions() && this.isRegionRequired) || this.showOptionalRegions;
-            },
-            showRegionField() {
-                return this.hasAvailableRegions() && (this.isRegionRequired || this.showOptionalRegions);
-            },
-            onRegionIdChange() {
-                this.selectedRegion = this.$el.value;
-                this.$refs.region.value = this.selectedRegion.length > 0 ?
-                    this.availableRegions[this.selectedRegion].name :
-                    ''
-                this.onChange(this.$event)
-                this.validateField(this.fields['region'])
-            },
-            regionName() {
-                return this.availableRegions[this.regionId] && this.availableRegions[this.regionId].name;
-            },
-            isRegionSelected() {
-                return this.selectedRegion === this.regionId;
-            },
-            isRegionInputRequired() {
-                return !this.hasAvailableRegions() && !this.showOptionalRegions ? this.isRegionRequired : false;
-            },
-            zipFieldClasses() {
-                return {
-                    required: this.isZipRequired
+                        this.fields['postcode'] && this.validateField(this.fields['postcode']);
+                        this.fields['region'] && this.validateField(this.fields['region']);
+                        this.fields['region_id'] && this.validateField(this.fields['region_id']);
+                    })
+                },
+                getAvailableRegionIds() {
+                    return Object.keys(this.availableRegions);
+                },
+                hasAvailableRegions() {
+                    return Object.keys(this.availableRegions).length > 0;
+                },
+                showRegionFieldLabel() {
+                    return (this.hasAvailableRegions() && this.isRegionRequired) || this.showOptionalRegions;
+                },
+                showRegionField() {
+                    return this.hasAvailableRegions() && (this.isRegionRequired || this.showOptionalRegions);
+                },
+                onRegionIdChange() {
+                    this.selectedRegion = this.$el.value;
+                    this.$refs.region.value = this.selectedRegion.length > 0 ?
+                        this.availableRegions[this.selectedRegion].name :
+                        ''
+                    this.onChange(this.$event)
+                    this.validateField(this.fields['region'])
+                },
+                regionName() {
+                    return this.availableRegions[this.regionId] && this.availableRegions[this.regionId].name;
+                },
+                isRegionSelected() {
+                    return this.selectedRegion === this.regionId;
+                },
+                isRegionInputRequired() {
+                    return !this.hasAvailableRegions() && !this.showOptionalRegions ? this.isRegionRequired : false;
+                },
+                zipFieldClasses() {
+                    return {
+                        required: this.isZipRequired
+                    }
+                },
+                regionFieldClasses() {
+                    return {
+                        required: this.isRegionRequired
+                    }
+                },
+                regionFieldInputType() {
+                    return this.hasAvailableRegions() && (this.isRegionRequired || this.showOptionalRegions) ? 'hidden' : 'text';
                 }
             },
-            regionFieldClasses() {
-                return {
-                    required: this.isRegionRequired
-                }
-            },
-            regionFieldInputType() {
-                return this.hasAvailableRegions() && (this.isRegionRequired || this.showOptionalRegions) ? 'hidden' : 'text';
-            }
-        },
-        hyva.formValidation(document.getElementById('form-validate'))
-    )
-}
+            hyva.formValidation(document.getElementById('form-validate'))
+        )
+    }
 
-window.addEventListener('alpine:init', () => Alpine.data('initCustomerAddressEdit', initCustomerAddressEdit), {once: true})
+    window.addEventListener('alpine:init', () => Alpine.data('initCustomerAddressEdit', initCustomerAddressEdit), {once: true})
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>

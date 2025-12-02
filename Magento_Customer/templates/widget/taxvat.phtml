@@ -15,20 +15,30 @@ use Magento\Framework\Escaper;
 
 $isDisabled = $block->getData('disabled');
 ?>
-<div class="field field-taxvat-vat-id required">
-    <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFieldId('taxvat')) ?>">
-        <span><?= $escaper->escapeHtml($block->getStoreLabel('taxvat')) ?></span>
-    </label>
-    <div class="control">
-        <input
-            type="text"
-            id="<?= $escaper->escapeHtmlAttr($block->getFieldId('taxvat')) ?>"
-            name="<?= $escaper->escapeHtmlAttr($block->getFieldName('taxvat')) ?>"
-            value="<?= $escaper->escapeHtmlAttr($block->getTaxvat()) ?>"
-            title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('taxvat')) ?>"
-            class="form-input input-text"
-            required
-            <?= $isDisabled ? 'disabled' : '' ?>
-        >
+<?php if ($isDisabled): ?>
+    <input
+        type="hidden"
+        id="<?= $escaper->escapeHtmlAttr($block->getFieldId('taxvat')) ?>"
+        name="<?= $escaper->escapeHtmlAttr($block->getFieldName('taxvat')) ?>"
+        value="<?= $escaper->escapeHtmlAttr($block->getTaxvat()) ?>"
+    >
+<?php else: ?>
+    <div class="w-full">
+        <div class="field field-taxvat-vat-id <?= $block->isRequired() ? 'required' : '' ?>">
+            <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFieldId('taxvat')) ?>">
+                <span><?= $escaper->escapeHtml($block->getStoreLabel('taxvat')) ?></span>
+            </label>
+            <div class="control">
+                <input
+                    type="text"
+                    id="<?= $escaper->escapeHtmlAttr($block->getFieldId('taxvat')) ?>"
+                    name="<?= $escaper->escapeHtmlAttr($block->getFieldName('taxvat')) ?>"
+                    value="<?= $escaper->escapeHtmlAttr($block->getTaxvat()) ?>"
+                    title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('taxvat')) ?>"
+                    class="form-input input-text"
+                    <?= $block->isRequired() ? 'required' : '' ?>
+                >
+            </div>
+        </div>
     </div>
-</div>
+<?php endif ?>
