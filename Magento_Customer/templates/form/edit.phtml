@@ -48,7 +48,7 @@ $isB2bCustomer = in_array($companyHelper->getCurrentCustomerGroupId(), $companyH
         <legend class="legend"><span><?= $escaper->escapeHtml(__('Account Information')) ?></span></legend>
         <br>
         <div class="md:grid grid-cols-2 gap-4">
-            <?= $block->getLayout()->createBlock(Name::class)->setObject($block->getCustomer())->setDisabled($isB2bCustomer)->toHtml() ?>
+            <?= $block->getLayout()->createBlock(Name::class)->setObject($block->getCustomer())->setData('disabled', $isB2bCustomer)->toHtml() ?>
             <?php $dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
             <?php $taxvat = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Taxvat::class) ?>
             <?php $gender = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Gender::class) ?>
@@ -56,7 +56,7 @@ $isB2bCustomer = in_array($companyHelper->getCurrentCustomerGroupId(), $companyH
                 <?= $dob->setDate($block->getCustomer()->getDob())->toHtml() ?>
             <?php endif ?>
             <?php if ($taxvat->isEnabled()): ?>
-                <?= $taxvat->setTaxvat($block->getCustomer()->getTaxvat())->setDisabled($isB2bCustomer)->toHtml() ?>
+                <?= $taxvat->setTaxvat($block->getCustomer()->getTaxvat())->setData('disabled', $isB2bCustomer)->toHtml() ?>
             <?php endif ?>
             <?php if ($gender->isEnabled()): ?>
                 <?= $gender->setGender($block->getCustomer()->getGender())->toHtml() ?>

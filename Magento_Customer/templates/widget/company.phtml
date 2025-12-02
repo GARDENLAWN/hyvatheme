@@ -5,33 +5,29 @@
  * See COPYING.txt for license details.
  */
 
-use Magento\Customer\Block\Widget\Company;
-use Magento\Customer\Helper\Address as AddressHelper;
+declare(strict_types=1);
+
+use Magento\Customer\Block\Widget\Company as CompanyWidget;
 use Magento\Framework\Escaper;
 
-// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
-// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
-
+/** @var CompanyWidget $block */
 /** @var Escaper $escaper */
-/** @var Company $block */
 
-$validationClass = $this->helper(AddressHelper::class)->getAttributeValidationClass('company');
-
+$isDisabled = $block->getData('disabled');
 ?>
-<div class="field field-reserved company <?= $block->isRequired() ? 'required' : '' ?>">
-    <label for="company" class="label">
-        <span><?= $escaper->escapeHtml(__('Company')) ?></span>
+<div class="field field-company <?= $block->isRequired() ? 'required' : '' ?>">
+    <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFieldId('company')) ?>">
+        <span><?= $escaper->escapeHtml($block->getStoreLabel('company')) ?></span>
     </label>
     <div class="control">
         <input type="text"
-               name="company"
-               id="company"
-               <?php if ($block->isRequired()): ?>
-                   required
-               <?php endif; ?>
+               id="<?= $escaper->escapeHtmlAttr($block->getFieldId('company')) ?>"
+               name="<?= $escaper->escapeHtmlAttr($block->getFieldName('company')) ?>"
                value="<?= $escaper->escapeHtmlAttr($block->getCompany()) ?>"
-               title="<?= $escaper->escapeHtmlAttr(__('Company')) ?>"
-               class="form-input w-full <?= $escaper->escapeHtmlAttr($validationClass) ?>"
-         >
+               title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('company')) ?>"
+               class="form-input input-text"
+            <?= $block->isRequired() ? 'required' : '' ?>
+            <?= $isDisabled ? 'disabled' : '' ?>
+        >
     </div>
 </div>

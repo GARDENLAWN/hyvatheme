@@ -5,44 +5,47 @@
  * See COPYING.txt for license details.
  */
 
-use Magento\Customer\Block\Widget\Name;
+declare(strict_types=1);
+
+use Magento\Customer\Block\Widget\Name as NameWidget;
 use Magento\Framework\Escaper;
 
-/** @var Name $block */
+/** @var NameWidget $block */
 /** @var Escaper $escaper */
 
-$prefix = $block->showPrefix();
-$middle = $block->showMiddlename();
-$suffix = $block->showSuffix();
+$isDisabled = $block->getData('disabled');
 ?>
-<?php if ($prefix): ?>
-    <div class="field field-reserved w-full field-name-prefix<?= $block->isPrefixRequired() ? ' required' : '' ?>">
-        <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFieldId('prefix')) ?>">
+<?php if ($block->showPrefix()): ?>
+    <div class="field field-name-prefix">
+        <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getPrefixFieldId()) ?>">
             <span><?= $escaper->escapeHtml($block->getStoreLabel('prefix')) ?></span>
         </label>
         <div class="control">
             <?php if ($block->getPrefixOptions() === false): ?>
-                <input type="text" id="<?= $escaper->escapeHtmlAttr($block->getFieldId('prefix')) ?>"
-                       name="<?= $escaper->escapeHtmlAttr($block->getFieldName('prefix')) ?>"
-                       <?= $block->isPrefixRequired() ? ' required' : '' ?>
-                       value="<?= $escaper->escapeHtmlAttr($block->getObject()->getPrefix()) ?>"
-                       title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('prefix')) ?>"
-                       class="form-input w-full
-                          <?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('prefix')) ?>"
-                        <?= $block->isPrefixRequired() ? ' required' : '' ?>
+                <input
+                    type="text"
+                    id="<?= $escaper->escapeHtmlAttr($block->getPrefixFieldId()) ?>"
+                    name="<?= $escaper->escapeHtmlAttr($block->getPrefixFieldName()) ?>"
+                    value="<?= $escaper->escapeHtmlAttr($block->getObject()->getPrefix()) ?>"
+                    title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('prefix')) ?>"
+                    class="form-input input-text <?= $escaper->escapeHtmlAttr($block->getPrefixFieldCssClass()) ?>"
+                    <?php if ($block->isPrefixRequired()): ?>required<?php endif; ?>
+                    <?= $isDisabled ? 'disabled' : '' ?>
                 >
             <?php else: ?>
-                <select id="<?= $escaper->escapeHtmlAttr($block->getFieldId('prefix')) ?>"
-                        name="<?= $escaper->escapeHtmlAttr($block->getFieldName('prefix')) ?>"
-                        <?= $block->isPrefixRequired() ? ' required' : '' ?>
-                        title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('prefix')) ?>"
-                        class="form-select <?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('prefix')) ?>"
-                        <?= $block->isPrefixRequired() ? ' required' : '' ?> >
+                <select
+                    id="<?= $escaper->escapeHtmlAttr($block->getPrefixFieldId()) ?>"
+                    name="<?= $escaper->escapeHtmlAttr($block->getPrefixFieldName()) ?>"
+                    title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('prefix')) ?>"
+                    class="form-select select-name-prefix <?= $escaper->escapeHtmlAttr($block->getPrefixFieldCssClass()) ?>"
+                    <?php if ($block->isPrefixRequired()): ?>required<?php endif; ?>
+                    <?= $isDisabled ? 'disabled' : '' ?>
+                >
                     <?php foreach ($block->getPrefixOptions() as $option): ?>
-                        <option value="<?= $escaper->escapeHtmlAttr($option) ?>"
-                            <?php if ($block->getObject()->getPrefix() == $option): ?>
-                                selected="selected"
-                            <?php endif; ?>>
+                        <option
+                            value="<?= $escaper->escapeHtmlAttr($option) ?>"
+                            <?php if ($block->getObject()->getPrefix() === $option): ?> selected="selected"<?php endif; ?>
+                        >
                             <?= $escaper->escapeHtml(__($option)) ?>
                         </option>
                     <?php endforeach; ?>
@@ -51,96 +54,92 @@ $suffix = $block->showSuffix();
         </div>
     </div>
 <?php endif; ?>
-    <div class="field field-reserved w-full field-name-firstname required">
-        <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFieldId('firstname')) ?>">
-            <span>
-                <?= $escaper->escapeHtml($block->getStoreLabel('firstname')) ?>
-            </span>
-        </label>
-        <div class="control">
-            <input type="text" id="<?= $escaper->escapeHtmlAttr($block->getFieldId('firstname')) ?>"
-                   name="<?= $escaper->escapeHtmlAttr($block->getFieldName('firstname')) ?>"
-                   value="<?= $escaper->escapeHtmlAttr($block->getObject()->getFirstname()) ?>"
-                   required
-                   title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('firstname')) ?>"
-                   class="form-input w-full <?= $escaper->escapeHtmlAttr(
-                       $block->getAttributeValidationClass('firstname')
-                   ) ?>"
-                   @input.debounce="onChange"
-                <?= ($block->getAttributeValidationClass('firstname') == 'required-entry') ? ' required' : '' ?>
-            >
-        </div>
+
+<div class="field field-name-firstname required">
+    <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFirstnameFieldId()) ?>">
+        <span><?= $escaper->escapeHtml($block->getStoreLabel('firstname')) ?></span>
+    </label>
+    <div class="control">
+        <input
+            type="text"
+            id="<?= $escaper->escapeHtmlAttr($block->getFirstnameFieldId()) ?>"
+            name="<?= $escaper->escapeHtmlAttr($block->getFirstnameFieldName()) ?>"
+            value="<?= $escaper->escapeHtmlAttr($block->getObject()->getFirstname()) ?>"
+            title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('firstname')) ?>"
+            class="form-input input-text"
+            required
+            <?= $isDisabled ? 'disabled' : '' ?>
+        >
     </div>
-<?php if ($middle): ?>
-    <?php $isMiddlenameRequired = $block->isMiddlenameRequired(); ?>
-    <div class="field field-reserved w-full field-name-middlename<?= $isMiddlenameRequired ? ' required' : '' ?>">
-        <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFieldId('middlename')) ?>">
-            <span>
-                <?= $escaper->escapeHtml($block->getStoreLabel('middlename')) ?>
-            </span>
+</div>
+
+<?php if ($block->showMiddlename()): ?>
+    <div class="field field-name-middlename">
+        <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getMiddlenameFieldId()) ?>">
+            <span><?= $escaper->escapeHtml($block->getStoreLabel('middlename')) ?></span>
         </label>
         <div class="control">
-            <input type="text" id="<?= $escaper->escapeHtmlAttr($block->getFieldId('middlename')) ?>"
-                   name="<?= $escaper->escapeHtmlAttr($block->getFieldName('middlename')) ?>"
-                   value="<?= $escaper->escapeHtmlAttr($block->getObject()->getMiddlename()) ?>"
-                   title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('middlename')) ?>"
-                   class="form-input w-full
-                     <?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('middlename')) ?>"
-                   @input.debounce="onChange"
-                   <?= $isMiddlenameRequired ? ' required' : '' ?>
+            <input
+                type="text"
+                id="<?= $escaper->escapeHtmlAttr($block->getMiddlenameFieldId()) ?>"
+                name="<?= $escaper->escapeHtmlAttr($block->getMiddlenameFieldName()) ?>"
+                value="<?= $escaper->escapeHtmlAttr($block->getObject()->getMiddlename()) ?>"
+                title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('middlename')) ?>"
+                class="form-input input-text <?= $escaper->escapeHtmlAttr($block->getMiddlenameFieldCssClass()) ?>"
+                <?= $isDisabled ? 'disabled' : '' ?>
             >
         </div>
     </div>
 <?php endif; ?>
-    <div class="field field-reserved w-full field-name-lastname required">
-        <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFieldId('lastname')) ?>">
-            <span>
-                <?= $escaper->escapeHtml($block->getStoreLabel('lastname')) ?>
-            </span>
-        </label>
-        <div class="control">
-            <input type="text" id="<?= $escaper->escapeHtmlAttr($block->getFieldId('lastname')) ?>"
-                   name="<?= $escaper->escapeHtmlAttr($block->getFieldName('lastname')) ?>"
-                   required
-                   value="<?= $escaper->escapeHtmlAttr($block->getObject()->getLastname()) ?>"
-                   title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('lastname')) ?>"
-                   class="form-input w-full <?= $escaper->escapeHtmlAttr(
-                       $block->getAttributeValidationClass('lastname')
-                   ) ?>"
-                   @input.debounce="onChange"
-                <?= ($block->getAttributeValidationClass('lastname') == 'required-entry') ? ' required' : '' ?>
-            >
-        </div>
+
+<div class="field field-name-lastname required">
+    <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getLastnameFieldId()) ?>">
+        <span><?= $escaper->escapeHtml($block->getStoreLabel('lastname')) ?></span>
+    </label>
+    <div class="control">
+        <input
+            type="text"
+            id="<?= $escaper->escapeHtmlAttr($block->getLastnameFieldId()) ?>"
+            name="<?= $escaper->escapeHtmlAttr($block->getLastnameFieldName()) ?>"
+            value="<?= $escaper->escapeHtmlAttr($block->getObject()->getLastname()) ?>"
+            title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('lastname')) ?>"
+            class="form-input input-text"
+            required
+            <?= $isDisabled ? 'disabled' : '' ?>
+        >
     </div>
-<?php if ($suffix): ?>
-    <div class="field field-reserved w-full field-name-suffix<?= $block->isSuffixRequired() ? ' required' : '' ?>">
-        <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFieldId('suffix')) ?>">
-            <span>
-                <?= $escaper->escapeHtml($block->getStoreLabel('suffix')) ?>
-            </span>
+</div>
+
+<?php if ($block->showSuffix()): ?>
+    <div class="field field-name-suffix">
+        <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getSuffixFieldId()) ?>">
+            <span><?= $escaper->escapeHtml($block->getStoreLabel('suffix')) ?></span>
         </label>
         <div class="control">
             <?php if ($block->getSuffixOptions() === false): ?>
-                <input type="text" id="<?= $escaper->escapeHtmlAttr($block->getFieldId('suffix')) ?>"
-                       name="<?= $escaper->escapeHtmlAttr($block->getFieldName('suffix')) ?>"
-                       value="<?= $escaper->escapeHtmlAttr($block->getObject()->getSuffix()) ?>"
-                       title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('suffix')) ?>"
-                       class="form-input w-full
-                        <?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('suffix')) ?>"
-                    <?= $block->isSuffixRequired() ? ' required' : '' ?>
+                <input
+                    type="text"
+                    id="<?= $escaper->escapeHtmlAttr($block->getSuffixFieldId()) ?>"
+                    name="<?= $escaper->escapeHtmlAttr($block->getSuffixFieldName()) ?>"
+                    value="<?= $escaper->escapeHtmlAttr($block->getObject()->getSuffix()) ?>"
+                    title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('suffix')) ?>"
+                    class="form-input input-text <?= $escaper->escapeHtmlAttr($block->getSuffixFieldCssClass()) ?>"
+                    <?php if ($block->isSuffixRequired()): ?>required<?php endif; ?>
+                    <?= $isDisabled ? 'disabled' : '' ?>
                 >
             <?php else: ?>
-                <select id="<?= $escaper->escapeHtmlAttr($block->getFieldId('suffix')) ?>"
-                        name="<?= $escaper->escapeHtmlAttr($block->getFieldName('suffix')) ?>"
-                        title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('suffix')) ?>"
-                        class="<?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('suffix')) ?>"
-                    <?= $block->isSuffixRequired() ? ' required' : '' ?>
+                <select
+                    id="<?= $escaper->escapeHtmlAttr($block->getSuffixFieldId()) ?>"
+                    name="<?= $escaper->escapeHtmlAttr($block->getSuffixFieldName()) ?>"
+                    title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('suffix')) ?>"
+                    class="form-select select-name-suffix <?= $escaper->escapeHtmlAttr($block->getSuffixFieldCssClass()) ?>"
+                    <?php if ($block->isSuffixRequired()): ?>required<?php endif; ?>
+                    <?= $isDisabled ? 'disabled' : '' ?>
                 >
                     <?php foreach ($block->getSuffixOptions() as $option): ?>
-                        <option value="<?= $escaper->escapeHtmlAttr($option) ?>"
-                            <?php if ($block->getObject()->getSuffix() == $option): ?>
-                                selected="selected"
-                            <?php endif; ?>
+                        <option
+                            value="<?= $escaper->escapeHtmlAttr($option) ?>"
+                            <?php if ($block->getObject()->getSuffix() === $option): ?> selected="selected"<?php endif; ?>
                         >
                             <?= $escaper->escapeHtml(__($option)) ?>
                         </option>

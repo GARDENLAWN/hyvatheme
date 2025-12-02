@@ -7,28 +7,28 @@
 
 declare(strict_types=1);
 
-use Magento\Customer\Block\Widget\Taxvat;
-use Magento\Customer\Helper\Address as AddressHelper;
+use Magento\Customer\Block\Widget\Taxvat as TaxvatWidget;
 use Magento\Framework\Escaper;
 
-// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
-// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
-
+/** @var TaxvatWidget $block */
 /** @var Escaper $escaper */
-/** @var Taxvat $block */
+
+$isDisabled = $block->getData('disabled');
 ?>
-<div class="field field-reserved taxvat <?= $block->isRequired() ? 'required' : ''; ?>">
+<div class="field field-taxvat-vat-id required">
     <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFieldId('taxvat')) ?>">
         <span><?= $escaper->escapeHtml($block->getStoreLabel('taxvat')) ?></span>
     </label>
     <div class="control">
-        <input type="text"
-               id="<?= $escaper->escapeHtmlAttr($block->getFieldId('taxvat')) ?>"
-               name="<?= $escaper->escapeHtmlAttr($block->getFieldName('taxvat')) ?>"
-               value="<?= $escaper->escapeHtmlAttr($block->getTaxvat()) ?>"
-               title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('taxvat')) ?>"
-               class="form-input w-full <?= $escaper->escapeHtmlAttr($this->helper(AddressHelper::class)->getAttributeValidationClass('taxvat')) ?>"
-            <?= $block->isRequired() ? ' required' : '' ?>
+        <input
+            type="text"
+            id="<?= $escaper->escapeHtmlAttr($block->getFieldId('taxvat')) ?>"
+            name="<?= $escaper->escapeHtmlAttr($block->getFieldName('taxvat')) ?>"
+            value="<?= $escaper->escapeHtmlAttr($block->getTaxvat()) ?>"
+            title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('taxvat')) ?>"
+            class="form-input input-text"
+            required
+            <?= $isDisabled ? 'disabled' : '' ?>
         >
     </div>
 </div>
