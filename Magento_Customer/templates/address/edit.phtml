@@ -291,15 +291,13 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                 <?= $escaper->escapeHtml(implode("<br>\n", $isDefaultMessages), ['br']) ?>
             </div>
         <?php endif; ?>
-        <?php if (!$isB2bCustomer && !$block->isDefaultBilling() && $block->canSetAsDefaultBilling()): ?>
+        <?php if (!$isB2bCustomer && $block->canSetAsDefaultBilling()): ?>
             <div class="field choice set billing">
                 <input type="checkbox" id="primary_billing" name="default_billing" value="1" class="checkbox">
                 <label class="label" for="primary_billing">
                     <span><?= $escaper->escapeHtml(__('Use as my default billing address')) ?></span>
                 </label>
             </div>
-        <?php else: ?>
-            <input type="hidden" name="default_billing" value="1">
         <?php endif; ?>
 
         <?php if (!$block->isDefaultShipping() && $block->canSetAsDefaultShipping()): ?>
