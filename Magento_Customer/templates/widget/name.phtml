@@ -7,20 +7,13 @@
 
 use Magento\Customer\Block\Widget\Name;
 use Magento\Framework\Escaper;
-use GardenLawn\Company\Helper\Data as CompanyHelper;
-use Magento\Framework\View\Element\Template;
 
 /** @var Name $block */
 /** @var Escaper $escaper */
-/** @var Template $this */
 
 $prefix = $block->showPrefix();
 $middle = $block->showMiddlename();
 $suffix = $block->showSuffix();
-
-$companyHelper = $this->helper(CompanyHelper::class);
-$isB2bCustomer = in_array($companyHelper->getCurrentCustomerGroupId(), $companyHelper->getB2bCustomerGroups());
-$disabled = $isB2bCustomer;
 ?>
 <?php if ($prefix): ?>
     <div class="field field-reserved w-full field-name-prefix<?= $block->isPrefixRequired() ? ' required' : '' ?>">
@@ -37,7 +30,6 @@ $disabled = $isB2bCustomer;
                        class="form-input w-full
                           <?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('prefix')) ?>"
                         <?= $block->isPrefixRequired() ? ' required' : '' ?>
-                    <?= $disabled ? 'disabled' : '' ?>
                 >
             <?php else: ?>
                 <select id="<?= $escaper->escapeHtmlAttr($block->getFieldId('prefix')) ?>"
@@ -45,9 +37,7 @@ $disabled = $isB2bCustomer;
                         <?= $block->isPrefixRequired() ? ' required' : '' ?>
                         title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('prefix')) ?>"
                         class="form-select <?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('prefix')) ?>"
-                        <?= $block->isPrefixRequired() ? ' required' : '' ?>
-                    <?= $disabled ? 'disabled' : '' ?>
-                >
+                        <?= $block->isPrefixRequired() ? ' required' : '' ?> >
                     <?php foreach ($block->getPrefixOptions() as $option): ?>
                         <option value="<?= $escaper->escapeHtmlAttr($option) ?>"
                             <?php if ($block->getObject()->getPrefix() == $option): ?>
@@ -78,7 +68,6 @@ $disabled = $isB2bCustomer;
                    ) ?>"
                    @input.debounce="onChange"
                 <?= ($block->getAttributeValidationClass('firstname') == 'required-entry') ? ' required' : '' ?>
-                <?= $disabled ? 'disabled' : '' ?>
             >
         </div>
     </div>
@@ -99,7 +88,6 @@ $disabled = $isB2bCustomer;
                      <?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('middlename')) ?>"
                    @input.debounce="onChange"
                    <?= $isMiddlenameRequired ? ' required' : '' ?>
-                   <?= $disabled ? 'disabled' : '' ?>
             >
         </div>
     </div>
@@ -121,7 +109,6 @@ $disabled = $isB2bCustomer;
                    ) ?>"
                    @input.debounce="onChange"
                 <?= ($block->getAttributeValidationClass('lastname') == 'required-entry') ? ' required' : '' ?>
-                <?= $disabled ? 'disabled' : '' ?>
             >
         </div>
     </div>
@@ -141,7 +128,6 @@ $disabled = $isB2bCustomer;
                        class="form-input w-full
                         <?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('suffix')) ?>"
                     <?= $block->isSuffixRequired() ? ' required' : '' ?>
-                    <?= $disabled ? 'disabled' : '' ?>
                 >
             <?php else: ?>
                 <select id="<?= $escaper->escapeHtmlAttr($block->getFieldId('suffix')) ?>"
@@ -149,7 +135,6 @@ $disabled = $isB2bCustomer;
                         title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('suffix')) ?>"
                         class="<?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('suffix')) ?>"
                     <?= $block->isSuffixRequired() ? ' required' : '' ?>
-                    <?= $disabled ? 'disabled' : '' ?>
                 >
                     <?php foreach ($block->getSuffixOptions() as $option): ?>
                         <option value="<?= $escaper->escapeHtmlAttr($option) ?>"

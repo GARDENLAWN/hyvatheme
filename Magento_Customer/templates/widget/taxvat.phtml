@@ -10,19 +10,12 @@ declare(strict_types=1);
 use Magento\Customer\Block\Widget\Taxvat;
 use Magento\Customer\Helper\Address as AddressHelper;
 use Magento\Framework\Escaper;
-use Magento\Framework\View\Element\Template;
-use GardenLawn\Company\Helper\Data as CompanyHelper;
 
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
 
 /** @var Escaper $escaper */
 /** @var Taxvat $block */
-/** @var Template $this */
-
-$companyHelper = $this->helper(CompanyHelper::class);
-$isB2bCustomer = in_array($companyHelper->getCurrentCustomerGroupId(), $companyHelper->getB2bCustomerGroups());
-$disabled = $isB2bCustomer;
 ?>
 <div class="field field-reserved taxvat <?= $block->isRequired() ? 'required' : ''; ?>">
     <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFieldId('taxvat')) ?>">
@@ -36,7 +29,6 @@ $disabled = $isB2bCustomer;
                title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('taxvat')) ?>"
                class="form-input w-full <?= $escaper->escapeHtmlAttr($this->helper(AddressHelper::class)->getAttributeValidationClass('taxvat')) ?>"
             <?= $block->isRequired() ? ' required' : '' ?>
-            <?= $disabled ? 'disabled' : '' ?>
         >
     </div>
 </div>
