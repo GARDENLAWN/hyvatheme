@@ -7,9 +7,12 @@
                 <value id="default-src-s3" type="host">*.amazonaws.com</value>
                 <value id="default-src-cloudfront" type="host">*.cloudfront.net</value>
                 <value id="default-src-self" type="host">'self'</value>
-                <value id="default-src-gardenlawn" type="host">*.gardenlawn.pl</value>
-                <value id="default-src-amrobots" type="host">*.am-robots.pl</value>
-                <value id="default-src-finnpolska" type="host">*.finnpolska.pl</value>
+                <value id="default-src-gardenlawn-all" type="host">*.gardenlawn.pl</value>
+                <value id="default-src-amrobots-all" type="host">*.am-robots.pl</value>
+                <value id="default-src-finnpolska-all" type="host">*.finnpolska.pl</value>
+                <value id="default-src-gardenlawn" type="host">gardenlawn.pl</value>
+                <value id="default-src-amrobots" type="host">am-robots.pl</value>
+                <value id="default-src-finnpolska" type="host">finnpolska.pl</value>
             </values>
         </policy>
         <policy id="frame-src">
@@ -30,9 +33,12 @@
                 <value id="img-src-s3" type="host">*.amazonaws.com</value>
                 <value id="img-src-cloudfront" type="host">*.cloudfront.net</value>
                 <value id="img-src-self" type="host">'self'</value>
-                <value id="img-src-gardenlawn" type="host">*.gardenlawn.pl</value>
-                <value id="img-src-amrobots" type="host">*.am-robots.pl</value>
-                <value id="img-src-finnpolska" type="host">*.finnpolska.pl</value>
+                <value id="img-src-gardenlawn-all" type="host">*.gardenlawn.pl</value>
+                <value id="img-src-amrobots-all" type="host">*.am-robots.pl</value>
+                <value id="img-src-finnpolska-all" type="host">*.finnpolska.pl</value>
+                <value id="img-src-gardenlawn" type="host">gardenlawn.pl</value>
+                <value id="img-src-amrobots" type="host">am-robots.pl</value>
+                <value id="img-src-finnpolska" type="host">finnpolska.pl</value>
                 <value id="img-src-tpay" type="host">*.tpay.com</value>
                 <value id="img-src-paypal" type="host">*.paypal.com</value>
                 <value id="img-src-unsplash" type="host">unsplash.com</value>
