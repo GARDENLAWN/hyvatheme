@@ -89,6 +89,7 @@
                 <value id="script-src-hash-12" type="hash" algorithm="sha256">V1Q15CZYANZ2yjc6Wc01wfQNcN2vJsYrWZke05BCzjg=</value>
                 <value id="script-src-hash-13" type="hash" algorithm="sha256">OXqjjmv8hsJ7lR+n3ceuDu6KBNh8WlE7+5+vLocG1f4=</value>
                 <value id="script-src-hash-14" type="hash" algorithm="sha256">BTpJN8oJD6i3v9c8Y/BVsnZIeoDKNnQ1iTvwAYI0k1k=</value>
+                <value id="script-src-hash-15" type="hash" algorithm="sha256">RouEgbTb9zBPuluRUuRiPa4a44DIjCf5/7+FChFYibE=</value>
             </values>
         </policy>
         <policy id="connect-src">
