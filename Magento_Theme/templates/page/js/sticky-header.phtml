@@ -50,50 +50,63 @@ $enableCssOnlyStickyStyle = $block->getEnableCssOnlyStickyStyle() !== null
 <?php endif; ?>
 
 <style>
-    <?php if ($enableCssOnlyStickyStyle): ?>
-        @keyframes add-sticky {
-            to {
-                box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-                background-color: #fff;
+    @media (min-width: 1024px) {
+        <?php if ($enableCssOnlyStickyStyle): ?>
+            @keyframes add-sticky {
+                to {
+                    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+                    background-color: #fff;
+                }
             }
-        }
-    <?php endif; ?>
+        <?php endif; ?>
 
-    .page-header {
-        z-index: 30;
-        position: sticky;
-        top: -1px;
-        background-color: #fff;
-        transition: background-color 150ms, color 150ms, box-shadow 150ms, translate 300ms;
+        .page-header {
+            z-index: 30;
+            position: sticky;
+            top: -1px;
+            background-color: #fff;
+            transition: background-color 150ms, color 150ms, box-shadow 150ms, translate 300ms;
+        }
+
+        <?php if ($enableCssOnlyStickyStyle): ?>
+            @supports (animation-timeline: scroll()) {
+                .page-header {
+                    background-color: transparent;
+                    transition: translate 300ms;
+                    animation: add-sticky linear both;
+                    animation-timeline: scroll();
+                    animation-range: 0 6px;
+                }
+            }
+        <?php endif; ?>
+
+        <?php if (!$enableCssOnlyStickyStyle): ?>
+            .page-header[data-sticky="false"] {
+                background-color: transparent;
+            }
+
+            .page-header[data-sticky="true"] {
+                box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            }
+        <?php endif; ?>
+
+        <?php if ($hideOnScrollDown): ?>
+            html[data-header-can-sticky][data-scroll-dir-y="down"] .page-header {
+                box-shadow: none;
+                translate: 0 -100%;
+                transition: background-color 150ms, color 150ms, box-shadow 150ms, translate 300ms 150ms;
+            }
+        <?php endif; ?>
     }
 
-    <?php if ($enableCssOnlyStickyStyle): ?>
-        @supports (animation-timeline: scroll()) {
-            .page-header {
-                background-color: transparent;
-                transition: translate 300ms;
-                animation: add-sticky linear both;
-                animation-timeline: scroll();
-                animation-range: 0 6px;
-            }
+    @media (max-width: 1023px) {
+        .page-header {
+            position: sticky;
+            top: 0;
+            z-index: 30;
         }
-    <?php endif; ?>
-
-    <?php if (!$enableCssOnlyStickyStyle): ?>
-        .page-header[data-sticky="false"] {
-            background-color: transparent;
+        .page-header .website-switcher {
+            display: none;
         }
-
-        .page-header[data-sticky="true"] {
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-        }
-    <?php endif; ?>
-
-    <?php if ($hideOnScrollDown): ?>
-        html[data-header-can-sticky][data-scroll-dir-y="down"] .page-header {
-            box-shadow: none;
-            translate: 0 -100%;
-            transition: background-color 150ms, color 150ms, box-shadow 150ms, translate 300ms 150ms;
-        }
-    <?php endif; ?>
+    }
 </style>
