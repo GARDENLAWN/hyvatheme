@@ -132,6 +132,7 @@ $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniC
 
                 const drawer = this.$refs.cartDialogContent;
                 drawer.style.setProperty('--cart-drawer-offset-right', offsetRight);
+                drawer.style.setProperty('height', '600px');
             },
             productIsVisibleInSite() {
                 return this.item.product_has_url && this.item.is_visible_in_site_visibility
