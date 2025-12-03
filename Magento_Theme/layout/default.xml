@@ -66,7 +66,7 @@
             />
         </referenceContainer>
 
-        <referenceBlock name="topmenu_desktop" cacheable="false"> <!-- Dodano cacheable="false" -->
+        <referenceBlock name="topmenu_desktop">
             <arguments>
                 <argument name="open_top_level_menu_on_hover" xsi:type="boolean">true
                 </argument> <!-- Also open on hover (true/false) -->
@@ -80,7 +80,7 @@
             />
         </referenceBlock>
 
-        <referenceBlock name="topmenu_mobile" cacheable="false"> <!-- Dodano cacheable="false" -->
+        <referenceBlock name="topmenu_mobile">
             <block name="topmenu_mobile_item" template="Magento_Theme::html/header/menu/mobile-item.phtml"/>
             <arguments>
                 <argument name="max_level" xsi:type="number">4</argument> <!-- Max Menu depth to show -->
