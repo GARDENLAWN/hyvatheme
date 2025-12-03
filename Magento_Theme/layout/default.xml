@@ -29,7 +29,6 @@
                 name="topmenu_mobile_wrapper"
                 as="mobilemenu"
                 template="Magento_Theme::html/header/mobilemenu.phtml"
-                ttl="36000"
             >
                 <arguments>
                     <argument name="cache_lifetime" xsi:type="string">36000</argument>
