@@ -66,10 +66,10 @@
             />
         </referenceContainer>
 
-        <referenceBlock name="topmenu_desktop">
+        <referenceBlock name="topmenu_desktop" cacheable="false"> <!-- Dodano cacheable="false" -->
             <arguments>
                 <argument name="open_top_level_menu_on_hover" xsi:type="boolean">true
-                </argument> <!-- Also open on hover (true/false)-->
+                </argument> <!-- Also open on hover (true/false) -->
                 <argument name="max_level" xsi:type="number">4</argument> <!-- Max Menu depth to show -->
                 <argument name="top_menu_cta_item" xsi:type="string" translate="true">Sale
                 </argument> <!-- top Menu Item to Highlight -->
@@ -80,7 +80,7 @@
             />
         </referenceBlock>
 
-        <referenceBlock name="topmenu_mobile">
+        <referenceBlock name="topmenu_mobile" cacheable="false"> <!-- Dodano cacheable="false" -->
             <block name="topmenu_mobile_item" template="Magento_Theme::html/header/menu/mobile-item.phtml"/>
             <arguments>
                 <argument name="max_level" xsi:type="number">4</argument> <!-- Max Menu depth to show -->
