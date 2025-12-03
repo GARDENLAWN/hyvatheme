@@ -12,19 +12,22 @@ use Hyva\Theme\Model\ViewModelRegistry;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 use Hyva\Checkout\ViewModel\Checkout\AddressView;
+use GardenLawn\Core\ViewModel\B2BCustomer;
 
 /** @var Template $block */
 /** @var ViewModelRegistry $viewModels */
 /** @var AddressView $addressView */
 /** @var Escaper $escaper */
+/** @var B2BCustomer $b2bCustomer */
 
 $addressView = $viewModels->require(AddressView\AddressViewBilling::class);
+$b2bCustomer = $viewModels->require(B2BCustomer::class);
 ?>
 
 <div class="space-y-1">
     <?= /* @noEscape */ $addressView->renderView() ?>
 
-    <?php if (! $addressView->isVirtual()): ?>
+    <?php if (! $addressView->isVirtual() && ! $b2bCustomer->isCustomerB2B()): ?>
         <div
             wire:target="billingAsShipping"
             wire:loading.class="opacity-25"
