@@ -1,0 +1,47 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2022-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Hyva\Checkout\ViewModel\Checkout\AddressView;
+
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+/** @var AddressView $addressView */
+/** @var Escaper $escaper */
+
+$addressView = $viewModels->require(AddressView\AddressViewBilling::class);
+?>
+
+<div class="space-y-1">
+    <?= /* @noEscape */ $addressView->renderView() ?>
+
+    <?php if (! $addressView->isVirtual()): ?>
+        <div
+            wire:target="billingAsShipping"
+            wire:loading.class="opacity-25"
+        >
+            <label class="inline-flex items-center gap-x-2.5 mb-0">
+                <input id="billing-as-shipping"
+                       name="billing-as-shipping"
+                       type="checkbox"
+                       class="form-checkbox"
+                       wire:model="billingAsShipping"
+                       wire:loading.attr="disabled"
+                />
+
+                <span class="text-slate-700 font-medium hover:cursor-pointer">
+                    <?= $escaper->escapeHtml(__('My billing and shipping address are the same')) ?>
+                </span>
+            </label>
+        </div>
+    <?php endif ?>
+</div>
