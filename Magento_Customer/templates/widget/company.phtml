@@ -25,7 +25,7 @@ $isDisabled = $block->getData('disabled');
                name="<?= $escaper->escapeHtmlAttr($block->getFieldName('company')) ?>"
                value="<?= $escaper->escapeHtmlAttr($block->getCompany()) ?>"
                title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('company')) ?>"
-               class="form-input input-text"
+               class="form-input w-full input-text"
             <?= $block->isRequired() ? 'required' : '' ?>
             <?= $isDisabled ? 'readonly' : '' ?>
         >

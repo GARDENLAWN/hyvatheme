@@ -155,7 +155,6 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                            maxlength="6"
                            :required="isZipRequired"
                            @input.debounce="onChange"
-                           data-validate='{"postcode": true}'
                            class="form-input w-full"
                         <?= $isB2bBillingAddress ? 'readonly' : '' ?>
                     >
