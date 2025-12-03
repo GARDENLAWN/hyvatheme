@@ -59,6 +59,10 @@
     display: none !important;
 }
 
+.img-container {
+    text-align: -webkit-center !important;
+}
+
 .img-div {
     margin-block: calc(var(--spacing) * 4) !important;
 }
