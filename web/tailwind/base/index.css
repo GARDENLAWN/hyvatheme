@@ -71,6 +71,10 @@
     max-width: 200px !important;
 }
 
+.black-opacity {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 /* For AlpineJS */
 [x-cloak] {
     display: none !important;

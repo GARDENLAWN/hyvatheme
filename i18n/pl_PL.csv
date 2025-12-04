@@ -9150,3 +9150,7 @@ Return Date: ""","Data zwrotu:"
 "{{base_url}} is not recommended to use in a production environment to declare the Base Unsecure URL / Base Secure URL. We highly recommend changing this value in your Magento <a href=""%1"">configuration</a>.","Nie zaleca się używania {{base_url}} jako bazowego adresu URL w środowisku produkcyjnym. Radzimy zmianę tej wartości w <a href=""%1"">konfiguracji</a>."
 "’Internal Promotions’ for promotions field “Label”.","""Wewnętrzne promocje"" dla promocji w polu ""Etykieta""."
 "B2B customers cannot change their billing address.","Klienci B2B nie mogą zmienić swojego adresu rozliczeniowego."
+"Invalid Item Quantity Requested.","Podano nieprawidłową ilość artykułu."
+"The requested qty exceeds the maximum qty allowed in shopping cart","Żądana ilość przekracza maksymalną ilość dozwoloną w koszyku."
+
+
