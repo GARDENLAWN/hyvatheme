@@ -23,7 +23,63 @@ $isDisabled = $block->getData('disabled');
         value="<?= $escaper->escapeHtmlAttr($block->getTaxvat()) ?>"
     >
 <?php else: ?>
-    <div class="w-full">
+    <div
+        class="w-full"
+        x-data="{
+            taxvat: '<?= $escaper->escapeHtmlAttr($block->getTaxvat()) ?>',
+            loading: false,
+            fetchCompanyData() {
+                if (this.taxvat.length === 0) return;
+                this.loading = true;
+                const form = this.$el.closest('.form-address-edit') ??
+                    this.$el.closest('.form-create-account') ??
+                    this.$el.closest('.form-edit-account');
+
+                if (!form) {
+                    console.error('CEIDG: Could not find parent form with class .form-address-edit');
+                    this.loading = false;
+                    return;
+                }
+
+                fetch('/company/index/ceidg?taxvat=' + this.taxvat)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data) {
+                            const companyField = form.querySelector('[name=\'company\']');
+                            if(companyField) companyField.value = data.companyName;
+
+                            const firstnameField = form.querySelector('[name=\'firstname\']');
+                            if(firstnameField) firstnameField.value = data.firstName;
+
+                            const lastnameField = form.querySelector('[name=\'lastname\']');
+                            if(lastnameField) lastnameField.value = data.lastName;
+
+                            const streetField = form.querySelector('[name=\'street[]\']');
+                            if(streetField) streetField.value = data.street;
+
+                            const postcodeField = form.querySelector('[name=\'postcode\']');
+                            if(postcodeField) postcodeField.value = data.postcode;
+
+                            const cityField = form.querySelector('[name=\'city\']');
+                            if(cityField) cityField.value = data.city;
+
+                            const regionIdField = form.querySelector('[name=\'region_id\']');
+                            if (regionIdField && regionIdField.tagName === 'SELECT') {
+                                const regionOption = Array.from(regionIdField.options).find(option => option.text.toLowerCase() === data.region.toLowerCase());
+                                if (regionOption) {
+                                    regionIdField.value = regionOption.value;
+                                }
+                            }
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching company data:', error);
+                        this.loading = false;
+                    });
+            }
+        }"
+    >
         <div class="field field-taxvat-vat-id <?= $block->isRequired() ? 'required' : '' ?>">
             <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFieldId('taxvat')) ?>">
                 <span><?= $escaper->escapeHtml($block->getStoreLabel('taxvat')) ?></span>
@@ -33,11 +89,19 @@ $isDisabled = $block->getData('disabled');
                     type="text"
                     id="<?= $escaper->escapeHtmlAttr($block->getFieldId('taxvat')) ?>"
                     name="<?= $escaper->escapeHtmlAttr($block->getFieldName('taxvat')) ?>"
-                    value="<?= $escaper->escapeHtmlAttr($block->getTaxvat()) ?>"
+                    x-model="taxvat"
+                    @blur="fetchCompanyData"
                     title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('taxvat')) ?>"
                     class="form-input input-text"
                     <?= $block->isRequired() ? 'required' : '' ?>
                 >
+                <div x-show="loading" class="loader" style="display: none;">
+                    <!-- You can add a loading spinner here -->
+                    <svg class="animate-spin h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </div>
             </div>
         </div>
     </div>
