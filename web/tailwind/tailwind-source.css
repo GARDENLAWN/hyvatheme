@@ -34,6 +34,20 @@
     --color-fg: var(--color-slate-950);
     --color-fg-secondary: var(--color-slate-600);
     --color-surface: var(--color-white);
+
+    /* Amasty GDPR Hyva background images fix for Tailwind v4 */
+    --background-image-amgdpr-anonymize-active: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_P/Amasty_GdprHyva/svg/active/anonymize.svg");
+    --background-image-amgdpr-consents-active: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/Amasty_GdprHyva/svg/active/consents.svg");
+    --background-image-amgdpr-delete-active: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/Amasty_GdprHyva/svg/active/delete.svg");
+    --background-image-amgdpr-download-active: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/Amasty_GdprHyva/svg/active/download.svg");
+    --background-image-amgdpr-dpoinfo-active: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/Amasty_GdprHyva/svg/active/dpoinfo.svg");
+    --background-image-amgdpr-policy-active: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/Amasty_GdprHyva/svg/active/policy.svg");
+    --background-image-amgdpr-anonymize-solid: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/Amasty_GdprHyva/svg/solid/anonymize.svg");
+    --background-image-amgdpr-consents-solid: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/Amasty_GdprHyva/svg/solid/consents.svg");
+    --background-image-amgdpr-delete-solid: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/Amasty_GdprHyva/svg/solid/delete.svg");
+    --background-image-amgdpr-download-solid: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/Amasty_GdprHyva/svg/solid/download.svg");
+    --background-image-amgdpr-dpoinfo-solid: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/Amasty_GdprHyva/svg/solid/dpoinfo.svg");
+    --background-image-amgdpr-policy-solid: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/Amasty_GdprHyva/svg/solid/policy.svg");
 }
 
 @config "../../../../../../../vendor/amasty/module-gdpr-hyva/view/frontend/tailwind/tailwind.config.js";
