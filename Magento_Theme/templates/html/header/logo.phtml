@@ -36,16 +36,15 @@ $logoHeight = $logoSizeResolver && $logoSizeResolver->getHeight()
 /** @var Store $store */
 $store = $viewModels->require(Store::class);
 $storeCode = $store->getStoreCode();
-$logoSrc = "https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/images/logo.webp";
+$logoSrc = "https://pub.gardenlawn.pl/media/images/logo.webp";
 switch ($storeCode) {
     case 'amrobots':
-        $logoSrc = "https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/am-robots.webp";
+        $logoSrc = "https://pub.am-robots.pl/media/producers/am-robots.webp";
         break;
     case 'finnpolska':
-        $logoSrc = "https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/finn.webp";
+        $logoSrc = "https://pub.finnpolska.pl/media/producers/finn.webp";
         break;
 }
-
 ?>
 
 <a

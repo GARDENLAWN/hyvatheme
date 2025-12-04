@@ -140,7 +140,8 @@ $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniC
                 const drawer = this.$refs.cartDialogContent;
                 if(drawer) {
                     drawer.style.setProperty('--cart-drawer-offset-right', offsetRight);
-                    drawer.style.setProperty('height', '600px');
+                    drawer.style.setProperty('height', '550px');
+                    drawer.style.setProperty('top', '0px');
                 }
             },
             productIsVisibleInSite() {
