@@ -32,6 +32,19 @@ $topMenuCtaItem = $block->getTopMenuCtaItem();
 // Order is important here: 1. build the menu data, 2. then set the cache tags from the view model identities
 $menu = $viewModelNavigation->getNavigation(2 + $maxLevel);
 $block->setData('cache_tags', $viewModelNavigation->getIdentities());
+
+function hasSubcategories($item): bool
+{
+    if (empty($item['childData'])) {
+        return false;
+    }
+    foreach ($item['childData'] as $child) {
+        if (!empty($child['childData'])) {
+            return true;
+        }
+    }
+    return false;
+}
 ?>
 
 <nav
@@ -61,6 +74,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                             ->createBlock(CmsBlock::class)
                             ->setIdentifier($menuId)
                             ->toHtml();
+                        $hasSubcategories = hasSubcategories($item);
                     ?>
                     <button
                         type="button"
@@ -84,13 +98,13 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                     <div
                         id="<?= $escaper->escapeHtml($menuId) ?>"
                         class="z-30 absolute top-full inset-x-0 border-t border-slate-100 rounded-b-md bg-white shadow-md
-                            overflow-hidden <?= !empty($cmsBlockHtml) ? "grid grid-cols-[minmax(0px,1fr)_theme('spacing.72')]" : '' ?>"
+                            <?= !empty($cmsBlockHtml) ? "grid grid-cols-[minmax(0px,1fr)_theme('spacing.72')]" : '' ?>"
                         x-show="open"
                         x-transition
                         x-cloak
                     >
                         <div class="relative">
-                            <ul class="flex flex-col gap-1 py-2.5 px-2 w-72">
+                            <ul class="flex <?= $hasSubcategories ? 'flex-col' : 'flex-col flex-wrap h-96' ?> gap-1 py-2.5 px-2 w-72">
                                 <li>
                                     <a
                                         href="<?= $escaper->escapeUrl($item['url']) ?>"
@@ -181,6 +195,10 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
             toggle() {
                 this.open = !this.open;
                 this.$nextTick(() => {
+                    if (this.$refs.childmenuWrapper.getBoundingClientRect().right > window.innerWidth) {
+                        this.$refs.childmenuWrapper.classList.remove('left-full');
+                        this.$refs.childmenuWrapper.classList.add('right-full');
+                    }
                     this.$refs.childmenuViewAll.focus();
                     this.$refs.childmenuWrapper.scrollIntoView({
                         behavior: 'smooth',
