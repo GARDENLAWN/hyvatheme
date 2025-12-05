@@ -91,30 +91,32 @@ $items = [
                 $itemTextLarge = $item['text_large'] ?? '';
                 $itemTextSmall = $item['text_small'] ?? '';
             ?>
-            <figure class="shrink-0 grid *:row-start-1 *:col-start-1 w-full">
-                <img
-                    class="w-full h-[460px] md:h-[480px] lg:h-[400px] object-contain"
-                    src="<?= $escaper->escapeHtmlAttr($item['image_url']) ?>"
-                    alt="<?= $escaper->escapeHtmlAttr($item['image_alt'] ?? $item['text_small'] ?? '') ?>"
-                    width="1280"
-                    height="853"
-                    loading="<?= $escaper->escapeHtmlAttr(($loadFirstEager && $index === 0 ? 'eager' : 'lazy')) ?>"
-                >
-                <?php if ($itemTextSmall || $itemTextLarge): ?>
-                    <figcaption class="relative col-start-1 row-start-1 self-end px-6 pt-12 pb-20 sm:pb-24 bg-gradient-to-t from-gray-800/50 to-transparent text-white text-center uppercase">
-                        <?php if ($itemTextSmall): ?>
-                            <p class="text-base sm:text-xl sm:mb-3 last:mb-0 sm:leading-7 font-semibold drop-shadow-md">
-                                <?= $escaper->escapeHtml($itemTextSmall) ?>
-                            </p>
-                        <?php endif; ?>
-                        <?php if ($itemTextLarge): ?>
-                            <p class="text-2xl sm:text-3xl md:text-5xl sm:leading-none font-bold drop-shadow-md">
-                                <?= $escaper->escapeHtml($itemTextLarge) ?>
-                            </p>
-                        <?php endif; ?>
-                    </figcaption>
-                <?php endif; ?>
-            </figure>
+            <a href="<?= $escaper->escapeUrl($item['url']) ?>">
+                <figure class="shrink-0 grid *:row-start-1 *:col-start-1 w-full">
+                    <img
+                        class="w-full h-[460px] md:h-[480px] lg:h-[400px] object-contain"
+                        src="<?= $escaper->escapeHtmlAttr($item['image_url']) ?>"
+                        alt="<?= $escaper->escapeHtmlAttr($item['image_alt'] ?? $item['text_small'] ?? '') ?>"
+                        width="1280"
+                        height="853"
+                        loading="<?= $escaper->escapeHtmlAttr(($loadFirstEager && $index === 0 ? 'eager' : 'lazy')) ?>"
+                    >
+                    <?php if ($itemTextSmall || $itemTextLarge): ?>
+                        <figcaption class="relative col-start-1 row-start-1 self-end px-6 pt-12 pb-20 sm:pb-24 bg-gradient-to-t from-gray-800/50 to-transparent text-white text-center uppercase">
+                            <?php if ($itemTextSmall): ?>
+                                <p class="text-base sm:text-xl sm:mb-3 last:mb-0 sm:leading-7 font-semibold drop-shadow-md">
+                                    <?= $escaper->escapeHtml($itemTextSmall) ?>
+                                </p>
+                            <?php endif; ?>
+                            <?php if ($itemTextLarge): ?>
+                                <p class="text-2xl sm:text-3xl md:text-5xl sm:leading-none font-bold drop-shadow-md">
+                                    <?= $escaper->escapeHtml($itemTextLarge) ?>
+                                </p>
+                            <?php endif; ?>
+                        </figcaption>
+                    <?php endif; ?>
+                </figure>
+            </a>
         <?php endforeach; ?>
     </div>
 </section>
