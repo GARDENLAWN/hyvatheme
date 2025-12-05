@@ -103,8 +103,22 @@ function hasSubcategories($item): bool
                         x-transition
                         x-cloak
                     >
+                        <?php
+                            $childCount = count($item['childData']);
+                            $ulClass = 'flex gap-1 py-2.5 px-2 ';
+
+                            if ($hasSubcategories) {
+                                $ulClass .= 'flex-col w-80';
+                            } else {
+                                if ($childCount > 8) {
+                                    $ulClass .= 'grid grid-cols-2 w-[40rem]';
+                                } else {
+                                    $ulClass .= 'flex-col w-80';
+                                }
+                            }
+                        ?>
                         <div class="relative">
-                            <ul class="flex <?= $hasSubcategories ? 'flex-col' : 'flex-col flex-wrap h-96' ?> gap-1 py-2.5 px-2 w-72">
+                            <ul class="<?= $ulClass ?>">
                                 <li>
                                     <a
                                         href="<?= $escaper->escapeUrl($item['url']) ?>"
