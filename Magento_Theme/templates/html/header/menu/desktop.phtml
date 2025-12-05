@@ -192,6 +192,17 @@ function hasSubcategories($item): bool
     function initSubMenuDesktopItem() {
         return {
             open: false,
+            canHover(func) {
+                return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            },
+            canHoverOpen() {
+                if (!this.canHover()) return;
+                this.open = true;
+            },
+            canHoverClose() {
+                if (!this.canHover()) return;
+                this.open = false;
+            },
             toggle() {
                 this.open = !this.open;
                 this.$nextTick(() => {

@@ -32,6 +32,8 @@ $menuId = str_replace('-', '_',$item['id']);
         data-id="<?= /* @noEscape */$menuId ?>"
         x-data="initSubMenuDesktopItem"
         @click.outside="close"
+        @mouseenter="canHoverOpen"
+        @mouseleave="canHoverClose"
     >
         <button
             type="button"
