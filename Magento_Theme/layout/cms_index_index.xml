@@ -20,6 +20,22 @@
                     <argument name="load_first_eager" xsi:type="boolean">false</argument> <!-- Load the first slider image eager (true/false) -->
                 </arguments>
             </block>
+            <block name="slider-a2" template="Magento_Theme::elements/slider-a2.phtml" after="slider-a">
+            <arguments>
+                <argument name="show_arrows" xsi:type="string">end</argument> <!-- Show Slider nav arrows (true/false/start/end) -->
+                <argument name="show_dots" xsi:type="boolean">true</argument> <!-- Show dots (true/false) -->
+                <argument name="load_first_eager" xsi:type="boolean">false</argument> <!-- Load the first slider image eager (true/false) -->
+            </arguments>
+        </block>
+        </referenceContainer>
+        <referenceContainer name="footer-content-before">
+            <block name="slider-b" template="Magento_Theme::elements/slider-b.phtml" after="content">
+                <arguments>
+                    <argument name="show_arrows" xsi:type="string">end</argument> <!-- Show Slider nav arrows (true/false/start/end) -->
+                    <argument name="show_dots" xsi:type="boolean">true</argument> <!-- Show dots (true/false) -->
+                    <argument name="load_first_eager" xsi:type="boolean">false</argument> <!-- Load the first slider image eager (true/false) -->
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

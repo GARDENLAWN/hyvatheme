@@ -22,26 +22,73 @@ $defaultHeight = 95;
 
 $items = [
     [
-        // Can also be a webp or jpg or any other image format
-        'src' => $block->getViewFileUrl('Hyva_Theme::svg/lorum-logo-1.svg'),
-        'alt' => 'Lorum Ipsum'
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/am-robots.webp',
+        'alt' => ''
     ],
     [
-        'src' => $block->getViewFileUrl('Hyva_Theme::svg/lorum-logo-2.svg'),
-        'alt' => 'Lorum Ipsum'
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/AmbrogioRobotVerde.webp',
+        'alt' => ''
     ],
     [
-        'src' => $block->getViewFileUrl('Hyva_Theme::svg/lorum-logo-3.svg'),
-        'alt' => 'Lorum Ipsum'
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/BB_logo_LS_yellow_RGB.webp',
+        'alt' => ''
     ],
     [
-        'src' => $block->getViewFileUrl('Hyva_Theme::svg/lorum-logo-4.svg'),
-        'alt' => 'Lorum Ipsum'
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/FX_Logo_100Black.webp',
+        'alt' => ''
     ],
     [
-        'src' => $block->getViewFileUrl('Hyva_Theme::svg/lorum-logo-5.svg'),
-        'alt' => 'Lorum Ipsum'
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/Hunter-Hydrawise_logo.webp',
+        'alt' => ''
     ],
+    [
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/LOGOTECH.webp',
+        'alt' => ''
+    ],
+    [
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/cropped-cropped-LOGO-SUMIN-1-100x41.webp',
+        'alt' => ''
+    ],
+    [
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/designfx.webp',
+        'alt' => ''
+    ],
+    [
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/finn.webp',
+        'alt' => ''
+    ],
+    [
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/irrigationfx.webp',
+        'alt' => ''
+    ],
+    [
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/landfx-logo-800w.webp',
+        'alt' => ''
+    ],
+    [
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/logo nemh2o azzurro.webp',
+        'alt' => ''
+    ],
+    [
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/plantingfx.webp',
+        'alt' => ''
+    ],
+    [
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/rblogo_pms348.webp',
+        'alt' => ''
+    ],
+    [
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/target_cmyk.webp',
+        'alt' => ''
+    ],
+    [
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/toro-logo-RGB-for-digital.webp',
+        'alt' => ''
+    ],
+    [
+        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/trawnik_producent.webp',
+        'alt' => ''
+    ]
 ];
 
 $marqueeClasses = "flex gap-[var(--gap)] select-none overflow-hidden mask-overflow border-y border-gray-300 py-10 md:py-7";
@@ -56,12 +103,12 @@ $marqueeGroupClasses = "shrink-0 flex gap-[var(--gap)] items-center justify-arou
 >
     <?php if ($showTitle): ?>
         <div class="mb-4 sm:flex sm:justify-between sm:items-baseline">
-            <div class="text-3xl leading-9 font-bold text-gray-800">
+            <div class="hidden text-3xl leading-9 font-bold text-gray-800">
                 <?= $escaper->escapeHtml(__('Our favorite brands')) ?>
             </div>
             <a
                 href="<?= $escaper->escapeUrl($block->getUrl('home')) ?>"
-                class="text-blue-700 text-lg leading-7 font-semibold"
+                class="hidden text-blue-700 text-lg leading-7 font-semibold"
             >
                 <?= $escaper->escapeHtml(__('Browse all brands')) ?> →
             </a>
