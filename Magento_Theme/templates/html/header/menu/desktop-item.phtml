@@ -38,7 +38,7 @@ $menuId = str_replace('-', '_',$item['id']);
         <button
             type="button"
             class="group w-full flex justify-between items-center gap-1 p-2 rounded-md hover:bg-slate-50
-                aria-expanded:text-blue-800 aria-expanded:bg-blue-50 data-[has-current]:font-medium"
+                aria-expanded:text-blue-800 aria-expanded:bg-blue-50 data-[has-current]:font-medium data-[has-current]:text-primary"
             x-ref="childmenuToggle"
             @click="toggle"
             aria-expanded="false"
@@ -63,7 +63,7 @@ $menuId = str_replace('-', '_',$item['id']);
             <li>
                 <a
                     href="<?= $escaper->escapeUrl($item['url']) ?>"
-                    class="flex p-2 rounded-md hover:bg-slate-50 aria-[current=page]:font-medium"
+                    class="flex p-2 rounded-md hover:bg-slate-50 aria-[current=page]:font-medium aria-[current=page]:text-primary"
                     x-ref="childmenuViewAll"
                 ><?= $escaper->escapeHtml(__('See all %1', $item['name'])) ?></a>
             </li>
@@ -79,7 +79,7 @@ $menuId = str_replace('-', '_',$item['id']);
     <li class="level-<?= $level ?>">
         <a
             href="<?= $escaper->escapeUrl($item['url']) ?>"
-            class="level-<?= $level ?> flex p-2 rounded-md hover:bg-slate-50 aria-[current=page]:font-medium"
+            class="level-<?= $level ?> flex p-2 rounded-md hover:bg-slate-50 aria-[current=page]:font-medium aria-[current=page]:text-primary"
         ><?= $escaper->escapeHtml($item['name']) ?></a>
     </li>
 <?php endif; ?>

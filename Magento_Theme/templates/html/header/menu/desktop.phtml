@@ -80,8 +80,8 @@ function hasSubcategories($item): bool
                         type="button"
                         class="level-0 group w-full flex justify-between items-center gap-1 pt-4 pb-[calc(theme(padding.4)_-_3px)]
                             border-b-[3px] border-transparent hover:border-blue-500 transition
-                            aria-expanded:text-blue-500 aria-expanded:border-blue-500 data-[has-current]:aria-expanded:border-blue-500
-                            data-[has-current]:border-slate-400 data-[has-current]:hover:border-blue-500"
+                            aria-expanded:text-blue-500 aria-expanded:border-blue-500 data-[has-current]:aria-expanded:border-primary
+                            data-[has-current]:border-primary data-[has-current]:hover:border-primary"
                         @click="toggle"
                         aria-expanded="false"
                         :aria-expanded="open"
@@ -144,7 +144,7 @@ function hasSubcategories($item): bool
                         href="<?= $escaper->escapeUrl($item['url']) ?>"
                         title="<?= $escaper->escapeHtmlAttr($item['name']) ?>"
                         class="level-0 flex pt-4 pb-[calc(theme(padding.4)_-_3px)] border-b-[3px] border-transparent hover:border-blue-500
-                            aria-[current=page]:border-slate-400 aria-[current=page]:hover:border-blue-500
+                            aria-[current=page]:border-primary aria-[current=page]:hover:border-primary
                             <?= $item['name'] === $topMenuCtaItem ? 'text-red-700' : '' ?>"
                     >
                         <?= $escaper->escapeHtml($item['name']) ?>
