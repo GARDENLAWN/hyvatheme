@@ -13,15 +13,17 @@
 >
     <body>
         <referenceContainer name="content">
-            <block name="slider-a" template="Magento_Theme::elements/slider-a.phtml">
+            <block name="slider-mobile" template="Magento_Theme::elements/slider-mobile.phtml">
                 <arguments>
+                    <argument name="htmlClass" xsi:type="string">lg:hidden</argument>
                     <argument name="show_arrows" xsi:type="string">end</argument> <!-- Show Slider nav arrows (true/false/start/end) -->
                     <argument name="show_dots" xsi:type="boolean">true</argument> <!-- Show dots (true/false) -->
                     <argument name="load_first_eager" xsi:type="boolean">false</argument> <!-- Load the first slider image eager (true/false) -->
                 </arguments>
             </block>
-            <block name="slider-a2" template="Magento_Theme::elements/slider-a2.phtml" after="slider-a">
+            <block name="slider-desktop" template="Magento_Theme::elements/slider-desktop.phtml">
             <arguments>
+                <argument name="htmlClass" xsi:type="string">hidden lg:block</argument>
                 <argument name="show_arrows" xsi:type="string">end</argument> <!-- Show Slider nav arrows (true/false/start/end) -->
                 <argument name="show_dots" xsi:type="boolean">true</argument> <!-- Show dots (true/false) -->
                 <argument name="load_first_eager" xsi:type="boolean">false</argument> <!-- Load the first slider image eager (true/false) -->
@@ -29,7 +31,7 @@
         </block>
         </referenceContainer>
         <referenceContainer name="footer-content-before">
-            <block name="slider-b" template="Magento_Theme::elements/slider-b.phtml" after="content">
+            <block name="slider-producers" template="Magento_Theme::elements/slider-producers.phtml" after="content">
                 <arguments>
                     <argument name="show_arrows" xsi:type="string">end</argument> <!-- Show Slider nav arrows (true/false/start/end) -->
                     <argument name="show_dots" xsi:type="boolean">true</argument> <!-- Show dots (true/false) -->
