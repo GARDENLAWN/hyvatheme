@@ -28,7 +28,7 @@ $menuId = str_replace('-', '_',$item['id']);
 
 <?php if (!empty($item['childData'])): ?>
     <li
-        class="level-<?= $level ?>"
+        class="level-<?= $level ?> relative"
         data-id="<?= /* @noEscape */$menuId ?>"
         x-data="initSubMenuDesktopItem"
         @click.outside="close"
@@ -53,7 +53,7 @@ $menuId = str_replace('-', '_',$item['id']);
         </button>
         <ul
             id="<?= $escaper->escapeHtml($item['id']) ?>-desktop-menu-panel"
-            class="absolute inset-0 border-l border-slate-100 bg-white flex flex-col gap-1 py-2.5 px-2 w-72 translate-x-72"
+            class="absolute top-0 left-full border-l border-slate-100 bg-white flex flex-col gap-1 py-2.5 px-2 w-72"
             x-show="open"
             x-ref="childmenuWrapper"
             @keydown.escape.stop="close"
