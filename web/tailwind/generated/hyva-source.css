@@ -36,8 +36,6 @@
 @source "../../../../../../../../vendor/amasty/module-gdpr-hyva-checkout/**/*.xml";
 @source "../../../../../../../../vendor/hyva-themes/magento2-hyva-widgets/src/**/*.phtml";
 @source "../../../../../../../../vendor/hyva-themes/magento2-hyva-widgets/src/**/*.xml";
-@source "../../../../../../../../vendor/snowdog/module-menu/**/*.phtml";
-@source "../../../../../../../../vendor/snowdog/module-menu/**/*.xml";
 @source "../../../../../../../../vendor/hyva-themes/magento2-default-theme-csp/**/*.phtml";
 @source "../../../../../../../../vendor/hyva-themes/magento2-default-theme-csp/**/*.xml";
 @source "../../../../../../../../vendor/hyva-themes/magento2-default-theme/**/*.phtml";
@@ -49,7 +47,6 @@
 @import "../../../../../../../../vendor/mollie/magento2-hyva-compatibility/src/Mollie_HyvaCompatibility/view/frontend/tailwind/tailwind-source.css";
 @import "../../../../../../../../vendor/magewirephp/magewire/src/view/frontend/tailwind/tailwind-source.css";
 @import "../../../../../../../../vendor/gardenlawn/magento-2-social-login/view/frontend/tailwind/tailwind-source.css";
-@import "../../../../../../../../vendor/snowdog/module-menu/view/frontend/tailwind/tailwind-source.css";
 
 @import "../../../../../../../../vendor/hyva-themes/magento2-hyva-checkout/src/view/frontend/tailwind/module.css";
 

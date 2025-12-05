@@ -25,58 +25,19 @@ $viewModelNavigation = $viewModels->require(Navigation::class, $block);
 /** @var HeroiconsSolid $heroiconsSolid */
 $heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
 
+$maxLevel = $block->getmaxLevel() ?: 3;
 $canOpenOnHover = $block->getOpenTopLevelMenuOnHover();
-$showTopLevelAllLink = $block->getShowTopLevelAllLink() !== null ? $block->getShowTopLevelAllLink() : true;
 $topMenuCtaItem = $block->getTopMenuCtaItem();
 
 // Order is important here: 1. build the menu data, 2. then set the cache tags from the view model identities
-$menu = $viewModelNavigation->getNavigation(10);
+$menu = $viewModelNavigation->getNavigation(2 + $maxLevel);
 $block->setData('cache_tags', $viewModelNavigation->getIdentities());
-
-$renderSubmenu = function(array $menuItems, int $level) use (&$renderSubmenu, $escaper): string {
-    if (empty($menuItems)) {
-        return '';
-    }
-
-    $ulClasses = 'pl-3';
-    if ($level === 2) {
-        $ulClasses .= ' pt-1';
-    }
-
-    $aClasses = 'block py-1 hover:underline aria-[current=page]:underline';
-    if ($level === 2) {
-        $aClasses .= ' level-2 text-sm text-slate-600 hover:text-blue-500';
-    } else {
-        // For levels 3, 4, 5...
-        $aClasses .= ' level-' . $level . ' text-xs text-slate-500 hover:text-blue-500';
-    }
-
-
-    $output = '<ul class="' . $ulClasses . '">';
-
-    foreach ($menuItems as $item) {
-        $output .= '<li>';
-        $output .= '<a href="' . $escaper->escapeUrl($item['url']) . '" class="' . $aClasses . '">';
-        $output .= $escaper->escapeHtml($item['name']);
-        $output .= '</a>';
-
-        // Recursive call for children
-        if (!empty($item['childData'])) {
-            $output .= $renderSubmenu($item['childData'], $level + 1);
-        }
-
-        $output .= '</li>';
-    }
-
-    $output .= '</ul>';
-
-    return $output;
-};
 ?>
 
 <nav
-    class="navigation hidden lg:block"
+    class="navigation relative hidden lg:block grow"
     aria-label="<?= $escaper->escapeHtmlAttr(__('Main menu')) ?>"
+    data-max-level="<?= $maxLevel ?>"
     x-data="initMenuDesktop"
     x-ref="nav-desktop"
     @load.window="setActiveMenu"
@@ -94,13 +55,18 @@ $renderSubmenu = function(array $menuItems, int $level) use (&$renderSubmenu, $e
                         @mouseleave="canHoverClose"
                     <?php endif ?>
                 >
-                    <?php $menuId = 'desktop-menu-' . str_replace('-node', '', $item['id']) ?>
+                    <?php
+                        $menuId = 'desktop-menu-' . str_replace('-node', '', $item['id']);
+                        $cmsBlockHtml = $this->getLayout()
+                            ->createBlock(CmsBlock::class)
+                            ->setIdentifier($menuId)
+                            ->toHtml();
+                    ?>
                     <button
                         type="button"
                         class="level-0 group w-full flex justify-between items-center gap-1 pt-4 pb-[calc(theme(padding.4)_-_3px)]
                             border-b-[3px] border-transparent hover:border-blue-500 transition
-                            aria-expanded:text-blue-500 aria-expanded:border-blue-500
-                            data-[has-current]:aria-expanded:border-blue-500
+                            aria-expanded:text-blue-500 aria-expanded:border-blue-500 data-[has-current]:aria-expanded:border-blue-500
                             data-[has-current]:border-slate-400 data-[has-current]:hover:border-blue-500"
                         @click="toggle"
                         aria-expanded="false"
@@ -117,45 +83,30 @@ $renderSubmenu = function(array $menuItems, int $level) use (&$renderSubmenu, $e
                     </button>
                     <div
                         id="<?= $escaper->escapeHtml($menuId) ?>"
-                        class="z-30 absolute inset-x-0 flex gap-8 container py-6 min-h-64 border-t border-slate-100
-                            rounded-b-md bg-white shadow-md overflow-auto"
+                        class="z-30 absolute top-full inset-x-0 border-t border-slate-100 rounded-b-md bg-white shadow-md
+                            overflow-hidden <?= !empty($cmsBlockHtml) ? "grid grid-cols-[minmax(0px,1fr)_theme('spacing.72')]" : '' ?>"
                         x-show="open"
                         x-transition
                         x-cloak
                     >
-                        <div class="grow flex flex-col justify-between">
-                            <ul class="columns-xs gap-8">
-                                <?php foreach ($item['childData'] as $subMenu): ?>
-                                    <li class="break-inside-avoid pb-4">
-                                        <a
-                                            href="<?= $escaper->escapeUrl($subMenu['url']) ?>"
-                                            class="level-1 block py-1 font-semibold text-slate-800 hover:underline aria-[current=page]:underline"
-                                        ><?= $escaper->escapeHtml($subMenu['name']) ?></a>
-                                        <?php if (!empty($subMenu['childData'])): ?>
-                                            <?= /** @noEscape */ $renderSubmenu($subMenu['childData'], 2) ?>
-                                        <?php endif; ?>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                            <?php if ($showTopLevelAllLink): ?>
-                                <div class="mt-4 border-t border-slate-100">
+                        <div class="relative overflow-auto min-h-64">
+                            <ul class="flex flex-col gap-1 py-2.5 px-2 w-72">
+                                <li>
                                     <a
                                         href="<?= $escaper->escapeUrl($item['url']) ?>"
-                                        class="level-0 block pt-3 hover:underline aria-[current=page]:underline"
+                                        class="flex p-2 rounded-md hover:bg-slate-50 aria-[current=page]:font-medium"
                                     ><?= $escaper->escapeHtml(__('See all %1', $item['name'])) ?></a>
-                                </div>
-                            <?php endif; ?>
+                                </li>
+                                <?php foreach ($item['childData'] as $subMenu): ?>
+                                    <?= $block->getLayout()->getBlock('topmenu_desktop_item')
+                                        ->setItem($subMenu)
+                                        ->setLevel(1)
+                                        ->toHtml() ?>
+                                <?php endforeach; ?>
+                            </ul>
                         </div>
-                        <?php
-                        $cmsBlockHtml = $this->getLayout()
-                            ->createBlock(CmsBlock::class)
-                            ->setIdentifier($menuId)
-                            ->toHtml();
-                        if (!empty($cmsBlockHtml)):
-                            ?>
-                            <div class="max-w-[50%]">
-                                <?= /** @noEscape */ $cmsBlockHtml ?>
-                            </div>
+                        <?php if (!empty($cmsBlockHtml)): ?>
+                            <div><?= /** @noEscape */ $cmsBlockHtml ?></div>
                         <?php endif; ?>
                     </div>
                 </li>
@@ -164,8 +115,7 @@ $renderSubmenu = function(array $menuItems, int $level) use (&$renderSubmenu, $e
                     <a
                         href="<?= $escaper->escapeUrl($item['url']) ?>"
                         title="<?= $escaper->escapeHtmlAttr($item['name']) ?>"
-                        class="level-0 flex pt-4 pb-[calc(theme(padding.4)_-_3px)] border-b-[3px]
-                            border-transparent hover:border-blue-500
+                        class="level-0 flex pt-4 pb-[calc(theme(padding.4)_-_3px)] border-b-[3px] border-transparent hover:border-blue-500
                             aria-[current=page]:border-slate-400 aria-[current=page]:hover:border-blue-500
                             <?= $item['name'] === $topMenuCtaItem ? 'text-red-700' : '' ?>"
                     >
@@ -179,24 +129,25 @@ $renderSubmenu = function(array $menuItems, int $level) use (&$renderSubmenu, $e
 <script>
     function initMenuDesktop() {
         return {
+            maxLevel: parseInt(this.$root.dataset.maxLevel),
             setActiveMenu() {
                 Array.from(this.$root.querySelectorAll('a'))
                     .filter(link => link.href === window.location.href.split('?')[0])
                     .forEach(item => {
-                            item.setAttribute('aria-current', 'page');
+                        item.setAttribute('aria-current', 'page');
 
-                            for (let level = 0; level < 3; level++) {
-                                const closestMenu = item.closest(`.level-${level}`);
+                        for (let level = 0; level < this.maxLevel; level++) {
+                            const closestMenu = item.closest(`.level-${level}`);
 
-                                if (closestMenu) {
-                                    const button = closestMenu.querySelector('button');
-                                    if (button) {
-                                        button.setAttribute('data-has-current', '');
-                                    }
+                            if (closestMenu) {
+                                const button = closestMenu.querySelector('button');
+                                if (button) {
+                                    button.setAttribute('data-has-current', '');
                                 }
                             }
                         }
-                    );
+                    }
+                );
             }
         }
     }
@@ -224,9 +175,32 @@ $renderSubmenu = function(array $menuItems, int $level) use (&$renderSubmenu, $e
         }
     }
 
+    function initSubMenuDesktopItem() {
+        return {
+            open: false,
+            toggle() {
+                this.open = !this.open;
+                this.$nextTick(() => {
+                    this.$refs.childmenuViewAll.focus();
+                    this.$refs.childmenuWrapper.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                        inline: 'end'
+                    });
+                });
+            },
+            close() {
+                this.open = false;
+                this.$refs.childmenuToggle.focus();
+            },
+        }
+    }
+
     window.addEventListener('alpine:init', () => {
         Alpine.data('initMenuDesktop', initMenuDesktop);
         Alpine.data('initMenuDesktopItem', initMenuDesktopItem);
+        Alpine.data('initSubMenuDesktopItem', initSubMenuDesktopItem);
     }, { once: true })
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
+
