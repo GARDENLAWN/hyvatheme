@@ -22,71 +22,71 @@ $defaultHeight = 95;
 
 $items = [
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/am-robots.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/am-robots.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/AmbrogioRobotVerde.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/AmbrogioRobotVerde.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/BB_logo_LS_yellow_RGB.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/BB_logo_LS_yellow_RGB.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/FX_Logo_100Black.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/FX_Logo_100Black.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/Hunter-Hydrawise_logo.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/Hunter-Hydrawise_logo.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/LOGOTECH.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/LOGOTECH.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/cropped-cropped-LOGO-SUMIN-1-100x41.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/cropped-cropped-LOGO-SUMIN-1-100x41.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/designfx.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/designfx.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/finn.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/finn.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/irrigationfx.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/irrigationfx.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/landfx-logo-800w.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/landfx-logo-800w.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/logo nemh2o azzurro.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/logo nemh2o azzurro.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/plantingfx.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/plantingfx.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/rblogo_pms348.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/rblogo_pms348.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/target_cmyk.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/target_cmyk.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/toro-logo-RGB-for-digital.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/toro-logo-RGB-for-digital.webp',
         'alt' => ''
     ],
     [
-        'src' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/producers/trawnik_producent.webp',
+        'src' => 'https://pub.gardenlawn.pl/media/producers/trawnik_producent.webp',
         'alt' => ''
     ]
 ];
@@ -124,6 +124,7 @@ $marqueeGroupClasses = "shrink-0 flex gap-[var(--gap)] items-center justify-arou
                     alt="<?= $escaper->escapeHtmlAttr($item['alt'] ?? '') ?>"
                     width="<?= $escaper->escapeHtmlAttr($item['width'] ?? $defaultWidth) ?>"
                     height="<?= $escaper->escapeHtmlAttr($item['height'] ?? $defaultHeight) ?>"
+                    fetchpriority="high"
                     loading="lazy"
                 >
             <?php endforeach; ?>
@@ -138,6 +139,7 @@ $marqueeGroupClasses = "shrink-0 flex gap-[var(--gap)] items-center justify-arou
                     alt=""
                     width="<?= $escaper->escapeHtmlAttr($item['width'] ?? $defaultWidth) ?>"
                     height="<?= $escaper->escapeHtmlAttr($item['height'] ?? $defaultHeight) ?>"
+                    fetchpriority="high"
                     loading="lazy"
                 >
             <?php endforeach; ?>

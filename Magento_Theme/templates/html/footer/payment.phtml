@@ -30,23 +30,28 @@ $paymentIconsHeight = 32;
     <div class="w-full flex justify-center">
         <picture>
             <source media="(max-width: 767px)"
-                    srcset="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/PayNow/PayNow.png'); ?>">
+                    srcset="https://pub.gardenlawn.pl/media/images/PayNow/PayNow.webp">
             <source media="(min-width: 768px)"
-                    srcset="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/PayNow/PayNowBanner.png'); ?>">
+                    srcset="https://pub.gardenlawn.pl/media/images/PayNow/PayNowBanner.webp">
             <img style="max-height: 150px;"
-                src="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/PayNow/PayNowBanner.png'); ?>"
-                alt="PayNow"/>
+                 src="https://pub.gardenlawn.pl/media/images/PayNow/PayNowBanner.webp"
+                 loading="lazy" fetchpriority="high"
+                 alt="PayNow"/>
         </picture>
     </div>
     <img style="height: 40px; margin-top: 20px;"
-         src="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/PayNow/PayPo.svg'); ?>" alt="PayPo"/>
+         src="https://pub.gardenlawn.pl/media/images/PayNow/PayPo.svg"
+         loading="lazy" fetchpriority="high" alt="PayPo"/>
     <img style="height: 40px; margin-top: 20px;"
-         src="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/E-Raty/e-raty.svg'); ?>"
+         src="https://pub.gardenlawn.pl/media/images/E-Raty/e-raty.svg"
+         loading="lazy" fetchpriority="high"
          alt="E-Raty"/>
     <img style="height: 70px;"
-         src="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/InPost/InPostPay.svg'); ?>"
+         src="https://pub.gardenlawn.pl/media/images/InPost/InPostPay.svg"
+         loading="lazy" fetchpriority="high"
          alt="InPost"/>
     <img style="height: 70px;"
-         src="<?php echo $block->getViewFileUrl('GardenLawn_Hyvatheme::images/InPost/InPost.png'); ?>"
+         src="https://pub.gardenlawn.pl/media/images/InPost/InPost.webp"
+         loading="lazy" fetchpriority="high"
          alt="InPost"/>
 </div>

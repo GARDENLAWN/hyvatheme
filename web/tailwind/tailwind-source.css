@@ -30,12 +30,12 @@
 @import "./generated/hyva-tokens.css";
 
 @theme {
-    --color-bg: var(--color-slate-50);
-    --color-fg: var(--color-slate-950);
-    --color-fg-secondary: var(--color-slate-600);
-    --color-surface: var(--color-white);
+   --color-bg: var(--color-slate-50);
+   --color-fg: var(--color-slate-950);
+   --color-fg-secondary: var(--color-slate-600);
+   --color-surface: var(--color-white);
 
-    /* Amasty GDPR Hyva background images fix for Tailwind v4 */
+   /* Amasty GDPR Hyva background images fix for Tailwind v4 */
     --background-image-amgdpr-anonymize-active: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_P/Amasty_GdprHyva/svg/active/anonymize.svg");
     --background-image-amgdpr-consents-active: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/Amasty_GdprHyva/svg/active/consents.svg");
     --background-image-amgdpr-delete-active: url("https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/Amasty_GdprHyva/svg/active/delete.svg");

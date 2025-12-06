@@ -23,22 +23,22 @@ $markerClasses = "w-4 h-4 rounded-full shadow-md cursor-pointer ring-4 ring-tran
 
 $items = [
     [
-        'image_url' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/wysiwyg/banners/dealers/baner1.webp',
+        'image_url' => 'https://pub.gardenlawn.pl/media/wysiwyg/banners/dealers/baner1.webp',
         'image_alt' => __('Zostań dealerem AM-Robots'),
         'url' => $block->getUrl('zostan-dealerem'),
     ],
     [
-        'image_url' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/wysiwyg/banners/dealers/baner2.webp',
+        'image_url' => 'https://pub.gardenlawn.pl/media/wysiwyg/banners/dealers/baner2.webp',
         'image_alt' => __('Zostań dealerem AM-Robots'),
         'url' => $block->getUrl('zostan-dealerem'),
     ],
     [
-        'image_url' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/wysiwyg/banners/dealers/baner3.webp',
+        'image_url' => 'https://pub.gardenlawn.pl/media/wysiwyg/banners/dealers/baner3.webp',
         'image_alt' => __('Zostań dealerem AM-Robots'),
         'url' => $block->getUrl('zostan-dealerem'),
     ],
     [
-        'image_url' => 'https://gardenlawn.s3.eu-central-1.amazonaws.com/pub/media/wysiwyg/banners/dealers/baner4.webp',
+        'image_url' => 'https://pub.gardenlawn.pl/media/wysiwyg/banners/dealers/baner4.webp',
         'image_alt' => __('Zostań dealerem AM-Robots'),
         'url' => $block->getUrl('zostan-dealerem'),
     ]
@@ -99,6 +99,7 @@ $items = [
                         alt="<?= $escaper->escapeHtmlAttr($item['image_alt'] ?? $item['text_small'] ?? '') ?>"
                         width="1280"
                         height="853"
+                        fetchpriority="high"
                         loading="<?= $escaper->escapeHtmlAttr(($loadFirstEager && $index === 0 ? 'eager' : 'lazy')) ?>"
                     >
                     <?php if ($itemTextSmall || $itemTextLarge): ?>
