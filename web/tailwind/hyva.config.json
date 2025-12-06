@@ -16,8 +16,8 @@
       "color": {
         "primary": {
           "lighter": "#63c00c",
-          "DEFAULT": "#58aa09",
-          "darker": "#3e7808"
+          "DEFAULT": "#2D6308",
+          "darker": "#275309"
         },
         "secondary": {
           "lighter": "#218fde",
