@@ -20,13 +20,13 @@ if (file_exists($sourceFile)) {
     $content = file_get_contents($sourceFile);
 }
 
-/*$font = $assetRepository->createAsset('css/font-awesome.css');
+$font = $assetRepository->createAsset('css/font-awesome.css');
 // 4. Pobieramy ścieżkę fizyczną na dysku
-$sourceFileFont = $font->getSourceFile();*/
+$sourceFileFont = $font->getSourceFile();
 $contentFont = '';
-/*if (file_exists($sourceFileFont)) {
+if (file_exists($sourceFileFont)) {
     $contentFont = file_get_contents($sourceFileFont);
-}*/
+}
 ?>
 
 <?php if ($content): ?>
