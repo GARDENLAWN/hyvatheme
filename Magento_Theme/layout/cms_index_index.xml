@@ -12,6 +12,23 @@
     xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
 >
     <body>
+        <referenceBlock name="script-alpine-js">
+            <arguments>
+                <argument name="defer" xsi:type="boolean">true</argument>
+            </arguments>
+            <block name="alpine-plugin-ajax-cart" template="Magento_Theme::page/js/plugins/ajax-cart.phtml">
+                <arguments>
+                    <argument name="delay" xsi:type="number">500
+                    </argument> <!-- Extra delay in milliseconds added to the loader (true/false) -->
+                    <argument name="show_sku" xsi:type="boolean">true</argument> <!-- Show Sku (true/false) -->
+                    <argument name="display_on_success" xsi:type="string">modal
+                    </argument> <!-- What to show on success (false/minicart/modal) -->
+                </arguments>
+            </block>
+            <block name="alpine-plugin-collapse" template="Magento_Theme::page/js/plugins/collapse.phtml"/>
+            <block name="alpine-plugin-htmldialog" template="Magento_Theme::page/js/plugins/htmldialog.phtml"/>
+            <block name="alpine-plugin-snap-slider" template="Magento_Theme::page/js/plugins/snap-slider.phtml"/>
+        </referenceBlock>
         <referenceContainer name="content">
             <block name="slider-mobile" template="Magento_Theme::elements/slider-mobile.phtml">
                 <arguments>
