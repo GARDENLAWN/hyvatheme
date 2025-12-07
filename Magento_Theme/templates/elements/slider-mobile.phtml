@@ -99,8 +99,12 @@ $items = [
                         alt="<?= $escaper->escapeHtmlAttr($item['image_alt'] ?? $item['text_small'] ?? '') ?>"
                         width="1280"
                         height="853"
-                        <?= $escaper->escapeHtmlAttr(($loadFirstEager && $index === 0 ? 'fetchpriority="high"' : '')) ?>
-                        loading="<?= $escaper->escapeHtmlAttr(($loadFirstEager && $index === 0 ? 'eager' : 'lazy')) ?>"
+                        <?php if ($index === 0): ?>
+                            fetchpriority="high"
+                            loading="eager"
+                        <?php else: ?>
+                            loading="lazy"
+                        <?php endif; ?>
                     >
                     <?php if ($itemTextSmall || $itemTextLarge): ?>
                         <figcaption class="relative col-start-1 row-start-1 self-end px-6 pt-12 pb-20 sm:pb-24 bg-gradient-to-t from-gray-800/50 to-transparent text-white text-center uppercase">
