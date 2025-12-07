@@ -20,7 +20,7 @@ if (file_exists($sourceFile)) {
     $content = file_get_contents($sourceFile);
 }
 
-$font = $assetRepository->createAsset('css/font-awsome.min.css');
+$font = $assetRepository->createAsset('css/font-awesome.css');
 // 4. Pobieramy ścieżkę fizyczną na dysku
 $sourceFileFont = $font->getSourceFile();
 $contentFont = '';
