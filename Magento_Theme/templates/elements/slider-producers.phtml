@@ -124,7 +124,6 @@ $marqueeGroupClasses = "shrink-0 flex gap-[var(--gap)] items-center justify-arou
                     alt="<?= $escaper->escapeHtmlAttr($item['alt'] ?? '') ?>"
                     width="<?= $escaper->escapeHtmlAttr($item['width'] ?? $defaultWidth) ?>"
                     height="<?= $escaper->escapeHtmlAttr($item['height'] ?? $defaultHeight) ?>"
-                    fetchpriority="high"
                     loading="lazy"
                 >
             <?php endforeach; ?>
@@ -139,7 +138,6 @@ $marqueeGroupClasses = "shrink-0 flex gap-[var(--gap)] items-center justify-arou
                     alt=""
                     width="<?= $escaper->escapeHtmlAttr($item['width'] ?? $defaultWidth) ?>"
                     height="<?= $escaper->escapeHtmlAttr($item['height'] ?? $defaultHeight) ?>"
-                    fetchpriority="high"
                     loading="lazy"
                 >
             <?php endforeach; ?>
