@@ -65,7 +65,7 @@ switch ($storeCode) {
             alt="<?= $escaper->escapeHtmlAttr($block->getLogoAlt() ?: $storeName) ?>"
             width="<?= $escaper->escapeHtmlAttr($logoWidth) ?>"
             height="<?= $escaper->escapeHtmlAttr($logoHeight) ?>"
-            loading="eager"
+            loading="lazy"
             fetchpriority="high"
         >
     <?php else: ?>

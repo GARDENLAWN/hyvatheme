@@ -13,13 +13,19 @@ $assetRepository = $om->get('\Magento\Framework\View\Asset\Repository');
 // 3. Tworzymy asset dla Twojego pliku CSS (tu wpisz ścieżkę ID pliku)
 // Zazwyczaj jest to 'css/styles.css' lub 'Magento_Theme::css/styles.css'
 $asset = $assetRepository->createAsset('css/styles.css');
-
 // 4. Pobieramy ścieżkę fizyczną na dysku
 $sourceFile = $asset->getSourceFile();
-
 $content = '';
 if (file_exists($sourceFile)) {
     $content = file_get_contents($sourceFile);
+}
+
+$font = $assetRepository->createAsset('css/font-awsome.min.css');
+// 4. Pobieramy ścieżkę fizyczną na dysku
+$sourceFileFont = $font->getSourceFile();
+$contentFont = '';
+if (file_exists($sourceFileFont)) {
+    $contentFont = file_get_contents($sourceFileFont);
 }
 ?>
 
@@ -28,3 +34,9 @@ if (file_exists($sourceFile)) {
         <?= /* @noEscape */ $content; ?>
     </style>
 <?php endif; ?>
+<?php if ($contentFont): ?>
+    <style>
+        <?= /* @noEscape */ $contentFont; ?>
+    </style>
+<?php endif; ?>
+
