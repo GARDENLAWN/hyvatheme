@@ -148,6 +148,9 @@
         </referenceContainer>
 
         <referenceBlock name="script-alpine-js">
+            <arguments>
+                <argument name="defer" xsi:type="boolean">true</argument>
+            </arguments>
             <block name="alpine-plugin-ajax-cart" template="Magento_Theme::page/js/plugins/ajax-cart.phtml">
                 <arguments>
                     <argument name="delay" xsi:type="number">500
