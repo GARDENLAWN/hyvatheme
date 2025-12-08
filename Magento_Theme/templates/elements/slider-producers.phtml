@@ -134,8 +134,7 @@ $marqueeGroupClasses = "shrink-0 flex gap-[var(--gap)] items-center justify-arou
             <?php foreach ($items as $item): ?>
                 <img
                     class="h-16 w-auto object-contain"
-                    src="<?= $escaper->escapeHtmlAttr($item['src']) ?>"
-                    alt=""
+                    src="<?= $escaper->escapeHtmlAttr($item['src                    alt=""
                     width="<?= $escaper->escapeHtmlAttr($item['width'] ?? $defaultWidth) ?>"
                     height="<?= $escaper->escapeHtmlAttr($item['height'] ?? $defaultHeight) ?>"
                     loading="lazy"
