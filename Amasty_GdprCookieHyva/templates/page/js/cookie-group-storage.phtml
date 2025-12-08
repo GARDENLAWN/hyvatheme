@@ -1,0 +1,202 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package GDPR Cookie Hyva Compatibility (System)
+ */
+
+/** @var Hyva\Theme\ViewModel\HyvaCsp|null $hyvaCsp */
+?>
+
+<script data-cfasync="false">
+    'use strict';
+
+    /**
+     * @typedef {Object} CookieGroupData
+     * @prop {Boolean} checked
+     * @prop {[{description: string, lifetime: number|null, name: string, provider: string, type: string}]} cookies
+     * @prop {String} description
+     * @prop {string|null} groupId
+     * @prop {Boolean} isEssential
+     * @prop {String} name
+     */
+
+    function initAmastyCookieGroupsStorage() {
+        return {
+            /**
+             * @type {[CookieGroupData]}
+             */
+            groupData: [],
+            cookiePolicy: undefined,
+            lastUpdate: undefined,
+
+            /**
+             * @returns {string|number[]}
+             */
+            getEssentialGroupIds: function () {
+                return this.groupData.reduce(function (essentialGroupIds, group) {
+                    if (group.isEssential) {
+                        essentialGroupIds.push(group.groupId)
+                    }
+
+                    return essentialGroupIds;
+                }, []);
+            },
+
+            /**
+             * @returns {string|number[]}
+             */
+            getCheckedGroupIds: function () {
+                return this.groupData.reduce(function (checkedGroupIds, group) {
+                    if (group.checked) {
+                        checkedGroupIds.push(group.groupId);
+                    }
+
+                    return checkedGroupIds;
+                }, []);
+            },
+
+            /**
+             * @param {string} cookieName
+             * @returns {boolean}
+             */
+            isCookieEssential: function (cookieName) {
+                const allEssentialCookies = this.getEssentialCookies();
+
+                return !!allEssentialCookies.find(cookie => cookie.name === cookieName);
+            },
+
+            /**
+             * @returns {array}
+             */
+            getEssentialCookies: function () {
+                return this.groupData
+                    .filter(group => group.isEssential)
+                    .map(group => group.cookies)
+                    .flat();
+            },
+
+            /**
+             * @returns {boolean}
+             */
+            hasGroupData: function () {
+                return !!this.groupData.length;
+            },
+
+            /**
+             * @param {string} cookieName
+             * @param {string} pattern
+             * @returns {boolean}
+             */
+            isEssentialByPattern: function (cookieName, pattern) {
+                const essentialCookiePatterns = this.getEssentialCookiesPattern(pattern);
+
+                return essentialCookiePatterns.some((pattern) => !!cookieName.match(this.getCookiePattern(pattern)));
+            },
+
+            /**
+             * @param {string} pattern
+             * @return {Array}
+             */
+            getEssentialCookiesPattern: function (pattern) {
+                return this.getCookiesByPattern(pattern, this.getEssentialCookies());
+            },
+
+            /**
+             * @param {string} pattern
+             * @param {Array|undefined} cookies
+             * @return {Array}
+             */
+            getCookiesByPattern: function (pattern, cookies) {
+                if (typeof cookie === 'undefined') {
+                    cookies = this.getAllCookies();
+                }
+
+                return cookies
+                    .map((cookie) => typeof cookie === 'object' ? cookie.name : cookie.split('=')[0].trim())
+                    .filter((cookie) => cookie.match(pattern) !== null);
+            },
+
+            /**
+             * @returns {array}
+             */
+            getDisallowedCookies: function () {
+                const disallowedCookie = decodeURIComponent(hyva.getCookie('amcookie_disallowed') ?? '');
+                if (!disallowedCookie) {
+                    return [];
+                }
+
+                return disallowedCookie.split(',');
+            },
+
+            /**
+             * @returns {string}
+             */
+            getCookiePattern: function (pattern) {
+                return `^${pattern.replaceAll('*', '.*')}$`;
+            },
+
+            /**
+             * @returns {array}
+             */
+            getAllCookies: function () {
+                return document.cookie.split(';');
+            },
+
+            /**
+             * @param {boolean} setAcceptance
+             * @param {boolean} forceUpdate
+             * @returns {Promise}
+             */
+            updateGroupData: function (setAcceptance = false, forceUpdate = false) {
+                if (this.hasGroupData() && !forceUpdate) {
+                    return Promise.resolve(); // Data already loaded, no need to fetch again
+                }
+
+                const cookieFetchUrl = `${BASE_URL}amcookie/cookie/cookies`;
+                return fetch(cookieFetchUrl, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: new URLSearchParams({
+                        allowed: hyva.getCookie('amcookie_allowed'),
+                        restriction: hyva.getCookie('amcookie_policy_restriction')
+                    })
+                }).then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+
+                    return Promise.reject(`${response.status} ${response.statusText}`);
+                }).then(data => {
+                    this.cookiePolicy = data.cookiePolicy ?? 'allowed';
+                    this.lastUpdate = data.lastUpdate ?? 0;
+                    this.groupData = [...data.groupData];
+
+                    hyva.setCookie('amcookie_policy_restriction', this.cookiePolicy, 10);
+                    if (setAcceptance) {
+                        amastyCookieManager.setLastCookieAcceptance(this.lastUpdate);
+                    }
+
+                    return data;
+                }).catch(error => {
+                    typeof window.dispatchMessages !== "undefined" && window.dispatchMessages([
+                        {
+                            type: "error",
+                            text: error
+                        }
+                    ]);
+                }).finally(() => window.dispatchEvent(new CustomEvent('amasty-cookie-group-updated')));
+            }
+        }
+    }
+
+    window.addEventListener(
+        'alpine:init',
+        () => Alpine.store('AmastyCookieGroups', initAmastyCookieGroupsStorage()),
+        { once: true }
+    );
+</script>
+<?php isset($hyvaCsp) && $hyvaCsp->registerInlineScript() ?>

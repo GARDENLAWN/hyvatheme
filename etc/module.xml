@@ -20,6 +20,7 @@
             <module name="Hyva_Checkout"/>
             <module name="Hyva_Theme"/>
             <module name="Amasty_GdprHyva"/>
+            <module name="Amasty_GdprCookieHyva"/>
         </sequence>
     </module>
 </config>
