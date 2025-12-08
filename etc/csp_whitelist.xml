@@ -115,6 +115,7 @@
                 <value id="font-src-s3" type="host">*.amazonaws.com</value>
                 <value id="font-src-self" type="host">'self'</value>
                 <value id="font-src-gardenlawn" type="host">gardenlawn.pl</value>
+                <value id="font-src-pub-gardenlawn" type="host">pub.gardenlawn.pl</value>
                 <value id="font-src-amrobots" type="host">*.am-robots.pl</value>
                 <value id="font-src-finnpolska" type="host">*.finnpolska.pl</value>
                 <value id="font-src-geowidget" type="host">*.easypack24.net</value>
