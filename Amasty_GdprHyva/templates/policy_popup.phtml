@@ -104,31 +104,24 @@ $heroIcons = $viewModels->require(HeroiconsSolid::class);
             },
             textUrl: '<?= $escaper->escapeUrl($block->getTextUrl()) ?>',
             acceptUrl: '<?= $escaper->escapeUrl($block->getAcceptUrl()) ?>',
-            popupDataUrl: '<?= $escaper->escapeUrl($block->getPopupDataUrl()) ?>',
+            // popupDataUrl: '<?= $escaper->escapeUrl($block->getPopupDataUrl()) ?>', // Usunięte
             notificationText: '<?= $escaper->escapeHtml($block->getPolicyNotificationText()) ?>',
             showOnPageLoad: <?= /** @noEscape */ var_export($block->showOnPageLoad(), true) ?>,
             /**
              * @type PolicyData
              */
-            policyData: {
-                policyVersion: '',
-                show: false,
-                title: '',
-                versionChanged: false,
-                hideClose: false,
-                action: true
-            },
+            policyData: <?= /** @noEscape */ json_encode($block->getPopupData()) ?>, // Inicjalizacja z danych serwera
             title: '',
             policyText: '',
             consentId: undefined,
             init: async function () {
-                // Defer fetching policy data until the popup is shown
-                // if ((this.showOnPageLoad && this.policyData.show) || this.policyData.versionChanged) {
-                //     await this.fetchPolicyContent();
-                //     this.$nextTick(() => {
-                //         this.show('amgdpr-policy-popup');
-                //     });
-                // }
+                // Dane policyData są już załadowane po stronie serwera
+                if ((this.showOnPageLoad && this.policyData.show) || this.policyData.versionChanged) {
+                    await this.fetchPolicyContent();
+                    this.$nextTick(() => {
+                        this.show('amgdpr-policy-popup');
+                    });
+                }
             },
 
             /**
@@ -142,12 +135,9 @@ $heroIcons = $viewModels->require(HeroiconsSolid::class);
              * @returns {void}
              */
             showPopup: async function () {
-                if (!this.policyData.policyVersion) { // Check if policyData is not loaded
-                    await this.fetchPolicyData();
-                }
-                if ((this.showOnPageLoad && this.policyData.show) || this.policyData.versionChanged) {
-                    await this.fetchPolicyContent();
-                }
+                // Dane policyData są już załadowane, nie ma potrzeby ich ponownie pobierać.
+                // Logika wyświetlania na podstawie showOnPageLoad i versionChanged jest w init.
+                // Ta funkcja showPopup jest wywoływana po pobraniu treści przez fetchPolicyContent.
                 this.show('amgdpr-policy-popup');
             },
 
@@ -165,17 +155,7 @@ $heroIcons = $viewModels->require(HeroiconsSolid::class);
                 return this.notificationText && this.policyData.versionChanged;
             },
 
-            /**
-             * @returns {Promise}
-             */
-            fetchPolicyData: function () {
-                return fetch(this.popupDataUrl)
-                    .then(response => response.json())
-                    .then((data) => {
-                        this.policyData = {...data}
-                    })
-                    .catch(error => this.dispatchErrorMessage(error));
-            },
+            // fetchPolicyData: function () { ... } // Funkcja usunięta
 
             /**
              * @returns {Promise}
