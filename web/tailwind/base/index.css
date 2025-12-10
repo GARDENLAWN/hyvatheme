@@ -7,8 +7,7 @@
     }
 
     :root {
-        scrollbar-color: var(--scrollthumb-color, var(--color-primary))
-            var(--scrolltrack-color, #0000);
+        scrollbar-color: var(--scrollthumb-color, var(--color-primary)) var(--scrolltrack-color, #0000);
         accent-color: var(--color-primary);
         caret-color: var(--color-primary);
         interpolate-size: allow-keywords;
@@ -18,6 +17,66 @@
         background: var(--color-bg);
         color: var(--color-fg);
     }
+}
+
+#shipping-method-list img {
+    height: revert !important;
+    width: revert !important;
+    min-height: 20px !important;
+    max-height: 20px !important;
+}
+
+@media (max-width: 767px) {
+    #shipping-method-list img {
+        min-height: 50px !important;
+        max-height: 50px !important;
+    }
+
+    .category-view.container {
+        padding: inherit;
+    }
+}
+
+#payment-method-list img {
+    height: revert !important;
+    width: revert !important;
+    min-height: 30px !important;
+    max-height: 40px !important;
+    max-width: revert !important;
+}
+
+#paynow_blik_code {
+    width: auto !important;
+}
+
+.paynow-payment-option img[src*="2005.png"] {
+    content: url('https://gardenlawn.pl/static/frontend/GardenLawn/Hyvatheme/pl_PL/GardenLawn_Hyvatheme/images/PayNow/digital-wallet.svg');
+    width: auto;
+    height: 40px;
+}
+
+.field-lastname, .field-taxvat {
+    grid-column: span 6/span 6 !important;
+}
+
+.field-addresstype {
+    display: none !important;
+}
+
+.img-container {
+    text-align: -webkit-center !important;
+}
+
+.img-div {
+    margin-block: calc(var(--spacing) * 4) !important;
+}
+
+.img-content {
+    max-width: 200px !important;
+}
+
+.black-opacity {
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* For AlpineJS */
