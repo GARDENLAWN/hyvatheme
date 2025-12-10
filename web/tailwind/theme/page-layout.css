@@ -3,7 +3,7 @@
 }
 
 .page-main {
-    flex-grow: 1;
+    flex-grow: 0;
     margin-block: --spacing(1);
 }
 
