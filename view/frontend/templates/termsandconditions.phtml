@@ -1,0 +1,21 @@
+<?php
+/**
+ * @var $block Agreements
+ */
+
+use Magento\CheckoutAgreements\Block\Agreements;
+
+?>
+<?php if (!$block->getAgreements()) {
+    return;
+} ?>
+<div class="agreements items">
+    <?php foreach ($block->getAgreements() as $agreement): ?>
+        <div class="item">
+            <?php if ($agreement->getIsHtml()): ?>
+                <?= html_entity_decode($agreement->getContent()) ?>
+            <?php else: ?>
+                <?= nl2br($block->escapeHtml($agreement->getContent())) ?>
+            <?php endif; ?>
+        </div>
+    <?php endforeach ?></div>

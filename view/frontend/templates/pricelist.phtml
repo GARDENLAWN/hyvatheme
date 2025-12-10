@@ -1,0 +1,440 @@
+<?php
+
+declare(strict_types=1);
+
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var HyvaCsp $hyvaCsp */
+/** @var Escaper $escaper */
+/** @var Template $block */
+?>
+<div id="pricelist" class="text-center">
+    <table id="price-table" class="table td">
+        <tr id="pricehead" class="tr-sticky table-head font-bold text-center">
+            <td style="border-right-width: thin; border-right-color: white">Usługa</td>
+            <td style="border-right-width: thin">Jednostka</td>
+            <td style="border-right-width: thin">Cena netto</td>
+            <td style="border-right-width: thin">VAT</td>
+            <td>Materiał /<br />robocizna</td>
+        </tr>
+        <tr class="tr">
+            <td colspan="5" class="td-category">Projektowanie ogrodów</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Konsultacje w sprawie ogrodów</td>
+            <td class="td">rbh</td>
+            <td class="td">200zł</td>
+            <td class="td">23%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">do 100m<sup>2</sup></td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">1200zł</td>
+            <td class="td">23%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">101-500m<sup>2</sup></td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">1200-1800zł</td>
+            <td class="td">23%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">501-1000m<sup>2</sup></td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">1800-2600zł</td>
+            <td class="td">23%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">1001-1500m<sup>2</sup></td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">2600-3000zł</td>
+            <td class="td">23%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">1501-2000m<sup>2</sup></td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">3000-4000zł</td>
+            <td class="td">23%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">powyżej 2000m<sup>2</sup></td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">do uzgodnienia</td>
+            <td class="td">23%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td colspan="5" class="td-category">Projektowanie systemów nawadniania</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Inwentaryzacja terenu</td>
+            <td class="td">usługa</td>
+            <td class="td">150zł</td>
+            <td class="td">23%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Projekt systemu nawadniania</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">350 zł + 20 zł za 100 m<sup>2</sup> nawadnianej pow.</td>
+            <td class="td">23%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+        </tr>
+        <tr class="tr">
+            <td colspan="5" class="td-category">Montaż systemu nawadniania + projekt gratis</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Zabezpieczenie systemu nawadniania przed zimą</td>
+            <td class="td">sekcja</td>
+            <td class="td">60zł (min. 300zł)</td>
+            <td class="td">23%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Modernizacja systemu nawadniania (robocizna)</td>
+            <td class="td">rbh/1 pracownik</td>
+            <td class="td">100zł</td>
+            <td class="td">23%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">do 500m<sup>2</sup></td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">20-30zł</td>
+            <td class="td">23%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">do 1000m<sup>2</sup></td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">12-28zł</td>
+            <td class="td">23%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">do 2000m<sup>2</sup></td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">10-26zł</td>
+            <td class="td">23%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">do 3000m<sup>2</sup></td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">9-21zł</td>
+            <td class="td">23%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">pow. 3000m<sup>2</sup></td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">7-17zł</td>
+            <td class="td">23%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+        </tr>
+        <tr class="tr">
+            <td colspan="5" class="td-category">Zakładanie trawnika</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">trawnik z siewu</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">25-40zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">trawnik z rolki</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">50-60zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">montaż siatki na krety</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">10-20zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">nawiezienie przesiewanej ziemi (żyzna piaszczysta bez gliny
+                przesiewana na bardzo drobnych sitach)
+            </td>
+            <td class="td">20t</td>
+            <td class="td">1000-1200zł w zależności od odległości</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">wycinanie oraz wywóz starej darni trawy jeżeli jest taka
+                konieczność
+            </td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">12zł</td>
+            <td class="td">8%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+        </tr>
+        <tr class="tr">
+            <td colspan="5" class="td-category">Zakładanie rabat</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Przygotowanie terenu pod nasadzenia/zrywanie darni, równanie</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">10-20zł</td>
+            <td class="td">8%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Koszt sadzenia roślin</td>
+            <td class="td">szt</td>
+            <td class="td">30-100% ceny materiałów</td>
+            <td class="td">8%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Rozkładanie agro-włókniny lub agro-tkaniny oraz przyszpilenie</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">10-25zł w zależności od zagęszczenia oraz skomplikowania nasadzeń
+            </td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Wypełnienie rabat sortowaną grubą korą sosnową</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">25-30zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Wypełnienie rabat kruszywami z kamienia</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">50zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+        </tr>
+        <tr class="tr">
+            <td colspan="5" class="td-category">Montaż obrzeży trawnikowych/rabatowych</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Montaż oryginalnych obrzeży producenta "EKO-BORD"</td>
+            <td class="td">mb.</td>
+            <td class="td">25-30zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Montaż obrzeży z kostki brukowej</td>
+            <td class="td">mb.</td>
+            <td class="td">40zł</td>
+            <td class="td">8%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Montaż obrzeży z kostki granitowej 8-11</td>
+            <td class="td">mb.</td>
+            <td class="td">60zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Montaż krawężników ogrodowych 6x20x100</td>
+            <td class="td">mb.</td>
+            <td class="td">50zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Montaż krawężników ogrodowych 8x25x100</td>
+            <td class="td">mb.</td>
+            <td class="td">60zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Montaż obrzeży innego rodzaju</td>
+            <td class="td">mb.</td>
+            <td class="td">Cena ustalana indywidualnie</td>
+            <td class="td">8%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Korytowanie pod obrzeża</td>
+            <td class="td">mb.</td>
+            <td class="td">Ustalane indywidualnie jeżeli koniecznie</td>
+            <td class="td">8%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+        </tr>
+        <tr class="tr">
+            <td colspan="5" class="td-category">Usługi pielengnacyjne</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">wertykulacja</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">1,5-2,5zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">areacja</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">1,5-2,5zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">piaskowanie (nie zawiera ceny piasku/mieszanki oraz transportu)</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">2-3,5zł</td>
+            <td class="td">8%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">dosiewanie trawnika (standardow Barenbrug) lub inne jeżeli znamy
+                mieszankę która była zasiana
+            </td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">3zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">koszenie trawnika</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">0,5-1,5zł</td>
+            <td class="td">8%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">nawożenie trawnika</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">0,5-2zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Wykaszanie działek kosą spalinową</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">1-2zł</td>
+            <td class="td">8%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Oprysk trawnika na chwasty dwuliścienne</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">1-2zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Oprysk trawnika przeciw grzybiczny</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">1-2zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Oprysk Roundup</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">1-2zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">utylizacja odpadów zielonych i innych</td>
+            <td class="td">usługa</td>
+            <td class="td">tylko cena utylizacji + koszty/czas związany z dojazdem do miejsca
+                utylizacji
+            </td>
+            <td class="td">8%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">prace ogrodnicze za osobę</td>
+            <td class="td">rbh</td>
+            <td class="td">70-100zł</td>
+            <td class="td">8%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+        </tr>
+        <tr class="tr">
+            <td colspan="5" class="td-category">Usługi drenarskie</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Montaż studni chłonnej</td>
+            <td class="td">szt.</td>
+            <td class="td">600-1200zł</td>
+            <td class="td">23%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Montaż rur kanalizacyjnych fi 110</td>
+            <td class="td">mb.</td>
+            <td class="td">60zł</td>
+            <td class="td">23%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Montaż rur drenarskich fi 100 w otulinie obsypanych żwirem</td>
+            <td class="td">mb.</td>
+            <td class="td">70zł</td>
+            <td class="td">23%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+        </tr>
+        <tr class="tr">
+            <td colspan="5" class="td-category">Prace ziemne</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Usługa glebogryzarką separacyjną</td>
+            <td class="td">m<sup>2</sup></td>
+            <td class="td">2-4zł</td>
+            <td class="td">8%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Usługa rozwożenia ziemi oraz niwelacji terenu miniładowarką AVANT
+                528 z operatorem
+            </td>
+            <td class="td">rbh+dojazd</td>
+            <td class="td">130zł</td>
+            <td class="td">8%</td>
+            <td class="td">r</td>
+        </tr>
+        <tr class="tr">
+            <td class="td">Usługa niwelacji terenu miniładowarka AVANT 528 ze wszystkimi
+                narzędziami operatorem oraz pracownikiem
+                do pomocy
+            </td>
+            <td class="td">rbh+dojazd</td>
+            <td class="td">200zł</td>
+            <td class="td">8%</td>
+            <td class="td">m+r</td>
+        </tr>
+        <tr class="tr">
+            <td colspan="5" class="td-category">Pozostałe prace brukarskie oraz nieuwzględnione w cenniku - wycena
+                indywidualna
+            </td>
+        </tr>
+    </table></div>
+<?php $hyvaCsp->registerInlineScript() ?>

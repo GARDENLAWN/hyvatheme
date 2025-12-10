@@ -1,0 +1,104 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** Generated with hyva-csp-helper.php */
+?>
+<script>
+    if (window.innerWidth >= 768) {
+        document.getElementById('yt-video').style.zIndex = 9999;
+    } else {
+        document.getElementById('gallery').appendChild(document.getElementById('yt-video'));
+        document.getElementById('gallery').children[0].style.zIndex = 9999;
+        document.getElementById('tab-content').style.width = window.innerWidth + 'px';
+    }
+
+    if (document.getElementById('product-attributes'))
+        document.getElementById('product-attribute').appendChild(document.getElementById('product.attributes'));
+
+    //document.getElementById('custom-description').appendChild(document.getElementById('tabs-description'));
+
+    //document.getElementById('custom-description').innerHTML = '';
+    //document.getElementById('custom-short-description').innerHTML = '';
+
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    let players = [];
+
+    function onYouTubeIframeAPIReady() {
+        <?php foreach ($itemsVideo as $video): ?>
+        players.push(
+            new YT.Player('<?php echo $video['divId']; ?>', {
+                videoId: '<?php echo $video['videoId']; ?>',
+                events: {
+                    'onStateChange': onPlayerStateChange,
+                },
+            }));
+        <?php endforeach; ?>
+    }
+
+    function onPlayerStateChange(event) {
+        for (let i in players) {
+            if (event.target.getPlayerState() === YT.PlayerState.PLAYING &&
+                players[i].g.id !== event.target.g.id &&
+                players[i].getPlayerState() === YT.PlayerState.PLAYING
+            ) {
+                players[i].stopVideo();
+            }
+        }
+    }
+
+    function loadIframe(tab) {
+        let id = tab.href.substr(tab.href.length - 1);
+        let iframe = document.getElementById('iframe_' + id);
+        if (iframe.isinit === undefined) {
+            iframe.isinit = false;
+            iframe.src = '/hyvaroot/pages/grassinfo' + id;
+            iframe.onload = function() {
+                resizeIframe(iframe);
+                try {
+                    iframe.contentWindow.document.getElementById('am-cookie-bar').remove();
+                } catch (ex) {
+
+                }
+            };
+        }
+    }
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
+
+<script>
+function viewFrontendTemplatesLawnsinroll_descriptionMovedScript0() {
+    const el = this.$el,
+          wire = this.$wire;
+    
+    // @todo Implement interaction with the original code ^^
+<?php /** Variables from "./view/frontend/templates/lawnsinroll_description.phtml" */ ?>
+<?php /** References (`$itemsVideo`, `$video`) */ ?>
+    
+    return {
+        init() {}
+    }
+}
+window.addEventListener('alpine:init', () => Alpine.data('viewFrontendTemplatesLawnsinroll_descriptionMovedScript0', viewFrontendTemplatesLawnsinroll_descriptionMovedScript0), {once: true});
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

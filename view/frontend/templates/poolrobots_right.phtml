@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+use GardenLawn\Core\ViewModel\PoolRobotsGallery;
+use GardenLawn\Core\ViewModel\VideoSlider;
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Slider;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+
+$sliderViewModel = $viewModels->require(Slider::class);
+$poolRobotsGalleryViewModel = $viewModels->require(PoolRobotsGallery::class);
+$videoSliderViewModel = $viewModels->require(VideoSlider::class);
+
+$itemsTemplate = 'GardenLawn_Core::slider-item.phtml';
+$items = $poolRobotsGalleryViewModel->getImages();
+
+$itemsVideo = [
+    ['divId' => 'video1', 'videoId' => 'DcrtcigKCVI'],
+    ['divId' => 'video2', 'videoId' => '5mA2IKFv3as'],
+    ['divId' => 'video3', 'videoId' => 'La6MkV3uVaU'],
+    ['divId' => 'video4', 'videoId' => 'eXzV_fbmdYg'],
+    ['divId' => 'video5', 'videoId' => 'Oc6KlNVTqws']
+];
+?>
+<div class="md:w-1/3">
+    <div class="div-bordered-blue">
+        <div id="my-gallery" x-data="gardenLawnCorePoolrobotsRight" x-effect="initPhotoSwipe">
+            <?= $sliderViewModel->getSliderForItems($itemsTemplate, $items)->toHtml() ?>
+        </div>
+
+        <?php
+        echo $block->getLayout()
+            ->createBlock(Template::class)
+            ->setTemplate('GardenLawn_Core::video-slider.phtml')
+            ->setData('sliderViewModel', $sliderViewModel)
+            ->setData('videoSliderViewModel', $videoSliderViewModel->setVideoData($itemsVideo))
+            ->toHtml();
+        ?>
+    </div>
+</div>

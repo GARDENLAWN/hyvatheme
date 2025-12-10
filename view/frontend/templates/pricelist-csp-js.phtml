@@ -1,0 +1,51 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** Generated with hyva-csp-helper.php */
+?>
+<script>
+    document.getElementById('pricelist').parentElement.style.textAlign = '-webkit-center';
+    document.getElementById('pricehead').parentElement.style.textAlign = '-webkit-center';
+
+    function priceTheadResize() {
+        let headerHeight = document.getElementById('header')?.offsetHeight ?? 0;
+        let breadcrumbsHeight = document.getElementById('breadcrumbs')?.offsetHeight ?? 0;
+        document.getElementById('pricehead').style.top = (headerHeight + breadcrumbsHeight - 1) + 'px';
+        let priceheadHeight = document.getElementById('pricehead')?.offsetHeight ?? 0;
+        document.getElementById('pricelist').style.top = (priceheadHeight - 1) + 'px';
+        document.getElementsByClassName('columns')[0].style.padding = '0px';
+
+        if (window.innerWidth < 768) {
+            document.getElementById('price-table').style.fontSize = 'x-small';
+            /*document.getElementById("price-table").style.width = (window.widthOrg) + "px";
+            document.getElementById("pricelist").style.width = (window.widthOrg) + "px";
+            document.getElementsByClassName("columns")[0].style.paddingLeft = "inherit";
+            document.getElementsByClassName("columns")[0].style.paddingRight = "inherit";*/
+        }
+    }
+
+    window.onload = function() {
+        priceTheadResize();
+    };
+    window.onresize = function() {
+        priceTheadResize();
+    };
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

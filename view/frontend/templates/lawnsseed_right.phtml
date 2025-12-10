@@ -1,0 +1,68 @@
+<?php
+
+declare(strict_types=1);
+
+use GardenLawn\Core\ViewModel\VideoSlider;
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Slider;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+
+$sliderViewModel = $viewModels->require(Slider::class);
+$videoSliderViewModel = $viewModels->require(VideoSlider::class);
+
+$itemsVideo1 = [
+    ['divId' => 'video1', 'videoId' => 'azc3snUoxqA'],
+    ['divId' => 'video2', 'videoId' => 'rsTSlYu5wsE'],
+    ['divId' => 'video3', 'videoId' => '1mNrdCVVyMg'],
+    ['divId' => 'video4', 'videoId' => 'ylCKrt8kr0A'],
+    ['divId' => 'video5', 'videoId' => 'ON-2c1UEuxA']
+];
+$itemsVideo2 = [
+    ['divId' => 'video6', 'videoId' => 'jte2HVkgnTI'],
+    ['divId' => 'video7', 'videoId' => 'INEyvPg7f44'],
+    ['divId' => 'video8', 'videoId' => 'R7nQ26mcyu8'],
+    ['divId' => 'video9', 'videoId' => 'ZFK3IFjIlmo']
+];
+$itemsVideo3 = [
+    ['divId' => 'video10', 'videoId' => 'wamsulecYLU']
+];
+$itemsVideo4 = [
+    ['divId' => 'video11', 'videoId' => 'sLMuuN2_e5w']
+];
+?>
+<div class="md:w-1/3">
+    <div class="div-bordered-blue">
+        <?php
+        echo $block->getLayout()
+            ->createBlock(Template::class)
+            ->setTemplate('GardenLawn_Core::video-slider.phtml')
+            ->setData('sliderViewModel', $sliderViewModel)
+            ->setData('videoSliderViewModel', $videoSliderViewModel->setVideoData($itemsVideo1))
+            ->toHtml();
+
+        echo $block->getLayout()
+            ->createBlock(Template::class)
+            ->setTemplate('GardenLawn_Core::video-slider.phtml')
+            ->setData('sliderViewModel', $sliderViewModel)
+            ->setData('videoSliderViewModel', $videoSliderViewModel->setVideoData($itemsVideo2))
+            ->toHtml();
+
+        echo $block->getLayout()
+            ->createBlock(Template::class)
+            ->setTemplate('GardenLawn_Core::video-slider.phtml')
+            ->setData('sliderViewModel', $sliderViewModel)
+            ->setData('videoSliderViewModel', $videoSliderViewModel->setVideoData($itemsVideo3))
+            ->toHtml();
+
+        echo $block->getLayout()
+            ->createBlock(Template::class)
+            ->setTemplate('GardenLawn_Core::video-slider.phtml')
+            ->setData('sliderViewModel', $sliderViewModel)
+            ->setData('videoSliderViewModel', $videoSliderViewModel->setVideoData($itemsVideo4))
+            ->toHtml();
+        ?>
+    </div>
+</div>
