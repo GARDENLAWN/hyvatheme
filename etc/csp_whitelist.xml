@@ -87,51 +87,21 @@
                 <value id="script-src-youtube" type="host">*.youtube.com</value>
                 <value id="script-src-google" type="host">*.google.com</value>
                 <value id="script-src-google-analytics" type="host">www.google-analytics.com</value>
-                <value id="script-src-hash-1" type="hash" algorithm="sha256">
-                    BlchBu6mrisHS6kLSIdwDGFrUSxv847nFYnY8x0Z1Rg=
-                </value>
-                <value id="script-src-hash-2" type="hash" algorithm="sha256">
-                    3TDhoQp79nwMxDbQh3lo6ambV9ctoHQswjyWPakhCJ8=
-                </value>
-                <value id="script-src-hash-3" type="hash" algorithm="sha256">
-                    SviyM+lRbnIJzxfxqWHy3FaoHRF8y9TF6psS7PtSvPU=
-                </value>
-                <value id="script-src-hash-4" type="hash" algorithm="sha256">
-                    O98YO4sTzZusE0Qwk1QHBd8rb+KQco08uUBdCb+ipdE=
-                </value>
-                <value id="script-src-hash-5" type="hash" algorithm="sha256">
-                    ieoeWczDHkReVBsRBqaal5AFMlBtNjMzgwKvLqi/tSU=
-                </value>
-                <value id="script-src-hash-6" type="hash" algorithm="sha256">
-                    yRuBlU73D077Qzr/NFHOP0yT3A7AUCNYmKCidzqtlaQ=
-                </value>
-                <value id="script-src-hash-7" type="hash" algorithm="sha256">
-                    z0wOIIOyqavRKXc2eR7cjNUh8/v2e+/mOCY+y/yq8Ec=
-                </value>
-                <value id="script-src-hash-8" type="hash" algorithm="sha256">
-                    G9GeHz6BKbgU/lsFHyBo+Xa6Pkk6Sbcyle8wxHyp71U=
-                </value>
-                <value id="script-src-hash-9" type="hash" algorithm="sha256">
-                    ATApatHdOVhJxkkAvb3LciZH2InFy35S7pPoZJSb7Kw=
-                </value>
-                <value id="script-src-hash-10" type="hash" algorithm="sha256">
-                    CbuLa419o+4y8bIS2obejA+oy5oQWbCH1/ZZeNb3q1A=
-                </value>
-                <value id="script-src-hash-11" type="hash" algorithm="sha256">
-                    AgVEV4hyu5kIsPct8FIv/L6OxluRuzxLe1XEVi+9U5I=
-                </value>
-                <value id="script-src-hash-12" type="hash" algorithm="sha256">
-                    V1Q15CZYANZ2yjc6Wc01wfQNcN2vJsYrWZke05BCzjg=
-                </value>
-                <value id="script-src-hash-13" type="hash" algorithm="sha256">
-                    OXqjjmv8hsJ7lR+n3ceuDu6KBNh8WlE7+5+vLocG1f4=
-                </value>
-                <value id="script-src-hash-14" type="hash" algorithm="sha256">
-                    BTpJN8oJD6i3v9c8Y/BVsnZIeoDKNnQ1iTvwAYI0k1k=
-                </value>
-                <value id="script-src-hash-15" type="hash" algorithm="sha256">
-                    RouEgbTb9zBPuluRUuRiPa4a44DIjCf5/7+FChFYibE=
-                </value>
+                <value id="script-src-hash-1" type="hash" algorithm="sha256">BlchBu6mrisHS6kLSIdwDGFrUSxv847nFYnY8x0Z1Rg=</value>
+                <value id="script-src-hash-2" type="hash" algorithm="sha256">3TDhoQp79nwMxDbQh3lo6ambV9ctoHQswjyWPakhCJ8=</value>
+                <value id="script-src-hash-3" type="hash" algorithm="sha256">SviyM+lRbnIJzxfxqWHy3FaoHRF8y9TF6psS7PtSvPU=</value>
+                <value id="script-src-hash-4" type="hash" algorithm="sha256">O98YO4sTzZusE0Qwk1QHBd8rb+KQco08uUBdCb+ipdE=</value>
+                <value id="script-src-hash-5" type="hash" algorithm="sha256">ieoeWczDHkReVBsRBqaal5AFMlBtNjMzgwKvLqi/tSU=</value>
+                <value id="script-src-hash-6" type="hash" algorithm="sha256">yRuBlU73D077Qzr/NFHOP0yT3A7AUCNYmKCidzqtlaQ=</value>
+                <value id="script-src-hash-7" type="hash" algorithm="sha256">z0wOIIOyqavRKXc2eR7cjNUh8/v2e+/mOCY+y/yq8Ec=</value>
+                <value id="script-src-hash-8" type="hash" algorithm="sha256">G9GeHz6BKbgU/lsFHyBo+Xa6Pkk6Sbcyle8wxHyp71U=</value>
+                <value id="script-src-hash-9" type="hash" algorithm="sha256">ATApatHdOVhJxkkAvb3LciZH2InFy35S7pPoZJSb7Kw=</value>
+                <value id="script-src-hash-10" type="hash" algorithm="sha256">CbuLa419o+4y8bIS2obejA+oy5oQWbCH1/ZZeNb3q1A=</value>
+                <value id="script-src-hash-11" type="hash" algorithm="sha256">AgVEV4hyu5kIsPct8FIv/L6OxluRuzxLe1XEVi+9U5I=</value>
+                <value id="script-src-hash-12" type="hash" algorithm="sha256">V1Q15CZYANZ2yjc6Wc01wfQNcN2vJsYrWZke05BCzjg=</value>
+                <value id="script-src-hash-13" type="hash" algorithm="sha256">OXqjjmv8hsJ7lR+n3ceuDu6KBNh8WlE7+5+vLocG1f4=</value>
+                <value id="script-src-hash-14" type="hash" algorithm="sha256">BTpJN8oJD6i3v9c8Y/BVsnZIeoDKNnQ1iTvwAYI0k1k=</value>
+                <value id="script-src-hash-15" type="hash" algorithm="sha256">RouEgbTb9zBPuluRUuRiPa4a44DIjCf5/7+FChFYibE=</value>
             </values>
         </policy>
         <policy id="connect-src">
