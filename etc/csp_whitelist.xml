@@ -114,6 +114,7 @@
                 <value id="connect-src-youtube" type="host">*.youtube.com</value>
                 <value id="connect-src-google" type="host">*.google.com</value>
                 <value id="connect-src-inpostpay" type="host">inpostpay-widget-api.inpost.pl</value>
+                <value id="connect-src-google-analytics" type="host">www.google-analytics.com</value>
             </values>
         </policy>
         <policy id="font-src">
