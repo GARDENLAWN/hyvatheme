@@ -46,7 +46,7 @@ $items = [
 ?>
 
 <section
-    class="relative lg:hidden"
+    class="relative lg:hidden mb-8"
     aria-label="<?= $escaper->escapeHtml(__('Latest items')) ?>"
     x-data
     <?php if ($sliderShowPager): ?>
@@ -94,7 +94,7 @@ $items = [
             <a href="<?= $escaper->escapeUrl($item['url']) ?>">
                 <figure class="shrink-0 grid *:row-start-1 *:col-start-1 w-full">
                     <img
-                        class="w-full h-[460px] md:h-[480px] lg:h-[400px] object-contain"
+                        class="w-full h-auto"
                         src="<?= $escaper->escapeHtmlAttr($item['image_url']) ?>"
                         alt="<?= $escaper->escapeHtmlAttr($item['image_alt'] ?? $item['text_small'] ?? '') ?>"
                         width="1280"
