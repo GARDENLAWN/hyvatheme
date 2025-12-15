@@ -120,6 +120,7 @@ $marqueeGroupClasses = "shrink-0 flex gap-[var(--gap)] items-center justify-arou
             <?php foreach ($items as $item): ?>
                 <img
                     class="h-16 w-auto object-contain"
+                    style="max-width: 120px;"
                     src="<?= $escaper->escapeHtmlAttr($item['src']) ?>"
                     alt="<?= $escaper->escapeHtmlAttr($item['alt'] ?? '') ?>"
                     width="<?= $escaper->escapeHtmlAttr($item['width'] ?? $defaultWidth) ?>"
@@ -134,6 +135,7 @@ $marqueeGroupClasses = "shrink-0 flex gap-[var(--gap)] items-center justify-arou
             <?php foreach ($items as $item): ?>
                 <img
                     class="h-16 w-auto object-contain"
+                    style="max-width: 120px;"
                     src="<?= $escaper->escapeHtmlAttr($item['src']) ?>"
                     alt="<?= $escaper->escapeHtmlAttr($item['alt'] ?? '') ?>"
                     width="<?= $escaper->escapeHtmlAttr($item['width'] ?? $defaultWidth) ?>"
