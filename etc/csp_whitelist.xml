@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <!-- Security Best Practices -->
+        <policy id="base-uri">
+            <values>
+                <value id="base-uri-self" type="host">'self'</value>
+            </values>
+        </policy>
+        <policy id="object-src">
+            <values>
+                <value id="object-src-none" type="host">'none'</value>
+            </values>
+        </policy>
+
+        <policy id="default-src">
+            <values>
+                <value id="default-src-self" type="host">'self'</value>
+                <value id="default-src-s3" type="host">*.amazonaws.com</value>
+                <value id="default-src-cloudfront" type="host">*.cloudfront.net</value>
+
+                <!-- GardenLawn -->
+                <value id="default-src-gardenlawn-wildcard" type="host">*.gardenlawn.pl</value>
+                <value id="default-src-gardenlawn-root" type="host">gardenlawn.pl</value>
+
+                <!-- AmRobots -->
+                <value id="default-src-amrobots-wildcard" type="host">*.am-robots.pl</value>
+                <value id="default-src-amrobots-root" type="host">am-robots.pl</value>
+
+                <!-- FinnPolska -->
+                <value id="default-src-finnpolska-wildcard" type="host">*.finnpolska.pl</value>
+                <value id="default-src-finnpolska-root" type="host">finnpolska.pl</value>
+            </values>
+        </policy>
+
+        <policy id="frame-src">
+            <values>
+                <value id="frame-src-self" type="host">'self'</value>
+                <value id="frame-src-s3" type="host">*.amazonaws.com</value>
+                <value id="frame-src-cloudfront" type="host">*.cloudfront.net</value>
+
+                <value id="frame-src-gardenlawn-wildcard" type="host">*.gardenlawn.pl</value>
+                <value id="frame-src-gardenlawn-root" type="host">gardenlawn.pl</value>
+
+                <value id="frame-src-amrobots-wildcard" type="host">*.am-robots.pl</value>
+                <value id="frame-src-amrobots-root" type="host">am-robots.pl</value>
+
+                <value id="frame-src-finnpolska-wildcard" type="host">*.finnpolska.pl</value>
+                <value id="frame-src-finnpolska-root" type="host">finnpolska.pl</value>
+
+                <value id="frame-src-geowidget" type="host">*.inpost.pl</value>
+                <value id="frame-src-youtube" type="host">*.youtube.com</value>
+                <value id="frame-src-google" type="host">*.google.com</value>
+            </values>
+        </policy>
+
+        <policy id="img-src">
+            <values>
+                <value id="img-src-self" type="host">'self'</value>
+                <value id="img-src-s3" type="host">*.amazonaws.com</value>
+                <value id="img-src-cloudfront" type="host">*.cloudfront.net</value>
+
+                <value id="img-src-gardenlawn-wildcard" type="host">*.gardenlawn.pl</value>
+                <value id="img-src-gardenlawn-root" type="host">gardenlawn.pl</value>
+
+                <value id="img-src-amrobots-wildcard" type="host">*.am-robots.pl</value>
+                <value id="img-src-amrobots-root" type="host">am-robots.pl</value>
+
+                <value id="img-src-finnpolska-wildcard" type="host">*.finnpolska.pl</value>
+                <value id="img-src-finnpolska-root" type="host">finnpolska.pl</value>
+
+                <value id="img-src-tpay" type="host">*.tpay.com</value>
+                <value id="img-src-paypal" type="host">*.paypal.com</value>
+                <value id="img-src-paypalobjects" type="host">*.paypalobjects.com</value>
+                <value id="img-src-unsplash-wildcard" type="host">*.unsplash.com</value>
+                <value id="img-src-unsplash-root" type="host">unsplash.com</value>
+                <value id="img-src-inpost" type="host">*.inpost.pl</value>
+                <value id="img-src-paynow" type="host">*.paynow.pl</value>
+                <value id="img-src-youtube" type="host">*.youtube.com</value>
+                <value id="img-src-google" type="host">*.google.com</value>
+            </values>
+        </policy>
+
+        <policy id="style-src">
+            <values>
+                <value id="style-src-self" type="host">'self'</value>
+                <value id="style-src-s3" type="host">*.amazonaws.com</value>
+
+                <value id="style-src-gardenlawn-wildcard" type="host">*.gardenlawn.pl</value>
+                <value id="style-src-gardenlawn-root" type="host">gardenlawn.pl</value>
+
+                <value id="style-src-amrobots-wildcard" type="host">*.am-robots.pl</value>
+                <value id="style-src-amrobots-root" type="host">am-robots.pl</value>
+
+                <value id="style-src-finnpolska-wildcard" type="host">*.finnpolska.pl</value>
+                <value id="style-src-finnpolska-root" type="host">finnpolska.pl</value>
+
+                <value id="style-src-easypack24" type="host">*.easypack24.net</value>
+                <value id="style-src-inpost" type="host">*.inpost.pl</value>
+                <value id="style-src-googleapis" type="host">https://fonts.googleapis.com</value>
+            </values>
+        </policy>
+
+        <policy id="form-action">
+            <values>
+                <value id="form-action-eraty" type="host">https://wniosek.eraty.pl/formularz</value>
+            </values>
+        </policy>
+
+        <policy id="script-src">
+            <values>
+                <value id="script-src-self" type="host">'self'</value>
+                <value id="script-src-unsafe" type="host">'unsafe-eval'</value>
+                <value id="script-src-unsafe-hashes" type="host">'unsafe-hashes'</value>
+                <value id="script-src-s3" type="host">*.amazonaws.com</value>
+
+                <value id="script-src-gardenlawn-wildcard" type="host">*.gardenlawn.pl</value>
+                <value id="script-src-gardenlawn-root" type="host">gardenlawn.pl</value>
+
+                <value id="script-src-amrobots-wildcard" type="host">*.am-robots.pl</value>
+                <value id="script-src-amrobots-root" type="host">am-robots.pl</value>
+
+                <value id="script-src-finnpolska-wildcard" type="host">*.finnpolska.pl</value>
+                <value id="script-src-finnpolska-root" type="host">finnpolska.pl</value>
+
+                <value id="script-src-maps" type="host">*.googleapis.com</value>
+                <value id="script-src-player" type="host">*.vimeo.com</value>
+                <value id="script-src-newrelic" type="host">*.newrelic.com</value>
+                <value id="script-src-nrdata" type="host">*.nr-data.net</value>
+                <value id="script-src-paypal" type="host">*.paypal.com</value>
+                <value id="script-src-paypalobjects" type="host">*.paypalobjects.com</value>
+                <value id="script-src-inpost" type="host">*.inpost.pl</value>
+                <value id="script-src-paynow" type="host">*.paynow.pl</value>
+                <value id="script-src-youtube" type="host">*.youtube.com</value>
+                <value id="script-src-google" type="host">*.google.com</value>
+                <value id="script-src-google-analytics" type="host">www.google-analytics.com</value>
+
+                <!-- Hashes with unique IDs -->
+                <value id="gardenlawn-script-hash-1" type="hash" algorithm="sha256">BlchBu6mrisHS6kLSIdwDGFrUSxv847nFYnY8x0Z1Rg=</value>
+                <value id="gardenlawn-script-hash-2" type="hash" algorithm="sha256">3TDhoQp79nwMxDbQh3lo6ambV9ctoHQswjyWPakhCJ8=</value>
+                <value id="gardenlawn-script-hash-3" type="hash" algorithm="sha256">SviyM+lRbnIJzxfxqWHy3FaoHRF8y9TF6psS7PtSvPU=</value>
+                <value id="gardenlawn-script-hash-4" type="hash" algorithm="sha256">O98YO4sTzZusE0Qwk1QHBd8rb+KQco08uUBdCb+ipdE=</value>
+                <value id="gardenlawn-script-hash-5" type="hash" algorithm="sha256">ieoeWczDHkReVBsRBqaal5AFMlBtNjMzgwKvLqi/tSU=</value>
+                <value id="gardenlawn-script-hash-6" type="hash" algorithm="sha256">yRuBlU73D077Qzr/NFHOP0yT3A7AUCNYmKCidzqtlaQ=</value>
+                <value id="gardenlawn-script-hash-7" type="hash" algorithm="sha256">z0wOIIOyqavRKXc2eR7cjNUh8/v2e+/mOCY+y/yq8Ec=</value>
+                <value id="gardenlawn-script-hash-8" type="hash" algorithm="sha256">G9GeHz6BKbgU/lsFHyBo+Xa6Pkk6Sbcyle8wxHyp71U=</value>
+                <value id="gardenlawn-script-hash-9" type="hash" algorithm="sha256">ATApatHdOVhJxkkAvb3LciZH2InFy35S7pPoZJSb7Kw=</value>
+                <value id="gardenlawn-script-hash-10" type="hash" algorithm="sha256">CbuLa419o+4y8bIS2obejA+oy5oQWbCH1/ZZeNb3q1A=</value>
+                <value id="gardenlawn-script-hash-11" type="hash" algorithm="sha256">AgVEV4hyu5kIsPct8FIv/L6OxluRuzxLe1XEVi+9U5I=</value>
+                <value id="gardenlawn-script-hash-12" type="hash" algorithm="sha256">V1Q15CZYANZ2yjc6Wc01wfQNcN2vJsYrWZke05BCzjg=</value>
+                <value id="gardenlawn-script-hash-13" type="hash" algorithm="sha256">OXqjjmv8hsJ7lR+n3ceuDu6KBNh8WlE7+5+vLocG1f4=</value>
+                <value id="gardenlawn-script-hash-14" type="hash" algorithm="sha256">BTpJN8oJD6i3v9c8Y/BVsnZIeoDKNnQ1iTvwAYI0k1k=</value>
+                <value id="gardenlawn-script-hash-15" type="hash" algorithm="sha256">RouEgbTb9zBPuluRUuRiPa4a44DIjCf5/7+FChFYibE=</value>
+            </values>
+        </policy>
+
+        <policy id="connect-src">
+            <values>
+                <value id="connect-src-self" type="host">'self'</value>
+                <value id="connect-src-s3" type="host">*.amazonaws.com</value>
+
+                <value id="connect-src-gardenlawn-wildcard" type="host">*.gardenlawn.pl</value>
+                <value id="connect-src-gardenlawn-root" type="host">gardenlawn.pl</value>
+
+                <value id="connect-src-amrobots-wildcard" type="host">*.am-robots.pl</value>
+                <value id="connect-src-amrobots-root" type="host">am-robots.pl</value>
+
+                <value id="connect-src-finnpolska-wildcard" type="host">*.finnpolska.pl</value>
+                <value id="connect-src-finnpolska-root" type="host">finnpolska.pl</value>
+
+                <value id="connect-src-youtube" type="host">*.youtube.com</value>
+                <value id="connect-src-google" type="host">*.google.com</value>
+                <value id="connect-src-inpostpay" type="host">inpostpay-widget-api.inpost.pl</value>
+                <value id="connect-src-google-analytics" type="host">www.google-analytics.com</value>
+            </values>
+        </policy>
+
+        <policy id="font-src">
+            <values>
+                <value id="font-src-self" type="host">'self'</value>
+                <value id="font-src-data" type="host">data:</value>
+                <value id="font-src-s3" type="host">*.amazonaws.com</value>
+
+                <value id="font-src-gardenlawn-wildcard" type="host">*.gardenlawn.pl</value>
+                <value id="font-src-gardenlawn-root" type="host">gardenlawn.pl</value>
+
+                <value id="font-src-amrobots-wildcard" type="host">*.am-robots.pl</value>
+                <value id="font-src-amrobots-root" type="host">am-robots.pl</value>
+
+                <value id="font-src-finnpolska-wildcard" type="host">*.finnpolska.pl</value>
+                <value id="font-src-finnpolska-root" type="host">finnpolska.pl</value>
+
+                <value id="font-src-geowidget" type="host">*.easypack24.net</value>
+                <value id="font-src-googleapis" type="host">https://fonts.googleapis.com</value>
+                <value id="font-src-gstatic" type="host">https://fonts.gstatic.com</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>
