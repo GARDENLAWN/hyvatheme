@@ -286,7 +286,7 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
             $block->isDefaultShipping() ? __("It's a default shipping address.") : null,
         ]) ?>
         <?php if ($isDefaultMessages): ?>
-            <div class="message">
+            <div class="message mt-4">
                 <?= $escaper->escapeHtml(implode("<br>\n", $isDefaultMessages), ['br']) ?>
             </div>
         <?php endif; ?>
