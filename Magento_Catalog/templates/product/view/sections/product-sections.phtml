@@ -49,26 +49,26 @@ $sectionIsOpen = '';
     <div
         x-ref="accordion"
         <?php if ($divider): ?>
-        class="divide-y lg:divide-y-0"
+            class="divide-y lg:divide-y-0"
         <?php endif; ?>
         style="min-height: 500px"
     >
         <?php
-            $productSectionIndex = 0;
-            foreach ($block->getGroupSortedChildNames('detailed_info', '') as $sectionName):
-        ?>
+        $productSectionIndex = 0;
+        foreach ($block->getGroupSortedChildNames('detailed_info', '') as $sectionName):
+            ?>
             <?php
-                $sectionBlock = $block->getLayout()->getBlock($sectionName);
-                $sectionHtml = (string) $sectionBlock->toHtml();
-                $sectionTitle = __($sectionBlock->getTitle() ?: $sectionName);
-                $sectionId = str_replace('.', '-', $sectionBlock->getNameInLayout());
-                if (empty(trim($sectionHtml))) {
-                    continue;
-                }
+            $sectionBlock = $block->getLayout()->getBlock($sectionName);
+            $sectionHtml = (string) $sectionBlock->toHtml();
+            $sectionTitle = $sectionBlock->getTitle() ?: $sectionName;
+            $sectionId = str_replace('.', '-', $sectionBlock->getNameInLayout());
+            if (empty(trim($sectionHtml))) {
+                continue;
+            }
 
-                if ($productSectionIndex === 0) {
-                    $sectionIsOpen = $sectionId;
-                }
+            if ($productSectionIndex === 0) {
+                $sectionIsOpen = $sectionId;
+            }
             ?>
             <details
                 id="<?= $escaper->escapeHtmlAttr($sectionId) ?>"
@@ -92,9 +92,9 @@ $sectionIsOpen = '';
                     </div>
                 </div>
             </details>
-        <?php
+            <?php
             $productSectionIndex++;
-            endforeach;
+        endforeach;
         ?>
     </div>
     <script>
