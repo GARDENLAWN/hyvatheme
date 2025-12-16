@@ -33,5 +33,15 @@
                 />
             </block>
         </referenceContainer>
+        <referenceBlock name="product.info.details">
+            <arguments>
+                <argument name="divider" xsi:type="boolean">true</argument> <!-- Show divider between items (true/false) -->
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="description">
+            <arguments>
+                <argument name="title" xsi:type="string" translate="true">Description</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>
