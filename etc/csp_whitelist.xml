@@ -8,11 +8,6 @@
                 <value id="base-uri-self" type="host">'self'</value>
             </values>
         </policy>
-        <policy id="object-src">
-            <values>
-                <value id="object-src-none" type="host">'none'</value>
-            </values>
-        </policy>
 
         <policy id="default-src">
             <values>
