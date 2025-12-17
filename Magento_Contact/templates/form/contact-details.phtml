@@ -27,7 +27,11 @@ $storeRegon = '383643646';
     <h2 class="sm:text-2xl text-xl font-medium title-font mb-4 text-gray-900 border-b pb-2">
         <span><?= $escaper->escapeHtml(__('Contact Details')) ?></span>
     </h2>
-    <h3 class="title-font font-bold text-2xl uppercase tracking-wider"><?= $escaper->escapeHtml('Garden Lawn & Irrigation'); ?></h3>
+    <h3 class="title-font font-bold text-2xl uppercase tracking-wider">
+        <span class="bg-gradient-to-r from-[#1e7701] to-[#7bcc01] bg-clip-text text-transparent">
+            <?= $escaper->escapeHtml('Garden Lawn & Irrigation'); ?>
+        </span>
+    </h3>
     <div class="mt-2 text-gray-600">
         <?php if ($storeNip): ?>
             <p><span class="font-semibold"><?= $escaper->escapeHtml(__('NIP:')) ?></span> <?= $escaper->escapeHtml($storeNip); ?></p>
