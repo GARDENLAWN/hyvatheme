@@ -1,0 +1,74 @@
+<?php
+/**
+ * Hyva-compatible template for Amasty Google Map
+ *
+ * @var \Amasty\GoogleMap\Block\Map $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$mapId = $block->getMapId();
+// Sanitize mapId for use in function name (remove non-alphanumeric characters)
+$safeMapId = preg_replace('/[^a-zA-Z0-9_]/', '', $mapId);
+
+$apiKeyString = $block->getApiKey();
+$apiKey = str_replace('key=', '', $apiKeyString);
+
+// Ensure we have some dimensions
+$styles = $block->getStyles();
+if (strpos($styles, 'height') === false) {
+    $styles .= 'height: 300px;';
+}
+if (strpos($styles, 'width') === false) {
+    $styles .= 'width: 100%;';
+}
+?>
+<div id="<?= $escaper->escapeHtmlAttr($mapId) ?>" style="<?= $escaper->escapeHtmlAttr($styles) ?>; min-height: 300px;"></div>
+
+<script>
+    function initAmastyMap_<?= $safeMapId ?>() {
+        const mapElement = document.getElementById('<?= $escaper->escapeJs($mapId) ?>');
+        if (!mapElement || !window.google || !window.google.maps) {
+            return;
+        }
+
+        const lat = <?= (float)$block->getLatitude() ?: 52.2297 ?>;
+        const lng = <?= (float)$block->getLongitude() ?: 21.0122 ?>;
+
+        const mapLatLng = new google.maps.LatLng(lat, lng);
+
+        const mapOptions = {
+            draggable: <?= $block->getIsDraggable() ? 'true' : 'false' ?>,
+            zoom: <?= (int)$block->getZoom() ?: 12 ?>,
+            center: mapLatLng,
+            mapTypeId: '<?= $escaper->escapeJs($block->getMapType()) ?: 'roadmap' ?>'.toLowerCase()
+        };
+
+        const amMap = new google.maps.Map(mapElement, mapOptions);
+
+        new google.maps.Marker({
+            position: mapLatLng,
+            map: amMap,
+            animation: google.maps.Animation.DROP,
+            title: '<?= $escaper->escapeJs($block->getMarkerTitle()) ?>'
+        });
+    }
+
+    (function() {
+        const apiKey = '<?= $escaper->escapeJs($apiKey) ?>';
+        const callbackName = 'initAmastyMap_<?= $safeMapId ?>';
+
+        if (typeof window.google === 'object' && typeof window.google.maps === 'object') {
+            window[callbackName]();
+        } else {
+            window[callbackName] = initAmastyMap_<?= $safeMapId ?>;
+
+            if (!document.querySelector('script[src*="maps.googleapis.com/maps/api/js"]')) {
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=${callbackName}`;
+                script.async = true;
+                script.defer = true;
+                document.head.appendChild(script);
+            }
+        }
+    })();
+</script>
