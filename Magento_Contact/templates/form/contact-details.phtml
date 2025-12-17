@@ -19,30 +19,44 @@ $storeConfig = $viewModels->require(StoreConfig::class);
 $heroicons = $viewModels->require(HeroiconsOutline::class);
 $storePhoneNumber = $storeConfig->getStoreConfig('general/store_information/phone') ?? '';
 $storeEmail = $storeConfig->getStoreConfig('trans_email/ident_general/email') ?? '';
+$storeNip = '9910370112';
+$storeRegon = '383643646';
 
 ?>
-<h2 class="sm:text-2xl text-xl font-medium title-font mb-4 text-gray-900">
-    <span><?= $escaper->escapeHtml(__('Contact Details')) ?></span>
-</h2>
-<h3 class="title-font font-bold"><?= $escaper->escapeHtml($storeConfig->getStoreConfig('general/store_information/name') ?? ''); ?></h3>
-<address>
-    <?= $escaper->escapeHtml($storeConfig->getStoreConfig('general/store_information/street_line1') ?? ''); ?><br>
-    <?= $escaper->escapeHtml($storeConfig->getStoreConfig('general/store_information/city') ?? ''); ?><br>
-    <?= $escaper->escapeHtml($storeConfig->getStoreConfig('general/store_information/postcode') ?? ''); ?><br>
-</address>
-<ul role="list">
-    <?php if ($storePhoneNumber): ?>
-    <li class="mt-10">
-        <?= $heroicons->phoneHtml("inline mr-1", 20, 20, ['aria-hidden' => 'true']) ?>
-        <a class="inline" href="tel:<?= $escaper->escapeHtmlAttr(preg_replace("/[^0-9+]/", "", $storePhoneNumber)) ?>">
-            <?= $escaper->escapeHtml($storePhoneNumber); ?>
-        </a>
-    </li>
-    <?php endif; ?>
-    <li>
-        <?= $heroicons->mailHtml("inline mr-1", 20, 20, ['aria-hidden' => 'true']) ?>
-        <a href="mailto:<?= $escaper->escapeHtmlAttr($storeEmail); ?>">
-            <?= $escaper->escapeHtml($storeEmail); ?>
-        </a>
-    </li>
-</ul>
+<div class="bg-white shadow-lg rounded-lg p-6 border border-gray-200">
+    <h2 class="sm:text-2xl text-xl font-medium title-font mb-4 text-gray-900 border-b pb-2">
+        <span><?= $escaper->escapeHtml(__('Contact Details')) ?></span>
+    </h2>
+    <h3 class="title-font font-bold text-2xl uppercase tracking-wider"><?= $escaper->escapeHtml($storeConfig->getStoreConfig('general/store_information/name') ?? ''); ?></h3>
+    <div class="mt-2 text-gray-600">
+        <?php if ($storeNip): ?>
+            <p><span class="font-semibold"><?= $escaper->escapeHtml(__('NIP:')) ?></span> <?= $escaper->escapeHtml($storeNip); ?></p>
+        <?php endif; ?>
+        <?php if ($storeRegon): ?>
+            <p><span class="font-semibold"><?= $escaper->escapeHtml(__('REGON:')) ?></span> <?= $escaper->escapeHtml($storeRegon); ?></p>
+        <?php endif; ?>
+    </div>
+    <address class="not-italic text-gray-600 mt-4">
+        <?= $escaper->escapeHtml($storeConfig->getStoreConfig('general/store_information/street_line1') ?? ''); ?><br>
+        <?= $escaper->escapeHtml($storeConfig->getStoreConfig('general/store_information/postcode') ?? ''); ?> <?= $escaper->escapeHtml($storeConfig->getStoreConfig('general/store_information/city') ?? ''); ?><br>
+    </address>
+
+    <div class="mt-4 pt-4 border-t">
+        <ul role="list" class="space-y-3">
+            <?php if ($storePhoneNumber): ?>
+            <li class="flex items-center">
+                <?= $heroicons->phoneHtml("flex-shrink-0 h-5 w-5 text-gray-500 mr-2", 20, 20, ['aria-hidden' => 'true']) ?>
+                <a class="text-gray-700 hover:text-primary-dark" href="tel:<?= $escaper->escapeHtmlAttr(preg_replace("/[^0-9+]/", "", $storePhoneNumber)) ?>">
+                    <?= $escaper->escapeHtml($storePhoneNumber); ?>
+                </a>
+            </li>
+            <?php endif; ?>
+            <li class="flex items-center">
+                <?= $heroicons->mailHtml("flex-shrink-0 h-5 w-5 text-gray-500 mr-2", 20, 20, ['aria-hidden' => 'true']) ?>
+                <a class="text-gray-700 hover:text-primary-dark" href="mailto:<?= $escaper->escapeHtmlAttr($storeEmail); ?>">
+                    <?= $escaper->escapeHtml($storeEmail); ?>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
