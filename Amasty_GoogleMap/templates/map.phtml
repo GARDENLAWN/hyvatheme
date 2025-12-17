@@ -6,6 +6,9 @@
  * @var \Magento\Framework\Escaper $escaper
  */
 
+// Use getViewFileUrl directly from the block to get the asset URL
+$markerUrl = $block->getViewFileUrl('images/marker-with-logo.svg');
+
 $mapId = $block->getMapId();
 // Sanitize mapId for use in function name (remove non-alphanumeric characters)
 $safeMapId = preg_replace('/[^a-zA-Z0-9_]/', '', $mapId);
@@ -45,11 +48,19 @@ if (strpos($styles, 'width') === false) {
 
         const amMap = new google.maps.Map(mapElement, mapOptions);
 
+        const markerIcon = {
+            url: '<?= $escaper->escapeJs($markerUrl) ?>',
+            scaledSize: new google.maps.Size(50, 90), // Scaled size of the marker
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(25, 90) // Anchor at the bottom center tip
+        };
+
         new google.maps.Marker({
             position: mapLatLng,
             map: amMap,
             animation: google.maps.Animation.DROP,
-            title: '<?= $escaper->escapeJs($block->getMarkerTitle()) ?>'
+            title: '<?= $escaper->escapeJs($block->getMarkerTitle()) ?>',
+            icon: markerIcon
         });
     }
 
@@ -64,7 +75,7 @@ if (strpos($styles, 'width') === false) {
 
             if (!document.querySelector('script[src*="maps.googleapis.com/maps/api/js"]')) {
                 const script = document.createElement('script');
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=${callbackName}`;
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=${callbackName}&loading=async`;
                 script.async = true;
                 script.defer = true;
                 document.head.appendChild(script);
