@@ -21,6 +21,7 @@
             <module name="Hyva_Theme"/>
             <module name="Amasty_GdprHyva"/>
             <module name="Amasty_GdprCookieHyva"/>
+            <module name="Mageplaza_SocialLogin"/>
         </sequence>
     </module>
 </config>
