@@ -74,6 +74,7 @@
                 <value id="img-src-paynow" type="host">*.paynow.pl</value>
                 <value id="img-src-youtube" type="host">*.youtube.com</value>
                 <value id="img-src-google" type="host">*.google.com</value>
+                <value id="img-src-trawnikproducent" type="host">trawnikproducent.pl</value>
             </values>
         </policy>
 
