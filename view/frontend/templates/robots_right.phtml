@@ -1,0 +1,58 @@
+<?php
+
+declare(strict_types=1);
+
+use GardenLawn\Core\ViewModel\VideoSlider;
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Slider;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+
+$sliderViewModel = $viewModels->require(Slider::class);
+$videoSliderViewModel = $viewModels->require(VideoSlider::class);
+
+$itemsVideo1 = [
+    ['divId' => 'video1', 'videoId' => '2xkD1WitEmA'],
+    ['divId' => 'video2', 'videoId' => 'CBN5-Zz34sg'],
+    ['divId' => 'video3', 'videoId' => 'A16e-8aXlSk'],
+    ['divId' => 'video4', 'videoId' => 'sgnQuQ-Nebw'],
+    ['divId' => 'video5', 'videoId' => 'AgC3QZkDnkw'],
+    ['divId' => 'video6', 'videoId' => 'mOtl03bLAvc'],
+    ['divId' => 'video7', 'videoId' => 'RGLBv5yA-1g'],
+    ['divId' => 'video8', 'videoId' => 'rESVsjTBBHA'],
+    ['divId' => 'video9', 'videoId' => 'UJk_yMx38QY']
+];
+
+$itemsVideo2 = [
+    ['divId' => 'video11', 'videoId' => 'Nl7enJVBEeQ'],
+    ['divId' => 'video12', 'videoId' => 'WUwCissmzEU'],
+    ['divId' => 'video13', 'videoId' => 's2Lav7uQ8SI'],
+    ['divId' => 'video14', 'videoId' => 'AmWDTrcegUg'],
+    ['divId' => 'video15', 'videoId' => 't7mzpyDXM5M'],
+    ['divId' => 'video16', 'videoId' => 'igPgUH1x1sc'],
+    ['divId' => 'video17', 'videoId' => 'p9zGsa3JMec'],
+    ['divId' => 'video18', 'videoId' => 'fVtu6JBtsZw'],
+    ['divId' => 'video19', 'videoId' => 'EF-EPpnqxoA']
+];
+?>
+<div class="lg:w-1/3">
+    <div class="div-bordered-blue">
+        <?php
+        echo $block->getLayout()
+            ->createBlock(Template::class)
+            ->setTemplate('GardenLawn_Core::video-slider.phtml')
+            ->setData('sliderViewModel', $sliderViewModel)
+            ->setData('videoSliderViewModel', $videoSliderViewModel->setVideoData($itemsVideo1))
+            ->toHtml();
+
+        echo $block->getLayout()
+            ->createBlock(Template::class)
+            ->setTemplate('GardenLawn_Core::video-slider.phtml')
+            ->setData('sliderViewModel', $sliderViewModel)
+            ->setData('videoSliderViewModel', $videoSliderViewModel->setVideoData($itemsVideo2))
+            ->toHtml();
+        ?>
+    </div>
+</div>
