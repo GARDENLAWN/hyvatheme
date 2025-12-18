@@ -132,6 +132,7 @@
                 <value id="script-src-google" type="host">*.google.com</value>
                 <value id="script-src-google-analytics" type="host">www.google-analytics.com</value>
                 <value id="script-src-googletagmanager" type="host">www.googletagmanager.com</value>
+                <value id="script-src-googleapis" type="host">maps.googleapis.com</value>
 
                 <!-- Hashes with unique IDs -->
                 <value id="gardenlawn-script-hash-1" type="hash" algorithm="sha256">BlchBu6mrisHS6kLSIdwDGFrUSxv847nFYnY8x0Z1Rg=</value>
