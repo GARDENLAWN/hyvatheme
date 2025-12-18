@@ -80,23 +80,6 @@ $searchConfig = $viewModels->require(SearchConfig::class);
             searchSuggestion() {
                 this.search(this.suggestion.title)
             },
-            focusElement(element) {
-                if (element instanceof Event) {
-                    element = this.$root.querySelector('[tabindex]');
-                }
-                if (element && element.nodeName === "DIV") {
-                    element.focus();
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            focusArrowUp() {
-                focusElement(this.$event.target.previousElementSibling) || this.$refs.searchInput.focus()
-            },
-            focusArrowDown() {
-                focusElement(this.$event.target.nextElementSibling)
-            },
             focusAfterOpen() {
                 this.$el.focus()
                 this.$el.select()
@@ -107,7 +90,7 @@ $searchConfig = $viewModels->require(SearchConfig::class);
     window.addEventListener('alpine:init', () => Alpine.data('initMiniSearch', initMiniSearch), {once: true})
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
-<div class="hidden md:block container relative px-0" x-data="initMiniSearch">
+<div class="container relative px-0" x-data="initMiniSearch">
     <search title="<?= $escaper->escapeHtmlAttr(__('Store')) ?>" role="search">
         <form
             id="search_mini_form"
@@ -129,17 +112,16 @@ $searchConfig = $viewModels->require(SearchConfig::class);
                 value="<?= /** @noEscape */ $helper->getEscapedQueryText() ?>"
                 placeholder="<?= $escaper->escapeHtmlAttr(__('Search entire store here...')) ?>"
                 maxlength="<?= $escaper->escapeHtmlAttr($helper->getMaxQueryLength()) ?>"
-                class="w-full border-slate-300 rounded-l-md"
+                class="w-full border-slate-300 rounded-e-none"
                 @search-open.window.debounce.10="focusAfterOpen"
                 <?php if ($searchConfig->isSuggestionsAllowed()): ?>
                 @focus.once="suggest"
                 @input.debounce.300="suggest"
-                @keydown.arrow-down.prevent="focusElement"
                 <?php endif ?>
             >
             <button
                 type="submit"
-                class="action search btn btn-primary rounded-l-none rounded-r-md px-3"
+                class="action search btn btn-primary rounded-s-none rounded-e-md px-3"
                 title="<?= $escaper->escapeHtmlAttr(__('Search')) ?>"
                 aria-label="<?= $escaper->escapeHtmlAttr(__('Search')) ?>"
             >
@@ -159,9 +141,6 @@ $searchConfig = $viewModels->require(SearchConfig::class);
                     class="flex justify-between p-2 even:bg-container mb-1 cursor-pointer
                         border border-container hover:bg-container-darker rounded-md"
                     @click="searchSuggestion"
-                    @keydown.enter="searchSuggestion"
-                    @keydown.arrow-up.prevent="focusArrowUp"
-                    @keydown.arrow-down.prevent="focusArrowDown"
                 >
                     <span x-text="suggestion.title"></span>
                     <span x-text="suggestion.num_results"></span>

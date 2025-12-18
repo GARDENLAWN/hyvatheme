@@ -1,0 +1,73 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\Model\LocaleFormatter;
+use Magento\Catalog\Helper\Data;
+use Magento\Framework\Escaper;
+use Magento\LayeredNavigation\Block\Navigation\FilterRenderer;
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+
+/** @var FilterRenderer $block */
+/** @var Escaper $escaper */
+/** @var LocaleFormatter $localeFormatter */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsSolid $heroiconsSolid */
+$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+$catalogHelper = $this->helper(Data::class);
+$showFilterInput = $block->getShowInput();
+
+/** @var array $filterItems */
+?>
+
+<ol class="items space-y-2.5" aria-label="<?= $escaper->escapeHtmlAttr(__('%1 filter options', $block->getFilterTitle())) ?>">
+    <?php foreach ($filterItems as $filterItem): ?>
+        <li class="relative text-sm">
+            <?php if ($filterItem->getCount() > 0): ?>
+                <a
+                    href="<?= $escaper->escapeUrl($filterItem->getUrl()) ?>"
+                    class="group/filter flex gap-2 justify-between items-center hover:text-black outline-offset-4"
+                >
+                    <span class="flex gap-2 items-center">
+                        <?php if ($showFilterInput): ?>
+                            <span
+                                class="relative inline-flex shrink-0 justify-center items-center border border-slate-300 w-5 h-5 rounded-full bg-white
+                                    after:opacity-0 after:absolute after:inset-1 after:bg-white after:rounded-full after:transition
+                                    group-hover/filter:bg-primary group-hover/filter:border-primary group-hover/filter:text-white group-hover/filter:after:opacity-100
+                                    group-focus/filter:bg-primary group-focus/filter:border-primary group-focus/filter:text-white group-focus/filter:after:opacity-100"
+                                aria-hidden="true"
+                            ></span>
+                        <?php endif; ?>
+                        <span><?= /* @noEscape */ $filterItem->getLabel() ?></span>
+                    </span>
+                    <span
+                        class="count <?= $catalogHelper->shouldDisplayProductCountOnLayer() ? 'text-slate-500 tabular-nums' : 'sr-only' ?>"
+                        aria-label="<?= ((int) $filterItem->getCount() === 1)
+                            ? $escaper->escapeHtmlAttr(__('1 product available in filter'))
+                            : $escaper->escapeHtmlAttr(__('%1 products available in filter', $filterItem->getCount())) ?>"
+                    ><?= /* @noEscape */ $localeFormatter->formatNumber((int)$filterItem->getCount()) ?></span>
+                </a>
+            <?php else: ?>
+                <span class="flex gap-2 justify-between py-1 hover:text-black">
+                    <span><?= /* @noEscape */ $filterItem->getLabel() ?></span>
+                    <span
+                        class="count <?= $catalogHelper->shouldDisplayProductCountOnLayer() ? 'text-slate-500 tabular-nums' : 'sr-only' ?>"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('%1 products available in filter', $filterItem->getCount())) ?>"
+                    ><?= /* @noEscape */ $localeFormatter->formatNumber((int)$filterItem->getCount()) ?></span>
+                </span>
+            <?php endif; ?>
+        </li>
+    <?php endforeach ?>
+</ol>

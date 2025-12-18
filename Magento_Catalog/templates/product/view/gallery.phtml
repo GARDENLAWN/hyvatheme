@@ -122,7 +122,7 @@ $productName = $block->getProduct()->getName();
             @keyup.arrow-right="nextItem"
             @keyup.arrow-left="prevItem"
             <?php if ($galleryOptionShowMagnifier): ?>
-                x-magnifier.zoom.<?= $galleryOptionMagnifierZoom ?>="showMagnifierIfActive"
+                x-magnifier.zoom.<?= /* @noEscape */ $galleryOptionMagnifierZoom ?>="showMagnifierIfActive"
             <?php endif; ?>
         >
             <figure class="flex flex-col items-center justify-center h-full" :class="firstImageClasses">
@@ -131,7 +131,7 @@ $productName = $block->getProduct()->getName();
                     alt="<?= $mainImage ? $escaper->escapeHtmlAttr($mainImage->getData('label')) : '' ?>"
                     width="<?= /* @noEscape */ $mediumWidth ?>"
                     height="<?= /* @noEscape */ $mediumHeight ?>"
-                    loading="lazy"
+                    loading="eager"
                     itemprop="image"
                 >
             </figure>
@@ -542,7 +542,7 @@ $productName = $block->getProduct()->getName();
                             videoData.additionalParams += '&enablejsapi=1';
                         }
 
-                        videoData.src = `${baseSrc}/${videoData.id}?origin=<?= $block->getBaseUrl() ?>${videoData.additionalParams}`;
+                        videoData.src = `${baseSrc}/${videoData.id}?origin=<?= $escaper->escapeUrl($block->getBaseUrl()) ?>${videoData.additionalParams}`;
                         videoData.allow += " accelerometer; clipboard-write; encrypted-media; gyroscope;"
                     } else if (videoUrl.match(/vimeo\.com/)) {
                         const vimeoRegex = new RegExp([

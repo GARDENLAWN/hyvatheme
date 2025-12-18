@@ -1,14 +1,146 @@
-@layer components {
-    .form-swatch {
-        /* TODO: create HTML swatches */
+/**
+ * Styles are being added for older swatches.
+ * In the futere version of Hyvä, swatches will be styled using CSS, making this cleaner.
+ */
+
+.swatch-attribute {
+    border: 0;
+}
+
+.product-info {
+    .swatch-attribute {
+        margin-block-end: --spacing(2);
+    }
+}
+
+.swatch-attribute-options {
+    @apply flex flex-row flex-wrap gap-2 min-h-10 mx-0;
+
+    &.space-x-4 {
+        @apply gap-4;
+
+        & > * {
+            margin: 0;
+        }
     }
 
-    .swatch-attribute-options {
-        @apply flex flex-row flex-wrap;
+    & > [role="radiogroup"].flex {
+        @apply gap-2;
+        padding-block: 2px;
+        padding-inline: 2px;
+    }
+}
+
+.swatch-option {
+    --swatch-active-color: #0000;
+    --swatch-stroke: var(--color-slate-200);
+    --swatch-bg: var(--color-white);
+    --swatch-color: var(--color-slate-800);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 40px;
+    margin: 0;
+    padding-block: --spacing(2);
+    padding-inline: --spacing(2.5);
+    outline: 2px solid var(--swatch-active-color);
+    box-shadow: none;
+    border: 2px solid var(--swatch-stroke);
+    border-radius: var(--radius-md);
+    background-color: var(--swatch-bg);
+    color: var(--swatch-color);
+    font-size: var(--text-sm);
+    line-height: 1.1;
+    font-weight: 500;
+    transition-property: color, background-color, border-color, outline-color;
+    transition-timing-function: var(--default-transition-timing-function);
+    transition-duration: var(--default-transition-duration);
+
+    &:hover {
+        --swatch-stroke: var(--color-blue-300);
     }
 
-    .swatch-option {
-        @apply px-2 py-1 m-1 flex border justify-center;
-        min-width: 40px;
+    &:focus-within {
+        --swatch-active-color: var(--color-blue-500);
+        --swatch-stroke: var(--color-blue-300);
+    }
+
+    &:is(:has(:checked), [data-checked], :active) {
+        --swatch-stroke: var(--color-blue-500);
+        --swatch-bg: var(--color-blue-50);
+        --swatch-color: var(--color-blue-800);
+
+        &:hover {
+            --swatch-stroke: var(--color-blue-300);
+        }
+
+        &:focus-within {
+            --swatch-stroke: var(--color-white);
+        }
+    }
+
+    &:is([style*="background-color"], [style*="background-image"]) {
+        width: --spacing(8);
+        height: --spacing(8);
+        min-width: 0;
+
+        &:is(:has(:checked), [data-checked], :active) {
+            --swatch-stroke: var(--color-white);
+            --swatch-active-color: var(--color-blue-500);
+        }
+
+        &:hover {
+            --swatch-stroke: var(--color-white);
+            --swatch-active-color: var(--color-blue-300);
+        }
+    }
+
+    &[style*="background-color"] {
+        border-radius: 50%;
+    }
+
+    &:is(:disabled, .is-disabled, :has(input:disabled)) {
+        --swatch-stroke: var(--color-slate-300);
+        --swatch-bg: var(--color-slate-50);
+        --swatch-color: var(--color-slate-500);
+        outline: none;
+
+        &:not([style*="background-color"], [style*="background-image"]) {
+            background: linear-gradient(
+                130deg,
+                #0000 calc(50% - 1px),
+                var(--swatch-stroke) calc(50% - 1px),
+                var(--swatch-stroke) calc(50% + 1px),
+                #0000 calc(50% + 1px)
+            );
+        }
+
+        &:is([style*="background-color"], [style*="background-image"]) {
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 4px;
+                background-color: var(--color-white);
+                background-image: linear-gradient(
+                        to top left,
+                        #0000 calc(50% - 1px),
+                        var(--color-red-300) calc(50% - 1px),
+                        var(--color-red-300) calc(50% + 1px),
+                        #0000 calc(50% + 1px)
+                    ),
+                    linear-gradient(
+                        to top right,
+                        #0000 calc(50% - 1px),
+                        var(--color-red-300) calc(50% - 1px),
+                        var(--color-red-300) calc(50% + 1px),
+                        #0000 calc(50% + 1px)
+                    );
+                background-size: calc(100% - 10px) calc(100% - 10px);
+                background-repeat: no-repeat;
+                background-position: center;
+                border-radius: inherit;
+            }
+        }
     }
 }

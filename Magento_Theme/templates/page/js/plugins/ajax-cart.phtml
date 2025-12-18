@@ -44,7 +44,7 @@ $showAjaxCartModal = $block->getDisplayOnSuccess() === 'modal' || $block->getDis
         loader.className = 'absolute inset-0 flex justify-center items-center loader';
         loader.innerHTML = `<?= $hyvaicons->renderHtml(
             'loader',
-            'w-full h-full p-2',
+            'animate-spin w-full h-full p-2',
             24, 24,
             ['title' => $escaper->escapeHtml(__('Loading...'))]
         ); ?>`;

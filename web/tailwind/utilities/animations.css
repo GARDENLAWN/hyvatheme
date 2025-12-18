@@ -1,0 +1,49 @@
+@theme {
+    --animate-dancers: animate-dancers 2s infinite linear;
+
+    @keyframes animate-dancers {
+        0%,
+        5% {
+            rotate: 0deg;
+        }
+
+        20%,
+        30% {
+            rotate: 90deg;
+        }
+
+        45%,
+        55% {
+            rotate: 180deg;
+        }
+
+        70%,
+        80% {
+            rotate: 270deg;
+        }
+
+        95%,
+        100% {
+            rotate: 360deg;
+        }
+    }
+}
+
+@layer utilities {
+    .loader-dancers rect {
+        transform-box: fill-box;
+        transform-origin: 50% 0%;
+        animation: var(--animate-dancers);
+    }
+
+    .loader-dancers rect:first-child {
+        transform-origin: 100% 0%;
+        fill: var(--color-primary);
+    }
+
+    .loader-dancers rect:last-child {
+        transform-origin: 0% 0%;
+        animation-delay: 0.25s;
+        fill: var(--color-secondary);
+    }
+}

@@ -1,0 +1,88 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Catalog\Block\Navigation;
+use Magento\Framework\Escaper;
+use Magento\Catalog\Model\Category;
+
+/** @var Escaper $escaper */
+/** @var Category $category */
+/** @var Navigation $block */
+
+if (!$block->getCategory()) {
+    return '';
+}
+
+$categories = $block->getCurrentChildCategories();
+$categoriesId = 'cat';
+$categoriesTitle = __('Category');
+$count = is_array($categories) ? count($categories) : $categories->count();
+$showFilterInput = $block->getShowInput() !== null ? (bool) $block->getShowInput() : true;
+
+if (!$count) {
+    return '';
+}
+?>
+
+<div class="my-6">
+    <h2 class="block-title w-full text-start text-lg md:text-2xl font-medium">
+        <?= $escaper->escapeHtml(__('Shop By')) ?>
+    </h2>
+    <div class="block-content filter-content mt-4 py-2 px-6 bg-white border border-slate-200 rounded">
+        <details
+            id="<?= $escaper->escapeHtmlAttr($categoriesId) ?>"
+            class="filter-option group py-2 border-b border-slate-200 last:border-b-0"
+            open
+        >
+            <summary
+                class="block-title [&::-webkit-details-marker]:hidden py-2 flex items-center justify-between font-medium md:text-lg cursor-pointer outline-offset-2"
+                aria-label="<?= $escaper->escapeHtml(__('%1 filter', $categoriesTitle)) ?>"
+            >
+                <h3 class="title text-md md:text-lg font-semibold"><?= $escaper->escapeHtml($categoriesTitle) ?></h3>
+            </summary>
+            <div class="filter-options-content py-2">
+                <ol class="items space-y-2.5" aria-label="<?= $escaper->escapeHtmlAttr(__('%1 filter options', $categoriesTitle)) ?>">
+                    <?php foreach ($categories as $category):?>
+                        <?php if ($category->getIsActive()): ?>
+                            <li class="relative text-sm">
+                                <a
+                                    href="<?= $escaper->escapeUrl($block->getCategoryUrl($category)) ?>"
+                                    class="group/filter flex gap-2 justify-between items-center hover:text-black outline-offset-4"
+                                    <?php if ($block->isCategoryActive($category)): ?>
+                                    aria-current="page"
+                                    <?php endif; ?>
+                                >
+                                    <span class="flex gap-2 items-center">
+                                        <?php if($showFilterInput): ?>
+                                            <span
+                                                class="relative inline-flex shrink-0 justify-center items-center border border-slate-300 w-5 h-5 rounded-full bg-white
+                                                    after:opacity-0 after:absolute after:inset-1 after:bg-white after:rounded-full after:transition
+                                                    group-hover/filter:bg-primary group-hover/filter:border-primary group-hover/filter:text-white group-hover/filter:after:opacity-100
+                                                    group-focus/filter:bg-primary group-focus/filter:border-primary group-focus/filter:text-white group-focus/filter:after:opacity-100"
+                                                aria-hidden="true"
+                                            ></span>
+                                        <?php endif; ?>
+                                        <span><?= $escaper->escapeHtml($category->getName()) ?></span>
+                                    </span>
+                                    <span
+                                        class="count text-slate-500 tabular-nums"
+                                        aria-label="<?= ((int) $category->getProductCount() === 1)
+                                            ? $escaper->escapeHtmlAttr(__('1 product available in filter'))
+                                            : $escaper->escapeHtmlAttr(__('%1 products available in filter', $category->getProductCount())) ?>"
+                                    ><?= $escaper->escapeHtml($category->getProductCount()) ?></span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                    <?php endforeach ?>
+                </ol>
+            </div>
+        </details>
+    </div>
+</div>
