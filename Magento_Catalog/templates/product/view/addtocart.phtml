@@ -29,6 +29,12 @@ $productViewModel = $viewModels->require(ProductPage::class);
 
 $product = $productViewModel->getProduct();
 $isCallForPrice = $product ? $product->getData('call_for_price') : false;
+
+$contactUrl = $block->getUrl('contact');
+if ($isCallForPrice && $product) {
+    $subject = __('Inquiry for price: %1 (SKU: %2)', $product->getName(), $product->getSku());
+    $contactUrl .= '?subject=' . rawurlencode((string)$subject);
+}
 ?>
 
 <?php if ($isCallForPrice): ?>
@@ -36,7 +42,7 @@ $isCallForPrice = $product ? $product->getData('call_for_price') : false;
         type="button"
         class="btn btn-primary"
         id="product-addtocart-button"
-        onclick="window.location.href='<?= $escaper->escapeUrl($block->getUrl('contact')) ?>'"
+        onclick="window.location.href='<?= $escaper->escapeUrl($contactUrl) ?>'"
     >
         <?= $lucideIcons->mailHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
         <span class="hidden sm:block md:hidden lg:block"><?= $escaper->escapeHtml(__('Ask for price')) ?></span>

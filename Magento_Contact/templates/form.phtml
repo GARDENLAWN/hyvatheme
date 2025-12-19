@@ -28,6 +28,8 @@ $contactHelper = $this->helper(ContactHelper::class);
 // Do not replace this with $viewModels->require(ReCaptcha::class); that would break the dependency
 // on the Magento_ReCaptchaContact module
 $recaptcha = $block->getData('viewModelRecaptcha');
+
+$subject = $block->getRequest()->getParam('subject');
 ?>
 <div class="flex flex-col md:flex-row justify-between py-8 gap-4">
     <form class="form contact card lg:w-1/2 md:w-2/3 bg-white shadow-lg rounded-lg p-6 border border-gray-200"
@@ -47,6 +49,18 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                 ) ?></p>
             </div>
             <div class="flex flex-wrap -m-2">
+                <?php if ($subject): ?>
+                    <div class="field subject required p-2 w-full text-left">
+                        <label class="label text-gray-700" for="subject">
+                            <span><?= $escaper->escapeHtml(__('Subject')) ?></span>
+                        </label>
+                        <input name="subject" id="subject" readonly
+                               title="<?= $escaper->escapeHtmlAttr(__('Subject')) ?>"
+                               value="<?= $escaper->escapeHtmlAttr($subject) ?>"
+                               class="form-input mt-2 w-full bg-gray-100 cursor-not-allowed"
+                               type="text">
+                    </div>
+                <?php endif; ?>
                 <div class="field name required p-2 w-1/2 text-left">
                     <label class="label text-gray-700" for="name">
                         <span><?= $escaper->escapeHtml(__('Name')) ?></span>
