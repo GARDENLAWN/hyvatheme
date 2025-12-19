@@ -1,0 +1,90 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Magento\Framework\Escaper;
+use Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart;
+use Magento\Wishlist\Model\Item;
+use Magento\Wishlist\ViewModel\AllowedQuantity;
+
+/** @var Cart $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var Item $item */
+$item = $block->getItem();
+$itemId = $item->getId();
+$product = $item->getProduct();
+
+/** @var AllowedQuantity $viewModel */
+$viewModel = $viewModels->require(AllowedQuantity::class);
+$allowedQty = $viewModel->setItem($item)->getMinMaxQty();
+
+$isCallForPrice = $product->getData('call_for_price');
+$contactUrl = $block->getUrl('contact');
+if ($isCallForPrice) {
+    $subject = __('Inquiry for price: %1 (SKU: %2)', $product->getName(), $product->getSku());
+    $contactUrl .= '?subject=' . rawurlencode((string)$subject);
+}
+?>
+
+<?php foreach ($block->getChildNames() as $childName): ?>
+    <?= /* @noEscape */ $block->getLayout()->renderElement($childName, false) ?>
+<?php endforeach;?>
+
+<fieldset class="box-tocart mt-4 pt-4 border-t border-gray-300 mb-2 <?= ($item->canHaveQty() && $product->isVisibleInSiteVisibility()) ? ' flex flex-wrap gap-2' : '' ?>">
+    <?php if (!$isCallForPrice && $item->canHaveQty() && $product->isVisibleInSiteVisibility()): ?>
+        <label class="my-0">
+            <span class="sr-only"><?= $escaper->escapeHtml(__('Qty')) ?></span>
+            <input
+                type="number"
+                name="qty[<?= $escaper->escapeHtmlAttr($itemId) ?>]"
+                class="form-input qty"
+                value="<?= /* @noEscape */ $block->getAddToCartQty($item) * 1 ?>"
+                data-role="qty"
+                x-ref="product-qty-<?= $escaper->escapeHtmlAttr($itemId) ?>"
+                <?= $product->isSaleable() ? '' : 'disabled' ?>
+            >
+        </label>
+    <?php endif; ?>
+    <?php if ($isCallForPrice): ?>
+        <div class="product-item-actions">
+            <a
+                href="<?= $escaper->escapeUrl($contactUrl) ?>"
+                class="btn btn-primary"
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Ask for price for %1', $product->getName())) ?>"
+            >
+                <?= $escaper->escapeHtml(__('Ask for price')) ?>
+            </a>
+        </div>
+    <?php elseif ($product->isSaleable()): ?>
+        <div class="product-item-actions">
+            <button
+                type="button"
+                data-role="tocart"
+                data-item-id="<?= $escaper->escapeHtmlAttr($item->getId()) ?>"
+                data-add-to-cart-params="<?= $escaper->escapeHtmlAttr($block->getItemAddToCartParams($item)) ?>"
+                @click.prevent='addToCart'
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Cart %1', $product->getName())) ?>"
+                class="btn btn-primary"
+                data-addto="cart"
+            >
+                <?= $escaper->escapeHtml(__('Add to Cart')) ?>
+            </button>
+        </div>
+    <?php else: ?>
+        <?php if ($product->getIsSalable()): ?>
+            <p class="available stock" title="<?= $escaper->escapeHtmlAttr(__('Availability')) ?>">
+                <span><?= $escaper->escapeHtml(__('In stock')) ?></span>
+            </p>
+        <?php else: ?>
+            <p class="unavailable stock" title="<?= $escaper->escapeHtmlAttr(__('Availability')) ?>">
+                <span><?= $escaper->escapeHtml(__('Out of stock')) ?></span>
+            </p>
+        <?php endif; ?>
+    <?php endif; ?>
+</fieldset>

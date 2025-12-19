@@ -1,0 +1,32 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\Framework\Escaper;
+use Magento\Wishlist\Block\Customer\Wishlist\Button;
+
+/** @var Escaper $escaper */
+/** @var Button $block */
+
+$wishlist = $block->getWishlist();
+$hasCallForPriceItem = false;
+foreach ($wishlist->getItemCollection() as $item) {
+    if ($item->getProduct()->getData('call_for_price')) {
+        $hasCallForPriceItem = true;
+        break;
+    }
+}
+?>
+
+<?php if ($wishlist->getItemsCount() && $wishlist->isSalable() && !$hasCallForPriceItem): ?>
+    <button type="button"
+            @click.prevent="addAllItemsToCart"
+            data-role="all-tocart"
+            title="<?= $escaper->escapeHtmlAttr(__('Add All to Cart')) ?>"
+            class="action tocart btn btn-primary">
+        <span><?= $escaper->escapeHtml(__('Add All to Cart')) ?></span>
+    </button>
+<?php endif;?>

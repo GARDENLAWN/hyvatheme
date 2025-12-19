@@ -1,0 +1,23 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart;
+
+/** @var Cart $block */
+
+$item = $block->getItem();
+$product = $item->getProduct();
+$isCallForPrice = $product->getData('call_for_price');
+?>
+
+<?php if (!$isCallForPrice): ?>
+    <?php foreach ($block->getChildNames() as $childName): ?>
+    <div>
+        <?= /* @noEscape */ $block->getLayout()->renderElement($childName, false) ?>
+    </div>
+    <?php endforeach;?>
+<?php endif; ?>
