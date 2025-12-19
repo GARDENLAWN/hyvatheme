@@ -1,0 +1,18 @@
+<?php
+
+/** @var \Magento\Framework\View\Element\Template $block */
+
+$totalPages = (int) $block->getData('total_pages');
+$currentPage = (int) $block->getData('current_page');
+$baseUrl = $block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]);
+$baseUrl = strtok($baseUrl, '?');
+
+?>
+
+<?php if ($currentPage > 1): ?>
+    <link rel="prev" href="<?= $escaper->escapeUrl($baseUrl . ($currentPage > 2 ? '?p=' . ($currentPage - 1) : '')) ?>" />
+<?php endif; ?>
+
+<?php if ($currentPage < $totalPages): ?>
+    <link rel="next" href="<?= $escaper->escapeUrl($baseUrl . '?p=' . ($currentPage + 1)) ?>" />
+<?php endif; ?>
