@@ -74,6 +74,8 @@ $imageCustomAttributes = $product->getData('image_custom_attributes')
     ?? $block->getData('image_custom_attributes')
     ?? [];
 $productName = $catalogOutputHelper->productAttribute($product, $product->getName(), 'name');
+
+$isCallForPrice = $product->getData('call_for_price');
 ?>
 
 <?php if ($product->isSaleable()): ?>
@@ -162,7 +164,9 @@ $productName = $catalogOutputHelper->productAttribute($product, $product->getNam
             <?php endif; ?>
 
             <div class="mt-auto pt-1 text-gray-900">
-                <?= /* @noEscape */ $productListItemViewModel->getProductPriceHtml($product) ?>
+                <?php if (!$isCallForPrice): ?>
+                    <?= /* @noEscape */ $productListItemViewModel->getProductPriceHtml($product) ?>
+                <?php endif; ?>
             </div>
 
             <div class="flex flex-row justify-between mt-1 mb-4 text-sm leading-5">
@@ -170,7 +174,17 @@ $productName = $catalogOutputHelper->productAttribute($product, $product->getNam
             </div>
             <div class="flex gap-4 flex-wrap items-end">
                 <div class="grow">
-                    <?php if ($product->isSaleable()): ?>
+                    <?php if ($isCallForPrice): ?>
+                        <a
+                            href="<?= $escaper->escapeUrl($block->getUrl('contact')) ?>"
+                            class="btn btn-primary w-full py-3 <?= $viewIsGrid ? 'px-3 2xl:px-6' : 'px-5 sm:w-auto' ?>"
+                            title="<?= $escaper->escapeHtmlAttr(__('Ask for price')) ?>"
+                            aria-label="<?= $escaper->escapeHtmlAttr(__('Ask for price')) ?>"
+                        >
+                            <?= $heroicons->mailHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
+                            <?= $escaper->escapeHtml(__('Ask for price')) ?>
+                        </a>
+                    <?php elseif ($product->isSaleable()): ?>
                         <?php if ($isProductGroupedOrBundle): ?>
                             <a
                                 href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
