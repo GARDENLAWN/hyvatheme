@@ -147,34 +147,6 @@ $heroiconsOutline = $viewModels->require(HeroiconsOutline::class);
                                 <strong class="mr-2 text-sm leading-6 font-normal">
                                     <a :href="product.product_url" :title="product.product_name" x-html="product.product_name"></a>
                                 </strong>
-                                <template x-if="!product.call_for_price">
-                                    <div class="mr-2 text-sm leading-6 font-bold" x-html="product.product_price"></div>
-                                </template>
-                                <template x-if="product.product_is_saleable_and_visible || product.call_for_price">
-                                    <div class="actions-primary my-2">
-                                        <template x-if="product.call_for_price">
-                                            <a
-                                                :href="getContactUrl(product)"
-                                                class="action primary btn btn-primary text-sm"
-                                                :aria-label="'<?= $escaper->escapeJs(__('Ask for price')) ?> ' + product.product_name"
-                                            >
-                                                <?= $escaper->escapeHtml(__('Ask for price')) ?>
-                                            </a>
-                                        </template>
-                                        <template x-if="!product.call_for_price && hasNoRequiredOptions">
-                                            <button
-                                                type="button"
-                                                @click.prevent="addToCart"
-                                                class="action tocart primary btn btn-primary text-sm"
-                                                data-aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Cart %1'))  ?>"
-                                                :aria-label="productAriaLabel"
-                                                data-addto="cart"
-                                            >
-                                                <?= $escaper->escapeHtml(__('Add to Cart')) ?>
-                                            </button>
-                                        </template>
-                                    </div>
-                                </template>
                             </div>
                             <button
                                 type="button"
