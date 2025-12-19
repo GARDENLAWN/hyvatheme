@@ -195,7 +195,7 @@ $showAjaxCartModal = $block->getDisplayOnSuccess() === 'modal' || $block->getDis
                     <div class="grow flex gap-2 flex-col sm:flex-row">
                         <div class="grow">
                             <p class="text-lg">
-                                <strong class="font-bold" x-text="cartItem.product_name"></strong>
+                                <strong class="font-bold" x-html="cartItem.product_name"></strong>
                             </p>
                             <template x-if="canShowDetails">
                                 <dl class="table mt-2 text-sm">
@@ -209,8 +209,8 @@ $showAjaxCartModal = $block->getDisplayOnSuccess() === 'modal' || $block->getDis
                                     </template>
                                     <template x-for="option in cartItem.options">
                                         <div class="table-row">
-                                            <dt class="table-cell pb-1.5 pr-2 min-w-[theme(spacing.12)] sm:min-w-[theme(spacing.24)] font-normal text-slate-500" x-text="option.label"></dt>
-                                            <dd class="table-cell pb-1.5 font-bold" x-text="option.value"></dd>
+                                            <dt class="table-cell pb-1.5 pr-2 min-w-[theme(spacing.12)] sm:min-w-[theme(spacing.24)] font-normal text-slate-500" x-html="option.label"></dt>
+                                            <dd class="table-cell pb-1.5 font-bold" x-html="option.value"></dd>
                                         </div>
                                     </template>
                                 </dl>
