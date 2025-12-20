@@ -21,7 +21,7 @@ use Magento\Framework\Escaper;
 $specialEscaper = $viewModels->require(EscapeHtmlAllowingAnchorAttributes::class);
 $heroicons = $viewModels->require(HeroiconsOutline::class);
 ?>
-<div class="relative inline-block group my-4 right" x-data="{ open: false }">
+<div class="relative inline-block group my-4 ml-4" style="display: inline" x-data="{ open: false }">
     <button type="button"
             @click="open = !open"
             @mouseenter="open = true"
