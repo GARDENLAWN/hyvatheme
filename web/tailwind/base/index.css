@@ -79,7 +79,7 @@
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.product-description-wrapper [data-appearance="contained"] {
+[data-content-type="row"] {
     padding: inherit !important;
 }
 
