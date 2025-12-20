@@ -79,6 +79,10 @@
     background-color: rgba(0, 0, 0, 0.1);
 }
 
+.product-description-wrapper [data-appearance="contained"] {
+    padding: inherit !important;
+}
+
 /* For AlpineJS */
 [x-cloak] {
     display: none !important;
