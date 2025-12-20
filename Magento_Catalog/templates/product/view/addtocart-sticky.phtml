@@ -53,7 +53,7 @@ $isCallForPrice = $product ? $product->getData('call_for_price') : false;
 $contactUrl = $block->getUrl('contact');
 if ($isCallForPrice && $product) {
     $subject = __('Inquiry for price: %1 (SKU: %2)', $product->getName(), $product->getSku());
-    $contactUrl = $block->getUrl('contact', ['_query' => ['subject' => $subject]]);
+    $contactUrl .= '?subject=' . rawurlencode((string)$subject);
 }
 ?>
 
@@ -74,7 +74,7 @@ if ($isCallForPrice && $product) {
             <p class="md:text-xl xl:text-2xl title-font leading-tight <?= $truncateTitle ? 'truncate' : '' ?>">
                 <strong class="font-semibold"><?= $escaper->escapeHtml($product->getName()) ?></strong>
             </p>
-            <?php if ($productType !== 'grouped' && $productType !== 'bundle'): ?>
+            <?php if ($productType !== 'grouped' && $productType !== 'bundle' && !$isCallForPrice): ?>
                 <div class="relative text-slate-600 [&_.price-label]:sr-only [&_.price-wrapper]:[font-size:inherit] [&_.price-wrapper]:text-inherit">
                     <?= $block->getChildHtml('price') ?>
                 </div>

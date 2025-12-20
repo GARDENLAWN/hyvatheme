@@ -60,7 +60,7 @@ $sectionIsOpen = '';
             <?php
             $sectionBlock = $block->getLayout()->getBlock($sectionName);
             $sectionHtml = (string) $sectionBlock->toHtml();
-            $sectionTitle = $sectionBlock->getTitle() ?: $sectionName;
+            $sectionTitle = __($sectionBlock->getTitle() ?: $sectionName);
             $sectionId = str_replace('.', '-', $sectionBlock->getNameInLayout());
             if (empty(trim($sectionHtml))) {
                 continue;
