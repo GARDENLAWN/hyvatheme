@@ -95,6 +95,8 @@
                 <value id="style-src-easypack24" type="host">*.easypack24.net</value>
                 <value id="style-src-inpost" type="host">*.inpost.pl</value>
                 <value id="style-src-googleapis" type="host">https://fonts.googleapis.com</value>
+                <value id="style-src-fontawesome" type="host">*.fontawesome.com</value>
+                <value id="style-src-cdnjs" type="host">cdnjs.cloudflare.com</value>
             </values>
         </policy>
 
@@ -134,6 +136,7 @@
                 <value id="script-src-googletagmanager" type="host">www.googletagmanager.com</value>
                 <value id="script-src-googleapis" type="host">maps.googleapis.com</value>
                 <value id="script-src-gstatic" type="host">www.gstatic.com</value>
+                <value id="script-src-fontawesome" type="host">*.fontawesome.com</value>
 
                 <!-- Hashes with unique IDs -->
                 <value id="gardenlawn-script-hash-1" type="hash" algorithm="sha256">BlchBu6mrisHS6kLSIdwDGFrUSxv847nFYnY8x0Z1Rg=</value>
@@ -193,6 +196,8 @@
                 <value id="font-src-geowidget" type="host">*.easypack24.net</value>
                 <value id="font-src-googleapis" type="host">https://fonts.googleapis.com</value>
                 <value id="font-src-gstatic" type="host">https://fonts.gstatic.com</value>
+                <value id="font-src-fontawesome" type="host">*.fontawesome.com</value>
+                <value id="font-src-cdnjs" type="host">cdnjs.cloudflare.com</value>
             </values>
         </policy>
     </policies>
