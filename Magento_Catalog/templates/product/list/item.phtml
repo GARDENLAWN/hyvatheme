@@ -175,9 +175,11 @@ if ($isCallForPrice && $product) {
                 <?php endif; ?>
             </div>
 
-            <div class="flex flex-row justify-between mt-1 mb-4 text-sm leading-5">
-                <?= $block->getChildBlock('stockstatus')->setData('product', $product)->toHtml() ?>
-            </div>
+            <?php if (!$isCallForPrice): ?>
+                <div class="flex flex-row justify-between mt-1 mb-4 text-sm leading-5">
+                    <?= $block->getChildBlock('stockstatus')->setData('product', $product)->toHtml() ?>
+                </div>
+            <?php endif; ?>
             <div class="flex gap-4 flex-wrap items-end">
                 <div class="grow">
                     <?php if ($isCallForPrice): ?>
