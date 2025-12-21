@@ -13,6 +13,18 @@
     <body>
         <!-- Generated with hyva-csp-helper.php -->
         <referenceContainer name="magewire.plugin.scripts">
+            <block name="gallery"
+                   template="GardenLawn_Hyvatheme::gallery-csp-js.phtml"
+            />
+            <block name="gardenlighting_right"
+                   template="GardenLawn_Hyvatheme::gardenlighting_right-csp-js.phtml"
+            />
+            <block name="lawnsinroll_description"
+                   template="GardenLawn_Hyvatheme::lawnsinroll_description-csp-js.phtml"
+            />
+            <block name="poolrobots_right"
+                   template="GardenLawn_Hyvatheme::poolrobots_right-csp-js.phtml"
+            />
         </referenceContainer>
     </body>
 </page>

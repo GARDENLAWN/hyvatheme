@@ -1,0 +1,321 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** Generated with hyva-csp-helper.php */
+?>
+<script>
+                    window['<?= $escaper->escapeJs($galleryId) ?>_data'] = <?= /* @noEscape */ $jsonSerializer->serialize($mappedImages) ?>;
+                </script>
+<?php $hyvaCsp->registerInlineScript() ?>
+
+                
+<script>
+function viewFrontendTemplatesGalleryMovedScript0() {
+    const el = this.$el,
+          wire = this.$wire;
+    
+    // @todo Implement interaction with the original code ^^
+<?php /** Variables from "./view/frontend/templates/gallery.phtml" */ ?>
+<?php /** References (`$galleryId`, `$jsonSerializer->serialize(...)`, `$mappedImages`) */ ?>
+    
+    return {
+        init() {}
+    }
+}
+window.addEventListener('alpine:init', () => Alpine.data('viewFrontendTemplatesGalleryMovedScript0', viewFrontendTemplatesGalleryMovedScript0), {once: true});
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
+<script>
+        function initGardenGallery(dataVarName) {
+            return {
+                activeItem: 0,
+                itemCount: 0,
+                fullscreen: false,
+                loop: true,
+                isStart: true,
+                isEnd: false,
+                swipeStart: 0,
+                swipeDir: "x",
+                images: window[dataVarName] || [],
+                thumbsOverflow: false,
+                thumbsStart: true,
+                thumbsEnd: true,
+
+                init() {
+                    this.itemCount = this.images.length;
+                    this.initActive();
+                    this.$watch('activeItem', (item) => {
+                        this.isStart = this.activeItem === 0;
+                        this.isEnd = this.activeItem === (this.itemCount - 1);
+
+                        this.$nextTick(() => {
+                            const activeThumb = this.getActiveThumb();
+                            if (activeThumb) {
+                                this.scrollTo(activeThumb);
+                            };
+                        });
+                    });
+                    this.$watch('itemCount', () => {
+                        this.calcThumbsOverflow()
+                    });
+                    this.$watch('fullscreen', (open) => {
+                        this.$nextTick(() => {
+                            this.scrollLock(open);
+                            this.tabLock(this.$refs.galleryDialog, open);
+                        })
+                    })
+                },
+                getImage(image) {
+                    return this.fullscreen ? image.full : image.img;
+                },
+                isActive(index) {
+                    return this.activeItem === index;
+                },
+                scrollLock(use = true) {
+                    document.body.style.overflow = use ? "hidden" : "";
+                },
+                tabLock(target, use = true) {
+                    if (use) {
+                        hyva.trapFocus(target);
+                    } else {
+                        hyva.releaseFocus(target);
+                    }
+                },
+                nextItem() {
+                    const hasNext = this.activeItem < (this.itemCount - 1);
+                    this.activeItem = hasNext
+                        ? this.activeItem += 1
+                        : this.loop ? 0 : this.activeItem;
+                },
+                prevItem() {
+                    const hasPrev = this.activeItem > 0;
+                    this.activeItem = hasPrev
+                        ? this.activeItem -= 1
+                        : this.loop ? (this.itemCount - 1) : this.activeItem;
+                },
+                swipeItem(event) {
+                    if (this.swipeStart === 0) return;
+
+                    const swipeEnd = this.getTouchPosition(event);
+                    if (Math.abs((swipeEnd - this.swipeStart)) < 40) return;
+
+                    if (this.swipeStart > swipeEnd) {
+                        this.nextItem();
+                    } else {
+                        this.prevItem();
+                    }
+
+                    this.swipeStart = 0;
+                },
+                getTouchPosition(event) {
+                    const position = this.swipeDir === "y"
+                        ? event.changedTouches[0].clientY
+                        : event.changedTouches[0].clientX;
+                    return Math.round(position);
+                },
+                isSwipeGesture(event) {
+                    return event.touches.length <= 1 && window.visualViewport.scale <= 1.01;
+                },
+                initActive() {
+                    const mainImg = this.images.findIndex(image => image.isMain === true);
+                    this.activeItem = mainImg === -1 ? 0 : mainImg;
+                    this.isStart = this.activeItem === 0;
+                    this.isEnd = this.activeItem === (this.itemCount - 1);
+                },
+                eventListeners: {
+                    ['@keydown.window.escape']() {
+                        this.fullscreen = false;
+                    }
+                },
+                galleryBody: {
+                    ['@touchstart.passive'](event) {
+                        this.swipeStart = this.isSwipeGesture(event)
+                            ? this.getTouchPosition(event)
+                            : 0;
+                    },
+                    ['@touchend.passive'](event) {
+                        if (!this.isSwipeGesture(event)) return;
+                        this.swipeItem(event);
+                    },
+                },
+                galleryThumbs: {
+                    ['x-init']() {
+                        this.$nextTick(() => this.calcThumbsOverflow());
+                    },
+                    ['@resize.window.debounce']() {
+                        this.calcThumbsOverflow();
+                    }
+                },
+                galleryClasses() {
+                    return {
+                        'z-50 fixed inset-0 w-[calc(100%_-_2rem)] h-[calc(100%_-_2rem)] m-auto': this.fullscreen,
+                        'relative': !this.fullscreen
+                    }
+                },
+                firstImageClasses() {
+                    return 'invisible';
+                },
+                imageWrapperFullscreenClasses() {
+                    return { 'p-4 sm:p-8': this.fullscreen };
+                },
+                imageFullscreenClasses() {
+                    return { 'w-auto': this.fullscreen };
+                },
+                hasMultipleImages() {
+                    return this.images.length > 1;
+                },
+                isAtStart() {
+                    return !this.loop && this.isStart;
+                },
+                isAtEnd() {
+                    return !this.loop && this.isEnd;
+                },
+                notFullscreen() {
+                    return !this.fullscreen;
+                },
+                openFullscreen() {
+                    this.fullscreen = true;
+                },
+                closeFullscreen() {
+                    this.fullscreen = false;
+                },
+                fullscreenRole() {
+                    return this.fullscreen ? 'dialog' : false;
+                },
+                fullscreenLabel() {
+                    return this.fullscreen ? '<?= $escaper->escapeJs(__('Fullscreen Gallery')) ?>' : false;
+                },
+                maskOverflowClasses() {
+                    const noMask = 'mask-overflow-start mask-overflow-end';
+                    const sliderMask = {
+                        'mask-overflow-end': this.thumbsStart,
+                        'mask-overflow-start': this.thumbsEnd
+                    };
+
+                    return this.thumbsOverflow ? sliderMask : noMask;
+                },
+                scrollTo(target) {
+                    target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "nearest",
+                        inline: "nearest"
+                    });
+                },
+                thumbIsActive(index) {
+                    return this.activeItem === index;
+                },
+                setThumbActive(index) {
+                    return this.activeItem = index;
+                },
+                thumbClasses(index) {
+                    return {
+                        'border-primary group-focus:border-gray-400': this.activeItem === index,
+                        'border-transparent': this.activeItem !== index
+                    }
+                },
+                getActiveThumb() {
+                    return this.$refs.jsThumbSlides.querySelector('button[aria-current="true"]');
+                },
+                isThumbInView(index, action = "leave") {
+                    const isFirst = index === 0;
+                    const isLast = index === (this.itemCount - 1);
+
+                    if (isFirst) {
+                        this.thumbsStart = (action === "enter");
+                    }
+
+                    if (isLast) {
+                        this.thumbsEnd = (action === "enter");
+                    }
+                },
+                isThumbInViewEnter(index) {
+                    this.isThumbInView(index, "enter")
+                },
+                isThumbInViewLeave(index) {
+                    this.isThumbInView(index, "leave")
+                },
+                calcThumbsOverflow() {
+                    const thumbs = this.$refs.jsThumbSlides;
+                    if (!thumbs) return;
+
+                    const { scrollWidth, scrollHeight, offsetWidth, offsetHeight } = thumbs;
+                    const hasOverflow = scrollHeight > scrollWidth
+                        ? scrollHeight > offsetHeight
+                        : scrollWidth > offsetWidth;
+
+                    this.thumbsOverflow = hasOverflow;
+                }
+            }
+        }
+        window.addEventListener('alpine:init', () => Alpine.data('initGardenGallery', initGardenGallery), {once: true})
+    </script>
+<?php $hyvaCsp->registerInlineScript() ?>
+    
+<script>
+<?php /** Generated with hyva-csp-helper.php */ ?>
+function gardenLawnHyvathemeGallery() {
+    return Object.assign(
+        initGardenGallery('<?= $escaper->escapeJs($galleryId) ?>_data')
+        ,{
+            ['gardenLawnHyvathemeGalleryAriaCurrent18']() {return this.thumbIsActive(this.index)},
+            ['gardenLawnHyvathemeGalleryAriaLabel17']() {return `${this.$el.dataset.hyvacsp1}` + ' ' + (this.index + 1)},
+            ['gardenLawnHyvathemeGalleryAriaLabel3']() {return this.fullscreenLabel()},
+            ['gardenLawnHyvathemeGalleryClass1']() {return this.galleryClasses()},
+            ['gardenLawnHyvathemeGalleryClass15']() {return this.maskOverflowClasses()},
+            ['gardenLawnHyvathemeGalleryClass16']() {return this.thumbClasses(this.index)},
+            ['gardenLawnHyvathemeGalleryClass4']() {return this.firstImageClasses()},
+            ['gardenLawnHyvathemeGalleryClass5']() {return this.imageWrapperFullscreenClasses()},
+            ['gardenLawnHyvathemeGalleryClass7']() {return this.imageFullscreenClasses()},
+            ['gardenLawnHyvathemeGalleryClick21'](event) {return this.setThumbActive(this.index)},
+            ['gardenLawnHyvathemeGalleryDisabled11']() {return this.isAtStart()},
+            ['gardenLawnHyvathemeGalleryDisabled12']() {return this.isAtEnd()},
+            ['gardenLawnHyvathemeGalleryDisabled14']() {return this.isAtStart()},
+            ['gardenLawnHyvathemeGalleryDisabled23']() {return this.isAtEnd()},
+            ['gardenLawnHyvathemeGalleryEnterFull19']() {return this.isThumbInViewEnter(this.index)},
+            ['gardenLawnHyvathemeGalleryLeaveFull20']() {return this.isThumbInViewLeave(this.index)},
+            ['gardenLawnHyvathemeGalleryRole2']() {return this.fullscreenRole()},
+            ['gardenLawnHyvathemeGalleryShow10']() {return this.hasMultipleImages()},
+            ['gardenLawnHyvathemeGalleryShow13']() {return this.hasMultipleImages()},
+            ['gardenLawnHyvathemeGalleryShow6']() {return this.isActive(this.index)},
+            ['gardenLawnHyvathemeGalleryShow9']() {return this.notFullscreen()},
+            ['gardenLawnHyvathemeGallerySrc22']() {return this.image.thumb},
+            ['gardenLawnHyvathemeGallerySrc8']() {return this.getImage(this.image)},
+        }
+    )
+}
+window.addEventListener('alpine:init', () => Alpine.data('gardenLawnHyvathemeGallery', gardenLawnHyvathemeGallery), {once: true});
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
+<script>
+function viewFrontendTemplatesGalleryMovedScript1() {
+    const el = this.$el,
+          wire = this.$wire;
+    
+    // @todo Implement interaction with the original code ^^
+<?php /** Variables from "./view/frontend/templates/gallery.phtml" */ ?>
+<?php /** References (`$galleryId`) */ ?>
+    
+    return {
+        init() {}
+    }
+}
+window.addEventListener('alpine:init', () => Alpine.data('viewFrontendTemplatesGalleryMovedScript1', viewFrontendTemplatesGalleryMovedScript1), {once: true});
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

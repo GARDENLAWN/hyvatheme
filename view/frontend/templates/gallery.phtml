@@ -73,11 +73,10 @@ $block->setData('current_page', $page);
             <div class="w-full">
                 <h2 class="mb-6 text-3xl font-bold text-center"><?= $escaper->escapeHtml($galleryTitle) ?></h2>
 
-                <script>
-                    window['<?= $escaper->escapeJs($galleryId) ?>_data'] = <?= /* @noEscape */ $jsonSerializer->serialize($mappedImages) ?>;
-                </script>
-
-                <section
+                <div x-data="viewFrontendTemplatesGalleryMovedScript0">
+<?php /** Moved variables previously here to "./view/frontend/templates/gallery-csp-js.phtml" */ ?>
+<?php /** References (`$galleryId`, `$jsonSerializer->serialize(...)`, `$mappedImages`) */ ?>
+</div><section
                     id="<?= $escaper->escapeHtmlAttr($galleryId) ?>"
                     class="relative pb-[calc(90px+2rem)]"
                     style="
@@ -86,7 +85,7 @@ $block->setData('current_page', $page);
                         --thumb-size: 90px;
                     "
                     aria-label="<?= $escaper->escapeHtmlAttr(__('%1 Gallery', $galleryTitle)) ?>"
-                    x-data="initGardenGallery('<?= $escaper->escapeJs($galleryId) ?>_data')"
+                    x-data="gardenLawnHyvathemeGallery"
                     x-bind="eventListeners"
                 >
                     <!-- Fullscreen Backdrop -->
@@ -112,15 +111,15 @@ $block->setData('current_page', $page);
                         aria-atomic="true"
                         x-bind="galleryBody"
                         x-ref="galleryDialog"
-                        :class="galleryClasses()"
-                        :role="fullscreenRole()"
+                        :class="gardenLawnHyvathemeGalleryClass1"
+                        :role="gardenLawnHyvathemeGalleryRole2"
                         :aria-modal="fullscreen"
-                        :aria-label="fullscreenLabel()"
+                        :aria-label="gardenLawnHyvathemeGalleryAriaLabel3"
                         @keyup.arrow-right="nextItem"
                         @keyup.arrow-left="prevItem"
                     >
                         <!-- Placeholder / First Image -->
-                        <figure class="flex flex-col items-center justify-center h-full" :class="firstImageClasses()">
+                        <figure class="flex flex-col items-center justify-center h-full" :class="gardenLawnHyvathemeGalleryClass4">
                             <img
                                 src="<?= $escaper->escapeUrl($mappedImages[0]['img']) ?>"
                                 alt=""
@@ -133,15 +132,15 @@ $block->setData('current_page', $page);
                         <template x-for="(image, index) in images" :key="index">
                             <figure
                                 class="absolute inset-0 flex flex-col"
-                                :class="imageWrapperFullscreenClasses()"
-                                x-show="isActive(index)"
+                                :class="gardenLawnHyvathemeGalleryClass5"
+                                x-show="gardenLawnHyvathemeGalleryShow6"
                                 x-transition:enter.opacity.duration.500ms
                                 x-transition:leave.opacity.duration.0ms
                             >
                                 <img
                                     class="max-w-full max-h-full m-auto object-contain"
-                                    :class="imageFullscreenClasses()"
-                                    :src="getImage(image)"
+                                    :class="gardenLawnHyvathemeGalleryClass7"
+                                    :src="gardenLawnHyvathemeGallerySrc8"
                                     alt=""
                                 >
                             </figure>
@@ -161,7 +160,7 @@ $block->setData('current_page', $page);
                             <button
                                 aria-label="<?= $escaper->escapeHtmlAttr(__('Open fullscreen')) ?>"
                                 tabindex="-1"
-                                x-show="notFullscreen()"
+                                x-show="gardenLawnHyvathemeGalleryShow9"
                                 @click="openFullscreen"
                                 class="absolute inset-0 w-full -z-10"
                             >
@@ -178,7 +177,7 @@ $block->setData('current_page', $page);
                         <nav
                             class="z-10 absolute bottom-2 lg:bottom-4 xl:bottom-8 flex justify-between gap-2 left-2 lg:left-4 xl:left-8 right-2 lg:right-4 xl:right-8"
                             aria-label="<?= $escaper->escapeHtmlAttr(__('%1 Gallery Navigation', $galleryTitle)) ?>"
-                            x-show="hasMultipleImages()"
+                            x-show="gardenLawnHyvathemeGalleryShow10"
                             x-cloak
                         >
                             <button
@@ -187,7 +186,7 @@ $block->setData('current_page', $page);
                                 class="shrink-0 p-1.5 md:p-0 disabled:opacity-30"
                                 title="<?= $escaper->escapeHtmlAttr(__('Previous')) ?>"
                                 aria-label="<?= $escaper->escapeHtmlAttr(__('Previous')) ?>"
-                                :disabled="isAtStart()"
+                                :disabled="gardenLawnHyvathemeGalleryDisabled11"
                                 @click="prevItem"
                             >
                                 <span class="block p-2.5 rounded-full transition shadow hover:shadow-primary/30 focus:shadow-primary/30 bg-white text-primary">
@@ -200,7 +199,7 @@ $block->setData('current_page', $page);
                                 class="shrink-0 p-1.5 md:p-0 disabled:opacity-30"
                                 title="<?= $escaper->escapeHtmlAttr(__('Next')) ?>"
                                 aria-label="<?= $escaper->escapeHtmlAttr(__('Next')) ?>"
-                                :disabled="isAtEnd()"
+                                :disabled="gardenLawnHyvathemeGalleryDisabled12"
                                 @click="nextItem"
                             >
                                 <span class="block p-2.5 rounded-full transition shadow hover:shadow-primary/30 focus:shadow-primary/30 bg-white text-primary">
@@ -214,14 +213,14 @@ $block->setData('current_page', $page);
                     <div
                         class="flex items-center gap-2 outline-0 absolute inset-x-0 bottom-0 h-[var(--thumb-size)]"
                         x-bind="galleryThumbs"
-                        x-show="hasMultipleImages()"
+                        x-show="gardenLawnHyvathemeGalleryShow10"
                         x-cloak
                     >
                         <button
                             type="button"
                             class="shrink-0 flex justify-center items-center backdrop-blur bg-white/30 disabled:opacity-30 z-10 absolute left-0 inset-y-0 p-2 h-full"
                             tabindex="-1"
-                            :disabled="isAtStart()"
+                            :disabled="gardenLawnHyvathemeGalleryDisabled11"
                             @click="prevItem"
                             x-show="thumbsOverflow"
                             x-cloak
@@ -232,7 +231,7 @@ $block->setData('current_page', $page);
                         <nav
                             class="group flex snap overflow-auto overscroll-contain gap-2 outline-none mask-overflow h-full items-center"
                             tabindex="0"
-                            :class="maskOverflowClasses()"
+                            :class="gardenLawnHyvathemeGalleryClass15"
                             x-ref="jsThumbSlides"
                             @keyup.arrow-right="nextItem"
                             @keyup.arrow-left="prevItem"
@@ -243,15 +242,15 @@ $block->setData('current_page', $page);
                                     type="button"
                                     class="relative shrink-0 border-2 border-transparent w-[90px] h-[90px] flex items-center justify-center overflow-hidden bg-gray-100"
                                     tabindex="-1"
-                                    :class="thumbClasses(index)"
-                                    :aria-label="'<?= $escaper->escapeJs(__('View image')) ?>' + ' ' + (index + 1)"
-                                    :aria-current="thumbIsActive(index)"
-                                    x-intersect:enter.full="isThumbInViewEnter(index)"
-                                    x-intersect:leave.full="isThumbInViewLeave(index)"
-                                    @click="setThumbActive(index)"
+                                    :class="gardenLawnHyvathemeGalleryClass16"
+                                    :aria-label="gardenLawnHyvathemeGalleryAriaLabel17" data-hyvacsp1="<?= $escaper->escapeHtmlAttr(__('View image')) ?>"
+                                    :aria-current="gardenLawnHyvathemeGalleryAriaCurrent18"
+                                    x-intersect:enter.full="gardenLawnHyvathemeGalleryEnterFull19"
+                                    x-intersect:leave.full="gardenLawnHyvathemeGalleryLeaveFull20"
+                                    @click="gardenLawnHyvathemeGalleryClick21"
                                 >
                                     <img
-                                        :src="image.thumb"
+                                        :src="gardenLawnHyvathemeGallerySrc22"
                                         alt=""
                                         class="max-w-full max-h-full object-contain"
                                         loading="lazy"
@@ -264,7 +263,7 @@ $block->setData('current_page', $page);
                             type="button"
                             class="shrink-0 flex justify-center items-center backdrop-blur bg-white/30 disabled:opacity-30 z-10 absolute right-0 inset-y-0 p-1 h-full"
                             tabindex="-1"
-                            :disabled="isAtEnd()"
+                            :disabled="gardenLawnHyvathemeGalleryDisabled12"
                             @click="nextItem"
                             x-show="thumbsOverflow"
                             x-cloak
@@ -300,232 +299,12 @@ $block->setData('current_page', $page);
         <?php endif; ?>
     </div>
 
-    <script>
-        function initGardenGallery(dataVarName) {
-            return {
-                activeItem: 0,
-                itemCount: 0,
-                fullscreen: false,
-                loop: true,
-                isStart: true,
-                isEnd: false,
-                swipeStart: 0,
-                swipeDir: "x",
-                images: window[dataVarName] || [],
-                thumbsOverflow: false,
-                thumbsStart: true,
-                thumbsEnd: true,
-
-                init() {
-                    this.itemCount = this.images.length;
-                    this.initActive();
-                    this.$watch('activeItem', (item) => {
-                        this.isStart = this.activeItem === 0;
-                        this.isEnd = this.activeItem === (this.itemCount - 1);
-
-                        this.$nextTick(() => {
-                            const activeThumb = this.getActiveThumb();
-                            if (activeThumb) {
-                                this.scrollTo(activeThumb);
-                            };
-                        });
-                    });
-                    this.$watch('itemCount', () => {
-                        this.calcThumbsOverflow()
-                    });
-                    this.$watch('fullscreen', (open) => {
-                        this.$nextTick(() => {
-                            this.scrollLock(open);
-                            this.tabLock(this.$refs.galleryDialog, open);
-                        })
-                    })
-                },
-                getImage(image) {
-                    return this.fullscreen ? image.full : image.img;
-                },
-                isActive(index) {
-                    return this.activeItem === index;
-                },
-                scrollLock(use = true) {
-                    document.body.style.overflow = use ? "hidden" : "";
-                },
-                tabLock(target, use = true) {
-                    if (use) {
-                        hyva.trapFocus(target);
-                    } else {
-                        hyva.releaseFocus(target);
-                    }
-                },
-                nextItem() {
-                    const hasNext = this.activeItem < (this.itemCount - 1);
-                    this.activeItem = hasNext
-                        ? this.activeItem += 1
-                        : this.loop ? 0 : this.activeItem;
-                },
-                prevItem() {
-                    const hasPrev = this.activeItem > 0;
-                    this.activeItem = hasPrev
-                        ? this.activeItem -= 1
-                        : this.loop ? (this.itemCount - 1) : this.activeItem;
-                },
-                swipeItem(event) {
-                    if (this.swipeStart === 0) return;
-
-                    const swipeEnd = this.getTouchPosition(event);
-                    if (Math.abs((swipeEnd - this.swipeStart)) < 40) return;
-
-                    if (this.swipeStart > swipeEnd) {
-                        this.nextItem();
-                    } else {
-                        this.prevItem();
-                    }
-
-                    this.swipeStart = 0;
-                },
-                getTouchPosition(event) {
-                    const position = this.swipeDir === "y"
-                        ? event.changedTouches[0].clientY
-                        : event.changedTouches[0].clientX;
-                    return Math.round(position);
-                },
-                isSwipeGesture(event) {
-                    return event.touches.length <= 1 && window.visualViewport.scale <= 1.01;
-                },
-                initActive() {
-                    const mainImg = this.images.findIndex(image => image.isMain === true);
-                    this.activeItem = mainImg === -1 ? 0 : mainImg;
-                    this.isStart = this.activeItem === 0;
-                    this.isEnd = this.activeItem === (this.itemCount - 1);
-                },
-                eventListeners: {
-                    ['@keydown.window.escape']() {
-                        this.fullscreen = false;
-                    }
-                },
-                galleryBody: {
-                    ['@touchstart.passive'](event) {
-                        this.swipeStart = this.isSwipeGesture(event)
-                            ? this.getTouchPosition(event)
-                            : 0;
-                    },
-                    ['@touchend.passive'](event) {
-                        if (!this.isSwipeGesture(event)) return;
-                        this.swipeItem(event);
-                    },
-                },
-                galleryThumbs: {
-                    ['x-init']() {
-                        this.$nextTick(() => this.calcThumbsOverflow());
-                    },
-                    ['@resize.window.debounce']() {
-                        this.calcThumbsOverflow();
-                    }
-                },
-                galleryClasses() {
-                    return {
-                        'z-50 fixed inset-0 w-[calc(100%_-_2rem)] h-[calc(100%_-_2rem)] m-auto': this.fullscreen,
-                        'relative': !this.fullscreen
-                    }
-                },
-                firstImageClasses() {
-                    return 'invisible';
-                },
-                imageWrapperFullscreenClasses() {
-                    return { 'p-4 sm:p-8': this.fullscreen };
-                },
-                imageFullscreenClasses() {
-                    return { 'w-auto': this.fullscreen };
-                },
-                hasMultipleImages() {
-                    return this.images.length > 1;
-                },
-                isAtStart() {
-                    return !this.loop && this.isStart;
-                },
-                isAtEnd() {
-                    return !this.loop && this.isEnd;
-                },
-                notFullscreen() {
-                    return !this.fullscreen;
-                },
-                openFullscreen() {
-                    this.fullscreen = true;
-                },
-                closeFullscreen() {
-                    this.fullscreen = false;
-                },
-                fullscreenRole() {
-                    return this.fullscreen ? 'dialog' : false;
-                },
-                fullscreenLabel() {
-                    return this.fullscreen ? '<?= $escaper->escapeJs(__('Fullscreen Gallery')) ?>' : false;
-                },
-                maskOverflowClasses() {
-                    const noMask = 'mask-overflow-start mask-overflow-end';
-                    const sliderMask = {
-                        'mask-overflow-end': this.thumbsStart,
-                        'mask-overflow-start': this.thumbsEnd
-                    };
-
-                    return this.thumbsOverflow ? sliderMask : noMask;
-                },
-                scrollTo(target) {
-                    target.scrollIntoView({
-                        behavior: "smooth",
-                        block: "nearest",
-                        inline: "nearest"
-                    });
-                },
-                thumbIsActive(index) {
-                    return this.activeItem === index;
-                },
-                setThumbActive(index) {
-                    return this.activeItem = index;
-                },
-                thumbClasses(index) {
-                    return {
-                        'border-primary group-focus:border-gray-400': this.activeItem === index,
-                        'border-transparent': this.activeItem !== index
-                    }
-                },
-                getActiveThumb() {
-                    return this.$refs.jsThumbSlides.querySelector('button[aria-current="true"]');
-                },
-                isThumbInView(index, action = "leave") {
-                    const isFirst = index === 0;
-                    const isLast = index === (this.itemCount - 1);
-
-                    if (isFirst) {
-                        this.thumbsStart = (action === "enter");
-                    }
-
-                    if (isLast) {
-                        this.thumbsEnd = (action === "enter");
-                    }
-                },
-                isThumbInViewEnter(index) {
-                    this.isThumbInView(index, "enter")
-                },
-                isThumbInViewLeave(index) {
-                    this.isThumbInView(index, "leave")
-                },
-                calcThumbsOverflow() {
-                    const thumbs = this.$refs.jsThumbSlides;
-                    if (!thumbs) return;
-
-                    const { scrollWidth, scrollHeight, offsetWidth, offsetHeight } = thumbs;
-                    const hasOverflow = scrollHeight > scrollWidth
-                        ? scrollHeight > offsetHeight
-                        : scrollWidth > offsetWidth;
-
-                    this.thumbsOverflow = hasOverflow;
-                }
-            }
-        }
-        window.addEventListener('alpine:init', () => Alpine.data('initGardenGallery', initGardenGallery), {once: true})
-    </script>
     <?php $hyvaCsp->registerInlineScript() ?>
 
 <?php else: ?>
     <p class="text-center py-8"><?= $escaper->escapeHtml(__('There are no galleries to display.')) ?></p>
 <?php endif; ?>
+<div x-data="viewFrontendTemplatesGalleryMovedScript1">
+<?php /** Moved variables previously here to "./view/frontend/templates/gallery-csp-js.phtml" */ ?>
+<?php /** References (`$galleryId`) */ ?>
+</div>

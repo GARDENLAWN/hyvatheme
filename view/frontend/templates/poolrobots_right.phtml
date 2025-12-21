@@ -28,7 +28,7 @@ $itemsVideo = [
 ?>
 <div class="md:w-1/3">
     <div class="div-bordered-blue">
-        <div id="my-gallery" x-data="gardenLawnCorePoolrobotsRight" x-effect="initPhotoSwipe">
+        <div id="my-gallery" x-data="gardenLawnHyvathemePoolrobotsRight" x-effect="initPhotoSwipe">
             <?= $sliderViewModel->getSliderForItems($itemsTemplate, $items)->toHtml() ?>
         </div>
 
@@ -42,3 +42,13 @@ $itemsVideo = [
         ?>
     </div>
 </div>
+<script>
+<?php /** Generated with hyva-csp-helper.php */ ?>
+function gardenLawnHyvathemePoolrobotsRight() {
+    return Object.assign(
+        gardenLawnCorePoolrobotsRight.call(this)
+    )
+}
+window.addEventListener('alpine:init', () => Alpine.data('gardenLawnHyvathemePoolrobotsRight', gardenLawnHyvathemePoolrobotsRight), {once: true});
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
