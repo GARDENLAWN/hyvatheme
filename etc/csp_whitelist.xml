@@ -102,7 +102,7 @@
 
         <policy id="form-action">
             <values>
-                <value id="form-action-eraty" type="host">https://wniosek.eraty.pl/formularz</value>
+                <value id="form-action-eraty" type="host">wniosek.eraty.pl</value>
             </values>
         </policy>
 

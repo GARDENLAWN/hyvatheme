@@ -27,11 +27,6 @@
 }
 
 @media (max-width: 767px) {
-    #shipping-method-list img {
-        min-height: 50px !important;
-        max-height: 50px !important;
-    }
-
     .category-view.container {
         padding: inherit;
     }
