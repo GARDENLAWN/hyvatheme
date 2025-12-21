@@ -26,6 +26,9 @@
                     cacheable="false"
                 >
                     <container name="form.additional.info" as="form_additional_info"/>
+                    <arguments>
+                        <argument name="viewModelRecaptcha" xsi:type="object">Hyva\Theme\ViewModel\ReCaptcha</argument>
+                    </arguments>
                 </block>
                 <block class="Magento\Customer\Block\Form\Login\Info" name="customer.new"
                        template="Magento_Customer::newcustomer.phtml"/>

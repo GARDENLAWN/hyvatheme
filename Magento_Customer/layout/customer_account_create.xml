@@ -19,6 +19,7 @@
                     <arguments>
                         <argument name="attribute_data" xsi:type="object">Magento\Customer\Block\DataProviders\AddressAttributeData</argument>
                         <argument name="post_code_config" xsi:type="object">Magento\Customer\Block\DataProviders\PostCodesPatternsAttributeData</argument>
+                        <argument name="viewModelRecaptcha" xsi:type="object">Hyva\Theme\ViewModel\ReCaptcha</argument>
                     </arguments>
                     <container name="form.additional.info" as="form_additional_info"/>
                     <container name="fieldset.create.info.additional" as="fieldset_create_info_additional"/>
