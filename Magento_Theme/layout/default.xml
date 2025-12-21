@@ -58,11 +58,6 @@
                     </argument> <!-- Enable CSS only solution (true/false) -->
                 </arguments>
             </block>
-            <block class="Magento\Framework\View\Element\Template"
-                   name="network.error.suppressor"
-                   template="Magento_Theme::html/header/error-suppressor.phtml"
-                   before="-"
-            />
         </referenceContainer>
 
         <referenceBlock name="topmenu_desktop">
