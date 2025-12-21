@@ -14,21 +14,27 @@
 
 {{template config_path="design/email/header_template"}}
 
-<table class="message-details">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
-        <td><strong>{{trans "Name"}}</strong></td>
-        <td>{{var data.name}}</td>
-    </tr>
-    <tr>
-        <td><strong>{{trans "Email"}}</strong></td>
-        <td>{{var data.email}}</td>
-    </tr>
-    <tr>
-        <td><strong>{{trans "Phone"}}</strong></td>
-        <td>{{var data.telephone}}</td>
+        <td style="padding-bottom: 20px;">
+            <table class="message-details" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
+                <tr>
+                    <td style="padding: 5px 0; color: #333;"><strong>{{trans "Name"}}</strong></td>
+                    <td style="padding: 5px 0; color: #333;">{{var data.name}}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 0; color: #333;"><strong>{{trans "Email"}}</strong></td>
+                    <td style="padding: 5px 0; color: #333;">{{var data.email}}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 0; color: #333;"><strong>{{trans "Phone"}}</strong></td>
+                    <td style="padding: 5px 0; color: #333;">{{var data.telephone}}</td>
+                </tr>
+            </table>
+            <p style="margin-bottom: 10px; font-weight: bold; color: #2c3e50;">{{trans "Message"}}</p>
+            <div style="line-height: 1.5; color: #333; background-color: #f9f9f9; padding: 15px; border-radius: 4px; border: 1px solid #eee;">{{var data.comment}}</div>
+        </td>
     </tr>
 </table>
-<p><strong>{{trans "Message"}}</strong></p>
-<p>{{var data.comment}}</p>
 
 {{template config_path="design/email/footer_template"}}

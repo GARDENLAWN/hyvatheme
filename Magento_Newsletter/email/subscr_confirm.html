@@ -11,8 +11,14 @@
 
 {{template config_path="design/email/header_template"}}
 
-<p class="greeting">{{trans "Thank you for subscribing to our newsletter."}}</p>
-<p>{{trans "To begin receiving the newsletter, you must first confirm your subscription by clicking on the following link:"}}</p>
-<p><a href="{{var subscriber_data.confirmation_link}}">{{var subscriber_data.confirmation_link}}</a></p>
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td style="padding-bottom: 20px;">
+            <p class="greeting" style="font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #2c3e50;">{{trans "Thank you for subscribing to our newsletter."}}</p>
+            <p style="margin-bottom: 10px; line-height: 1.5; color: #333;">{{trans "To begin receiving the newsletter, you must first confirm your subscription by clicking on the following link:"}}</p>
+            <p style="margin-bottom: 10px; line-height: 1.5; color: #333;"><a href="{{var subscriber_data.confirmation_link}}" style="color: #1e7701; text-decoration: none; font-weight: bold;">{{var subscriber_data.confirmation_link}}</a></p>
+        </td>
+    </tr>
+</table>
 
 {{template config_path="design/email/footer_template"}}

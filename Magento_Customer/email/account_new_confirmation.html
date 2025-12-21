@@ -15,16 +15,22 @@
 
 {{template config_path="design/email/header_template"}}
 
-<p class="greeting">{{trans "%name," name=$customer.name}}</p>
-<p>{{trans "You must confirm your %customer_email email before you can sign in (link is only valid once):" customer_email=$customer.email}}</p>
-
-<table class="button" width="100%" border="0" cellspacing="0" cellpadding="0">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
-        <td>
-            <table class="inner-wrapper" border="0" cellspacing="0" cellpadding="0" align="center">
+        <td style="padding-bottom: 20px;">
+            <p class="greeting" style="font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #2c3e50;">{{trans "%name," name=$customer.name}}</p>
+            <p style="margin-bottom: 20px; line-height: 1.5; color: #333;">{{trans "You must confirm your %customer_email email before you can sign in (link is only valid once):" customer_email=$customer.email}}</p>
+
+            <table class="button" width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td align="center">
-                        <a href="{{var this.getUrl($store,'customer/account/confirm/',[_query:[id:$customer.id,key:$customer.confirmation,back_url:$back_url,email:$customer.email],_nosid:1])}}" target="_blank">{{trans "Confirm Your Account"}}</a>
+                        <table class="inner-wrapper" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td align="center" style="background-color: #1e7701; border-radius: 4px;">
+                                    <a href="{{var this.getUrl($store,'customer/account/confirm/',[_query:[id:$customer.id,key:$customer.confirmation,back_url:$back_url,email:$customer.email],_nosid:1])}}" target="_blank" style="display: inline-block; color: #ffffff; font-size: 16px; font-weight: bold; text-decoration: none; padding: 12px 25px;">{{trans "Confirm Your Account"}}</a>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
             </table>

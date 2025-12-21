@@ -19,19 +19,25 @@
 
 {{template config_path="design/email/header_template"}}
 
-<p class="greeting">{{trans "%name," name=$name}}</p>
-<p>{{trans "%sender_name wants to share this product with you:" sender_name=$sender_name}} <a href="{{var product_url}}">{{var product_name}}</a></p>
-
-{{depend message}}
-<table class="message-info">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
-        <td>
-            <h3>{{trans "Message from %sender_name:" sender_name=$sender_name}}</h3>
-            {{var message|raw}}
+        <td style="padding-bottom: 20px;">
+            <p class="greeting" style="font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #2c3e50;">{{trans "%name," name=$name}}</p>
+            <p style="margin-bottom: 15px; line-height: 1.5; color: #333;">{{trans "%sender_name wants to share this product with you:" sender_name=$sender_name}} <a href="{{var product_url}}" style="color: #1e7701; text-decoration: none; font-weight: bold;">{{var product_name}}</a></p>
+
+            {{depend message}}
+            <table class="message-info" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px; background-color: #f9f9f9; border: 1px solid #eee; border-radius: 4px;">
+                <tr>
+                    <td style="padding: 15px; color: #333;">
+                        <h3 style="font-size: 16px; font-weight: bold; color: #2c3e50; margin-bottom: 10px; border-bottom: 2px solid #1e7701; padding-bottom: 5px; display: inline-block;">{{trans "Message from %sender_name:" sender_name=$sender_name}}</h3>
+                        <div style="line-height: 1.5;">{{var message|raw}}</div>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            {{/depend}}
         </td>
     </tr>
 </table>
-<br />
-{{/depend}}
 
 {{template config_path="design/email/footer_template"}}
