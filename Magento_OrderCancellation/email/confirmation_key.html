@@ -16,18 +16,18 @@
 } @-->
 {{template config_path="design/email/header_template"}}
 
-<table>
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr class="email-intro">
-        <td>
-            <p class="greeting">{{trans "%name," name=$customer_name}}</p>
-            <p>
-                {{trans 'It seems that you'd like to cancel your order #%order_id. If this is correct, please <a href="%guest_order_url" target="_blank">click here</a> to confirm your cancellation request.'
+        <td style="padding-bottom: 20px;">
+            <p class="greeting" style="font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #2c3e50;">{{trans "%name," name=$customer_name}}</p>
+            <p style="margin-bottom: 10px; line-height: 1.5; color: #333;">
+                {{trans 'It seems that you'd like to cancel your order #%order_id. If this is correct, please <a href="%guest_order_url" target="_blank" style="color: #1e7701; text-decoration: none; font-weight: bold;">click here</a> to confirm your cancellation request.'
                 order_id=$order_id
                 guest_order_url=$guest_order_url
                 |raw}}
             </p>
-            <p>
-                {{trans 'If you have questions about your order, you can email us at <a href="mailto:%store_email">%store_email</a>' store_email=$store_email |raw}}{{depend store_phone}} {{trans 'or call us at <a href="tel:%store_phone">%store_phone</a>' store_phone=$store_phone |raw}}{{/depend}}.
+            <p style="margin-bottom: 10px; line-height: 1.5; color: #333;">
+                {{trans 'If you have questions about your order, you can email us at <a href="mailto:%store_email" style="color: #1e7701; text-decoration: none; font-weight: bold;">%store_email</a>' store_email=$store_email |raw}}{{depend store_phone}} {{trans 'or call us at <a href="tel:%store_phone" style="color: #1e7701; text-decoration: none; font-weight: bold;">%store_phone</a>' store_phone=$store_phone |raw}}{{/depend}}.
                 {{depend store_hours}}
                     {{trans 'Our hours are <span class="no-link">%store_hours</span>.' store_hours=$store_hours |raw}}
                 {{/depend}}
