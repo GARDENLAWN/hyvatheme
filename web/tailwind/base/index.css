@@ -83,6 +83,10 @@
     padding: inherit !important;
 }
 
+.bg-amgdpr-button-settings{
+    background-position: center;
+}
+
 /* For AlpineJS */
 [x-cloak] {
     display: none !important;
