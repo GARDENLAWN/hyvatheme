@@ -23,63 +23,78 @@ $isDisabled = $block->getData('disabled');
         value="<?= $escaper->escapeHtmlAttr($block->getTaxvat()) ?>"
     >
 <?php else: ?>
+    <script>
+        (function() {
+            const registerTaxvatWidget = () => {
+                if (window.taxvatWidgetRegistered) return;
+                Alpine.data('taxvatWidget', (initialTaxvat) => ({
+                    taxvat: initialTaxvat,
+                    loading: false,
+                    fetchCompanyData() {
+                        if (!this.taxvat || this.taxvat.length === 0) return;
+                        this.loading = true;
+                        const form = this.$el.closest('.form-address-edit') ??
+                            this.$el.closest('.form-create-account') ??
+                            this.$el.closest('.form-edit-account') ??
+                            this.$el.closest('form');
+
+                        if (!form) {
+                            console.error('CEIDG: Could not find parent form with class .form-address-edit');
+                            this.loading = false;
+                            return;
+                        }
+
+                        fetch('/company/index/ceidg?taxvat=' + this.taxvat)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data) {
+                                    const companyField = form.querySelector('[name=\'company\']');
+                                    if(companyField) companyField.value = data.companyName;
+
+                                    const firstnameField = form.querySelector('[name=\'firstname\']');
+                                    if(firstnameField) firstnameField.value = data.firstName;
+
+                                    const lastnameField = form.querySelector('[name=\'lastname\']');
+                                    if(lastnameField) lastnameField.value = data.lastName;
+
+                                    const streetField = form.querySelector('[name=\'street[]\']');
+                                    if(streetField) streetField.value = data.street;
+
+                                    const postcodeField = form.querySelector('[name=\'postcode\']');
+                                    if(postcodeField) postcodeField.value = data.postcode;
+
+                                    const cityField = form.querySelector('[name=\'city\']');
+                                    if(cityField) cityField.value = data.city;
+
+                                    const regionIdField = form.querySelector('[name=\'region_id\']');
+                                    if (regionIdField && regionIdField.tagName === 'SELECT') {
+                                        const regionOption = Array.from(regionIdField.options).find(option => option.text.toLowerCase() === data.region.toLowerCase());
+                                        if (regionOption) {
+                                            regionIdField.value = regionOption.value;
+                                        }
+                                    }
+                                }
+                                this.loading = false;
+                            })
+                            .catch(error => {
+                                console.error('Error fetching company data:', error);
+                                this.loading = false;
+                            });
+                    }
+                }));
+                window.taxvatWidgetRegistered = true;
+            };
+
+            if (typeof Alpine !== 'undefined') {
+                registerTaxvatWidget();
+            } else {
+                document.addEventListener('alpine:init', registerTaxvatWidget);
+            }
+        })();
+    </script>
     <div
         class="w-full"
-        x-data="{
-            taxvat: '<?= $escaper->escapeHtmlAttr($block->getTaxvat()) ?>',
-            loading: false,
-            fetchCompanyData() {
-                if (!this.taxvat || this.taxvat.length === 0) return;
-                this.loading = true;
-                const form = this.$el.closest('.form-address-edit') ??
-                    this.$el.closest('.form-create-account') ??
-                    this.$el.closest('.form-edit-account') ??
-                    this.$el.closest('form');
-
-                if (!form) {
-                    console.error('CEIDG: Could not find parent form with class .form-address-edit');
-                    this.loading = false;
-                    return;
-                }
-
-                fetch('/company/index/ceidg?taxvat=' + this.taxvat)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data) {
-                            const companyField = form.querySelector('[name=\'company\']');
-                            if(companyField) companyField.value = data.companyName;
-
-                            const firstnameField = form.querySelector('[name=\'firstname\']');
-                            if(firstnameField) firstnameField.value = data.firstName;
-
-                            const lastnameField = form.querySelector('[name=\'lastname\']');
-                            if(lastnameField) lastnameField.value = data.lastName;
-
-                            const streetField = form.querySelector('[name=\'street[]\']');
-                            if(streetField) streetField.value = data.street;
-
-                            const postcodeField = form.querySelector('[name=\'postcode\']');
-                            if(postcodeField) postcodeField.value = data.postcode;
-
-                            const cityField = form.querySelector('[name=\'city\']');
-                            if(cityField) cityField.value = data.city;
-
-                            const regionIdField = form.querySelector('[name=\'region_id\']');
-                            if (regionIdField && regionIdField.tagName === 'SELECT') {
-                                const regionOption = Array.from(regionIdField.options).find(option => option.text.toLowerCase() === data.region.toLowerCase());
-                                if (regionOption) {
-                                    regionIdField.value = regionOption.value;
-                                }
-                            }
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching company data:', error);
-                        this.loading = false;
-                    });
-            }
-        }"
+        x-data="taxvatWidget(<?= $escaper->escapeHtmlAttr(json_encode($block->getTaxvat())) ?>)"
     >
         <div class="field field-taxvat-vat-id <?= $block->isRequired() ? 'required' : '' ?>">
             <label class="label" for="<?= $escaper->escapeHtmlAttr($block->getFieldId('taxvat')) ?>">
