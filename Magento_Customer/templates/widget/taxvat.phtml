@@ -29,11 +29,12 @@ $isDisabled = $block->getData('disabled');
             taxvat: '<?= $escaper->escapeHtmlAttr($block->getTaxvat()) ?>',
             loading: false,
             fetchCompanyData() {
-                if (this.taxvat.length === 0) return;
+                if (!this.taxvat || this.taxvat.length === 0) return;
                 this.loading = true;
                 const form = this.$el.closest('.form-address-edit') ??
                     this.$el.closest('.form-create-account') ??
-                    this.$el.closest('.form-edit-account');
+                    this.$el.closest('.form-edit-account') ??
+                    this.$el.closest('form');
 
                 if (!form) {
                     console.error('CEIDG: Could not find parent form with class .form-address-edit');
