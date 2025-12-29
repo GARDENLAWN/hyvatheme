@@ -283,6 +283,7 @@
         </referenceContainer>
 
         <move element="alert.urls" destination="product.info" as="alert.urls"/>
+        <move element="santander" destination="product.info" after="product.price.tier" />
 
         <referenceContainer name="before.body.end">
             <block name="recently_viewed_products.register_view"

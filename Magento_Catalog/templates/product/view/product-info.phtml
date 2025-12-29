@@ -98,8 +98,9 @@ $isCallForPrice = $product->getData('call_for_price');
         <div class="flex mt-4 justify-end">
             <?= $block->getChildHtml('addtocart.shortcut.buttons') ?>
         </div>
-    <?php endif; ?>
 
+    <?php endif; ?>
+    <?= $block->getChildHtml('santander') ?>
     <?php if ($additionalActions = $block->getChildHtml('product.info.additional.actions')): ?>
         <div class="flex mt-4 justify-end">
             <?= /** @noEscape */ $additionalActions; ?>
