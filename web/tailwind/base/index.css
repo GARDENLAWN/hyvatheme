@@ -82,6 +82,14 @@
     background-position: center;
 }
 
+form .field.field-reserved {
+    margin-bottom: inherit !important;
+}
+
+[x-data="initAmGdprCheckbox"] {
+    margin-bottom: 10px !important;
+}
+
 /* For AlpineJS */
 [x-cloak] {
     display: none !important;
