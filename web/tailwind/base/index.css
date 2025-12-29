@@ -83,7 +83,8 @@
 }
 
 form .field.field-reserved {
-    margin-bottom: inherit !important;
+    margin-bottom: 15px !important;
+    padding-bottom: 15px !important;
 }
 
 [x-data="initAmGdprCheckbox"] {
