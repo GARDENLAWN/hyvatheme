@@ -9175,3 +9175,7 @@ Return Date: ""","Data zwrotu:"
 "{{base_url}} is not recommended to use in a production environment to declare the Base Unsecure URL / Base Secure URL. We highly recommend changing this value in your Magento <a href=""%1"">configuration</a>.","Nie zaleca się używania {{base_url}} jako bazowego adresu URL w środowisku produkcyjnym. Radzimy zmianę tej wartości w <a href=""%1"">konfiguracji</a>."
 "’Internal Promotions’ for promotions field “Label”.","""Wewnętrzne promocje"" dla promocji w polu ""Etykieta""."
 "%1 field is required.","Pole %1 jest wymagane."
+"Please accept the terms of service.","Proszę zaakceptować warunki korzystania z usługi."
+"Please select at least one product to add to cart","Wybierz co najmniej jeden produkt, aby dodać go do koszyka"
+
+
