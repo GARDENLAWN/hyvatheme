@@ -1,0 +1,123 @@
+@layer components {
+    .ammessenger-widget-container {
+        position: fixed;
+        z-index: 999999;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+    }
+
+    .ammessenger-widget-container.-top {
+        top: 25px;
+    }
+
+    .ammessenger-widget-container.-center {
+        top: calc(50% - 40px);
+    }
+
+    .ammessenger-widget-container.-bottom {
+        bottom: 25px;
+    }
+
+    .ammessenger-widget-container.-left {
+        left: 25px;
+    }
+
+    .ammessenger-widget-container.-right {
+        right: 25px;
+    }
+
+    .ammessenger-widget-component {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .ammessenger-widget-component.-items-1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Base item styles */
+    .ammessenger-item {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        overflow: hidden;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        transition: all .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        pointer-events: none;
+        opacity: 0;
+        transform: translate(-50%, 0) scale(0.5);
+    }
+
+    /* Single item override - MUST be after base .ammessenger-item or have higher specificity */
+    .ammessenger-item.-single {
+        position: relative; /* Reset position from absolute */
+        top: auto;
+        left: auto;
+        display: block;
+        width: 60px;
+        height: 60px;
+        opacity: 1; /* Fix visibility */
+        transform: scale(1); /* Fix scale */
+        pointer-events: auto; /* Fix clickability */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .ammessenger-item.-single:hover {
+        transform: scale(1.1);
+    }
+
+    .ammessenger-messengers-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .ammessenger-icon {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .ammessenger-widget-component.-opened .ammessenger-item {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .14);
+        pointer-events: all;
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+    }
+
+    .ammessenger-widget-component.-opened .ammessenger-item:hover {
+        transform: translate(-50%, 0) scale(1.1);
+    }
+
+    /* Positioning for 2-3 items (Circle) */
+    .ammessenger-widget-component.-opened.-drop-circle .ammessenger-item:nth-child(1) {
+        top: -60px;
+        left: 50%;
+    }
+
+    .ammessenger-widget-component.-opened.-drop-circle .ammessenger-item:nth-child(2) {
+        top: -40px;
+        left: 10px;
+    }
+
+    .ammessenger-widget-component.-opened.-drop-circle .ammessenger-item:nth-child(3) {
+        top: -40px;
+        left: 90px;
+    }
+
+    .ammessenger-toggle {
+        display: block;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+}

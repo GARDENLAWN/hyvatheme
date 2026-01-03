@@ -1,0 +1,156 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Live Chat for Magento 2
+ */
+/** @var \Amasty\MessengerWidget\Block\Messenger\Widget $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+if (!$block->isShowMessengers()) {
+    return;
+}
+
+$jsLayout = $block->getJsLayout();
+$config = json_decode($jsLayout, true);
+$componentConfig = $config['components']['ammessenger-widget'] ?? [];
+$messengers = $componentConfig['messengers'] ?? [];
+$position = $componentConfig['widgetPosition'] ?? 'bottom-right';
+$privacyConfig = $componentConfig['children']['ammessenger-privacy-policy'] ?? [];
+$isPrivacyEnabled = isset($privacyConfig['isPrivacyPolicyEnabled']) && $privacyConfig['isPrivacyPolicyEnabled'];
+
+// Map position to CSS classes
+$positionClasses = [
+    'top-left' => '-top -left',
+    'top-right' => '-top -right',
+    'center-left' => '-center -left',
+    'center-right' => '-center -right',
+    'bottom-left' => '-bottom -left',
+    'bottom-right' => '-bottom -right',
+];
+$positionClass = $positionClasses[$position] ?? '-bottom -right';
+
+// Icons
+$chatIcon = $block->getViewFileUrl('Amasty_MessengerWidget::images/icons/chat.svg');
+$chatIconHover = $block->getViewFileUrl('Amasty_MessengerWidget::images/icons/chat_hover.svg');
+$chatIconActive = $block->getViewFileUrl('Amasty_MessengerWidget::images/icons/chat_active.svg');
+$closeIcon = $block->getViewFileUrl('Amasty_MessengerWidget::images/icons/close.svg');
+$closeIconHover = $block->getViewFileUrl('Amasty_MessengerWidget::images/icons/close_hover.svg');
+$closeIconActive = $block->getViewFileUrl('Amasty_MessengerWidget::images/icons/close_active.svg');
+?>
+
+<script>
+    function initAmastyMessenger() {
+        return {
+            opened: false,
+            messengers: <?= json_encode($messengers) ?>,
+            position: '<?= $escaper->escapeJs($position) ?>',
+            isPrivacyEnabled: <?= $isPrivacyEnabled ? 'true' : 'false' ?>,
+            privacyAccepted: false,
+            icons: {
+                chat: '<?= $escaper->escapeUrl($chatIcon) ?>',
+                chatHover: '<?= $escaper->escapeUrl($chatIconHover) ?>',
+                chatActive: '<?= $escaper->escapeUrl($chatIconActive) ?>',
+                close: '<?= $escaper->escapeUrl($closeIcon) ?>',
+                closeHover: '<?= $escaper->escapeUrl($closeIconHover) ?>',
+                closeActive: '<?= $escaper->escapeUrl($closeIconActive) ?>'
+            },
+            hover: false,
+            active: false,
+
+            init() {
+                // Check local storage for privacy acceptance if needed
+            },
+
+            toggle() {
+                this.opened = !this.opened;
+            },
+
+            handleSingleClick(event) {
+                if (this.isPrivacyEnabled && !this.privacyAccepted) {
+                    event.preventDefault();
+                    alert('Privacy Policy acceptance required');
+                }
+            },
+
+            get componentClasses() {
+                let classes = '';
+                if (this.opened) {
+                    classes += ' -opened';
+                }
+                classes += ' -items-' + Math.min(this.messengers.length, 5);
+
+                if (this.messengers.length > 5 || this.position.includes('center')) {
+                    classes += ' -drop-line';
+                } else {
+                    classes += ' -drop-circle';
+                }
+
+                return classes;
+            },
+
+            get toggleIconSrc() {
+                if (this.opened) {
+                    if (this.active) return this.icons.closeActive;
+                    if (this.hover) return this.icons.closeHover;
+                    return this.icons.close;
+                } else {
+                    if (this.active) return this.icons.chatActive;
+                    if (this.hover) return this.icons.chatHover;
+                    return this.icons.chat;
+                }
+            }
+        }
+    }
+</script>
+
+<div x-data="initAmastyMessenger()" class="ammessenger-widget-container <?= $positionClass ?>">
+    <div class="ammessenger-widget-component" :class="componentClasses">
+
+        <!-- Single Messenger -->
+        <template x-if="messengers.length === 1">
+            <a class="ammessenger-item -single"
+               :href="messengers[0].link"
+               :title="messengers[0].tooltip"
+               :aria-label="messengers[0].title"
+               @click="handleSingleClick($event)"
+               target="_blank">
+                <img class="ammessenger-icon"
+                     :src="messengers[0].image_src[0]"
+                     :srcset="messengers[0].image_src.length > 1 ? messengers[0].image_src[1] + ' 2x' : ''"
+                     :alt="messengers[0].tooltip">
+            </a>
+        </template>
+
+        <!-- Multiple Messengers -->
+        <template x-if="messengers.length > 1">
+            <div class="w-full h-full">
+                <div class="ammessenger-toggle"
+                      @click="toggle()"
+                      @mouseenter="hover = true"
+                      @mouseleave="hover = false"
+                      @mousedown="active = true"
+                      @mouseup="active = false"
+                      :class="{ '-opened': opened }">
+                     <img :src="toggleIconSrc" alt="Toggle Chat" class="w-full h-full object-contain">
+                </div>
+
+                <div class="ammessenger-messengers-container">
+                    <template x-for="(messenger, index) in messengers" :key="index">
+                        <a class="ammessenger-item"
+                           :href="messenger.link"
+                           :title="messenger.tooltip"
+                           :aria-label="messenger.title"
+                           target="_blank">
+                            <img class="ammessenger-icon"
+                                 :src="messenger.image_src[0]"
+                                 :srcset="messenger.image_src.length > 1 ? messenger.image_src[1] + ' 2x' : ''"
+                                 :alt="messenger.title">
+                        </a>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+    </div>
+</div>
