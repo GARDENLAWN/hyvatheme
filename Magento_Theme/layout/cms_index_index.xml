@@ -48,7 +48,7 @@
         </block>
         </referenceContainer>
         <referenceContainer name="footer-content-before">
-            <block name="slider-producers" template="Magento_Theme::elements/slider-producers.phtml" after="content">
+            <block name="slider-producers" template="Magento_Theme::elements/slider-producers.phtml">
                 <arguments>
                     <argument name="show_arrows" xsi:type="string">end</argument> <!-- Show Slider nav arrows (true/false/start/end) -->
                     <argument name="show_dots" xsi:type="boolean">true</argument> <!-- Show dots (true/false) -->
