@@ -13,6 +13,22 @@
 >
     <body>
         <!--
+            [FIX] Tworzenie brakujących kontenerów/bloków Luma.
+            Zapobiega to błędom "Broken reference" gdy moduły próbują dodać elementy do nieistniejących rodziców.
+        -->
+        <container name="head.critical" />
+        <block name="catalog.topnav" class="Magento\Framework\View\Element\Template" />
+        <container name="minicart.addons" />
+        <container name="sidebar.additional" />
+        <container name="page.recaptcha.loader.form_ids" />
+        <container name="user" /> <!-- Dodane aby naprawić błąd reorder notification.messages -->
+
+        <!-- Dodanie footer_links do footer, aby naprawić błąd reorder -->
+        <referenceContainer name="footer">
+            <block name="footer_links" class="Magento\Framework\View\Element\Template" />
+        </referenceContainer>
+
+        <!--
             [ULTIMA-FINAL-REPORT] SANITYZACJA LAYOUTU
             Cel: Eliminacja błędów "Broken reference" poprzez usunięcie lub przemapowanie
             bloków z modułów Luma-only (Amasty, NewRelic, InPost, Recaptcha).
@@ -50,7 +66,17 @@
         <referenceBlock name="wishlist_sidebar" remove="true"/>
 
         <!-- 9. Naprawa Notification Messages -->
-        <move element="notification.messages" destination="content" before="-"/>
+        <!--
+             UWAGA: Próba przeniesienia 'notification.messages' do 'content' nie zadziałała,
+             ponieważ blok ten jest prawdopodobnie zdefiniowany w module bazowym z instrukcją 'move'
+             do kontenera 'user', który nie istnieje w Hyvä.
+             Rozwiązanie: Usunięcie bloku i ponowne zdefiniowanie go w poprawnym miejscu.
+        -->
+        <referenceBlock name="notification.messages" remove="true"/>
+        <referenceContainer name="content">
+             <block class="Magento\Framework\View\Element\Template" name="notification.messages.hyva" template="Magento_Theme::html/messages.phtml" before="-"/>
+        </referenceContainer>
+
 
         <!-- KONIEC SANITYZACJI -->
 
