@@ -21,7 +21,17 @@
         <container name="minicart.addons" />
         <container name="sidebar.additional" />
         <container name="page.recaptcha.loader.form_ids" />
-        <container name="user" /> <!-- Dodane aby naprawić błąd reorder notification.messages -->
+
+        <!--
+            [FIX] Notification Messages Reorder Fix
+            Problem: Moduł bazowy (prawdopodobnie Magento_Theme lub inny) próbuje przenieść 'notification.messages'
+            do kontenera 'user', który nie istnieje w Hyvä.
+            Rozwiązanie: Tworzymy kontener 'user' wewnątrz 'header.inner.right' (lub innego istniejącego kontenera),
+            aby zachować spójność struktury rodziców.
+        -->
+        <referenceContainer name="header.container">
+             <container name="user" />
+        </referenceContainer>
 
         <!-- Dodanie footer_links do footer, aby naprawić błąd reorder -->
         <referenceContainer name="footer">
