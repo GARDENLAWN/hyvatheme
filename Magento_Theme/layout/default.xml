@@ -12,6 +12,48 @@
     xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
 >
     <body>
+        <!--
+            [ULTIMA-FINAL-REPORT] SANITYZACJA LAYOUTU
+            Cel: Eliminacja błędów "Broken reference" poprzez usunięcie lub przemapowanie
+            bloków z modułów Luma-only (Amasty, NewRelic, InPost, Recaptcha).
+        -->
+
+        <!-- 1. Usunięcie bloków NewRelic (niekompatybilne z Hyvä head) -->
+        <referenceBlock name="newrelicreporting.browser_monitoring.script.header" remove="true"/>
+
+        <!-- 2. Usunięcie bloków Amasty Cookie/GDPR (wymagają modułu kompatybilności) -->
+        <referenceBlock name="amasty.cookie.cookiebar" remove="true"/>
+        <referenceBlock name="amasty.cookie.colors.sidebar" remove="true"/>
+        <referenceBlock name="gdprcookie_footer_link" remove="true"/>
+
+        <!-- 3. Usunięcie bloków Amasty SEO/Sitemap (wymagają modułu kompatybilności) -->
+        <referenceBlock name="amseohtmlsitemap" remove="true"/>
+
+        <!-- 4. Usunięcie bloków InPost (Widgety Luma) -->
+        <referenceBlock name="inpost.init.widget.minicart" remove="true"/>
+
+        <!-- 5. Usunięcie bloków Recaptcha (Hyvä używa własnej implementacji) -->
+        <referenceBlock name="recaptcha.customer_login" remove="true"/>
+        <referenceBlock name="recaptcha.newsletter" remove="true"/>
+
+        <!-- 6. Usunięcie osieroconych linków stopki -->
+        <referenceBlock name="landing_link_santander" remove="true"/>
+        <referenceBlock name="cms_footer_links_container" remove="true"/>
+
+        <!-- 7. Usunięcie elementów nawigacji Luma -->
+        <referenceBlock name="navigationlink" remove="true"/>
+        <referenceBlock name="newpage" remove="true"/>
+
+        <!-- 8. Usunięcie elementów Sidebar (Hyvä często nie ma sidebara w default) -->
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+        <referenceBlock name="sale.reorder.sidebar" remove="true"/>
+        <referenceBlock name="wishlist_sidebar" remove="true"/>
+
+        <!-- 9. Naprawa Notification Messages -->
+        <move element="notification.messages" destination="content" before="-"/>
+
+        <!-- KONIEC SANITYZACJI -->
+
         <referenceBlock name="top.container">
             <block name="header-usps" template="Magento_Theme::html/header/usps.phtml" before="-"/>
         </referenceBlock>
