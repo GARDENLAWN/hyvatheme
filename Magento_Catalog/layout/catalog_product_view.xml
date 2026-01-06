@@ -67,7 +67,7 @@
         </referenceBlock>
 
         <referenceContainer name="content">
-            <referenceContainer name="product.info.main">
+            <referenceContainer name="product.info.main" after="-">
                 <block class="Magento\Catalog\Block\Product\View" name="product.detail.page"
                        template="Magento_Catalog::product/product-detail-page.phtml">
                     <block class="Magento\Catalog\Block\Product\View"
@@ -140,7 +140,9 @@
                                template="Magento_Catalog::product/view/quantity.phtml"
                         />
 
-                        <block name="product.info.addtocart" template="Magento_Catalog::product/view/addtocart.phtml"/>
+                        <block name="product.info.addtocart" template="Magento_Catalog::product/view/addtocart.phtml">
+                            <container name="product.info.addtocart.additional" htmlTag="div" htmlClass="product-info-addtocart-additional" />
+                        </block>
 
                         <container name="product.info.additional.actions">
                             <block name="product.info.addtowishlist"
@@ -163,6 +165,7 @@
                                name="product.info.form"
                                template="Magento_Catalog::product/view/product-form.phtml"
                         >
+                            <container name="product.info.form.content" htmlTag="div" htmlClass="product-info-form-content" />
                             <arguments>
                                 <argument name="product_data_attributes" xsi:type="array">
                                     <item name="sku" xsi:type="boolean">true</item>
@@ -282,8 +285,13 @@
 
         </referenceContainer>
 
-        <move element="alert.urls" destination="product.info" as="alert.urls"/>
-        <move element="santander" destination="product.info" after="product.price.tier" />
+        <move element="alert.urls" destination="product.info" after="product.price.tier"/>
+        <move element="santander" destination="product.info" after="product.info.price" />
+
+        <move element="inpost.init.widget.product" destination="product.info" after="product.info.addtocart"/>
+        <move element="mollie.applepay.button.additional" destination="product.info" after="product.info.addtocart"/>
+        <move element="inpost.hyva.widget.product" destination="product.info" after="product.info.addtocart"/>
+        <move element="product.info.simple.extra" destination="product.info" after="product.info.price"/>
 
         <referenceContainer name="before.body.end">
             <block name="recently_viewed_products.register_view"
