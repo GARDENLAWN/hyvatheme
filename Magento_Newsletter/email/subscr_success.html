@@ -6,6 +6,7 @@
 -->
 <!--@subject {{trans "Newsletter subscription success"}} @-->
 <!--@vars {
+"var subscriber_data.unsubscription_link":"Subscriber Unsubscription URL",
 "template config_path=\"design\/email\/footer_template\"":"Email Footer Template",
 "template config_path=\"design\/email\/header_template\"":"Email Header Template"
 } @-->
@@ -17,6 +18,13 @@
     <tr>
         <td style="padding-bottom: 20px;">
             <p style="margin-bottom: 10px; line-height: 1.5; color: #333;">{{trans "You have been successfully subscribed to our newsletter."}}</p>
+            <p style="margin-bottom: 10px; line-height: 1.5; color: #333;">
+                {{trans "Follow this link to unsubscribe"}}
+                <!-- This tag is for unsubscribe link  -->
+                <a href="{{var subscriber_data.unsubscription_link}}" style="color: #1e7701; text-decoration: none; font-weight: bold;">
+                    {{var subscriber_data.unsubscription_link}}
+                </a>
+            </p>
         </td>
     </tr>
 </table>
