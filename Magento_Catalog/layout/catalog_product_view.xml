@@ -67,7 +67,7 @@
         </referenceBlock>
 
         <referenceContainer name="content">
-            <referenceContainer name="product.info.main" after="-">
+            <referenceContainer name="product.info.main">
                 <block class="Magento\Catalog\Block\Product\View" name="product.detail.page"
                        template="Magento_Catalog::product/product-detail-page.phtml">
                     <block class="Magento\Catalog\Block\Product\View"
