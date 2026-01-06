@@ -86,11 +86,11 @@ form .field.field-reserved {
     margin-bottom: 15px !important;
     padding-bottom: 15px !important;
 }
-
+/*
 [x-data="initAmGdprCheckbox"] {
     margin-bottom: 10px !important;
 }
-
+*/
 /* For AlpineJS */
 [x-cloak] {
     display: none !important;
