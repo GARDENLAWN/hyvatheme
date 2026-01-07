@@ -478,7 +478,7 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                     ?>
                 </p>
 
-                <div class="field mt-2" name="shippingAddress.country_id">
+                <div class="hidden field mt-2" name="shippingAddress.country_id">
 
                     <label class="label">
                         <?= $escaper->escapeHtml(__('Country')) ?>
@@ -498,7 +498,7 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                     </label>
                 </div>
 
-                <div class="field mt-2" name="shippingAddress.region_id">
+                <div class="hidden field mt-2" name="shippingAddress.region_id">
 
                     <template x-if="hasAvailableRegions">
 
