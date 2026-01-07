@@ -13,6 +13,7 @@ use Magento\Framework\View\Element\Template;
 /** @var Template $block */
 /** @var Escaper $escaper */
 ?>
+<!-- MOJ PLIK SHIPPING CUSTOM -->
 <script>
     function initShippingTotalSegment() {
         return {
@@ -35,13 +36,13 @@ use Magento\Framework\View\Element\Template;
                 return hyva.formatPrice(this.totalsData.shipping_amount);
             },
             formatTotalLabelExclTax() {
-                return `${this.segment.title} (${this.excludingTaxMessage})`;
+                return `<?= $escaper->escapeJs(__('Delivery')) ?> (${this.excludingTaxMessage})`;
             },
             formatTotalLabelInclTax() {
-                return `${this.segment.title} (${this.includingTaxMessage})`;
+                return `<?= $escaper->escapeJs(__('Delivery')) ?> (${this.includingTaxMessage})`;
             },
             formatTotalLabel() {
-                return this.segment.title;
+                return '<?= $escaper->escapeJs(__('Delivery')) ?>';
             }
         };
     }
