@@ -90,6 +90,11 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
             },
             directoryData: false,
             shippingMethod: false,
+            // Store PHP initial values to restore them if local storage is empty/bad
+            phpInitialData: {
+                countryId: '<?= $escaper->escapeJs($initialCountryId) ?>',
+                postcode: '<?= $escaper->escapeJs($initialPostcode) ?>'
+            },
             init() {
                 this.cartIsVirtual = parseInt(this.$root.dataset.isCartVirtual);
                 const selectedShippingMethod = window.checkoutConfig.selectedShippingMethod;
@@ -99,12 +104,6 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
 
                 const browserStorageShowEstimateShipping = hyva.getBrowserStorage().getItem('hyva.showEstimateShipping');
                 this.showEstimateShipping = browserStorageShowEstimateShipping === 'true' ? true : false;
-
-                // If we have pre-filled data from PHP, ensure we fetch methods if section is open
-                // But wait a bit for other inits
-                if (this.showEstimateShipping && this.cartData.address.postcode && this.cartData.address.postcode !== '*') {
-                     // We rely on receiveCustomerData or manual trigger
-                }
             },
             toggleEstimateShipping() {
                 this.showEstimateShipping = !this.showEstimateShipping;
@@ -273,8 +272,19 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                     this.populateCartData();
                 }
 
-                if (this.showEstimateShipping) {
-                    this.fetchShippingMethods();
+                // Force update address from PHP if local storage is missing postcode but PHP has it
+                if (this.phpInitialData.postcode && this.phpInitialData.postcode !== '*' && (!this.cartData.address.postcode || this.cartData.address.postcode === '*')) {
+                    this.cartData.address.postcode = this.phpInitialData.postcode;
+                    if (this.phpInitialData.countryId) {
+                        this.cartData.address.countryId = this.phpInitialData.countryId;
+                    }
+                    // Save back to storage so it persists
+                    this.saveToCustomerSectionData();
+                }
+
+                // Always fetch methods if we have a postcode, to ensure totals are updated with correct address
+                if (this.cartData.address.postcode && this.cartData.address.postcode !== '*') {
+                     this.fetchShippingMethods();
                 }
             },
             setCountry() {
