@@ -562,18 +562,23 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                             <div>
                                 <p><strong class="font-medium" x-text="carrier"></strong></p>
                                 <template x-for="(rate, index) in getRatesForCarrier" :key="index">
-                                    <label class="flex items-center px-2 gap-2 cursor-pointer">
+                                    <label class="flex items-start px-2 gap-2 cursor-pointer">
                                         <input
                                             type="radio"
                                             name="shippingEstimationSelection"
-                                            class="mr-2 cursor-pointer"
+                                            class="mr-2 mt-1 cursor-pointer"
                                             :id="shippingCarrierRadioId"
                                             :value="shippingCarrierRadioValue"
                                             :checked="isShippingMethodSelected"
                                             @change="updateShippingMethod"
                                         >
-                                        <span x-text="rate.method_title" class="break-words shrink hyphens-auto"></span>
-                                        <div class="flex flex-col justify-end ml-auto">
+                                        <div class="flex flex-col grow">
+                                            <span x-text="rate.method_title" class="break-words shrink hyphens-auto"></span>
+                                            <div x-show="rate.extension_attributes && rate.extension_attributes.description"
+                                                 class="text-xs text-gray-500 mt-1 w-full"
+                                                 x-text="rate.extension_attributes && rate.extension_attributes.description"></div>
+                                        </div>
+                                        <div class="flex flex-col justify-end ml-auto shrink-0">
                                             <?php if ($totalsOutput->displayCartShippingInclTax() || $totalsOutput->displayCartShippingBoth()): ?>
                                                 <p>
                                                     <span
