@@ -27,6 +27,37 @@ $showIcon = $block->getShowIcon() ?? true;
 
 /** @var TotalsOutput $totalsOutput */
 $totalsOutput = $viewModels->require(TotalsOutput::class);
+
+// Get address from quote
+$quote = $block->getQuote();
+$shippingAddress = $quote->getShippingAddress();
+
+$initialCountryId = $shippingAddress->getCountryId();
+$initialRegionId = $shippingAddress->getRegionId();
+$initialRegion = $shippingAddress->getRegion();
+$initialPostcode = $shippingAddress->getPostcode();
+
+// If quote address is missing or invalid (like '*'), try to load default shipping address from customer
+if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomerId()) {
+    try {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $customerRepository = $objectManager->get(\Magento\Customer\Api\CustomerRepositoryInterface::class);
+        $customer = $customerRepository->getById($quote->getCustomerId());
+
+        $defaultShippingId = $customer->getDefaultShipping();
+        if ($defaultShippingId) {
+            $addressRepository = $objectManager->get(\Magento\Customer\Api\AddressRepositoryInterface::class);
+            $address = $addressRepository->getById($defaultShippingId);
+
+            $initialCountryId = $address->getCountryId();
+            $initialRegionId = $address->getRegionId();
+            // Region name might need separate lookup if only ID is available, but often ID is enough for select
+            $initialPostcode = $address->getPostcode();
+        }
+    } catch (\Exception $e) {
+        // Ignore errors if customer or address not found
+    }
+}
 ?>
 
 <script>
@@ -40,9 +71,10 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
             isLoading: false,
             cartData: {
                 address: {
-                    countryId: window.checkoutConfig.defaultCountryId,
-                    regionId: window.checkoutConfig.defaultRegionId,
-                    postcode: window.checkoutConfig.defaultPostcode
+                    countryId: '<?= $escaper->escapeJs($initialCountryId) ?>' || window.checkoutConfig.defaultCountryId,
+                    regionId: '<?= $escaper->escapeJs($initialRegionId) ?>' || window.checkoutConfig.defaultRegionId,
+                    region: '<?= $escaper->escapeJs($initialRegion) ?>' || '',
+                    postcode: '<?= $escaper->escapeJs($initialPostcode) ?>' || window.checkoutConfig.defaultPostcode
                 },
                 cartVersion: Math.floor(Date.now() / 1000),
                 rates: [],
@@ -67,6 +99,12 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
 
                 const browserStorageShowEstimateShipping = hyva.getBrowserStorage().getItem('hyva.showEstimateShipping');
                 this.showEstimateShipping = browserStorageShowEstimateShipping === 'true' ? true : false;
+
+                // If we have pre-filled data from PHP, ensure we fetch methods if section is open
+                // But wait a bit for other inits
+                if (this.showEstimateShipping && this.cartData.address.postcode && this.cartData.address.postcode !== '*') {
+                     // We rely on receiveCustomerData or manual trigger
+                }
             },
             toggleEstimateShipping() {
                 this.showEstimateShipping = !this.showEstimateShipping;
@@ -433,14 +471,14 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
     <div class="mb-4">
         <form method="post" id="shipping-zip-form" @submit.prevent="fetchTotals()">
             <fieldset class="fieldset estimate" aria-labelledby="block-shipping-title">
-                <p class="hidden field note">
+                <p class="field note">
                     <?= $block->getQuote()->isVirtual() ?
                         $escaper->escapeHtml(__('Enter your billing address to get a tax estimate.')) :
                         $escaper->escapeHtml(__('Enter your destination to get a shipping estimate.'))
                     ?>
                 </p>
 
-                <div class="hidden field mt-2" name="shippingAddress.country_id">
+                <div class="field mt-2" name="shippingAddress.country_id">
 
                     <label class="label">
                         <?= $escaper->escapeHtml(__('Country')) ?>
@@ -460,7 +498,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                     </label>
                 </div>
 
-                <div class="hidden field mt-2" name="shippingAddress.region_id">
+                <div class="field mt-2" name="shippingAddress.region_id">
 
                     <template x-if="hasAvailableRegions">
 
@@ -499,7 +537,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                     </template>
                 </div>
 
-                <div class="hidden field mt-2" name="shippingAddress.postcode">
+                <div class="field mt-2" name="shippingAddress.postcode">
 
                     <label class="label">
                         <?= $escaper->escapeHtml(__('Zip/Postal Code')) ?>
