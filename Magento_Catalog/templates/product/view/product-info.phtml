@@ -94,6 +94,9 @@ $isCallForPrice = $product->getData('call_for_price');
 
     </div>
 
+    <!-- Delivery Calculator -->
+    <?= $block->getChildHtml('product.info.delivery.calculator') ?>
+
     <?php if ($product->isSaleable() && $block->getChildHtml('addtocart.shortcut.buttons')): ?>
         <div class="flex mt-4 justify-end">
             <?= $block->getChildHtml('addtocart.shortcut.buttons') ?>

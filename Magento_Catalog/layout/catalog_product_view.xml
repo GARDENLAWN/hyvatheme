@@ -144,6 +144,16 @@
                             <container name="product.info.addtocart.additional" htmlTag="div" htmlClass="product-info-addtocart-additional" />
                         </block>
 
+                        <!-- Delivery Calculator Block -->
+                        <block class="Magento\Catalog\Block\Product\View"
+                               name="product.info.delivery.calculator"
+                               template="GardenLawn_Delivery::product/calculator.phtml"
+                               after="product.info.addtocart">
+                            <arguments>
+                                <argument name="view_model" xsi:type="object">GardenLawn\Delivery\ViewModel\DistanceCalculator</argument>
+                            </arguments>
+                        </block>
+
                         <container name="product.info.additional.actions">
                             <block name="product.info.addtowishlist"
                                    template="Magento_Catalog::product/view/addtowishlist.phtml"/>
