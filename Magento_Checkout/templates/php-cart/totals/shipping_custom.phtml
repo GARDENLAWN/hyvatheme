@@ -1,0 +1,82 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+?>
+<!-- MOJ PLIK SHIPPING CUSTOM -->
+<script>
+    function initShippingTotalSegment() {
+        return {
+            isShippingSegmentAndDisplayBoth() {
+                return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'both' === window.checkoutConfig.reviewShippingDisplayMode;
+            },
+            isShippingSegmentAndDisplayExcl() {
+                return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'excluding' === window.checkoutConfig.reviewShippingDisplayMode;
+            },
+            isShippingSegmentAndDisplayIncl() {
+                return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'including' === window.checkoutConfig.reviewShippingDisplayMode;
+            },
+            formatShippingTotalValue() {
+                return hyva.formatPrice(this.segment.value);
+            },
+            formatShippingInclTax() {
+                return hyva.formatPrice(this.totalsData.shipping_incl_tax);
+            },
+            formatShippingAmount() {
+                return hyva.formatPrice(this.totalsData.shipping_amount);
+            },
+            formatTotalLabelExclTax() {
+                return `${this.segment.title} (${this.excludingTaxMessage})`;
+            },
+            formatTotalLabelInclTax() {
+                return `${this.segment.title} (${this.includingTaxMessage})`;
+            },
+            formatTotalLabel() {
+                return this.segment.title;
+            }
+        };
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('initShippingTotalSegment', initShippingTotalSegment), {once: true})
+</script>
+
+<div x-data="initShippingTotalSegment">
+    <!-- display shipping including and excluding tax -->
+    <template x-if="isShippingSegmentAndDisplayBoth">
+        <div>
+            <div :class="wrapperClass">
+                <div x-text="formatTotalLabelExclTax"></div>
+                <div x-text="formatShippingAmount" class="justify-self-end"></div>
+            </div>
+            <div :class="wrapperClass">
+                <div x-text="formatTotalLabelInclTax"></div>
+                <div x-text="formatShippingInclTax" class="justify-self-end"></div>
+            </div>
+        </div>
+    </template>
+
+    <!-- display shipping excluding tax -->
+    <template x-if="isShippingSegmentAndDisplayExcl">
+        <div :class="wrapperClass">
+            <div x-text="formatTotalLabel"></div>
+            <div x-text="formatShippingTotalValue" class="justify-self-end"></div>
+        </div>
+    </template>
+
+    <!-- display shipping including tax -->
+    <template x-if="isShippingSegmentAndDisplayIncl">
+        <div :class="wrapperClass">
+            <div x-text="formatTotalLabel"></div>
+            <div x-text="formatShippingInclTax" class="justify-self-end"></div>
+        </div>
+    </template>
+</div>
