@@ -90,7 +90,6 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
             },
             directoryData: false,
             shippingMethod: false,
-            // Store PHP initial values to restore them if local storage is empty/bad
             phpInitialData: {
                 countryId: '<?= $escaper->escapeJs($initialCountryId) ?>',
                 postcode: '<?= $escaper->escapeJs($initialPostcode) ?>'
@@ -272,42 +271,22 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                     this.populateCartData();
                 }
 
-                // Force update address from PHP if local storage is missing postcode but PHP has it
                 if (this.phpInitialData.postcode && this.phpInitialData.postcode !== '*' && (!this.cartData.address.postcode || this.cartData.address.postcode === '*')) {
                     this.cartData.address.postcode = this.phpInitialData.postcode;
                     if (this.phpInitialData.countryId) {
                         this.cartData.address.countryId = this.phpInitialData.countryId;
                     }
-                    // Save back to storage so it persists
                     this.saveToCustomerSectionData();
                 }
 
-                // Always fetch methods if we have a postcode, to ensure totals are updated with correct address
                 if (this.cartData.address.postcode && this.cartData.address.postcode !== '*') {
                      this.fetchShippingMethods();
                 }
             },
             setCountry() {
                 const countryId = this.$event.target.value;
-                this.cartData.address = {
-                    countryId: countryId,
-                    region: "",
-                    postcode: null
-                }
-                this.checkoutData.shippingAddressFromData = {
-                    country_id: countryId,
-                    region: "",
-                    postcode: null
-                }
-
-                if (this.directoryData[countryId] && this.directoryData[countryId].regions) {
-                    this.cartData.address.regionCode = "";
-                    this.cartData.address.regionId = 0;
-
-                    this.checkoutData.shippingAddressFromData.region_code = "";
-                    this.checkoutData.shippingAddressFromData.region_id = 0;
-                }
-
+                this.cartData.address.countryId = countryId;
+                this.checkoutData.shippingAddressFromData.country_id = countryId;
                 this.saveToCustomerSectionData();
                 this.fetchShippingMethods();
             },
@@ -340,12 +319,14 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                 this.saveToCustomerSectionData();
                 this.fetchShippingMethods();
             },
-            setPostcode() {
+            updatePostcode() {
                 const value = this.$event.target.value;
                 this.cartData.address.postcode = value;
                 this.checkoutData.shippingAddressFromData.postcode = value;
-
                 this.saveToCustomerSectionData();
+            },
+            setPostcode() {
+                this.updatePostcode();
                 this.fetchShippingMethods();
             },
             postcodeFieldValue() {
@@ -551,14 +532,20 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
 
                     <label class="label">
                         <?= $escaper->escapeHtml(__('Zip/Postal Code')) ?>
-
+                    </label>
+                    <div class="flex gap-2">
                         <input class="form-input w-full"
                                type="text"
                                name="postcode"
-                               @input.debounce.1000ms="setPostcode"
+                               @input="updatePostcode"
+                               @input.debounce.1000ms="fetchShippingMethods"
+                               @keydown.enter.prevent="fetchShippingMethods"
                                :value="postcodeFieldValue"
                         >
-                    </label>
+                        <button type="button" @click="fetchShippingMethods" class="btn btn-secondary shrink-0">
+                            <?= $escaper->escapeHtml(__('Calculate')) ?>
+                        </button>
+                    </div>
                 </div>
 
                 <template x-if="hasShippingRateCarriers">
