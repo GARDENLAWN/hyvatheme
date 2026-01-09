@@ -237,6 +237,9 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                         if (window.checkoutConfig && window.checkoutConfig.totalsData) {
                             const checkoutConfigTotals = window.checkoutConfig.totalsData.total_segments || [];
                             result.total_segments.forEach(total => {
+                                // Skip shipping segment to preserve dynamic title from API
+                                if (total.code === 'shipping') return;
+
                                 const totalFromConfig = checkoutConfigTotals.find(fromConfig => fromConfig.code === total.code)
                                 totalFromConfig && (total.title = totalFromConfig.title);
                             })
@@ -254,6 +257,8 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
             },
             receiveCustomerData() {
                 const data = this.$event.detail.data;
+                let addressChanged = false;
+
                 if (data.cart) {
                     this.cart = data.cart;
                 }
@@ -264,7 +269,13 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                     this.directoryData = data['directory-data'];
                 }
                 if (data['cart-data']) {
-                    this.cartData = data['cart-data'];
+                    // Check if address changed before updating
+                    if (JSON.stringify(this.cartData.address) !== JSON.stringify(data['cart-data'].address)) {
+                        this.cartData = data['cart-data'];
+                        addressChanged = true;
+                    } else {
+                        this.cartData = data['cart-data'];
+                    }
                 }
                 if (data['checkout-data']) {
                     this.checkoutData = data['checkout-data'];
@@ -277,9 +288,11 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                         this.cartData.address.countryId = this.phpInitialData.countryId;
                     }
                     this.saveToCustomerSectionData();
+                    addressChanged = true;
                 }
 
-                if (this.cartData.address.postcode && this.cartData.address.postcode !== '*') {
+                // Only fetch shipping methods if address changed or it's the first load and we have postcode
+                if (addressChanged && this.cartData.address.postcode && this.cartData.address.postcode !== '*') {
                      this.fetchShippingMethods();
                 }
             },
