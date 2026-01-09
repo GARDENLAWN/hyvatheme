@@ -140,8 +140,7 @@ $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniC
                 const drawer = this.$refs.cartDialogContent;
                 if(drawer) {
                     drawer.style.setProperty('--cart-drawer-offset-right', offsetRight);
-                    drawer.style.setProperty('height', '550px');
-                    drawer.style.setProperty('top', '0px');
+                    drawer.style.setProperty('--cart-drawer-offset-top', offsetTop);
                 }
             },
             productIsVisibleInSite() {
@@ -325,12 +324,10 @@ $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniC
     <section
         id="cart-drawer"
         aria-labelledby="cart-drawer-title"
-        class="flex flex-col gap-y-8 mt-5 py-6 px-4 [&_>*]:px-2 max-w-full z-30 absolute top-[var(--cart-drawer-offset-top)]
+        class="flex flex-col gap-y-8 py-6 px-4 [&_>*]:px-2 max-w-full z-30 fixed top-1/2 -translate-y-1/2
             inset-x-0 md:right-[calc(var(--cart-drawer-offset-right,1rem)_-_1rem)] md:left-auto
-            max-h-[clamp(480px,95vh_-_var(--cart-drawer-offset-top,0px),860px)] md:w-[420px] md:rounded-lg
-            shadow-lg bg-white text-slate-800 border-t-4 border-blue-500 before:border-b-blue-500
-            before:border-8 before:border-t-transparent before:border-x-transparent before:absolute
-            before:bottom-[calc(100%+theme(borderWidth.4))] before:right-[var(--cart-drawer-offset-right,1rem)] md:before:right-4"
+            max-h-[95vh] md:w-[420px] md:rounded-lg
+            shadow-lg bg-white text-slate-800 border-t-4 border-blue-500"
         x-show="open"
         x-transition.origin.top.right
         x-ref="cartDialogContent"
