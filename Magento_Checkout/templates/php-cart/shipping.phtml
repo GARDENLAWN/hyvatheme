@@ -563,7 +563,7 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
 
                 <template x-if="hasShippingRateCarriers">
                     <div
-                        class="relative"
+                        class="relative mt-4"
                         role="radiogroup"
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Shipping Methods')) ?>"
                     >
@@ -572,7 +572,7 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                             <div>
                                 <p><strong class="font-medium" x-text="carrier"></strong></p>
                                 <template x-for="(rate, index) in getRatesForCarrier" :key="index">
-                                    <label class="flex items-start px-2 gap-2 cursor-pointer">
+                                    <label class="flex items-start px-2 gap-2 cursor-pointer mt-4">
                                         <input
                                             type="radio"
                                             name="shippingEstimationSelection"

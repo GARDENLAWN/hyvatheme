@@ -1,0 +1,55 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Escaper $escaper */
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+/**
+ * The AlpineJS scope of this file is the method `initCartTotals()` in Magento_Checkout::php-cart/totals.phtml
+ */
+?>
+<template x-if="segment.code === 'tax' && (segment.value > 0 || checkoutConfig.isZeroTaxDisplayed)">
+    <div>
+        <template x-if="!(segment.value > 0 && checkoutConfig.isFullTaxSummaryDisplayed)">
+            <div :class="wrapperClass">
+                <div x-text="segment.title"></div>
+                <div x-text="hyva.formatPrice(segment.value)" class="justify-self-end"></div>
+            </div>
+        </template>
+
+        <template x-if="segment.value > 0 && checkoutConfig.isFullTaxSummaryDisplayed">
+            <details class="group">
+                <summary class="block cursor-pointer [&::-webkit-details-marker]:hidden"  :class="wrapperClass">
+                    <span x-text="segment.title"></span>
+                    <span class="inline-flex items-center gap-x-1 justify-self-end">
+                        <span x-text="hyva.formatPrice(segment.value)"></span>
+                        <?= $heroicons->chevronDownHtml('transform group-open:rotate-180', 18, 18, ['aria-hidden' => 'true']); ?>
+                    </span>
+                </summary>
+                <template x-for="(taxItem, index) in segment.extension_attributes.tax_grandtotal_details" :key="index">
+                    <div :class="wrapperClass">
+                        <div>
+                            <template x-for="(taxRate, index) in taxItem.rates">
+                                <div x-text="`${taxRate.title}`"></div>
+                            </template>
+                        </div>
+                        <div x-text="hyva.formatPrice(taxItem.amount)" class="justify-self-end"></div>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>
