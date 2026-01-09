@@ -592,7 +592,7 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                                             <div x-show="rate.extension_attributes && rate.extension_attributes.promotion_message"
                                                  class="mt-2 p-2 text-xs rounded"
                                                  style="border: 1px solid #fcd34d; background-color: #fffbeb; color: #92400e;">
-                                                <strong class="block mb-1"><?= $block->escapeHtml(__('Special Offer:')) ?></strong>
+                                                <strong class="block mb-1"><?= $block->escapeHtml(__('Special offer (included in cart):')) ?></strong>
                                                 <span x-html="rate.extension_attributes.promotion_message"></span>
                                             </div>
                                         </div>
