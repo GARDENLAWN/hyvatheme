@@ -1,0 +1,227 @@
+<?php
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Escaper $escaper */
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+$sliderShowArrows = $block->getShowArrows() !== null ? $block->getShowArrows() : "end";
+$sliderShowPager = $block->getShowPager() !== null ? (bool) $block->getShowPager() : true;
+$loadFirstEager = (bool) $block->getLoadFirstEager();
+
+$pagerClasses = "hidden sm:flex gap-4 justify-center items-center mt-7 absolute w-full bottom-8";
+$markerClasses = "w-4 h-4 rounded-full shadow-md cursor-pointer ring-4 ring-transparent bg-white hover:bg-blue-600 transition aria-[current=true]:ring-white aria-[current=true]:bg-blue-600";
+
+// Example items structure
+$items = $block->getData('items') ?? [
+    [
+        'image_url' => 'https://pub.gardenlawn.pl/media/wysiwyg/banners/dealers/gardenlawn-mobile-1.webp',
+        'image_url_desktop' => 'https://pub.gardenlawn.pl/media/images/banner/uslugi_ogrodnicze_banner.webp',
+        'image_alt' => __('Usługi ogrodnicze'),
+        'title' => __('Usługi ogrodnicze'),
+        'subtitle' => __('Województwo opolskie i okolice'),
+        'link_url' => '/uslugi',
+        'link_label' => __('Sprawdź usługi'),
+        'content_align' => 'end stretch', // start|center|end stretch|start|center|end
+        'text_align' => 'left', // left|center|right
+        'link_appearance' => 'btn-primary', // btn-primary, btn-secondary, btn, link, overlay
+    ],
+    [
+        'image_url' => 'https://pub.gardenlawn.pl/media/wysiwyg/banners/dealers/gardenlawn-mobile-2.webp',
+        'image_url_desktop' => 'https://pub.gardenlawn.pl/media/wysiwyg/banners/dealers/gardenlawn-desktop-1.webp',
+        'image_alt' => __('Usługi ogrodnicze'),
+        'title' => __(''),
+        'subtitle' => __(''),
+        'link_url' => $block->getUrl('uslugi'),
+        'link_label' => __('Sprawdź'),
+        'content_align' => 'end stretch',
+        'text_align' => 'left',
+        'link_appearance' => 'btn-primary',
+    ],
+];
+
+?>
+
+<section
+    class="relative mb-8"
+    aria-label="<?= $escaper->escapeHtml(__('Banner Slider')) ?>"
+    x-data
+    <?php if ($sliderShowPager): ?>
+        x-snap-slider.auto-pager
+        data-pager-class="<?= $escaper->escapeHtmlAttr($pagerClasses) ?>"
+        data-marker-class="<?= $escaper->escapeHtmlAttr($markerClasses) ?>"
+    <?php else: ?>
+        x-snap-slider
+    <?php endif; ?>
+>
+    <?php if ($sliderShowArrows): ?>
+        <nav
+            class="z-10 flex gap-2 justify-between absolute bottom-4 sm:static
+                <?= $sliderShowArrows === "end" ? "right-4" : ($sliderShowArrows === "start" ? "left-4" : "inset-x-4") ?>"
+            aria-label="<?= $escaper->escapeHtml(__('Slider controls')) ?>"
+        >
+            <button
+                type="button"
+                data-prev
+                class="sm:z-10 sm:absolute sm:top-1/2 sm:-translate-y-1/2 sm:left-4
+                    shrink-0 p-2.5 rounded-full transition bg-white text-primary shadow
+                    disabled:opacity-30 hover:shadow-primary/30 focus:shadow-primary/30"
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Go to Previous Slide')) ?>"
+            >
+                <?= /** @noEscape */ $heroicons->arrowLeftHtml() ?>
+            </button>
+            <button
+                type="button"
+                data-next
+                class="sm:z-10 sm:absolute sm:top-1/2 sm:-translate-y-1/2 sm:right-4
+                    shrink-0 p-2.5 rounded-full transition bg-white text-primary shadow
+                    disabled:opacity-30 hover:shadow-primary/30 focus:shadow-primary/30"
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Go to Next Slide')) ?>"
+            >
+                <?= /** @noEscape */ $heroicons->arrowRightHtml() ?>
+            </button>
+        </nav>
+    <?php endif; ?>
+    <div data-track class="snap relative grid grid-flow-col auto-cols-[100%] overflow-x-auto overscroll-x-contain">
+        <?php foreach ($items as $index => $item): ?>
+            <?php
+                // Data extraction
+                $image = [
+                    'src' => $item['image_url'],
+                    'alt' => $item['image_alt'] ?? ''
+                ];
+                $imageDesktop = $item['image_url_desktop'] ?? '';
+                $imageLoading = ($loadFirstEager && $index === 0) ? 'eager' : 'lazy';
+                $imageClasses = 'w-full h-full object-cover lg:object-contain'; // Adjusted for slider context
+
+                $title = $item['title'] ?? '';
+                $subtitle = $item['subtitle'] ?? '';
+
+                $link = [
+                    'url' => $item['link_url'] ?? '',
+                    'label' => $item['link_label'] ?? __('Read more'),
+                    'open_in_new' => $item['link_open_in_new'] ?? false,
+                ];
+
+                $linkAppearance = $item['link_appearance'] ?? 'btn-primary'; // 'btn-primary', 'btn-secondary', 'btn', 'link', 'overlay'
+
+                $useLinkOverlay = $item['use_link_overlay'] ?? ($linkAppearance === "overlay");
+                $useGradient = $item['use_gradient'] ?? false;
+                $useCard = $item['use_card'] ?? false;
+                $useGradientOverlay = $useGradient && !$useCard;
+                $useHiddenLink = $linkAppearance === "overlay";
+
+                $position = $item['content_align'] ?? 'end stretch';
+                $textAlign = $item['text_align'] ?? 'right';
+
+                $bgColor = $item['background_color'] ?? ($useCard ? '#fff' : '');
+                $fgColor = $item['text_color'] ?? ($useCard ? '#111' : '#f8fafc'); // slate-50
+                $titleColor = $item['title_color'] ?? '';
+                $gradientAngle = $item['gradient_angle'] ?? ($position === 'start stretch' ? 'to top' : 'to bottom');
+
+                // Styles Calculation (ported from banner-a.phtml)
+                $bannerClasses = implode(' ', array_filter([
+                    'relative grid *:col-start-1 *:row-start-1 w-full h-[450px]', // Fixed height 450px
+                    $useHiddenLink ? 'transition-[outline-offset] focus-within:outline focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-primary' : '',
+                    !$useGradient && !$useCard && ($bgColor) ? 'before:absolute before:inset-0 before:bg-[var(--banner-bg)] before:opacity-40' : '',
+                    $item['css_classes'] ?? ''
+                ]));
+
+                $bannerStyles = implode('; ', array_filter([
+                    $bgColor ? "--banner-bg: {$bgColor}" : '',
+                    $fgColor ? "--banner-color: {$fgColor}" : '',
+                    $useGradientOverlay ? "--banner-image: linear-gradient({$gradientAngle}, var(--tw-gradient-stops, #0000, var(--banner-bg)))" : '',
+                    ($bgColor || $fgColor) && !$useCard ? 'background: var(--banner-bg); color: var(--banner-color)' : '',
+                ]));
+
+                $bannerContentClasses = implode(' ', array_filter([
+                    'isolate',
+                    $useCard ? 'card m-6 md:p-8 rounded-lg' : 'p-6 md:p-12',
+                ]));
+
+                $bannerContentStyles = implode('; ', array_filter([
+                    $position ? "place-self: {$position}" : '',
+                    $textAlign ? "text-align: {$textAlign}" : '',
+                    $useCard ? 'background: var(--banner-bg); color: var(--banner-color)' : '',
+                    $useGradientOverlay ? 'background: var(--banner-image)' : '',
+                ]));
+
+                $bannerTitleStyles = implode('; ', array_filter([
+                    $titleColor ? "color: {$titleColor}" : ''
+                ]));
+
+                $bannerLinkClasses = implode(' ', array_filter([
+                    $linkAppearance === 'btn-primary' ? 'btn btn-primary inline-flex' : '',
+                    $linkAppearance === 'btn-secondary' ? 'btn btn-secondary inline-flex' : '',
+                    $linkAppearance === 'btn' ? 'btn inline-flex' : '',
+                    $linkAppearance === 'link' ? 'font-medium underline hover:no-underline' : '',
+                    $useLinkOverlay ? 'before:absolute before:inset-0 before:transition-opacity before:duration-500 before:opacity-0 before:bg-current hover:before:opacity-10' : ''
+                ]));
+            ?>
+            <div class="shrink-0 w-full snap-center">
+                 <div
+                    class="<?= $escaper->escapeHtmlAttr($bannerClasses) ?>"
+                    style="<?= $escaper->escapeHtmlAttr($bannerStyles) ?>"
+                >
+                    <picture>
+                        <?php if ($imageDesktop): ?>
+                            <source
+                                srcset="<?= $escaper->escapeUrl($imageDesktop) ?>"
+                                media="(min-width: 1024px)"
+                            >
+                        <?php endif; ?>
+                        <img
+                            src="<?= $escaper->escapeUrl($image['src']) ?>"
+                            width="<?= $escaper->escapeHtmlAttr($image['width'] ?? '1280') ?>"
+                            height="<?= $escaper->escapeHtmlAttr($image['height'] ?? '640') ?>"
+                            alt="<?= $escaper->escapeHtmlAttr($image['alt']) ?>"
+                            loading="<?= $escaper->escapeHtmlAttr($imageLoading) ?>"
+                            <?php if ($imageLoading === 'eager'): ?>fetchpriority="high"<?php endif; ?>
+                            class="<?= $escaper->escapeHtmlAttr($imageClasses) ?>"
+                        >
+                    </picture>
+                    <div
+                        class="<?= $escaper->escapeHtmlAttr($bannerContentClasses) ?>"
+                        style="<?= $escaper->escapeHtmlAttr($bannerContentStyles) ?>"
+                    >
+                        <?php if ($title): ?>
+                            <p
+                                class="text-3xl lg:text-6xl text-balance mb-2 drop-shadow-md"
+                                style="<?= $escaper->escapeHtmlAttr($bannerTitleStyles) ?>"
+                            >
+                                <strong><?= $escaper->escapeHtml($title) ?></strong>
+                            </p>
+                        <?php endif; ?>
+                        <?php if ($subtitle): ?>
+                            <p class="text-lg lg:text-2xl font-medium my-2 drop-shadow-md">
+                                <?= $escaper->escapeHtml($subtitle) ?>
+                            </p>
+                        <?php endif; ?>
+                        <?php if ($linkUrl = $link['url']): ?>
+                            <div <?= $useHiddenLink ? '' : 'class="mt-6 inline-flex flex-wrap items-center gap-4 w-full" style="justify-content: inherit;"' ?>>
+                                <a
+                                    href="<?= $escaper->escapeUrl($linkUrl) ?>"
+                                    <?= ($link['open_in_new']) ? 'target="_blank" rel="noopener"' : '' ?>
+                                    class="<?= $escaper->escapeHtmlAttr($bannerLinkClasses) ?>"
+                                >
+                                    <span <?= $useHiddenLink ? 'class="sr-only"' : '' ?>>
+                                        <?= $escaper->escapeHtml($link['label']) ?>
+                                    </span>
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                 </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</section>

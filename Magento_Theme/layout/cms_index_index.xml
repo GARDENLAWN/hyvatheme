@@ -30,22 +30,13 @@
             <block name="alpine-plugin-snap-slider" template="Magento_Theme::page/js/plugins/snap-slider.phtml"/>
         </referenceBlock>
         <referenceContainer name="content">
-            <block name="slider-mobile" template="Magento_Theme::elements/slider-mobile.phtml">
+            <block name="slider-banner" template="Magento_Theme::elements/slider-banner.phtml">
                 <arguments>
-                    <argument name="htmlClass" xsi:type="string">lg:hidden</argument>
                     <argument name="show_arrows" xsi:type="string">end</argument> <!-- Show Slider nav arrows (true/false/start/end) -->
                     <argument name="show_dots" xsi:type="boolean">true</argument> <!-- Show dots (true/false) -->
-                    <argument name="load_first_eager" xsi:type="boolean">false</argument> <!-- Load the first slider image eager (true/false) -->
+                    <argument name="load_first_eager" xsi:type="boolean">true</argument> <!-- Load the first slider image eager (true/false) -->
                 </arguments>
             </block>
-            <block name="slider-desktop" template="Magento_Theme::elements/slider-desktop.phtml">
-            <arguments>
-                <argument name="htmlClass" xsi:type="string">hidden lg:block</argument>
-                <argument name="show_arrows" xsi:type="string">end</argument> <!-- Show Slider nav arrows (true/false/start/end) -->
-                <argument name="show_dots" xsi:type="boolean">true</argument> <!-- Show dots (true/false) -->
-                <argument name="load_first_eager" xsi:type="boolean">false</argument> <!-- Load the first slider image eager (true/false) -->
-            </arguments>
-        </block>
         </referenceContainer>
         <referenceContainer name="footer-content-before">
             <block name="slider-producers" template="Magento_Theme::elements/slider-producers.phtml">
