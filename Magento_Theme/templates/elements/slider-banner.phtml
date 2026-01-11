@@ -145,7 +145,7 @@ $items = $block->getData('items') ?? [
                 ];
                 $imageDesktop = $item['image_url_desktop'] ?? '';
                 $imageLoading = ($loadFirstEager && $index === 0) ? 'eager' : 'lazy';
-                $imageClasses = 'w-full h-full object-cover lg:object-contain'; // Adjusted for slider context
+                $imageClasses = 'w-full h-full object-cover'; // Adjusted for slider context
 
                 $title = $item['title'] ?? '';
                 $subtitle = $item['subtitle'] ?? '';
