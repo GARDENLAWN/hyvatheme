@@ -19,7 +19,7 @@ $sliderShowPager = $block->getShowPager() !== null ? (bool) $block->getShowPager
 $loadFirstEager = (bool) $block->getLoadFirstEager();
 $autoSlideInterval = 3000; // 3 seconds
 
-$pagerClasses = "hidden sm:flex gap-4 justify-center items-center mt-7 absolute w-full bottom-8";
+$pagerClasses = "hidden sm:flex gap-4 justify-center items-center mt-7 absolute w-full bottom-8 z-20";
 $markerClasses = "w-4 h-4 rounded-full shadow-md cursor-pointer ring-4 ring-transparent bg-white hover:bg-blue-600 transition aria-[current=true]:ring-white aria-[current=true]:bg-blue-600";
 
 // Example items structure
@@ -109,14 +109,14 @@ $items = $block->getData('items') ?? [
 >
     <?php if ($sliderShowArrows): ?>
         <nav
-            class="z-10 flex gap-2 justify-between absolute bottom-4 sm:static
+            class="z-20 flex gap-2 justify-between absolute bottom-4 sm:static
                 <?= $sliderShowArrows === "end" ? "right-4" : ($sliderShowArrows === "start" ? "left-4" : "inset-x-4") ?>"
             aria-label="<?= $escaper->escapeHtml(__('Slider controls')) ?>"
         >
             <button
                 type="button"
                 data-prev
-                class="sm:z-10 sm:absolute sm:top-1/2 sm:-translate-y-1/2 sm:left-4
+                class="sm:z-20 sm:absolute sm:top-1/2 sm:-translate-y-1/2 sm:left-4
                     shrink-0 p-2.5 rounded-full transition bg-white text-primary shadow
                     disabled:opacity-30 hover:shadow-primary/30 focus:shadow-primary/30"
                 aria-label="<?= $escaper->escapeHtmlAttr(__('Go to Previous Slide')) ?>"
@@ -126,7 +126,7 @@ $items = $block->getData('items') ?? [
             <button
                 type="button"
                 data-next
-                class="sm:z-10 sm:absolute sm:top-1/2 sm:-translate-y-1/2 sm:right-4
+                class="sm:z-20 sm:absolute sm:top-1/2 sm:-translate-y-1/2 sm:right-4
                     shrink-0 p-2.5 rounded-full transition bg-white text-primary shadow
                     disabled:opacity-30 hover:shadow-primary/30 focus:shadow-primary/30"
                 aria-label="<?= $escaper->escapeHtmlAttr(__('Go to Next Slide')) ?>"
@@ -177,7 +177,7 @@ $items = $block->getData('items') ?? [
 
                 // Styles Calculation (ported from banner-a.phtml)
                 $bannerClasses = implode(' ', array_filter([
-                    'relative grid *:col-start-1 *:row-start-1 w-full h-[450px]', // Fixed height 450px
+                    'relative grid *:col-start-1 *:row-start-1 w-full h-[450px] overflow-hidden', // Fixed height 450px
                     $useHiddenLink ? 'transition-[outline-offset] focus-within:outline focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-primary' : '',
                     !$useGradient && !$useCard && ($bgColor) ? 'before:absolute before:inset-0 before:bg-[var(--banner-bg)] before:opacity-40' : '',
                     $item['css_classes'] ?? ''
@@ -192,7 +192,8 @@ $items = $block->getData('items') ?? [
 
                 $bannerContentClasses = implode(' ', array_filter([
                     'isolate',
-                    $useCard ? 'card m-6 md:p-8 rounded-lg' : 'p-6 md:p-12',
+                    'relative z-10',
+                    $useCard ? 'card m-6 md:p-8 rounded-lg' : 'p-6 md:p-12 pb-20 md:pb-32',
                 ]));
 
                 $bannerContentStyles = implode('; ', array_filter([
@@ -219,7 +220,7 @@ $items = $block->getData('items') ?? [
                     class="<?= $escaper->escapeHtmlAttr($bannerClasses) ?>"
                     style="<?= $escaper->escapeHtmlAttr($bannerStyles) ?>"
                 >
-                    <picture>
+                    <picture class="block w-full h-full">
                         <?php if ($imageDesktop): ?>
                             <source
                                 srcset="<?= $escaper->escapeUrl($imageDesktop) ?>"
