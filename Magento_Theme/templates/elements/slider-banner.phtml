@@ -35,6 +35,7 @@ $items = $block->getData('items') ?? [
         'content_align' => 'end stretch', // start|center|end stretch|start|center|end
         'text_align' => 'left', // left|center|right
         'link_appearance' => 'btn-primary', // btn-primary, btn-secondary, btn, link, overlay
+        'show_text_on_mobile' => false,
     ],
     [
         'image_url' => 'https://pub.gardenlawn.pl/media/images/banner/trawa_w_rolce_banner_mobile.webp',
@@ -47,6 +48,7 @@ $items = $block->getData('items') ?? [
         'content_align' => 'end stretch',
         'text_align' => 'left',
         'link_appearance' => 'btn-primary',
+        'show_text_on_mobile' => false,
     ],
 ];
 
@@ -156,6 +158,9 @@ $items = $block->getData('items') ?? [
 
                 $linkAppearance = $item['link_appearance'] ?? 'btn-primary'; // 'btn-primary', 'btn-secondary', 'btn', 'link', 'overlay'
 
+                $showTextOnMobile = $item['show_text_on_mobile'] ?? true;
+                $textVisibilityClass = $showTextOnMobile ? '' : 'hidden lg:block';
+
                 $useLinkOverlay = $item['use_link_overlay'] ?? ($linkAppearance === "overlay");
                 $useGradient = $item['use_gradient'] ?? false;
                 $useCard = $item['use_card'] ?? false;
@@ -237,14 +242,14 @@ $items = $block->getData('items') ?? [
                     >
                         <?php if ($title): ?>
                             <p
-                                class="text-3xl lg:text-6xl text-balance mb-2 drop-shadow-md"
+                                class="text-3xl lg:text-6xl text-balance mb-2 drop-shadow-md <?= $textVisibilityClass ?>"
                                 style="<?= $escaper->escapeHtmlAttr($bannerTitleStyles) ?>"
                             >
                                 <strong><?= $escaper->escapeHtml($title) ?></strong>
                             </p>
                         <?php endif; ?>
                         <?php if ($subtitle): ?>
-                            <p class="text-lg lg:text-2xl font-medium my-2 drop-shadow-md">
+                            <p class="text-lg lg:text-2xl font-medium my-2 drop-shadow-md <?= $textVisibilityClass ?>">
                                 <?= $escaper->escapeHtml($subtitle) ?>
                             </p>
                         <?php endif; ?>
