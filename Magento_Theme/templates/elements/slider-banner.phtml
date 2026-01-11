@@ -17,6 +17,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 $sliderShowArrows = $block->getShowArrows() !== null ? $block->getShowArrows() : "end";
 $sliderShowPager = $block->getShowPager() !== null ? (bool) $block->getShowPager() : true;
 $loadFirstEager = (bool) $block->getLoadFirstEager();
+$autoSlideInterval = 3000; // 3 seconds
 
 $pagerClasses = "hidden sm:flex gap-4 justify-center items-center mt-7 absolute w-full bottom-8";
 $markerClasses = "w-4 h-4 rounded-full shadow-md cursor-pointer ring-4 ring-transparent bg-white hover:bg-blue-600 transition aria-[current=true]:ring-white aria-[current=true]:bg-blue-600";
@@ -54,7 +55,48 @@ $items = $block->getData('items') ?? [
 <section
     class="relative mb-8"
     aria-label="<?= $escaper->escapeHtml(__('Banner Slider')) ?>"
-    x-data
+    x-data="{
+        activeSlide: 0,
+        itemCount: <?= count($items) ?>,
+        interval: null,
+        autoPlay: true,
+        init() {
+            this.startAutoSlide();
+        },
+        startAutoSlide() {
+            if (!this.autoPlay) return;
+            clearInterval(this.interval);
+            this.interval = setInterval(() => {
+                this.nextSlide();
+            }, <?= $autoSlideInterval ?>);
+        },
+        stopAutoSlide() {
+            clearInterval(this.interval);
+        },
+        handleUserInteraction(event) {
+            if (event && event.isTrusted) {
+                this.stopAutoSlide();
+                this.autoPlay = false;
+            }
+        },
+        nextSlide() {
+            const nextBtn = this.$el.querySelector('[data-next]');
+            if (nextBtn && !nextBtn.disabled) {
+                nextBtn.click();
+            } else {
+                // If next button is disabled (end of slider), go back to start
+                const firstSlide = this.$el.querySelector('[data-track] > *:first-child');
+                if (firstSlide) {
+                    firstSlide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                }
+            }
+        }
+    }"
+    @mouseenter="stopAutoSlide()"
+    @mouseleave="startAutoSlide()"
+    @click="handleUserInteraction($event)"
+    @keydown="handleUserInteraction($event)"
+    @touchstart="handleUserInteraction($event)"
     <?php if ($sliderShowPager): ?>
         x-snap-slider.auto-pager
         data-pager-class="<?= $escaper->escapeHtmlAttr($pagerClasses) ?>"
