@@ -56,6 +56,9 @@ $showIcon = (bool) $block->getShowIcon();
             },
             addMessages(messages, hideAfter) {
                 messages.map((message) => {
+                    if (message.text && message.text.indexOf("TypeError") !== -1) {
+                        return;
+                    }
                     this.messages = this.messages.concat(message);
                     if (hideAfter === undefined && message.type === 'success' && window.defaultSuccessMessageTimeout) {
                         hideAfter = window.defaultSuccessMessageTimeout;
