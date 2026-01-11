@@ -13,6 +13,35 @@
 >
     <body>
         <referenceContainer name="content">
+            <block name="banner-a" template="Magento_Cms::elements/banner-a.phtml">
+                <arguments>
+                    <argument name="title" xsi:type="string">Usługi ogrodnicze</argument>
+                    <argument name="subtitle" xsi:type="string">Województwo opolskie i okolice</argument>
+                    <!-- <argument name="content_alignment" xsi:type="string">center</argument> -->
+                    <!-- <argument name="text_align" xsi:type="string">center</argument> -->
+                    <!-- <argument name="background_color" xsi:type="string">#ff0</argument> -->
+                    <!-- <argument name="text_color" xsi:type="string">#000</argument> -->
+                    <argument name="image" xsi:type="array">
+                        <item name="src" xsi:type="string">https://pub.gardenlawn.pl/media/images/banner/uslugi_ogrodnicze_banner.webp</item>
+                        <item name="alt" xsi:type="string">Usługi ogrodnicze</item>
+                    </argument>
+                    <!-- <argument name="desktop_image" xsi:type="string">https://unsplash.com/photos/Q-fL04RhuMg/download</argument> -->
+                    <argument name="loading" xsi:type="string">lazy</argument>
+                    <argument name="link" xsi:type="array">
+                        <item name="url" xsi:type="string">/uslugi</item>
+                        <item name="label" xsi:type="string">Sprawdź usługi</item>
+                        <item name="open_in_new" xsi:type="boolean">false</item>
+                    </argument>
+                    <!-- <argument name="link_appearance" xsi:type="string">btn-primary</argument> -->
+                    <!-- <argument name="link_appearance" xsi:type="string">btn-secondary</argument> -->
+                    <!-- <argument name="link_appearance" xsi:type="string">btn</argument> -->
+                    <!-- <argument name="link_appearance" xsi:type="string">link</argument> -->
+                    <!-- <argument name="link_appearance" xsi:type="string">overlay</argument> -->
+                    <!-- <argument name="use_card" xsi:type="boolean">true</argument> -->
+                    <!-- <argument name="use_gradient" xsi:type="boolean">true</argument> -->
+                    <!-- <argument name="gradient_angle" xsi:type="number">5</argument> -->
+                </arguments>
+            </block>
             <block name="categories-b" template="Magento_Cms::elements/categories-b.phtml">
                 <arguments>
                     <argument name="use_slider" xsi:type="boolean">true</argument> <!-- Use slider on Mobile (true/false) -->
