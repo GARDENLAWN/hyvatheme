@@ -180,24 +180,14 @@ $productName = $block->getProduct()->getName();
                 <figure
                     class="absolute inset-0 flex flex-col justify-center items-center"
                     :class="imageWrapperFullscreenClasses"
-                    x-show="isActive"
+                    x-show="isActive(index)"
                     x-transition:enter.opacity.duration.500ms
                     x-transition:leave.opacity.duration.0ms
                 >
-                    <template x-if="isActiveAndVideo">
-                        <iframe
-                            class="absolute inset-0 aspect-video max-w-full max-h-full h-auto m-auto"
-                            width="1280"
-                            height="720"
-                            type="text/html"
-                            frameborder="0"
-                            loading="lazy"
-                            x-data="getVideoData"
-                            :src="src"
-                            :alt="imageCaption"
-                            :title="imageCaption"
-                            :allow="allow"
-                        ></iframe>
+                    <template x-if="isActiveAndVideo(index)">
+                        <div class="w-full h-full flex items-center justify-center bg-black">
+                            <div :id="playerId" class="w-full h-full"></div>
+                        </div>
                     </template>
                     <img
                         width="<?= /* @noEscape */ $mediumWidth ?>"
@@ -483,24 +473,14 @@ $productName = $block->getProduct()->getName();
                 <figure
                     class="absolute inset-0 flex flex-col justify-center items-center"
                     :class="imageWrapperFullscreenClasses"
-                    x-show="isActive"
+                    x-show="isActive(index)"
                     x-transition:enter.opacity.duration.500ms
                     x-transition:leave.opacity.duration.0ms
                 >
-                    <template x-if="isActiveAndVideo">
-                        <iframe
-                            class="absolute inset-0 aspect-video max-w-full max-h-full h-auto m-auto"
-                            width="1280"
-                            height="720"
-                            type="text/html"
-                            frameborder="0"
-                            loading="lazy"
-                            x-data="getVideoData"
-                            :src="src"
-                            :alt="imageCaption"
-                            :title="imageCaption"
-                            :allow="allow"
-                        ></iframe>
+                    <template x-if="isActiveAndVideo(index)">
+                        <div class="w-full h-full flex items-center justify-center bg-black">
+                            <div :id="playerId" class="w-full h-full"></div>
+                        </div>
                     </template>
                     <img
                         width="<?= /* @noEscape */ $mediumWidth ?>"
@@ -724,6 +704,7 @@ $productName = $block->getProduct()->getName();
             return {
                 activeItem: 0,
                 activeVideo: false,
+                activeVideoType: false,
                 itemIsVideo: false,
                 itemCount: 0,
                 fullscreen: false,
@@ -732,6 +713,8 @@ $productName = $block->getProduct()->getName();
                 isStart: true,
                 isEnd: false,
                 filterType: filterType,
+                playerId: 'gallery-player-' + Math.random().toString(36).substr(2, 9),
+                player: null,
                 videoOptions: {
                     autoplay: <?= $galleryOptionVideoAutoplay ? 'true' : 'false' ?>,
                     loop: <?= $galleryOptionVideoLoop ? 'true' : 'false' ?>,
@@ -762,9 +745,23 @@ $productName = $block->getProduct()->getName();
                     this.itemCount = this.images.length;
                     this.initActive();
                     this.$watch('activeItem', (item) => {
+                        // Reset players
+                        if (this.player) {
+                            if (typeof this.player.destroy === 'function') {
+                                this.player.destroy();
+                            }
+                        }
+                        this.player = null;
+                        this.activeVideo = false;
+                        this.activeVideoType = false;
+
                         if (!this.images[item]) return;
                         this.itemIsVideo = this.images[item].type === 'video';
-                        this.activeVideo = this.itemIsVideo && this.videoOptions.autoplay;
+
+                        if (this.itemIsVideo && this.videoOptions.autoplay) {
+                            this.isActiveVideo();
+                        }
+
                         this.isStart = this.activeItem === 0;
                         this.isEnd = this.activeItem === (this.itemCount - 1);
                         <?php if ($galleryOptionShowMagnifier): ?>
@@ -803,14 +800,26 @@ $productName = $block->getProduct()->getName();
                 typeIsVideo() {
                     return this.image.type === 'video';
                 },
-                isActive() {
-                    return this.activeItem === this.index;
+                isActive(index) {
+                    return this.activeItem === index;
                 },
                 isActiveVideo() {
-                    return this.activeVideo = true;
+                    this.activeVideo = true;
+                    const videoData = this.getVideoData();
+                    if (!videoData) return;
+
+                    this.activeVideoType = videoData.type;
+
+                    this.$nextTick(() => {
+                        if (videoData.type === "youtube") {
+                            this.initYoutubeAPI(videoData);
+                        } else if (videoData.type === "vimeo") {
+                            this.initVimeoVideo(videoData);
+                        }
+                    });
                 },
-                isActiveAndVideo() {
-                    return this.isActive() && this.activeVideo
+                isActiveAndVideo(index) {
+                    return this.isActive(index) && this.activeVideo
                 },
                 notActiveVideo() {
                     return !this.activeVideo;
@@ -859,60 +868,73 @@ $productName = $block->getProduct()->getName();
                 },
                 getVideoData() {
                     const videoUrl = this.image.videoUrl;
-                    const videoData = {
-                        id: null,
-                        type: null,
-                        src: null,
-                        additionalParams: "&autoplay=1",
-                        allow: "fullscreen; picture-in-picture; autoplay;"
-                    }
-                    if (!videoUrl) {
-                        return videoData;
-                    };
+                    if (!videoUrl) return false;
 
-                    if (this.videoOptions.loop) {
-                        videoData.additionalParams += '&loop=1';
-                    }
+                    let id, type, youtubeRegex, vimeoRegex, useYoutubeNoCookie = false;
 
                     if (videoUrl.match(/youtube\.com|youtu\.be|youtube-nocookie.com/)) {
-                        const youtubeRegex = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
-                        const baseSrc = videoUrl.match(/youtube-nocookie.com/)
-                            ? 'https://www.youtube-nocookie.com/embed'
-                            : 'https://www.youtube.com/embed';
-
-                        videoData.type = "youtube";
-                        videoData.id = videoUrl.match(youtubeRegex)[1];
-
-                        // If rel=0 it only shows related for the channel not external
-                        videoData.additionalParams += (this.videoOptions.showRelated ? '&rel=1' : '&rel=0');
-
-                        if (this.videoOptions.loop) {
-                            videoData.additionalParams += `&playlist=${videoData.id}`
+                        id = videoUrl.replace(/^\/(embed\/|v\/)?/, '').replace(/\/.*/, '');
+                        type = 'youtube';
+                        youtubeRegex = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+                        id = videoUrl.match(youtubeRegex)[1];
+                        if (videoUrl.match(/youtube-nocookie.com/)) {
+                            useYoutubeNoCookie = true;
                         }
-
-                        if (this.videoOptions.allowApi) {
-                            videoData.additionalParams += '&enablejsapi=1';
-                        }
-
-                        videoData.src = `${baseSrc}/${videoData.id}?origin=<?= $escaper->escapeUrl($block->getBaseUrl()) ?>${videoData.additionalParams}`;
-                        videoData.allow += " accelerometer; clipboard-write; encrypted-media; gyroscope;"
                     } else if (videoUrl.match(/vimeo\.com/)) {
-                        const vimeoRegex = new RegExp([
-                            'https?:\\/\\/(?:www\\.|player\\.)?vimeo.com\\/(?:channels\\/(?:\\w+\\/)',
+                        type = 'vimeo';
+                        vimeoRegex = new RegExp(['https?:\\/\\/(?:www\\.|player\\.)?vimeo.com\\/(?:channels\\/(?:\\w+\\/)',
                             '?|groups\\/([^\\/]*)\\/videos\\/|album\\/(\\d+)\\/video\\/|video\\/|)(\\d+)(?:$|\\/|\\?)'
                         ].join(''));
-                        const timestamp = new Date().getTime();
-                        const baseSrc = "https://player.vimeo.com/video";
-
-                        videoData.type = "vimeo";
-                        videoData.id = videoUrl.match(vimeoRegex)[3];
-                        if (this.videoOptions.allowApi) {
-                            videoData.additionalParams += "&api=1"
-                        }
-                        videoData.src = `${baseSrc}/${videoData.id}?player_id=vimeo${videoData.id}${timestamp}${videoData.additionalParams}`;
+                        id = videoUrl.match(vimeoRegex)[3];
                     }
 
-                    return videoData;
+                    return id ? { id: id, type: type, useYoutubeNoCookie: useYoutubeNoCookie } : false;
+                },
+                initYoutubeAPI(videoData) {
+                    const createPlayer = () => {
+                        this.player = new YT.Player(this.playerId, {
+                            host: (videoData.useYoutubeNoCookie) ? 'https://www.youtube-nocookie.com' : 'https://www.youtube.com',
+                            videoId: videoData.id,
+                            playerVars: {
+                                "autoplay": 1,
+                                "rel": this.videoOptions.showRelated ? 1 : 0,
+                                "loop": this.videoOptions.loop ? 1 : 0,
+                                "playlist": this.videoOptions.loop ? videoData.id : undefined
+                            },
+                            events: {
+                                'onReady': (event) => { event.target.playVideo(); }
+                            }
+                        });
+                    };
+
+                    if (window.YT && window.YT.Player) {
+                        createPlayer();
+                    } else {
+                        window.onYouTubeIframeAPIReady = createPlayer;
+                        if (!document.getElementById('loadYoutubeAPI')) {
+                            const tag = document.createElement('script');
+                            tag.src = "https://www.youtube.com/iframe_api";
+                            tag.id = "loadYoutubeAPI";
+                            const firstScriptTag = document.getElementsByTagName('script')[0];
+                            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                        }
+                    }
+                },
+                initVimeoVideo(videoData) {
+                    let additionalParams = '&autoplay=1';
+                    const timestamp = new Date().getTime();
+                    const vimeoContainer = document.getElementById(this.playerId);
+                    const videoId = videoData.id;
+
+                    if (!vimeoContainer || !videoId) return;
+
+                    if (this.videoOptions.loop) {
+                        additionalParams += '&loop=1';
+                    }
+                    const src = 'https://player.vimeo.com/video/' + videoId + '?api=1&player_id=vimeo' + videoId + timestamp + additionalParams;
+
+                    vimeoContainer.innerHTML = `<iframe id="${'vimeo' + videoId + timestamp}" src="${src}" width="640" height="360" webkitallowfullscreen mozallowfullscreen allowfullscreen referrerPolicy="origin" allow="autoplay" class="w-full h-full"></iframe>`;
+                    this.player = vimeoContainer.childNodes[0];
                 },
                 getTouchPosition(event) {
                     const position = this.swipeDir === "y"
