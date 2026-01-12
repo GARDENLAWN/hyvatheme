@@ -120,11 +120,11 @@ $block->setData('current_page', $page);
                         @keyup.arrow-left="prevItem"
                     >
                         <!-- Placeholder / First Image -->
-                        <figure class="flex flex-col items-center justify-center h-full" :class="firstImageClasses()">
+                        <figure class="absolute inset-0 flex flex-col items-center justify-center" :class="firstImageClasses()">
                             <img
                                 src="<?= $escaper->escapeUrl($mappedImages[0]['img']) ?>"
                                 alt=""
-                                class="object-contain max-w-full max-h-full"
+                                class="w-full h-full object-contain"
                                 loading="eager"
                             >
                         </figure>
@@ -132,14 +132,14 @@ $block->setData('current_page', $page);
                         <!-- Images Loop -->
                         <template x-for="(image, index) in images" :key="index">
                             <figure
-                                class="absolute inset-0 flex flex-col"
+                                class="absolute inset-0 flex flex-col justify-center items-center"
                                 :class="imageWrapperFullscreenClasses()"
                                 x-show="isActive(index)"
                                 x-transition:enter.opacity.duration.500ms
                                 x-transition:leave.opacity.duration.0ms
                             >
                                 <img
-                                    class="max-w-full max-h-full m-auto object-contain"
+                                    class="w-full h-full object-contain"
                                     :class="imageFullscreenClasses()"
                                     :src="getImage(image)"
                                     alt=""
@@ -215,6 +215,7 @@ $block->setData('current_page', $page);
                         class="flex items-center gap-2 outline-0 absolute inset-x-0 bottom-0 h-[var(--thumb-size)]"
                         x-bind="galleryThumbs"
                         x-show="hasMultipleImages()"
+                        :class="{ 'z-50 fixed bottom-4 left-1/2 -translate-x-1/2': fullscreen }"
                         x-cloak
                     >
                         <button
@@ -246,14 +247,14 @@ $block->setData('current_page', $page);
                                     :class="thumbClasses(index)"
                                     :aria-label="'<?= $escaper->escapeJs(__('View image')) ?>' + ' ' + (index + 1)"
                                     :aria-current="thumbIsActive(index)"
-                                    x-intersect:enter.full="isThumbInViewEnter(index)"
-                                    x-intersect:leave.full="isThumbInViewLeave(index)"
+                                    :x-intersect:enter.full="isThumbInViewEnter(index)"
+                                    :x-intersect:leave.full="isThumbInViewLeave(index)"
                                     @click="setThumbActive(index)"
                                 >
                                     <img
                                         :src="image.thumb"
                                         alt=""
-                                        class="max-w-full max-h-full object-contain"
+                                        class="w-full h-full object-contain"
                                         loading="lazy"
                                     >
                                 </button>
@@ -423,7 +424,7 @@ $block->setData('current_page', $page);
                 },
                 galleryClasses() {
                     return {
-                        'z-50 fixed inset-0 w-[calc(100%_-_2rem)] h-[calc(100%_-_2rem)] m-auto': this.fullscreen,
+                        'z-50 fixed inset-0 w-screen h-screen bg-white': this.fullscreen,
                         'relative': !this.fullscreen
                     }
                 },
@@ -431,10 +432,10 @@ $block->setData('current_page', $page);
                     return 'invisible';
                 },
                 imageWrapperFullscreenClasses() {
-                    return { 'p-4 sm:p-8': this.fullscreen };
+                    return { 'p-4 sm:p-8 pb-24': this.fullscreen };
                 },
                 imageFullscreenClasses() {
-                    return { 'w-auto': this.fullscreen };
+                    return { 'w-auto h-auto max-w-full max-h-full': this.fullscreen };
                 },
                 hasMultipleImages() {
                     return this.images.length > 1;
