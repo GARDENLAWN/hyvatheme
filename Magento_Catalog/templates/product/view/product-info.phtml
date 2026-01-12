@@ -112,6 +112,48 @@ $isCallForPrice = $product->getData('call_for_price');
 
     <?php if ($tierPriceBlock = $block->getChildHtml("product.price.tier")): ?>
         <div class="py-4 my-2 tier-price-container">
+            <style>
+                .tier-price-container .prices-tier.items {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 1rem;
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                }
+                .tier-price-container .prices-tier.items .item {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    flex-wrap: wrap;
+                    gap: 0.5rem;
+                    background-color: #f9fafb;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 0.5rem;
+                    padding: 1rem;
+                    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+                    transition: all 0.2s ease-in-out;
+                }
+                .tier-price-container .prices-tier.items .item:hover {
+                    border-color: #9ca3af;
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                }
+                .tier-price-container .prices-tier.items .item .price-container {
+                    display: inline-flex;
+                    align-items: baseline;
+                    gap: 0.25rem;
+                    font-weight: 600;
+                    color: #111827;
+                }
+                .tier-price-container .prices-tier.items .item .benefit {
+                    font-size: 0.875rem;
+                    color: #059669;
+                    background-color: #ecfdf5;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 9999px;
+                    font-weight: 600;
+                }
+            </style>
             <?= /** @noEscape */ $tierPriceBlock ?>
         </div>
     <?php endif; ?>
