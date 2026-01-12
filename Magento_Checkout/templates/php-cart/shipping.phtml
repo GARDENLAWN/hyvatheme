@@ -299,6 +299,9 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                 // Only fetch shipping methods if address changed or it's the first load and we have postcode
                 if (addressChanged && this.cartData.address.postcode && this.cartData.address.postcode !== '*') {
                      this.fetchShippingMethods();
+                } else if (!addressChanged && this.cartData.address.postcode && this.cartData.address.postcode !== '*' && this.availableShippingMethods.length === 0) {
+                    // If address didn't change but we have a postcode and no methods loaded yet (e.g. page reload), fetch them
+                    this.fetchShippingMethods();
                 }
             },
             setCountry() {
