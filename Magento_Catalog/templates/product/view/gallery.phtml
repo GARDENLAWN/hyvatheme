@@ -368,8 +368,8 @@ $productName = $block->getProduct()->getName();
                             :class="thumbClasses"
                             :aria-label="setThumbLabel"
                             :aria-current="thumbIsActive"
-                            x-intersect:enter.full="isThumbInViewEnter"
-                            x-intersect:leave.full="isThumbInViewLeave"
+                            :x-intersect:enter.full="isThumbInViewEnter"
+                            :x-intersect:leave.full="isThumbInViewLeave"
                             @click="setThumbActive"
                         >
                             <img
@@ -668,8 +668,8 @@ $productName = $block->getProduct()->getName();
                             :class="thumbClasses"
                             :aria-label="setThumbLabel"
                             :aria-current="thumbIsActive"
-                            x-intersect:enter.full="isThumbInViewEnter"
-                            x-intersect:leave.full="isThumbInViewLeave"
+                            :x-intersect:enter.full="isThumbInViewEnter"
+                            :x-intersect:leave.full="isThumbInViewLeave"
                             @click="setThumbActive"
                         >
                             <img
@@ -976,7 +976,7 @@ $productName = $block->getProduct()->getName();
                 galleryClasses() {
                     return {
                         'z-50 fixed inset-0 w-screen max-w-[min(1280px,(100%_-_2rem))] max-h-[min(1024px,(100%_-_2rem))] m-auto': this.fullscreen,
-                        'relative max-h-[60vh]': !this.fullscreen
+                        'relative max-h-[50vh]': !this.fullscreen
                     }
                 },
                 firstImageClasses() {
