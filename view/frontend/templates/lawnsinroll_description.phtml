@@ -30,6 +30,7 @@ $product = $block->getProduct();
         overflow: hidden !important;
         -ms-overflow-style: none !important; /* IE and Edge */
         scrollbar-width: none !important; /* Firefox */
+        width: 100%;
     }
 
     iframe::-webkit-scrollbar {
@@ -84,6 +85,18 @@ $product = $block->getProduct();
     .topnav a {
         text-align: center;
     }
+
+    .tabs-container {
+        padding: 0;
+        margin-left: -23px;
+    }
+
+    @media (max-width: 768px) {
+        .tabs-container {
+            margin-left: 0;
+            width: 100%;
+        }
+    }
 </style>
 
 <section>
@@ -93,8 +106,7 @@ $product = $block->getProduct();
 
 <div id="tabs-description">
     <div class="tabs-container" data-content-type="tabs" data-appearance="default" data-active-tab=""
-         data-element="main"
-         style="padding: 0; margin-left: -23px;">
+         data-element="main">
         <ul role="tablist" style=" text-align: center;" class="tabs-navigation" data-element="navigation">
             <li role="tab" class="tab-header active" data-element="headers"><a href="#tab_1" class="tab-title"><span
                         class="tab-title">Trawa z Rolki</span></a></li>
@@ -148,14 +160,31 @@ $product = $block->getProduct();
 </div>
 <script>
     function resizeIframe(obj) {
-        let height = obj.contentWindow.document.body.scrollHeight;
-        obj.style.height = height + 'px';
-        obj.style.width = '100%';
-        obj.style.overflow = 'hidden';
-        obj.style.overflowY = 'hidden';
-        document.getElementById(obj.id)
-            .contentWindow.document.getElementsByTagName('body')[0]
-            .style.textAlign = "<?= GardenLawn\Core\Utils\Utils::isFirefox() ? '-moz-center' : '-webkit-center' ?>";
+        if (!obj || !obj.contentWindow) return;
+
+        try {
+            const doc = obj.contentWindow.document;
+            const body = doc.body;
+            const html = doc.documentElement;
+
+            // Reset height to allow shrinking
+            obj.style.height = 'auto';
+
+            const height = Math.max(
+                body.scrollHeight, body.offsetHeight,
+                html.clientHeight, html.scrollHeight, html.offsetHeight
+            );
+
+            obj.style.height = height + 'px';
+            obj.style.width = '100%';
+            obj.style.overflow = 'hidden';
+            obj.style.overflowY = 'hidden';
+
+            body.style.textAlign = "<?= GardenLawn\Core\Utils\Utils::isFirefox() ? '-moz-center' : '-webkit-center' ?>";
+            body.style.margin = "0 auto";
+        } catch (e) {
+            console.warn('Cannot resize iframe', e);
+        }
     }
 
     function loadIframe(tab) {
@@ -172,6 +201,16 @@ $product = $block->getProduct();
 
                 }
             };
+        } else {
+            resizeIframe(iframe);
         }
     }
+
+    window.addEventListener('resize', function() {
+        document.querySelectorAll('iframe[id^="iframe_"]').forEach(function(iframe) {
+            if (iframe.contentWindow && iframe.src) {
+                resizeIframe(iframe);
+            }
+        });
+    });
 </script>
