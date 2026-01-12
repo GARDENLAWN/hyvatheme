@@ -40,6 +40,8 @@
 @source "../../../../../../../../vendor/hyva-themes/magento2-default-theme-csp/**/*.xml";
 @source "../../../../../../../../vendor/hyva-themes/magento2-default-theme/**/*.phtml";
 @source "../../../../../../../../vendor/hyva-themes/magento2-default-theme/**/*.xml";
+@source "../../../../../../../**/*.phtml";
+@source "../../../../../../../**/*.xml";
 
 @import "../../../../../../../../vendor/amasty/module-mega-menu-lite-hyva/view/frontend/tailwind/tailwind-source.css";
 @import "../../../../../../../../vendor/amasty/module-gdpr-cookie-hyva/view/frontend/tailwind/tailwind-source.css";
