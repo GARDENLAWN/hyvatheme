@@ -3,11 +3,10 @@
 /** @var Template $block */
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
-/** @var HyvaCsp $hyvaCsp */
+
 /** @var Slider $sliderViewModel */
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\Slider;
 use Magento\Catalog\Block\Product\View;
 use Magento\Framework\Escaper;
@@ -86,25 +85,7 @@ $product = $block->getProduct();
         text-align: center;
     }
 </style>
-<section class="text-gray-700 body-font">
-    <div class="flex pb-6 md:py-6 lg:flex-row flex-col items-center">
-        <div
-            class="grid grid-rows-auto grid-cols-1 md:gap-x-5 md:grid-cols-[42%_minmax(0,_1fr)] md:grid-rows-[min-content_minmax(0,_1fr)] lg:gap-x-10 lg:grid-cols-2 w-full">
-            <?= $block->getChildHtml('product.title') ?>
-            <?= $block->getChildHtml('product.media') ?>
-            <div>
-                <?= $block->getChildHtml('product.info') ?>
-                <div id="product-attribute"></div>
-                <div id="yt-video">
-                    <?= $sliderViewModel->getSliderForItems($itemsVideoTemplate, $itemsVideo)->toHtml() ?>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="flex pb-10 md:py-10 lg:flex-row flex-col items-center">
-        <?= $block->getChildHtml('product.info.details'); ?>
-    </div>
-</section>
+
 <section>
     <?= $block->getChildHtml('product_options_wrapper_bottom') ?>
 </section>
@@ -116,94 +97,81 @@ $product = $block->getProduct();
          style="padding: 0; margin-left: -23px;">
         <ul role="tablist" style=" text-align: center;" class="tabs-navigation" data-element="navigation">
             <li role="tab" class="tab-header active" data-element="headers"><a href="#tab_1" class="tab-title"><span
-                        class="tab-title">Trawa z rolki</span></a></li>
+                        class="tab-title">Trawa z Rolki</span></a></li>
             <li role="tab" class="tab-header" data-element="headers"><a href="#tab_2" class="tab-title"
                                                                         onclick="loadIframe(this)"><span
-                        class="tab-title">O producencie</span></a></li>
+                        class="tab-title">O Producencie</span></a></li>
             <li role="tab" class="tab-header" data-element="headers"><a href="#tab_3" class="tab-title"
                                                                         onclick="loadIframe(this)"><span
-                        class="tab-title">Grupa Trawnik</span></a></li>
+                        class="tab-title">Pielęgnacja Trawnika</span></a></li>
             <li role="tab" class="tab-header" data-element="headers"><a href="#tab_4" class="tab-title"
                                                                         onclick="loadIframe(this)"><span
-                        class="tab-title">Trawa ogrodowa</span></a></li>
+                        class="tab-title">Zakładanie Trawnika</span></a></li>
             <li role="tab" class="tab-header" data-element="headers"><a href="#tab_5" class="tab-title"
                                                                         onclick="loadIframe(this)"><span
                         class="tab-title">Logistyka</span></a></li>
-            <li role="tab" class="tab-header" data-element="headers"><a href="#tab_6" class="tab-title"
-                                                                        onclick="loadIframe(this)"><span
-                        class="tab-title">Poradnik</span></a></li>
-            <li role="tab" class="tab-header" data-element="headers"><a href="#tab_7" class="tab-title"
-                                                                        onclick="loadIframe(this)"><span
-                        class="tab-title">FAQ</span></a></li>
         </ul>
         <div id="tab-content" class="tabs-content" data-element="content" style="width: 100%;">
-            <div data-content-type="tab-item" data-appearance="default" data-tab-name="test 1"
+            <div data-content-type="tab-item" data-appearance="default" data-tab-name="Trawa z Rolki"
                  data-background-images="{}"
                  data-element="main" id="tab_1" style="padding: 0">
                 <iframe id="iframe_1" style="width: 100%; overflow:hidden;" frameborder="0" scrolling="no"
                         onload="resizeIframe(this)"
                         src="/hyvaroot/pages/grassinfo1"></iframe>
             </div>
-            <div data-content-type="tab-item" data-appearance="default" data-tab-name="test 2"
+            <div data-content-type="tab-item" data-appearance="default" data-tab-name="O Producencie"
                  data-background-images="{}"
                  data-element="main" id="tab_2" style="padding: 0">
                 <iframe id="iframe_2" style="width: 100%; overflow:hidden;" frameborder="0" scrolling="no"
                         src=""></iframe>
             </div>
-            <div data-content-type="tab-item" data-appearance="default" data-tab-name="test 3"
+            <div data-content-type="tab-item" data-appearance="default" data-tab-name="Pielęgnacja Trawnika"
                  data-background-images="{}"
                  data-element="main" id="tab_3" style="padding: 0">
                 <iframe id="iframe_3" style="width: 100%; overflow:hidden;" frameborder="0" scrolling="no"
                         src=""></iframe>
             </div>
-            <div data-content-type="tab-item" data-appearance="default" data-tab-name="test 4"
+            <div data-content-type="tab-item" data-appearance="default" data-tab-name="Zakładanie Trawnika"
                  data-background-images="{}"
                  data-element="main" id="tab_4" style="padding: 0">
                 <iframe id="iframe_4" style="width: 100%; overflow:hidden;" frameborder="0" scrolling="no"
                         src=""></iframe>
             </div>
-            <div data-content-type="tab-item" data-appearance="default" data-tab-name="test 5"
+            <div data-content-type="tab-item" data-appearance="default" data-tab-name="Logistyka"
                  data-background-images="{}"
                  data-element="main" id="tab_5" style="padding: 0">
                 <iframe id="iframe_5" style="width: 100%; overflow:hidden;" frameborder="0" scrolling="no"
                         src=""></iframe>
             </div>
-            <div data-content-type="tab-item" data-appearance="default" data-tab-name="test 6"
-                 data-background-images="{}"
-                 data-element="main" id="tab_6" style="padding: 0">
-                <iframe id="iframe_6" style="width: 100%; overflow:hidden;" frameborder="0" scrolling="no"
-                        src=""></iframe>
-            </div>
-            <div data-content-type="tab-item" data-appearance="default" data-tab-name="test 7"
-                 data-background-images="{}"
-                 data-element="main" id="tab_7" style="padding: 0">
-                <iframe id="iframe_7" style="width: 100%; overflow:hidden;" frameborder="0" scrolling="no"
-                        src=""></iframe>
-            </div>
         </div>
     </div>
 </div>
-<div x-data="gardenLawnHyvathemeLawnsinrollDescription">
-<?php /** Moved variables previously here to "./view/frontend/templates/lawnsinroll_description-csp-js.phtml" */ ?>
-<?php /** References (`$itemsVideo`, `$video`) */ ?>
-</div><?php $hyvaCsp->registerInlineScript() ?>
 <script>
-<?php /** Generated with hyva-csp-helper.php */ ?>
-function gardenLawnCoreLawnsinrollDescription() {
-    return Object.assign(
-        viewFrontendTemplatesLawnsinroll_descriptionMovedScript0.call(this)
-    )
-}
-window.addEventListener('alpine:init', () => Alpine.data('gardenLawnCoreLawnsinrollDescription', gardenLawnCoreLawnsinrollDescription), {once: true});
+    function resizeIframe(obj) {
+        let height = obj.contentWindow.document.body.scrollHeight;
+        obj.style.height = height + 'px';
+        obj.style.width = '100%';
+        obj.style.overflow = 'hidden';
+        obj.style.overflowY = 'hidden';
+        document.getElementById(obj.id)
+            .contentWindow.document.getElementsByTagName('body')[0]
+            .style.textAlign = "<?= GardenLawn\Core\Utils\Utils::isFirefox() ? '-moz-center' : '-webkit-center' ?>";
+    }
+
+    function loadIframe(tab) {
+        let id = tab.href.substr(tab.href.length - 1);
+        let iframe = document.getElementById('iframe_' + id);
+        if (iframe.isinit === undefined) {
+            iframe.isinit = false;
+            iframe.src = '/hyvaroot/pages/grassinfo' + id;
+            iframe.onload = function () {
+                resizeIframe(iframe);
+                try {
+                    iframe.contentWindow.document.getElementById('am-cookie-bar').remove();
+                } catch (ex) {
+
+                }
+            };
+        }
+    }
 </script>
-<?php $hyvaCsp->registerInlineScript() ?>
-<script>
-<?php /** Generated with hyva-csp-helper.php */ ?>
-function gardenLawnHyvathemeLawnsinrollDescription() {
-    return Object.assign(
-        gardenLawnCoreLawnsinrollDescription.call(this)
-    )
-}
-window.addEventListener('alpine:init', () => Alpine.data('gardenLawnHyvathemeLawnsinrollDescription', gardenLawnHyvathemeLawnsinrollDescription), {once: true});
-</script>
-<?php $hyvaCsp->registerInlineScript() ?>
