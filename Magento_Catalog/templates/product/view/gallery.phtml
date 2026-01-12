@@ -165,7 +165,7 @@ $productName = $block->getProduct()->getName();
                 x-magnifier.zoom.<?= /* @noEscape */ $galleryOptionMagnifierZoom ?>="showMagnifierIfActive"
             <?php endif; ?>
         >
-            <figure class="flex flex-col items-center justify-center h-full" :class="firstImageClasses">
+            <figure class="absolute inset-0 flex flex-col items-center justify-center" :class="firstImageClasses">
                 <img
                     src="<?= /* @noEscape */ $mainImageData ?>"
                     alt="<?= $mainImage ? $escaper->escapeHtmlAttr($mainImage->getData('label')) : '' ?>"
@@ -173,11 +173,12 @@ $productName = $block->getProduct()->getName();
                     height="<?= /* @noEscape */ $mediumHeight ?>"
                     loading="eager"
                     itemprop="image"
+                    class="w-full h-full object-contain"
                 >
             </figure>
             <template x-for="(image, index) in images" :key="index">
                 <figure
-                    class="absolute inset-0 flex flex-col"
+                    class="absolute inset-0 flex flex-col justify-center items-center"
                     :class="imageWrapperFullscreenClasses"
                     x-show="isActive"
                     x-transition:enter.opacity.duration.500ms
@@ -201,8 +202,7 @@ $productName = $block->getProduct()->getName();
                     <img
                         width="<?= /* @noEscape */ $mediumWidth ?>"
                         height="<?= /* @noEscape */ $mediumHeight ?>"
-                        class="max-w-full max-h-full m-auto object-contain"
-                        :class="imageFullscreenClasses"
+                        class="w-full h-full object-contain"
                         :src="getImage"
                         :alt="imageCaption"
                         x-show="notActiveVideo"
@@ -331,6 +331,7 @@ $productName = $block->getProduct()->getName();
                 class="flex items-center gap-2 outline-0 absolute inset-x-0 bottom-0 <?= $galleryOptionNavVertical ? 'lg:left-0 lg:right-auto lg:inset-y-0 lg:order-first lg:flex-col' : '' ?>"
                 x-bind="galleryThumbs"
                 x-show="hasMultipleImages"
+                :class="{ 'z-50 fixed bottom-4 left-1/2 -translate-x-1/2': fullscreen }"
                 x-cloak
             >
                 <?php if ($galleryOptionShowNavArrows): ?>
@@ -467,7 +468,7 @@ $productName = $block->getProduct()->getName();
                 x-magnifier.zoom.<?= /* @noEscape */ $galleryOptionMagnifierZoom ?>="showMagnifierIfActive"
             <?php endif; ?>
         >
-            <figure class="flex flex-col items-center justify-center h-full" :class="firstImageClasses">
+            <figure class="absolute inset-0 flex flex-col items-center justify-center" :class="firstImageClasses">
                 <img
                     src="<?= /* @noEscape */ $mainVideoData ?>"
                     alt="<?= $mainVideo ? $escaper->escapeHtmlAttr($mainVideo->getData('label')) : '' ?>"
@@ -475,11 +476,12 @@ $productName = $block->getProduct()->getName();
                     height="<?= /* @noEscape */ $mediumHeight ?>"
                     loading="eager"
                     itemprop="image"
+                    class="w-full h-full object-contain"
                 >
             </figure>
             <template x-for="(image, index) in images" :key="index">
                 <figure
-                    class="absolute inset-0 flex flex-col"
+                    class="absolute inset-0 flex flex-col justify-center items-center"
                     :class="imageWrapperFullscreenClasses"
                     x-show="isActive"
                     x-transition:enter.opacity.duration.500ms
@@ -503,8 +505,7 @@ $productName = $block->getProduct()->getName();
                     <img
                         width="<?= /* @noEscape */ $mediumWidth ?>"
                         height="<?= /* @noEscape */ $mediumHeight ?>"
-                        class="max-w-full max-h-full m-auto object-contain"
-                        :class="imageFullscreenClasses"
+                        class="w-full h-full object-contain"
                         :src="getImage"
                         :alt="imageCaption"
                         x-show="notActiveVideo"
@@ -633,6 +634,7 @@ $productName = $block->getProduct()->getName();
                 class="flex items-center gap-2 outline-0 absolute inset-x-0 bottom-0 <?= $galleryOptionNavVertical ? 'lg:left-0 lg:right-auto lg:inset-y-0 lg:order-first lg:flex-col' : '' ?>"
                 x-bind="galleryThumbs"
                 x-show="images.length > 0"
+                :class="{ 'z-50 fixed bottom-4 left-1/2 -translate-x-1/2': fullscreen }"
                 x-cloak
             >
                 <?php if ($galleryOptionShowNavArrows): ?>
@@ -982,7 +984,7 @@ $productName = $block->getProduct()->getName();
                 },
                 galleryClasses() {
                     return {
-                        'z-50 fixed inset-0 w-screen max-w-[min(1280px,(100%_-_2rem))] max-h-[min(1024px,(100%_-_2rem))] m-auto': this.fullscreen,
+                        'z-50 fixed inset-0 w-screen h-screen bg-white': this.fullscreen,
                         'relative max-h-[50vh]': !this.fullscreen
                     }
                 },
@@ -990,10 +992,10 @@ $productName = $block->getProduct()->getName();
                     return 'invisible';
                 },
                 imageWrapperFullscreenClasses() {
-                    return { 'p-4 sm:p-8': this.fullscreen };
+                    return { 'p-4 sm:p-8 pb-24': this.fullscreen };
                 },
                 imageFullscreenClasses() {
-                    return { 'w-auto': this.fullscreen };
+                    return { 'w-auto h-auto max-w-full max-h-full': this.fullscreen };
                 },
                 hasMultipleImages() {
                     return this.images.length > 1;
