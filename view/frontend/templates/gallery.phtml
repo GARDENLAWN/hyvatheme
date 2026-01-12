@@ -247,8 +247,8 @@ $block->setData('current_page', $page);
                                     :class="thumbClasses(index)"
                                     :aria-label="'<?= $escaper->escapeJs(__('View image')) ?>' + ' ' + (index + 1)"
                                     :aria-current="thumbIsActive(index)"
-                                    :x-intersect:enter.full="isThumbInViewEnter(index)"
-                                    :x-intersect:leave.full="isThumbInViewLeave(index)"
+                                    x-intersect:enter.full="isThumbInViewEnter(index)"
+                                    x-intersect:leave.full="isThumbInViewLeave(index)"
                                     @click="setThumbActive(index)"
                                 >
                                     <img

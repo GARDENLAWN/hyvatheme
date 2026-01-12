@@ -212,6 +212,14 @@ $productName = $block->getProduct()->getName();
                     <?php endif; ?>
                 </figure>
             </template>
+
+            <!-- Video Player Container (Global) -->
+            <template x-if="activeVideo">
+                <div class="absolute inset-0 z-20 flex items-center justify-center bg-black">
+                    <div :id="playerId" class="w-full h-full"></div>
+                </div>
+            </template>
+
             <div class="z-0 absolute inset-0 p-2 w-full flex flex-col justify-start items-end gap-2" x-show="itemIsNotVideo" x-cloak>
                 <?php if ($galleryOptionAllowfullscreen): ?>
                     <button
@@ -744,24 +752,12 @@ $productName = $block->getProduct()->getName();
                 init() {
                     this.itemCount = this.images.length;
                     this.initActive();
+
+                    // Initial video state update
+                    this.updateVideoState(this.activeItem);
+
                     this.$watch('activeItem', (item) => {
-                        // Reset players
-                        if (this.player) {
-                            if (typeof this.player.destroy === 'function') {
-                                this.player.destroy();
-                            }
-                        }
-                        this.player = null;
-                        this.activeVideo = false;
-                        this.activeVideoType = false;
-
-                        if (!this.images[item]) return;
-                        this.itemIsVideo = this.images[item].type === 'video';
-
-                        if (this.itemIsVideo && this.videoOptions.autoplay) {
-                            this.isActiveVideo();
-                        }
-
+                        this.updateVideoState(item);
                         this.isStart = this.activeItem === 0;
                         this.isEnd = this.activeItem === (this.itemCount - 1);
                         <?php if ($galleryOptionShowMagnifier): ?>
@@ -793,6 +789,24 @@ $productName = $block->getProduct()->getName();
                             this.tabLock(this.$refs.galleryDialog, open);
                         })
                     })
+                },
+                updateVideoState(index) {
+                    // Reset players
+                    if (this.player) {
+                        if (typeof this.player.destroy === 'function') {
+                            this.player.destroy();
+                        }
+                    }
+                    this.player = null;
+                    this.activeVideo = false;
+                    this.activeVideoType = false;
+
+                    if (!this.images[index]) return;
+                    this.itemIsVideo = this.images[index].type === 'video';
+
+                    if (this.itemIsVideo && this.videoOptions.autoplay) {
+                        this.isActiveVideo();
+                    }
                 },
                 getImage() {
                     return this.fullscreen ? this.image.full : this.image.img;
@@ -873,10 +887,10 @@ $productName = $block->getProduct()->getName();
                     let id, type, youtubeRegex, vimeoRegex, useYoutubeNoCookie = false;
 
                     if (videoUrl.match(/youtube\.com|youtu\.be|youtube-nocookie.com/)) {
-                        id = videoUrl.replace(/^\/(embed\/|v\/)?/, '').replace(/\/.*/, '');
                         type = 'youtube';
                         youtubeRegex = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
-                        id = videoUrl.match(youtubeRegex)[1];
+                        const match = videoUrl.match(youtubeRegex);
+                        id = match ? match[1] : null;
                         if (videoUrl.match(/youtube-nocookie.com/)) {
                             useYoutubeNoCookie = true;
                         }
@@ -885,7 +899,8 @@ $productName = $block->getProduct()->getName();
                         vimeoRegex = new RegExp(['https?:\\/\\/(?:www\\.|player\\.)?vimeo.com\\/(?:channels\\/(?:\\w+\\/)',
                             '?|groups\\/([^\\/]*)\\/videos\\/|album\\/(\\d+)\\/video\\/|video\\/|)(\\d+)(?:$|\\/|\\?)'
                         ].join(''));
-                        id = videoUrl.match(vimeoRegex)[3];
+                        const match = videoUrl.match(vimeoRegex);
+                        id = match ? match[3] : null;
                     }
 
                     return id ? { id: id, type: type, useYoutubeNoCookie: useYoutubeNoCookie } : false;
@@ -899,7 +914,8 @@ $productName = $block->getProduct()->getName();
                                 "autoplay": 1,
                                 "rel": this.videoOptions.showRelated ? 1 : 0,
                                 "loop": this.videoOptions.loop ? 1 : 0,
-                                "playlist": this.videoOptions.loop ? videoData.id : undefined
+                                "playlist": this.videoOptions.loop ? videoData.id : undefined,
+                                "origin": window.location.origin
                             },
                             events: {
                                 'onReady': (event) => { event.target.playVideo(); }
