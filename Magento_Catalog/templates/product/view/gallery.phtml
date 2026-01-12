@@ -230,7 +230,9 @@ $productName = $block->getProduct()->getName();
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Close fullscreen')) ?>"
                         x-show="fullscreen"
                         @click="closeFullscreen"
-                        @mouseenter="closeMagnifier"
+                        <?php if ($galleryOptionShowMagnifier): ?>
+                            @mouseenter="closeMagnifier"
+                        <?php endif; ?>
                     >
                         <?= $heroicons->xHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
                     </button>
@@ -379,7 +381,7 @@ $productName = $block->getProduct()->getName();
                                 height="<?= /* @noEscape */ $smallHeight ?>"
                                 loading="lazy"
                             >
-                            <template x-if="typeIsVideo">
+                            <template x-if="image.type === 'video'">
                                 <span class="absolute inset-0 grid place-items-center">
                                     <?= $heroicons->videoCameraHtml('stroke-white/75 fill-black/20', 44, 44, ['aria-hidden' => 'true']); ?>
                                 </span>
@@ -530,7 +532,9 @@ $productName = $block->getProduct()->getName();
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Close fullscreen')) ?>"
                         x-show="fullscreen"
                         @click="closeFullscreen"
-                        @mouseenter="closeMagnifier"
+                        <?php if ($galleryOptionShowMagnifier): ?>
+                            @mouseenter="closeMagnifier"
+                        <?php endif; ?>
                     >
                         <?= $heroicons->xHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
                     </button>
@@ -628,7 +632,7 @@ $productName = $block->getProduct()->getName();
                 id="gallery-thumbs-videos"
                 class="flex items-center gap-2 outline-0 absolute inset-x-0 bottom-0 <?= $galleryOptionNavVertical ? 'lg:left-0 lg:right-auto lg:inset-y-0 lg:order-first lg:flex-col' : '' ?>"
                 x-bind="galleryThumbs"
-                x-show="hasMultipleImages"
+                x-show="images.length > 0"
                 x-cloak
             >
                 <?php if ($galleryOptionShowNavArrows): ?>
@@ -679,7 +683,7 @@ $productName = $block->getProduct()->getName();
                                 height="<?= /* @noEscape */ $smallHeight ?>"
                                 loading="lazy"
                             >
-                            <template x-if="typeIsVideo">
+                            <template x-if="image.type === 'video'">
                                 <span class="absolute inset-0 grid place-items-center">
                                     <?= $heroicons->videoCameraHtml('stroke-white/75 fill-black/20', 44, 44, ['aria-hidden' => 'true']); ?>
                                 </span>
@@ -749,6 +753,9 @@ $productName = $block->getProduct()->getName();
                 <?php endif; ?>
                 initialImages: initialImages,
                 images: initialImages,
+                get image() {
+                    return this.images[this.activeItem];
+                },
                 init() {
                     this.itemCount = this.images.length;
                     this.initActive();
