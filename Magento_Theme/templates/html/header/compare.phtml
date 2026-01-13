@@ -23,8 +23,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 
 <a
     id="compare-link"
-    class="relative hidden md:inline-block rounded p-1 hover:bg-primary/10 outline-offset-2 invisible"
-    :class="hiddenIfEmpty"
+    class="relative hidden md:inline-block rounded p-1 hover:bg-primary/10 outline-offset-2"
     href="<?= $escaper->escapeUrl($block->getUrl('catalog/product_compare/index')) ?>"
     title="<?= $escaper->escapeHtmlAttr(__('Compare Products')) ?>"
     x-data="initCompareHeader"
@@ -32,10 +31,12 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
     :aria-label="linkAriaLabel"
 >
     <?= $heroicons->scaleHtml('', 24, 24, ["aria-hidden" => "true"]) ?>
-    <span
-        x-text="itemCount"
-        class="absolute -top-1.5 -right-1.5 px-2 py-0.5 rounded-full bg-blue-200 text-blue-800
-            text-xs font-semibold leading-none text-center uppercase tabular-nums"
-        aria-hidden="true"
-    ></span>
+    <template x-if="itemCount">
+        <span
+            x-text="itemCount"
+            class="absolute -top-1.5 -right-1.5 px-2 py-0.5 rounded-full bg-blue-200 text-blue-800
+                text-xs font-semibold leading-none text-center uppercase tabular-nums"
+            aria-hidden="true"
+        ></span>
+    </template>
 </a>
