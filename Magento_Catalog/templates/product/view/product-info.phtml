@@ -84,8 +84,8 @@ $isCallForPrice = $product->getData('call_for_price');
         <?php endif; ?>
 
         <div class="flex mt-4 ml-auto sm:mt-0">
-            <?php if ($product->isSaleable() || $isCallForPrice): ?>
-                <?php if (!$isCallForPrice): ?>
+            <?php if ($product->isSaleable() || $isCallForPrice || !$product->isSaleable()): ?>
+                <?php if (!$isCallForPrice && $product->isSaleable()): ?>
                     <?= $block->getChildHtml("product.info.quantity") ?>
                 <?php endif; ?>
                 <?= $block->getChildHtml("product.info.addtocart") ?>

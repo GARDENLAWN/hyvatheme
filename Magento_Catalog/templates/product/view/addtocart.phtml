@@ -36,16 +36,15 @@ if ($isCallForPrice && $product) {
     $contactUrl .= '?subject=' . rawurlencode((string)$subject);
 }
 ?>
-
 <?php if ($isCallForPrice): ?>
     <button
         type="button"
-        class="btn btn-secondary"
+        class="btn btn-secondary w-full md:w-auto justify-center"
         id="product-addtocart-button"
         onclick="window.location.href='<?= $escaper->escapeUrl($contactUrl) ?>'"
     >
         <?= $lucideIcons->mailHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
-        <span class="hidden sm:block md:hidden lg:block"><?= $escaper->escapeHtml(__('Ask for price')) ?></span>
+        <span class="ml-2 inline"><?= $escaper->escapeHtml(__('Ask for price')) ?></span>
     </button>
 <?php elseif (!$product->isSaleable()): ?>
     <?php
@@ -54,24 +53,24 @@ if ($isCallForPrice && $product) {
     ?>
     <button
         type="button"
-        class="btn btn-secondary"
+        class="btn btn-secondary w-full md:w-auto justify-center"
         id="product-addtocart-button"
         onclick="window.location.href='<?= $escaper->escapeUrl($availabilityContactUrl) ?>'"
     >
         <?= $lucideIcons->mailHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
-        <span class="hidden sm:block md:hidden lg:block"><?= $escaper->escapeHtml(__('Ask about availability')) ?></span>
+        <span class="ml-2 inline"><?= $escaper->escapeHtml(__('Ask about availability')) ?></span>
     </button>
 <?php else: ?>
     <button
         type="submit"
         form="product_addtocart_form"
         aria-label="<?= $escaper->escapeHtmlAttr($buttonLabel) ?>"
-        class="btn btn-primary"
+        class="btn btn-primary w-full md:w-auto justify-center"
         id="product-addtocart-button"
         data-addto="cart"
     >
         <?= $lucideIcons->shoppingCartHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
-        <span class="hidden sm:block md:hidden lg:block"><?= $escaper->escapeHtml($buttonLabel) ?></span>
+        <span class="ml-2 inline"><?= $escaper->escapeHtml($buttonLabel) ?></span>
     </button>
 <?php endif; ?>
 
