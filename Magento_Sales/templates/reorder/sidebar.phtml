@@ -162,7 +162,7 @@ if (! $customer->customerLoggedIn()) {
                             </button>
                         </template>
                         <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account')) ?>#recentOrders"
-                           class="btn text-sm shadow-none bg-transparent text-inherit"
+                           class="btn btn-secondary text-sm"
                            aria-label="<?= $escaper->escapeHtmlAttr(__('View all recent orders')) ?>"
                         >
                             <?= $escaper->escapeHtml(__('View All')); ?>
