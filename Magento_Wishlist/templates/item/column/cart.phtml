@@ -6,6 +6,7 @@
  */
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\LucideIcons;
 use Magento\Framework\Escaper;
 use Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart;
 use Magento\Wishlist\Model\Item;
@@ -23,6 +24,9 @@ $product = $item->getProduct();
 /** @var AllowedQuantity $viewModel */
 $viewModel = $viewModels->require(AllowedQuantity::class);
 $allowedQty = $viewModel->setItem($item)->getMinMaxQty();
+
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
 
 $isCallForPrice = $product->getData('call_for_price');
 $contactUrl = $block->getUrl('contact');
@@ -58,7 +62,8 @@ if ($isCallForPrice) {
                 class="btn btn-secondary"
                 aria-label="<?= $escaper->escapeHtmlAttr(__('Ask for price for %1', $product->getName())) ?>"
             >
-                <?= $escaper->escapeHtml(__('Ask for price')) ?>
+                <?= $lucideIcons->mailHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
+                <span class="ml-2 inline"><?= $escaper->escapeHtml(__('Ask for price')) ?></span>
             </a>
         </div>
     <?php elseif ($product->isSaleable()): ?>
@@ -73,7 +78,8 @@ if ($isCallForPrice) {
                 class="btn btn-primary"
                 data-addto="cart"
             >
-                <?= $escaper->escapeHtml(__('Add to Cart')) ?>
+                <?= $lucideIcons->shoppingCartHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
+                <span class="ml-2 inline"><?= $escaper->escapeHtml(__('Add to Cart')) ?></span>
             </button>
         </div>
     <?php else: ?>
@@ -87,7 +93,8 @@ if ($isCallForPrice) {
                 class="btn btn-secondary"
                 aria-label="<?= $escaper->escapeHtmlAttr(__('Ask about availability for %1', $product->getName())) ?>"
             >
-                <?= $escaper->escapeHtml(__('Ask about availability')) ?>
+                <?= $lucideIcons->mailHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
+                <span class="ml-2 inline"><?= $escaper->escapeHtml(__('Ask about availability')) ?></span>
             </a>
         </div>
         <?php if ($product->getIsSalable()): ?>
