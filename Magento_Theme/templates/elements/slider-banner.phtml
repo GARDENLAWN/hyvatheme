@@ -82,15 +82,17 @@ $items = $block->getData('items') ?? [
             }
         },
         nextSlide() {
-            const nextBtn = this.$el.querySelector('[data-next]');
-            if (nextBtn && !nextBtn.disabled) {
-                nextBtn.click();
+            const track = this.$el.querySelector('[data-track]');
+            if (!track) return;
+
+            const scrollLeft = Math.ceil(track.scrollLeft);
+            const clientWidth = track.clientWidth;
+            const scrollWidth = track.scrollWidth;
+
+            if (scrollLeft + clientWidth >= scrollWidth - 10) {
+                track.scrollTo({ left: 0, behavior: 'smooth' });
             } else {
-                // If next button is disabled (end of slider), go back to start
-                const firstSlide = this.$el.querySelector('[data-track] > *:first-child');
-                if (firstSlide) {
-                    firstSlide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                }
+                track.scrollTo({ left: scrollLeft + clientWidth, behavior: 'smooth' });
             }
         }
     }"
