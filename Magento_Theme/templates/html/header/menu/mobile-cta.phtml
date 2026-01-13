@@ -21,12 +21,26 @@ use Magento\Framework\Escaper;
 $heroicons = $viewModels->require(HeroiconsOutline::class);
 ?>
 
-<div class="pt-2 pb-4 px-6">
+<div class="pt-2 pb-4 px-6 flex flex-col gap-2">
     <a
         href="<?= $escaper->escapeUrl($block->getUrl('checkout/cart/index')) ?>"
-        class="btn btn-primary"
+        class="btn btn-primary w-full justify-center"
     >
         <?= $heroicons->shoppingCartHtml('shrink-0', 20, 20, ['aria-hidden' => 'true']); ?>
         <?= $escaper->escapeHtml(__('Shopping Cart')) ?>
+    </a>
+    <a
+        href="<?= $escaper->escapeUrl($block->getUrl('wishlist')) ?>"
+        class="btn btn-secondary w-full justify-center"
+    >
+        <?= $heroicons->heartHtml('shrink-0', 20, 20, ['aria-hidden' => 'true']); ?>
+        <?= $escaper->escapeHtml(__('My Wish List')) ?>
+    </a>
+    <a
+        href="<?= $escaper->escapeUrl($block->getUrl('catalog/product_compare/index')) ?>"
+        class="btn btn-secondary w-full justify-center"
+    >
+        <?= $heroicons->scaleHtml('shrink-0', 20, 20, ['aria-hidden' => 'true']); ?>
+        <?= $escaper->escapeHtml(__('Compare Products')) ?>
     </a>
 </div>
