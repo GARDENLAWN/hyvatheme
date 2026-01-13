@@ -104,6 +104,10 @@ $isCallForPrice = $product->getData('call_for_price');
 
     <?php endif; ?>
     <?= $block->getChildHtml('santander') ?>
+    <?= $block->getChildHtml('inpost.init.widget.product') ?>
+    <?= $block->getChildHtml('inpost.hyva.widget.product') ?>
+    <?= $block->getChildHtml('mollie.applepay.button.additional') ?>
+
     <?php if ($additionalActions = $block->getChildHtml('product.info.additional.actions')): ?>
         <div class="flex mt-4 justify-end">
             <?= /** @noEscape */ $additionalActions; ?>
@@ -159,4 +163,5 @@ $isCallForPrice = $product->getData('call_for_price');
     <?php endif; ?>
 
     <?= $block->getChildHtml("product.info.additional") ?>
+    <?= $block->getChildHtml("product.info.simple.extra") ?>
 </div>

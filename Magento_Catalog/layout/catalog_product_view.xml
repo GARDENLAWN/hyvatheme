@@ -12,7 +12,17 @@
     xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
 >
     <body>
-        <move element="product.info.price" destination="product.info" before="product.info.addtocart"/>
+        <!-- Fix for missing before.body.end container -->
+        <container name="before.body.end" label="Before Body End" after="-" />
+
+        <!-- Fix for amasty.cookie.colors missing parent -->
+        <referenceContainer name="before.body.end">
+            <container name="amasty.cookie.colors" htmlTag="div" htmlClass="amasty-cookie-colors" />
+        </referenceContainer>
+
+        <!-- Fix for product.info.main broken reference -->
+        <move element="product.info.main" destination="content" after="-" />
+
         <referenceContainer name="main.content">
             <block
                 class="Magento\Catalog\Block\Product\View"
@@ -295,13 +305,13 @@
 
         </referenceContainer>
 
-        <move element="alert.urls" destination="product.info" after="product.price.tier"/>
-        <move element="santander" destination="product.info" after="product.info.price" />
+        <move element="alert.urls" destination="product.info" />
+        <move element="santander" destination="product.info" />
 
-        <move element="inpost.init.widget.product" destination="product.info" after="product.info.addtocart"/>
-        <move element="mollie.applepay.button.additional" destination="product.info" after="product.info.addtocart"/>
-        <move element="inpost.hyva.widget.product" destination="product.info" after="product.info.addtocart"/>
-        <move element="product.info.simple.extra" destination="product.info" after="product.info.price"/>
+        <move element="inpost.init.widget.product" destination="product.info" />
+        <move element="mollie.applepay.button.additional" destination="product.info" />
+        <move element="inpost.hyva.widget.product" destination="product.info" />
+        <move element="product.info.simple.extra" destination="product.info" />
 
         <referenceContainer name="before.body.end">
             <block name="recently_viewed_products.register_view"
