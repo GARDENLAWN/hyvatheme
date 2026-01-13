@@ -1,0 +1,70 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\ProductCompare;
+use Hyva\Theme\ViewModel\ProductPage;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var ProductPage $productViewModel */
+$productViewModel = $viewModels->require(ProductPage::class);
+
+/** @var ProductCompare $compareViewModel */
+$compareViewModel = $viewModels->require(ProductCompare::class);
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+$product = $productViewModel->getProduct();
+
+if (!$compareViewModel->showInProductList()) {
+    return;
+}
+?>
+<script>
+    function initCompareOnProductView() {
+        return {
+            addToCompare() {
+                const form = document.getElementById('product_addtocart_form');
+                if (!form) return;
+                const formData = new FormData(form);
+                formData.append('product', '<?= (int)$product->getId() ?>');
+                formData.append('uenc', '<?= $escaper->escapeJs($productViewModel->getAddToCartUrl($product)) ?>');
+
+                fetch(BASE_URL + 'catalog/product_compare/add/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                }).then(response => {
+                    window.location.reload();
+                });
+            }
+        }
+    }
+</script>
+<button type="button"
+        class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-yellow-500 hover:text-black ml-2"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Compare') . ' ' . $product->getName()) ?>"
+        data-addto="compare"
+        data-product-id="<?= (int)$product->getId() ?>"
+        x-data="initCompareOnProductView"
+        x-defer="intersect"
+        @click.prevent="addToCompare"
+>
+    <?= $heroicons->scaleHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
+</button>
