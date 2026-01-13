@@ -55,7 +55,7 @@ if ($isCallForPrice) {
         <div class="product-item-actions">
             <a
                 href="<?= $escaper->escapeUrl($contactUrl) ?>"
-                class="btn btn-primary"
+                class="btn btn-secondary"
                 aria-label="<?= $escaper->escapeHtmlAttr(__('Ask for price for %1', $product->getName())) ?>"
             >
                 <?= $escaper->escapeHtml(__('Ask for price')) ?>
@@ -84,7 +84,7 @@ if ($isCallForPrice) {
         <div class="product-item-actions">
             <a
                 href="<?= $escaper->escapeUrl($availabilityContactUrl) ?>"
-                class="btn btn-primary"
+                class="btn btn-secondary"
                 aria-label="<?= $escaper->escapeHtmlAttr(__('Ask about availability for %1', $product->getName())) ?>"
             >
                 <?= $escaper->escapeHtml(__('Ask about availability')) ?>
