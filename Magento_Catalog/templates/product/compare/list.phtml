@@ -210,6 +210,22 @@ window.addEventListener('alpine:init', () => {
                                                 </span>
                                             </button>
                                         </form>
+                                    <?php else: ?>
+                                        <?php
+                                            $availabilitySubject = __('Inquiry about availability: %1 (SKU: %2)', $product->getName(), $product->getSku());
+                                            $availabilityContactUrl = $block->getUrl('contact') . '?subject=' . rawurlencode((string)$availabilitySubject);
+                                        ?>
+                                        <a
+                                            href="<?= $escaper->escapeUrl($availabilityContactUrl) ?>"
+                                            class="btn btn-primary p-2"
+                                            title="<?= $escaper->escapeHtmlAttr(__('Ask about availability')) ?>"
+                                            aria-label="<?= $escaper->escapeHtmlAttr(__('Ask about availability')) ?>"
+                                        >
+                                            <?= $lucideIcons->mailHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
+                                            <span class="sr-only">
+                                                <?= $escaper->escapeHtml(__('Ask about availability')) ?>
+                                            </span>
+                                        </a>
                                     <?php endif; ?>
                                     <?php if ($wishlistViewModel->isEnabled()): ?>
                                     <?php /* The initWishlist() function is rendered as a block JS dependency */ ?>

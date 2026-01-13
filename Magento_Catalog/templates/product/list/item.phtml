@@ -180,7 +180,7 @@ if ($isCallForPrice && $product) {
                 <?= $block->getChildBlock('stockstatus')->setData('product', $product)->toHtml() ?>
             </div>
             <?php endif; ?>
-            <div class="flex gap-4 flex-wrap items-end">
+            <div class="flex gap-4 items-center <?= $viewIsGrid ? 'flex-nowrap' : 'flex-wrap md:flex-nowrap' ?>">
                 <div class="grow">
                     <?php if ($isCallForPrice): ?>
                         <a
@@ -190,7 +190,9 @@ if ($isCallForPrice && $product) {
                             aria-label="<?= $escaper->escapeHtmlAttr(__('Ask for price')) ?>"
                         >
                             <?= $lucideIcons->mailHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
-                            <?= $escaper->escapeHtml(__('Ask for price')) ?>
+                            <span class="<?= $viewIsGrid ? 'hidden lg:inline' : '' ?>">
+                                <?= $escaper->escapeHtml(__('Ask for price')) ?>
+                            </span>
                         </a>
                     <?php elseif ($product->isSaleable()): ?>
                         <?php if ($isProductGroupedOrBundle): ?>
@@ -212,10 +214,26 @@ if ($isCallForPrice && $product) {
                                 <?= $escaper->escapeHtml(__('Add to Cart')) ?>
                             </button>
                         <?php endif; ?>
+                    <?php else: ?>
+                        <?php
+                            $availabilitySubject = __('Inquiry about availability: %1 (SKU: %2)', $product->getName(), $product->getSku());
+                            $availabilityContactUrl = $block->getUrl('contact') . '?subject=' . rawurlencode((string)$availabilitySubject);
+                        ?>
+                        <a
+                            href="<?= $escaper->escapeUrl($availabilityContactUrl) ?>"
+                            class="btn btn-primary w-full py-3 <?= $viewIsGrid ? 'px-3 2xl:px-6' : 'px-5 sm:w-auto' ?>"
+                            title="<?= $escaper->escapeHtmlAttr(__('Ask about availability')) ?>"
+                            aria-label="<?= $escaper->escapeHtmlAttr(__('Ask about availability')) ?>"
+                        >
+                            <?= $lucideIcons->mailHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
+                            <span class="<?= $viewIsGrid ? 'hidden lg:inline' : '' ?>">
+                                <?= $escaper->escapeHtml(__('Ask about availability')) ?>
+                            </span>
+                        </a>
                     <?php endif; ?>
                 </div>
 
-                <div class="flex flex-wrap gap-2">
+                <div class="shrink-0 flex flex-wrap gap-2">
                     <?php $addToClasses = "shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent"; ?>
                     <?php if ($showAddToWishlist): ?>
                         <?= $block->getChildBlock('wishlist')

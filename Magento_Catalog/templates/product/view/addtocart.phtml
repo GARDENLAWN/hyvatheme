@@ -47,6 +47,20 @@ if ($isCallForPrice && $product) {
         <?= $lucideIcons->mailHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
         <span class="hidden sm:block md:hidden lg:block"><?= $escaper->escapeHtml(__('Ask for price')) ?></span>
     </button>
+<?php elseif (!$product->isSaleable()): ?>
+    <?php
+        $availabilitySubject = __('Inquiry about availability: %1 (SKU: %2)', $product->getName(), $product->getSku());
+        $availabilityContactUrl = $block->getUrl('contact') . '?subject=' . rawurlencode((string)$availabilitySubject);
+    ?>
+    <button
+        type="button"
+        class="btn btn-primary"
+        id="product-addtocart-button"
+        onclick="window.location.href='<?= $escaper->escapeUrl($availabilityContactUrl) ?>'"
+    >
+        <?= $lucideIcons->mailHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
+        <span class="hidden sm:block md:hidden lg:block"><?= $escaper->escapeHtml(__('Ask about availability')) ?></span>
+    </button>
 <?php else: ?>
     <button
         type="submit"

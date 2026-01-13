@@ -77,6 +77,19 @@ if ($isCallForPrice) {
             </button>
         </div>
     <?php else: ?>
+        <?php
+            $availabilitySubject = __('Inquiry about availability: %1 (SKU: %2)', $product->getName(), $product->getSku());
+            $availabilityContactUrl = $block->getUrl('contact') . '?subject=' . rawurlencode((string)$availabilitySubject);
+        ?>
+        <div class="product-item-actions">
+            <a
+                href="<?= $escaper->escapeUrl($availabilityContactUrl) ?>"
+                class="btn btn-primary"
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Ask about availability for %1', $product->getName())) ?>"
+            >
+                <?= $escaper->escapeHtml(__('Ask about availability')) ?>
+            </a>
+        </div>
         <?php if ($product->getIsSalable()): ?>
             <p class="available stock" title="<?= $escaper->escapeHtmlAttr(__('Availability')) ?>">
                 <span><?= $escaper->escapeHtml(__('In stock')) ?></span>
