@@ -246,9 +246,9 @@ window.addEventListener('alpine:init', () => {
                                         data-product-id="<?= (int) $product->getId() ?>"
                                         data-product-name="<?= $escaper->escapeHtmlAttr($product->getName()) ?>"
                                         aria-label="<?= $escaper->escapeHtmlAttr(__('Remove Product')) ?> <?= $escaper->escapeHtmlAttr($product->getName()) ?>"
-                                        class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-yellow-500 hover:text-black"
+                                        class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-red-500 hover:text-white"
                                         title="<?= $escaper->escapeHtmlAttr(__('Remove Product')) ?>">
-                                        <?= $lucideIcons->xHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                                        <?= $lucideIcons->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
                                     </button>
                                 </div>
                             </div>

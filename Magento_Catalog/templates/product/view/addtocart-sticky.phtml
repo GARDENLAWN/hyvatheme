@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HyvaCsp;
-use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\LucideIcons;
 use Hyva\Theme\ViewModel\ProductPage;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Escaper;
@@ -20,8 +20,8 @@ use Magento\Framework\Escaper;
 /** @var ViewModelRegistry $viewModels */
 /** @var HyvaCsp $hyvaCsp */
 
-/** @var HeroiconsOutline $heroicons */
-$heroicons = $viewModels->require(HeroiconsOutline::class);
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
 
 /** @var ProductPage $productViewModel */
 $productViewModel = $viewModels->require(ProductPage::class);
@@ -87,7 +87,7 @@ if ($isCallForPrice && $product) {
                     bg-blue-600 text-white border border-transparent hover:bg-blue-700 focus:ring-blue-200 active:bg-blue-700 disabled:bg-slate-600 disabled:text-slate-50 disabled:opacity-70"
                 onclick="window.location.href='<?= $escaper->escapeUrl($contactUrl) ?>'"
             >
-                <?= $heroicons->mailHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
+                <?= $lucideIcons->mailHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
                 <span class="sr-only sm:not-sr-only">
                     <?= $escaper->escapeHtml(__('Ask for price')) ?>
                 </span>
@@ -103,7 +103,7 @@ if ($isCallForPrice && $product) {
                     bg-blue-600 text-white border border-transparent hover:bg-blue-700 focus:ring-blue-200 active:bg-blue-700 disabled:bg-slate-600 disabled:text-slate-50 disabled:opacity-70"
                 onclick="window.location.href='<?= $escaper->escapeUrl($availabilityContactUrl) ?>'"
             >
-                <?= $heroicons->mailHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
+                <?= $lucideIcons->mailHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
                 <span class="sr-only sm:not-sr-only">
                     <?= $escaper->escapeHtml(__('Ask about availability')) ?>
                 </span>
@@ -116,7 +116,7 @@ if ($isCallForPrice && $product) {
                     bg-blue-600 text-white border border-transparent hover:bg-blue-700 focus:ring-blue-200 active:bg-blue-700 disabled:bg-slate-600 disabled:text-slate-50 disabled:opacity-70"
                 data-addto="cart"
             >
-                <?= $heroicons->shoppingCartHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
+                <?= $lucideIcons->shoppingCartHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
                 <span class="sr-only sm:not-sr-only">
                     <?= $block->getData('is_cart_configure')
                         ? $escaper->escapeHtml(__('Update item'))

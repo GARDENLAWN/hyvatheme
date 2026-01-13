@@ -67,7 +67,7 @@ if ($isCallForPrice) {
             </a>
         </div>
     <?php elseif ($product->isSaleable()): ?>
-        <div class="product-item-actions">
+        <div class="product-item-actions flex gap-2">
             <button
                 type="button"
                 data-role="tocart"
@@ -81,13 +81,31 @@ if ($isCallForPrice) {
                 <?= $lucideIcons->shoppingCartHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
                 <span class="ml-2 inline"><?= $escaper->escapeHtml(__('Add to Cart')) ?></span>
             </button>
+
+            <a class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-primary hover:text-white" href="<?= $escaper->escapeUrl($block->getItemConfigureUrl($item)) ?>">
+                <?= $lucideIcons->pencilHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                <span class="sr-only">
+                    <?= $escaper->escapeHtml(__('Edit %1', $product->getName())) ?>
+                </span>
+            </a>
+
+            <button type="button"
+                    data-role="remove"
+                    data-remove-item-params="<?= $escaper->escapeHtmlAttr($block->getItemRemoveParams($item)) ?>"
+                    @click.prevent="removeItem"
+                    class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-red-500 hover:text-white">
+                <?= $lucideIcons->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                <span class="sr-only">
+                    <?= $escaper->escapeHtml(__('Remove item %1', $product->getName())) ?>
+                </span>
+            </button>
         </div>
     <?php else: ?>
         <?php
             $availabilitySubject = __('Inquiry about availability: %1 (SKU: %2)', $product->getName(), $product->getSku());
             $availabilityContactUrl = $block->getUrl('contact') . '?subject=' . rawurlencode((string)$availabilitySubject);
         ?>
-        <div class="product-item-actions">
+        <div class="product-item-actions flex gap-2">
             <a
                 href="<?= $escaper->escapeUrl($availabilityContactUrl) ?>"
                 class="btn btn-secondary"
@@ -96,6 +114,24 @@ if ($isCallForPrice) {
                 <?= $lucideIcons->mailHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
                 <span class="ml-2 inline"><?= $escaper->escapeHtml(__('Ask about availability')) ?></span>
             </a>
+
+            <a class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-primary hover:text-white" href="<?= $escaper->escapeUrl($block->getItemConfigureUrl($item)) ?>">
+                <?= $lucideIcons->pencilHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                <span class="sr-only">
+                    <?= $escaper->escapeHtml(__('Edit %1', $product->getName())) ?>
+                </span>
+            </a>
+
+            <button type="button"
+                    data-role="remove"
+                    data-remove-item-params="<?= $escaper->escapeHtmlAttr($block->getItemRemoveParams($item)) ?>"
+                    @click.prevent="removeItem"
+                    class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-red-500 hover:text-white">
+                <?= $lucideIcons->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                <span class="sr-only">
+                    <?= $escaper->escapeHtml(__('Remove item %1', $product->getName())) ?>
+                </span>
+            </button>
         </div>
         <?php if ($product->getIsSalable()): ?>
             <p class="available stock" title="<?= $escaper->escapeHtmlAttr(__('Availability')) ?>">
