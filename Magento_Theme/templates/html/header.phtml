@@ -170,10 +170,6 @@ $showLanguage = $block->getShowLanguage() !== null ? (bool) $block->getShowLangu
         </div>
 
         <div class="ml-auto flex items-center gap-2">
-            <?php if ($showCompare): ?>
-                <?= $block->getChildHtml('compare'); ?>
-            <?php endif; ?>
-
             <button
                 id="menu-search-icon"
                 class="rounded p-1 hover:bg-primary/10 outline-offset-2 hidden md:block"
@@ -193,7 +189,7 @@ $showLanguage = $block->getShowLanguage() !== null ? (bool) $block->getShowLangu
                 @click.outside="searchClose"
                 @keydown.escape="searchEscape"
             >
-                <div class="bg-white p-1.5 rounded-md shadow-lg before:-z-10 before:absolute before:-top-2.5 before:right-28
+                <div class="bg-white p-1.5 rounded-md shadow-lg before:-z-10 before:absolute before:-top-2.5 before:right-36
                     before:w-5 before:h-5 before:bg-inherit before:rotate-45 before:shadow-lg">
                     <?= $block->getChildHtml('header-search'); ?>
                 </div>
@@ -210,6 +206,10 @@ $showLanguage = $block->getShowLanguage() !== null ? (bool) $block->getShowLangu
             <?php if ($showWishlist): ?>
                 <?= $block->getChildHtml('wishlist') ?>
             <?php endif ?>
+
+            <?php if ($showCompare): ?>
+                <?= $block->getChildHtml('compare'); ?>
+            <?php endif; ?>
 
             <?php if ($showMiniCart): ?>
                 <button
