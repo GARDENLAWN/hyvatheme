@@ -1,0 +1,251 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package GDPR Hyva Compatibility (System)
+ */
+
+use Amasty\Gdpr\Block\PolicyPopup;
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var PolicyPopup $block */
+/** @var Hyva\Theme\ViewModel\HyvaCsp|null $hyvaCsp */
+
+$heroIcons = $viewModels->require(HeroiconsSolid::class);
+?>
+
+<div x-data="initAmGdprPolicyPopup" x-bind="eventListeners">
+    <div x-cloak
+         x-bind="overlay"
+         class="fixed inset-0 flex items-center justify-center text-left bg-black bg-opacity-50 bg-black/50 z-40"
+    >
+        <div x-ref="amgdpr-policy-popup" role="dialog" aria-labelledby="amgdpr-policy-content"
+             class="flex flex-col bg-white shadow-xl rounded-lg p-4 md:p-10 max-h-[95vh] w-full max-w-[95vw] md:max-w-6xl relative">
+            <div tabindex="0" @focusin="focusAcceptButton"></div>
+            <button @click="hidePopup"
+                    x-ref="amgdpr-close-policy"
+                    aria-label="<?= $escaper->escapeHtml(__('Close')) ?>"
+                    class="absolute right-2 top-2 md:right-4 md:top-4 text-gray-300 transition
+                    hover:text-black focus:drop-shadow-md hover:drop-shadow-md"
+            >
+                <?= /** @noEscape */ $heroIcons->xHtml('h-6 w-6') ?>
+            </button>
+            <div class="flex w-full">
+                <p class="w-full text-blue-500 text-xl md:text-3xl mb-3 md:mb-5 ml-0 md:ml-3 pr-8" x-text="title"></p>
+            </div>
+            <div x-show="isNotificationTextVisible" class="flex w-full">
+                <p class="mb-4 p-4 bg-yellow-100 w-full" x-text="notificationText"></p>
+            </div>
+            <div id="amgdpr-policy-content"
+                 class="max-h-[60vh] md:max-h-[500px] overflow-auto first:mx-0 child:mx-0"
+                 tabindex="0"
+                 x-html="policyText"
+            ></div>
+            <div class="mt-4 md:mt-8 flex w-full justify-center">
+                <button x-focus-first
+                        @click="triggerAcceptPolicy"
+                        x-ref="amgdpr-accept-policy"
+                        type="button"
+                        class="btn btn-primary uppercase font-bold w-full md:w-auto"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('I have read and accept')) ?>"
+                >
+                    <?= $escaper->escapeHtml(__('I have read and accept')) ?>
+                </button>
+            </div>
+            <div tabindex="0" @focusin="focusCloseButton"></div>
+        </div>
+
+    </div>
+</div>
+
+<script data-cfasync="false">
+    'use strict';
+
+    /**
+     * @typedef PolicyData
+     * @property {string} policyVersion
+     * @property {boolean} show
+     * @property {string} title
+     * @property{boolean} versionChanged
+     * @property {boolean} hideClose
+     * @property {boolean} action
+     */
+
+    function initAmGdprPolicyPopup() {
+        return {
+            ...hyva.modal({
+                dialog: 'amgdpr-policy-popup'
+            }),
+            eventListeners: {
+                ['@amgdpr-accept-policy']() {
+                    if (this.consentId) {
+                        window.dispatchEvent(new CustomEvent('amgdpr-consent-accepted', {detail: this.consentId}));
+                        this.consentId = undefined;
+                        this.hidePopup();
+                    } else {
+                        this.acceptPolicy();
+                    }
+                },
+                ['@amgdpr-show-policy.window'](event) {
+                    this.consentId = event.detail;
+                    this.fetchPolicyContent().then(() => {
+                        this.$nextTick(() => {
+                            this.showPopup();
+                        });
+                    });
+                },
+                ['@amgdpr-close-policy']() {
+                    this.hidePopup();
+                }
+            },
+            textUrl: '<?= $escaper->escapeUrl($block->getTextUrl()) ?>',
+            acceptUrl: '<?= $escaper->escapeUrl($block->getAcceptUrl()) ?>',
+            popupDataUrl: '<?= $escaper->escapeUrl($block->getPopupDataUrl()) ?>',
+            notificationText: '<?= $escaper->escapeHtml($block->getPolicyNotificationText()) ?>',
+            showOnPageLoad: <?= /** @noEscape */ var_export($block->showOnPageLoad(), true) ?>,
+            /**
+             * @type PolicyData
+             */
+            policyData: {
+                policyVersion: '',
+                show: false,
+                title: '',
+                versionChanged: false,
+                hideClose: false,
+                action: true
+            },
+            title: '',
+            policyText: '',
+            consentId: undefined,
+            init: async function () {
+                await this.fetchPolicyData();
+                if ((this.showOnPageLoad && this.policyData.show) || this.policyData.versionChanged) {
+                    await this.fetchPolicyContent();
+                    this.$nextTick(() => {
+                        this.show('amgdpr-policy-popup');
+                    });
+                }
+            },
+
+            /**
+             * @returns {void}
+             */
+            hidePopup: function () {
+                this.hide('amgdpr-policy-popup');
+            },
+
+            /**
+             * @returns {void}
+             */
+            showPopup: function () {
+                this.show('amgdpr-policy-popup');
+            },
+
+            /**
+             * @returns {void}
+             */
+            triggerAcceptPolicy: function () {
+                this.$dispatch('amgdpr-accept-policy');
+            },
+
+            /**
+             * @returns {Boolean}
+             */
+            isNotificationTextVisible: function () {
+                return this.notificationText && this.policyData.versionChanged;
+            },
+
+            /**
+             * @returns {Promise}
+             */
+            fetchPolicyData: function () {
+                return fetch(this.popupDataUrl)
+                    .then(response => response.json())
+                    .then((data) => {
+                        this.policyData = {...data}
+                    })
+                    .catch(error => this.dispatchErrorMessage(error));
+            },
+
+            /**
+             * @returns {Promise}
+             */
+            fetchPolicyContent: function () {
+                this.title = '';
+                this.policyText = '';
+
+                const params = !!this.consentId
+                    ? '?' + new URLSearchParams({consent_id: this.consentId})
+                    : ''
+
+                return fetch(this.textUrl + params)
+                    .then(response => response.json())
+                    .then(policyContent => {
+                        this.title = policyContent.title;
+                        this.policyText = policyContent.content;
+                    }).catch(error => this.dispatchErrorMessage(error));
+            },
+
+            /**
+             * @returns {void}
+             */
+            acceptPolicy: function () {
+                window.dispatchEvent(new Event('amgdpr-loading-start'));
+
+                const body = new URLSearchParams({form_key: hyva.getFormKey(), ...this.policyData});
+                const contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+
+                fetch(this.acceptUrl, {method: 'POST', body, headers: {'Content-Type': contentType}})
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            this.dispatchErrorMessage(data.message)
+                        } else {
+                            this.notificationText = '';
+                            this.hide('amgdpr-policy-popup');
+                        }
+                    })
+                    .catch(error => this.dispatchErrorMessage(error))
+                    .finally(() => window.dispatchEvent(new Event('amgdpr-loading-stop')));
+            },
+
+            /**
+             * @param {string} message
+             * @returns {void}
+             */
+            dispatchErrorMessage: function (message) {
+                typeof window.dispatchMessages !== "undefined" && window.dispatchMessages([
+                    {
+                        type: "error",
+                        text: message
+                    }
+                ]);
+            },
+
+            /**
+             * @returns {void}
+             */
+            focusAcceptButton: function () {
+                this.$refs['amgdpr-accept-policy']?.focus();
+            },
+
+            /**
+             * @returns {void}
+             */
+            focusCloseButton: function () {
+                this.$refs['amgdpr-close-policy']?.focus();
+            }
+        }
+    }
+
+    window.addEventListener(
+        'alpine:init',
+        () => Alpine.data('initAmGdprPolicyPopup', initAmGdprPolicyPopup),
+        { once: true }
+    );
+</script>
+<?php isset($hyvaCsp) && $hyvaCsp->registerInlineScript() ?>
