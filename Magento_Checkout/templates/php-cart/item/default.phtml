@@ -169,13 +169,13 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
 
             <div class="item-actions inline-flex flex-wrap items-center gap-1">
                 <a href="<?= $escaper->escapeUrl($block->getConfigureUrl()) ?>"
-                   class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-primary hover:text-white"
+                   class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-indigo-500 hover:text-white"
                    aria-label="<?= $escaper->escapeHtmlAttr(__('Edit item parameters')) ?>">
                     <?= $lucideIcons->pencilHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
                 </a>
                 <a href="#"
                    data-post='<?= /* @noEscape */ $block->getDeleteItemParams() ?>'
-                   class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-red-500 hover:text-white action action-delete"
+                   class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-gray-800 hover:text-white action action-delete"
                    aria-label="<?= $escaper->escapeHtmlAttr(__('Remove item')) ?>"
                 >
                     <?= $lucideIcons->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>

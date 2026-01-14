@@ -443,7 +443,7 @@ $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniC
                                     <a
                                         :href="item.configure_url"
                                         x-show="productIsNotGroupedAndVisibleInSite"
-                                        class="btn btn-secondary rounded-full p-2"
+                                        class="btn btn-secondary rounded-full p-2 hover:bg-indigo-500 hover:text-white"
                                         data-aria-label="<?= $escaper->escapeHtmlAttr(__('Edit product "%0"')) ?>"
                                         :aria-label="productAriaLabel"
                                     >
@@ -451,7 +451,7 @@ $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniC
                                     </a>
                                     <button
                                         type="button"
-                                        class="btn text-slate-700 border-slate-400 rounded-full p-2"
+                                        class="btn text-slate-700 border-slate-400 rounded-full p-2 hover:bg-gray-800 hover:text-white"
                                         @click="deleteItemFromCart"
                                         data-aria-label="<?= $escaper->escapeHtmlAttr(__('Remove product "%0" from cart')) ?>"
                                         :aria-label="productAriaLabel"
