@@ -90,6 +90,13 @@
 
         <!-- KONIEC SANITYZACJI -->
 
+        <!-- Nadpisanie szablonu popupu polityki GDPR -->
+        <referenceBlock name="amasty.gdpr.privacy.policy.consent.popup">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Amasty_GdprHyva::policy_popup.phtml</argument>
+            </action>
+        </referenceBlock>
+
         <referenceBlock name="top.container">
             <block name="header-usps" template="Magento_Theme::html/header/usps.phtml" before="-"/>
         </referenceBlock>
