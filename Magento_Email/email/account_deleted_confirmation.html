@@ -1,0 +1,46 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "Potwierdzenie usunięcia konta"}} @-->
+<!--@vars {
+"store url=\"\"":"Store Url",
+"var store.getFrontendName()":"Store Name",
+"store url=\"customer/account/\"":"Customer Account Url"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<table class="email-intro">
+    <tr>
+        <td class="greeting">
+            {{trans "Witaj,"}}
+        </td>
+    </tr>
+    <tr>
+        <td class="content">
+            <p>
+                {{trans "Twoje konto zostało pomyślnie usunięte z naszych systemów."}}
+            </p>
+            <p>
+                {{trans "Informujemy, że Twoje dane zostały usunięte z baz wszystkich trzech sklepów: gardenlawn.pl, am-robots.pl oraz finnpolska.pl, z zastrzeżeniem przechowywania danych księgowych (faktury), co jest wymagane przez przepisy prawa."}}
+            </p>
+            <p>
+                {{trans "Jeśli usunięcie konta było pomyłką lub chcesz ponownie skorzystać z naszych usług, zapraszamy do ponownej rejestracji."}}
+            </p>
+        </td>
+    </tr>
+</table>
+
+<table class="email-footer">
+    <tr>
+        <td>
+            <p>{{trans "Dziękujemy,"}}</p>
+            <p><strong>GardenLawn.pl | AM-Robots.pl | FinnPolska.pl</strong></p>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

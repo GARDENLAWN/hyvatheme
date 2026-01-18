@@ -1,0 +1,758 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+?>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #f3f4f6;
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .polityka-scope {
+        background-color: #ffffff;
+        color: #374151;
+        line-height: 1.75;
+        padding: 40px;
+        max-width: 900px;
+        margin: 40px auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .polityka-scope * {
+        box-sizing: border-box;
+    }
+
+    .polityka-scope h1, .polityka-scope h2, .polityka-scope h3, .polityka-scope h4 {
+        color: #111827;
+        font-weight: 700;
+        line-height: 1.3;
+        margin-top: 2em;
+        margin-bottom: 1em;
+    }
+
+    .polityka-scope .polityka-main-title {
+        font-size: 2rem;
+        text-align: center;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 1.5rem;
+        margin-bottom: 2.5rem;
+        margin-top: 0;
+        font-variant: normal;
+    }
+
+    .polityka-scope .polityka-h2 {
+        font-size: 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 0.5rem;
+        margin-top: 3rem;
+        font-variant: normal;
+    }
+
+    .polityka-scope .polityka-h3 {
+        font-size: 1.25rem;
+        margin-top: 1.5rem;
+    }
+
+    .polityka-scope p, .polityka-scope li {
+        margin-bottom: 1em;
+        font-size: 1rem;
+        text-align: left;
+    }
+
+    .polityka-scope ul, .polityka-scope ol {
+        padding-left: 1.5rem;
+    }
+
+    .polityka-scope a {
+        color: #2563eb;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .polityka-scope a:hover {
+        color: #1d4ed8;
+        text-decoration: underline;
+    }
+
+    /* TOC */
+    .polityka-scope .polityka-toc {
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .polityka-scope .polityka-toc .polityka-h3 {
+        margin-top: 0;
+        text-align: center;
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+        border-bottom: none;
+    }
+
+    .polityka-scope .polityka-toc ol {
+        columns: 2;
+        column-gap: 2rem;
+        list-style-position: inside;
+    }
+
+    .polityka-scope .polityka-toc ol li {
+        margin-bottom: 0.5rem;
+        break-inside: avoid;
+    }
+
+    @media (max-width: 768px) {
+        .polityka-scope .polityka-toc ol {
+            columns: 1;
+        }
+    }
+
+    /* Tables */
+    .polityka-scope table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2rem 0;
+        font-size: 0.95rem;
+        display: block;
+        overflow-x: auto;
+        border: 1px solid #d1d5db;
+    }
+
+    .polityka-scope table td, .polityka-scope table th {
+        border: 1px solid #d1d5db;
+        padding: 0.75rem 1rem;
+        vertical-align: top;
+        min-width: 150px;
+    }
+
+    .polityka-scope table tr:nth-child(even) {
+        background-color: #f9fafb;
+    }
+
+    .polityka-scope table td p {
+        margin: 0;
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+        .polityka-scope {
+            padding: 20px;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .polityka-scope .polityka-main-title {
+            font-size: 1.5rem;
+        }
+
+        .polityka-scope .polityka-h2 {
+            font-size: 1.25rem;
+        }
+    }
+
+    .polityka-back-to-top {
+        display: inline-block;
+        margin-top: 1rem;
+        font-size: 0.875rem;
+        color: #6b7280;
+        float: right;
+    }
+
+    .polityka-back-to-top:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+</style>
+<div class="polityka-scope" id="top">
+    <h1 class="polityka-main-title">Polityka Prywatności<br>Sklepu Internetowego FINNPOLSKA.PL</h1>
+
+    <div class="polityka-toc">
+        <h3 class="polityka-h3">Spis Treści</h3>
+        <ol>
+            <li><a href="#sec1">Postanowienia ogólne</a></li>
+            <li><a href="#sec2">Podstawy przetwarzania danych</a></li>
+            <li><a href="#sec3">Cel, podstawa i okres przetwarzania danych</a></li>
+            <li><a href="#sec4">Odbiorcy danych</a></li>
+            <li><a href="#sec5">Profilowanie</a></li>
+            <li><a href="#sec6">Prawa osoby, której dane dotyczą</a></li>
+            <li><a href="#sec7">Cookies i analityka</a></li>
+            <li><a href="#sec8">Postanowienia końcowe</a></li>
+        </ol>
+    </div>
+
+    <h2 id="sec1" class="polityka-h2">1. Postanowienia ogólne</h2>
+    <p class="polityka-p"><strong>1.1.</strong> Niniejsza polityka prywatności Sklepu Internetowego ma charakter
+        informacyjny, co oznacza, że nie jest ona źródłem obowiązków dla Usługobiorców lub Klientów Sklepu
+        Internetowego. Polityka prywatności zawiera przede wszystkim zasady dotyczące przetwarzania danych osobowych
+        przez Administratora w Sklepie Internetowym, w tym podstawy, cele i okres przetwarzania danych osobowych oraz
+        prawa osób, których dane dotyczą, a także informacje w zakresie stosowania w Sklepie Internetowym plików Cookies
+        oraz narzędzi analitycznych.</p>
+    <p class="polityka-p"><strong>1.2.</strong> Administratorem danych osobowych zbieranych za pośrednictwem Sklepu
+        Internetowego jest MARCIN PIECHOTA prowadzący działalność gospodarczą pod firmą GARDEN LAWN &amp; IRRIGATION
+        MARCIN PIECHOTA wpisany do Centralnej Ewidencji i Informacji o Działalności Gospodarczej Rzeczypospolitej
+        Polskiej prowadzonej przez ministra właściwego do spraw gospodarki, posiadający: adres miejsca wykonywania
+        działalności i adres do doręczeń: ul. Namysłowska 2, 46-081 Dobrzeń Wielki, NIP: 9910370112, REGON: 383643646,
+        adres poczty elektronicznej: sklep@finnpolska.pl, numer telefonu: 795-997-947 – zwany dalej „<strong>Administratorem</strong>”
+        i będący jednocześnie Usługodawcą Sklepu Internetowego i Sprzedawcą.</p>
+    <p class="polityka-p"><strong>1.3.</strong> Dane osobowe w Sklepie Internetowym przetwarzane są przez Administratora
+        zgodnie z obowiązującymi przepisami prawa, w szczególności zgodnie z rozporządzeniem Parlamentu Europejskiego i
+        Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem
+        danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE (ogólne
+        rozporządzenie o ochronie danych) – zwanym dalej „<strong>RODO</strong>” lub „<strong>Rozporządzeniem
+            RODO</strong>”. Oficjalny tekst Rozporządzenia RODO: <a
+            href="http://eur-lex.europa.eu/legal-content/PL/TXT/?uri=CELEX%3A32016R0679">http://eur-lex.europa.eu/legal-content/PL/TXT/?uri=CELEX%3A32016R0679</a>
+    </p>
+    <p class="polityka-p"><strong>1.4.</strong> Korzystanie ze Sklepu Internetowego, w tym dokonywanie zakupów jest
+        dobrowolne. Podobnie związane z tym podanie danych osobowych przez korzystającego ze Sklepu Internetowego
+        Usługobiorcę lub Klienta jest dobrowolne, z zastrzeżeniem dwóch wyjątków: (1) <strong>zawieranie umów z
+            Administratorem</strong> – niepodanie w przypadkach i w zakresie wskazanym na stronie Sklepu Internetowego
+        oraz w Regulaminie Sklepu Internetowego i niniejszej polityce prywatności danych osobowych niezbędnych do
+        zawarcia i wykonania Umowy Sprzedaży lub umowy o świadczenie Usługi Elektronicznej z Administratorem skutkuje
+        brakiem możliwości zawarcia tejże umowy. Podanie danych osobowych jest w takim wypadku wymogiem umownym i jeżeli
+        osoba, której dane dotyczą chce zawrzeć daną umowę z Administratorem, to jest zobowiązana do podania wymaganych
+        danych. Każdorazowo zakres danych wymaganych do zawarcia umowy wskazany jest uprzednio na stronie Sklepu
+        Internetowego oraz w Regulaminie Sklepu Internetowego; (2) <strong>obowiązki ustawowe Administratora</strong> –
+        podanie danych osobowych jest wymogiem ustawowym wynikającym z powszechnie obowiązujących przepisów prawa
+        nakładających na Administratora obowiązek przetwarzania danych osobowych (np. przetwarzanie danych w celu
+        prowadzenia ksiąg podatkowych lub rachunkowych) i brak ich podania uniemożliwi Administratorowi wykonanie tychże
+        obowiązków.</p>
+    <p class="polityka-p"><strong>1.5.</strong> Administrator dokłada szczególnej staranności w celu ochrony interesów
+        osób, których przetwarzane przez niego dane osobowe dotyczą, a w szczególności jest odpowiedzialny i zapewnia,
+        że zbierane przez niego dane są: (1) przetwarzane zgodnie z prawem; (2) zbierane dla oznaczonych, zgodnych z
+        prawem celów i niepoddawane dalszemu przetwarzaniu niezgodnemu z tymi celami; (3) merytorycznie poprawne i
+        adekwatne w stosunku do celów, w jakich są przetwarzane; (4) przechowywane w postaci umożliwiającej
+        identyfikację osób, których dotyczą, nie dłużej niż jest to niezbędne do osiągnięcia celu przetwarzania oraz (5)
+        przetwarzane w sposób zapewniający odpowiednie bezpieczeństwo danych osobowych, w tym ochronę przed
+        niedozwolonym lub niezgodnym z prawem przetwarzaniem oraz przypadkową utratą, zniszczeniem lub uszkodzeniem, za
+        pomocą odpowiednich środków technicznych lub organizacyjnych.</p>
+    <p class="polityka-p"><strong>1.6.</strong> Uwzględniając charakter, zakres, kontekst i cele przetwarzania oraz
+        ryzyko naruszenia praw lub wolności osób fizycznych o różnym prawdopodobieństwie i wadze zagrożenia,
+        Administrator wdraża odpowiednie środki techniczne i organizacyjne, aby przetwarzanie odbywało się zgodnie z
+        niniejszym rozporządzeniem i aby móc to wykazać. Środki te są w razie potrzeby poddawane przeglądom i
+        uaktualniane. Administrator stosuje środki techniczne zapobiegające pozyskiwaniu i modyfikowaniu przez osoby
+        nieuprawnione, danych osobowych przesyłanych drogą elektroniczną.</p>
+    <p class="polityka-p"><strong>1.7.</strong> Wszelkie słowa, wyrażenia i akronimy występujące w niniejszej polityce
+        prywatności i rozpoczynające się dużą literą (np. <strong>Sprzedawca</strong>, <strong>Sklep
+            Internetowy</strong>, <strong>Usługa Elektroniczna</strong>) należy rozumieć zgodnie z ich definicją zawartą
+        w Regulaminie Sklepu Internetowego dostępnym na stronach Sklepu Internetowego.</p>
+    <a href="#top" class="polityka-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec2" class="polityka-h2">2. Podstawy przetwarzania danych</h2>
+    <p class="polityka-p"><strong>2.1.</strong> Administrator uprawniony jest do przetwarzania danych osobowych w
+        przypadkach, gdy – i w takim zakresie, w jakim – spełniony jest co najmniej jeden z poniższych warunków: (1)
+        osoba, której dane dotyczą wyraziła zgodę na przetwarzanie swoich danych osobowych w jednym lub większej liczbie
+        określonych celów; (2) przetwarzanie jest niezbędne do wykonania umowy, której stroną jest osoba, której dane
+        dotyczą, lub do podjęcia działań na żądanie osoby, której dane dotyczą, przed zawarciem umowy; (3) przetwarzanie
+        jest niezbędne do wypełnienia obowiązku prawnego ciążącego na Administratorze; lub (4) przetwarzanie jest
+        niezbędne do celów wynikających z prawnie uzasadnionych interesów realizowanych przez Administratora lub przez
+        stronę trzecią, z wyjątkiem sytuacji, w których nadrzędny charakter wobec tych interesów mają interesy lub
+        podstawowe prawa i wolności osoby, której dane dotyczą, wymagające ochrony danych osobowych, w szczególności gdy
+        osoba, której dane dotyczą, jest dzieckiem.</p>
+    <p class="polityka-p"><strong>2.2.</strong> Przetwarzanie danych osobowych przez Administratora wymaga każdorazowo
+        zaistnienia co najmniej jednej z podstaw wskazanych w pkt. 2.1 polityki prywatności. Konkretne podstawy
+        przetwarzania danych osobowych Usługobiorców i Klientów Sklepu Internetowego przez Administratora są wskazane w
+        kolejnym punkcie polityki prywatności – w odniesieniu do danego celu przetwarzania danych osobowych przez
+        Administratora.</p>
+    <a href="#top" class="polityka-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec3" class="polityka-h2">3. Cel, podstawa i okres przetwarzania danych w sklepie internetowym</h2>
+    <p class="polityka-p"><strong>3.1.</strong> Każdorazowo cel, podstawa i okres oraz odbiorcy danych osobowych
+        przetwarzanych przez Administratora wynika z działań podejmowanych przez danego Usługobiorcę lub Klienta w
+        Sklepie Internetowym lub przez Administratora. Przykładowo, jeżeli Klient decyduje się na dokonanie zakupów w
+        Sklepie Internetowym i wybierze odbiór osobisty zakupionego Produktu zamiast przesyłki kurierskiej, to jego dane
+        osobowe będą przetwarzane w celu wykonania zawartej Umowy Sprzedaży, ale nie będą już udostępniane przewoźnikowi
+        realizującemu przesyłki na zlecenie Administratora.</p>
+    <p class="polityka-p"><strong>3.2.</strong> Administrator może przetwarzać dane osobowe w ramach Sklepu
+        Internetowego w następujących celach, na podstawach oraz w okresach wskazanych w poniższej tabeli:</p>
+    <table class="polityka-original-table">
+        <tr style="height:30.8pt">
+            <td style="background-color:#e2efd9">
+                <p><strong>Cel przetwarzania danych</strong></p>
+            </td>
+            <td style="background-color:#e2efd9">
+                <p><strong>Podstawa prawna przetwarzania danych</strong></p>
+            </td>
+            <td style="background-color:#e2efd9">
+                <p><strong>Okres przechowywania danych</strong></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Wykonanie Umowy Sprzedaży lub umowy o świadczenie Usługi Elektronicznej lub podjęcie działań na
+                    żądanie osoby, której dane dotyczą, przed zawarciem w/w umów</p>
+            </td>
+            <td>
+                <p>Artykuł 6 ust. 1 lit. b) Rozporządzenia RODO (wykonanie umowy) – przetwarzanie jest niezbędne do
+                    wykonania umowy, której stroną jest osoba, której dane dotyczą, lub do podjęcia działań na żądanie
+                    osoby, której dane dotyczą, przed zawarciem umowy</p>
+            </td>
+            <td>
+                <p>Dane są przechowywane przez okres niezbędny do wykonania, rozwiązania lub wygaśnięcia w inny sposób
+                    zawartej Umowy Sprzedaży lub umowy o świadczenie Usługi Elektronicznej.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Marketing bezpośredni</p>
+            </td>
+            <td>
+                <p>Artykuł 6 ust. 1 lit. f) Rozporządzenia RODO (prawnie uzasadniony interes administratora) –
+                    przetwarzanie jest niezbędne do celów wynikających z prawnie uzasadnionych interesów Administratora
+                    – polegających na dbaniu o interesy i dobry wizerunek Administratora, jego Sklepu Internetowego oraz
+                    dążeniu do sprzedaży Produktów</p>
+            </td>
+            <td>
+                <p>Dane są przechowywane przez okres istnienia prawnie uzasadnionego interesu realizowanego przez
+                    Administratora, nie dłużej jednak niż przez okres przedawnienia roszczeń Administratora w stosunku
+                    do osoby, której dane dotyczą, z tytułu prowadzonej przez Administratora działalności gospodarczej.
+                    Okres przedawnienia określają przepisy prawa, w szczególności Kodeksu Cywilnego (podstawowy termin
+                    przedawnienia dla roszczeń związanych z prowadzeniem działalności gospodarczej wynosi trzy lata, a
+                    dla Umowy Sprzedaży dwa lata).</p>
+                <p>Administrator nie może przetwarzać danych w celu marketingu bezpośredniego w przypadku wyrażenia
+                    skutecznego sprzeciwu w tym zakresie przez osobę, której dane dotyczą.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Marketing</p>
+            </td>
+            <td>
+                <p>Artykuł 6 ust. 1 lit. a) Rozporządzenia RODO (zgoda) – osoba, której dane dotyczą, wyraziła zgodę na
+                    przetwarzanie swoich danych osobowych w celach marketingowych przez Administratora</p>
+            </td>
+            <td>
+                <p>Dane przechowywane są do momentu wycofania zgody przez osobę, której dane dotyczą na dalsze
+                    przetwarzanie jej danych w tym celu.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Wyrażenie przez Klienta opinii o zawartej Umowie Sprzedaży</p>
+            </td>
+            <td>
+                <p>Artykuł 6 ust. 1 lit. a) Rozporządzenia RODO – osoba, której dane dotyczą, wyraziła zgodę na
+                    przetwarzanie swoich danych osobowych w celu wyrażenia opinii</p>
+            </td>
+            <td>
+                <p>Dane przechowywane są do momentu wycofania zgody przez osobę, której dane dotyczą na dalsze
+                    przetwarzanie jej danych w tym celu.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Prowadzenie ksiąg podatkowych</p>
+            </td>
+            <td>
+                <p>Artykuł 6 ust. 1 lit. c) Rozporządzenia RODO w zw. z art. 86 § 1 Ordynacji podatkowej tj. z dnia 17
+                    stycznia 2017 r. (Dz.U. z 2017 r. poz. 201 ze zm.)– przetwarzanie jest niezbędne do wypełnienia
+                    obowiązku prawnego ciążącego na Administratorze</p>
+            </td>
+            <td>
+                <p>Dane są przechowywane przez okres wymagany przepisami prawa nakazującymi Administratorowi
+                    przechowywanie ksiąg podatkowych (do czasu upływu okresu przedawnienia zobowiązania podatkowego,
+                    chyba że ustawy podatkowe stanowią inaczej).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Ustalenie, dochodzenie lub obrona roszczeń jakie może podnosić Administrator lub jakie mogą być
+                    podnoszone wobec Administratora</p>
+            </td>
+            <td>
+                <p>Artykuł 6 ust. 1 lit. f) Rozporządzenia RODO (prawnie uzasadniony interes administratora) –
+                    przetwarzanie jest niezbędne do celów wynikających z prawnie uzasadnionych interesów Administratora
+                    – polegających na ustaleniu, dochodzeniu lub obronie roszczeń, jakie może podnosić Administrator lub
+                    jakie mogą być podnoszone wobec Administratora</p>
+            </td>
+            <td>
+                <p>Dane są przechowywane przez okres istnienia prawnie uzasadnionego interesu realizowanego przez
+                    Administratora, nie dłużej jednak niż przez okres przedawnienia roszczeń jakie mogą być podnoszone
+                    wobec Administratora (podstawowy termin przedawnienia dla roszczeń wobec Administratora wynosi sześć
+                    lat).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Korzystanie ze strony Sklepu Internetowego i zapewnienie jej prawidłowego działania</p>
+            </td>
+            <td>
+                <p>Artykuł 6 ust. 1 lit. f) Rozporządzenia RODO (prawnie uzasadniony interes administratora) –
+                    przetwarzanie jest niezbędne do celów wynikających z prawnie uzasadnionych interesów Administratora
+                    – polegających na prowadzeniu i utrzymaniu strony Sklepu Internetowego</p>
+            </td>
+            <td>
+                <p>Dane są przechowywane przez okres istnienia prawnie uzasadnionego interesu realizowanego przez
+                    Administratora, nie dłużej jednak niż przez okres przedawnienia roszczeń Administratora w stosunku
+                    do osoby, której dane dotyczą, z tytułu prowadzonej przez Administratora działalności gospodarczej.
+                    Okres przedawnienia określają przepisy prawa, w szczególności Kodeksu Cywilnego (podstawowy termin
+                    przedawnienia dla roszczeń związanych z prowadzeniem działalności gospodarczej wynosi trzy lata, a
+                    dla Umowy Sprzedaży dwa lata).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Prowadzenie statystyk i analiza ruchu w Sklepie Internetowym</p>
+            </td>
+            <td>
+                <p>Artykuł 6 ust. 1 lit. f) Rozporządzenia RODO (prawnie uzasadniony interes administratora) –
+                    przetwarzanie jest niezbędne do celów wynikających z prawnie uzasadnionych interesów Administratora
+                    – polegających na prowadzeniu statystyk i analizie ruchu w Sklepie Internetowym celem poprawy
+                    funkcjonowania Sklepu Internetowego i zwiększenia sprzedaży Produktów</p>
+            </td>
+            <td>
+                <p>Dane są przechowywane przez okres istnienia prawnie uzasadnionego interesu realizowanego przez
+                    Administratora, nie dłużej jednak niż przez okres przedawnienia roszczeń Administratora w stosunku
+                    do osoby, której dane dotyczą, z tytułu prowadzonej przez Administratora działalności gospodarczej.
+                    Okres przedawnienia określają przepisy prawa, w szczególności Kodeksu Cywilnego (podstawowy termin
+                    przedawnienia dla roszczeń związanych z prowadzeniem działalności gospodarczej wynosi trzy lata, a
+                    dla Umowy Sprzedaży dwa lata).</p>
+            </td>
+        </tr>
+    </table>
+    <a href="#top" class="polityka-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec4" class="polityka-h2">4. Odbiorcy danych w sklepie internetowym</h2>
+    <p class="polityka-p"><strong>4.1.</strong> Dla prawidłowego funkcjonowania Sklepu Internetowego, w tym dla
+        realizacji zawieranych Umów Sprzedaży konieczne jest korzystanie przez Administratora z usług podmiotów
+        zewnętrznych (takich jak np. dostawca oprogramowania, kurier czy podmiot obsługujący płatności). Administrator
+        korzysta wyłącznie z usług takich podmiotów przetwarzających, którzy zapewniają wystarczające gwarancje
+        wdrożenia odpowiednich środków technicznych i organizacyjnych, tak by przetwarzanie spełniało wymogi
+        Rozporządzenia RODO i chroniło prawa osób, których dane dotyczą.</p>
+    <p class="polityka-p"><strong>4.2.</strong> Dane osobowe mogą być przekazywane przez Administratora do państwa
+        trzeciego, przy czym Administrator zapewnia, że w takim przypadku odbywać się to będzie w stosunku do państwa
+        zapewniającego odpowiedni stopień ochrony – zgodny z Rozporządzeniem RODO, a w przypadku innych państw, że
+        przekazanie odbywać się będzie na podstawie standardowych klauzul ochrony danych. Administrator zapewnia, że
+        osoba, której dane dotyczą ma możliwość uzyskania kopii swoich danych. Administrator przekazuje zebrane dane
+        osobowe jedynie w przypadku oraz w zakresie niezbędnym do zrealizowania danego celu przetwarzania danych
+        zgodnego z niniejszą polityką prywatności.</p>
+    <p class="polityka-p"><strong>4.3.</strong> Przekazanie danych przez Administratora nie następuje w każdym wypadku i
+        nie do wszystkich wskazanych w polityce prywatności odbiorców lub kategorii odbiorców – Administrator przekazuje
+        dane wyłącznie wtedy, gdy jest to niezbędne do realizacji danego celu przetwarzania danych osobowych i tylko w
+        zakresie niezbędnym do jego zrealizowania. Przykładowo, jeżeli Klient korzysta z odbioru osobistego, to jego
+        dane nie będą przekazywane przewoźnikowi współpracującemu z Administratorem.</p>
+    <p class="polityka-p"><strong>4.4.</strong> Dane osobowe Usługobiorców i Klientów Sklepu Internetowego mogą być
+        przekazywane następującym odbiorcom lub kategoriom odbiorców:</p>
+    <ul class="polityka-ul">
+        <li class="polityka-li"><strong>przewoźnicy / spedytorzy / brokerzy kurierscy / podmioty obsługujące magazyn
+            i/lub proces wysyłki</strong> – w przypadku Klienta, który korzysta w Sklepie Internetowym ze sposobu
+            dostawy Produktu przesyłką pocztową lub przesyłką kurierską, Administrator udostępnia zebrane dane osobowe
+            Klienta wybranemu przewoźnikowi, spedytorowi lub pośrednikowi realizującemu przesyłki na zlecenie
+            Administratora, a jeżeli wysyłka następuje z magazynu zewnętrznego – podmiotowi obsługującemu magazyn i/lub
+            proces wysyłki – w zakresie niezbędnym do zrealizowania dostawy Produktu Klientowi.
+        </li>
+        <li class="polityka-li"><strong>podmioty obsługujące płatności elektroniczne lub kartą płatniczą</strong> – w
+            przypadku Klienta, który korzysta w Sklepie Internetowym ze sposobu płatności elektronicznych lub kartą
+            płatniczą, Administrator udostępnia zebrane dane osobowe Klienta wybranemu podmiotowi obsługującemu powyższe
+            płatności w Sklepie Internetowym na zlecenie Administratora w zakresie niezbędnym do obsługi płatności
+            realizowanej przez Klienta.
+        </li>
+        <li class="polityka-li"><strong>podmioty kredytujące / leasingodawcy</strong> – w przypadku Klienta, który
+            korzysta w Sklepie Internetowym ze sposobu płatności w systemie ratalnym lub płatności leasingowej
+            Administrator udostępnia zebrane dane osobowe Klienta wybranemu kredytodawcy lub leasingodawcy obsługującemu
+            powyższe płatności w Sklepie Internetowym na zlecenie Administratora w zakresie niezbędnym do obsługi
+            płatności realizowanej przez Klienta.
+        </li>
+        <li class="polityka-li"><strong>dostawcy usług zaopatrujący Administratora w rozwiązania techniczne,
+            informatyczne oraz organizacyjne, umożliwiające Administratorowi prowadzenie działalności gospodarczej, w
+            tym Sklepu Internetowego i świadczonych za jego pośrednictwem Usług Elektronicznych</strong> (w
+            szczególności dostawcy oprogramowania komputerowego do prowadzenia Sklepu Internetowego, dostawcy poczty
+            elektronicznej i hostingu oraz dostawcy oprogramowania do zarządzania firmą i udzielania pomocy technicznej
+            Administratorowi) – Administrator udostępnia zebrane dane osobowe Klienta wybranemu dostawcy działającemu na
+            jego zlecenie jedynie w przypadku oraz w zakresie niezbędnym do zrealizowania danego celu przetwarzania
+            danych zgodnego z niniejszą polityką prywatności.
+        </li>
+        <li class="polityka-li"><strong>dostawcy usług księgowych, prawnych i doradczych zapewniający Administratorowi
+            wsparcie księgowe, prawne lub doradcze</strong> (w szczególności biuro księgowe, kancelaria prawna lub firma
+            windykacyjna) – Administrator udostępnia zebrane dane osobowe Klienta wybranemu dostawcy działającemu na
+            jego zlecenie jedynie w przypadku oraz w zakresie niezbędnym do zrealizowania danego celu przetwarzania
+            danych zgodnego z niniejszą polityką prywatności.
+        </li>
+        <li class="polityka-li"><strong>dostawcy umieszczonych na stronie Sklepu Internetowego wtyczek
+            społecznościowych, skryptów oraz innych podobnych narzędzi umożliwiających przeglądarce osoby odwiedzającej
+            stronę Sklepu Internetowego pobieranie treści od dostawców wspomnianych wtyczek</strong> (np. logowanie za
+            pomocą danych logowania do serwisu społecznościowego) i przekazywanie w tym celu tym dostawcom danych
+            osobowych osoby odwiedzającej, w tym również:
+            <ul class="polityka-ul">
+                <li class="polityka-li"><strong>Meta Platforms Ireland Ltd. –</strong> Administrator korzysta na stronie
+                    Sklepu Internetowego z wtyczek społecznościowych serwisu Facebook i Instagram (np. przycisk Lubię
+                    to!, Udostępnij lub logowanie za pomocą danych logowania do serwisu Facebook) oraz Instagram, oraz
+                    komunikatora WhatsApp do prowadzenia korespondencji - i w związku z tym gromadzi i udostępnia dane
+                    osobowe Usługobiorcy korzystającego ze strony Sklepu Internetowego do Meta Platforms Ireland Ltd. (4
+                    Grand Canal Square, Grand Canal Harbour, Dublin 2 Ireland) w zakresie i zgodnie z zasadami
+                    prywatności dostępnymi – w przypadku Facebooka – tutaj: https://www.facebook.com/about/privacy/ oraz
+                    – w przypadku Instagrama – tutaj: https://help.instagram.com/519522125107875/?helpref=hc_fnav – oraz
+                    – w przypadku WhatsApp – tutaj: https://www.whatsapp.com/legal/privacy-policy-eea?lang=pl_PL – (dane
+                    te obejmują informacje o działaniach na stronie Sklepu Internetowego – w tym informacje o
+                    urządzeniu, odwiedzanych witrynach, zakupach, wyświetlanych reklamach oraz sposobie korzystania z
+                    usług – niezależnie od tego, czy Usługobiorca ma konto na Facebooku, Instagramie, WhatsApp i czy
+                    jest zalogowany do Facebooka, Instagrama lub Whatsapp).
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <a href="#top" class="polityka-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec5" class="polityka-h2">5. Profilowanie w sklepie internetowym</h2>
+    <p class="polityka-p"><strong>5.1.</strong> Rozporządzenie RODO nakłada na Administratora obowiązek informowania o
+        zautomatyzowanym podejmowaniu decyzji, w tym o profilowaniu, o którym mowa w art. 22 ust. 1 i 4 Rozporządzenia
+        RODO, oraz – przynajmniej w tych przypadkach – istotne informacje o zasadach ich podejmowania, a także o
+        znaczeniu i przewidywanych konsekwencjach takiego przetwarzania dla osoby, której dane dotyczą. Mając to na
+        uwadze, Administrator podaje w tym punkcie polityki prywatności informacje dotyczące możliwego profilowania.</p>
+    <p class="polityka-p"><strong>5.2.</strong> Administrator może korzystać w Sklepie Internetowym z profilowania do
+        celów marketingu bezpośredniego, ale decyzje podejmowane na jego podstawie przez Administratora nie dotyczą
+        zawarcia lub odmowy zawarcia Umowy Sprzedaży czy też możliwości korzystania z Usług Elektronicznych w Sklepie
+        Internetowym. Efektem korzystania z profilowania w Sklepie Internetowym może być np. przyznanie danej osobie
+        rabatu, przesłanie jej kodu rabatowego, przypomnienie o niedokończonych zakupach, przesłanie propozycji
+        Produktu, który może odpowiadać zainteresowaniom lub preferencjom danej osoby lub też zaproponowanie lepszych
+        warunków w porównaniu do standardowej oferty Sklepu Internetowego. Mimo profilowania to dana osoba podejmuje
+        swobodnie decyzję, czy będzie chciała skorzystać z otrzymanego w ten sposób rabatu, czy też lepszych warunków i
+        dokonać zakupu w Sklepie Internetowym.</p>
+    <p class="polityka-p"><strong>5.3.</strong> Profilowanie w Sklepie Internetowym polega na automatycznej analizie lub
+        prognozie zachowania danej osoby na stronie Sklepu Internetowego np. poprzez dodanie konkretnego Produktu do
+        koszyka, przeglądanie strony konkretnego Produktu w Sklepie Internetowym czy też poprzez analizę dotychczasowej
+        historii dokonanych zakupów w Sklepie Internetowym. Warunkiem takiego profilowania jest posiadanie przez
+        Administratora danych osobowych danej osoby, aby móc jej następnie przesłać np. kod rabatowy.</p>
+    <p class="polityka-p"><strong>5.4.</strong> Osoba, której dane dotyczą, ma prawo do tego, by nie podlegać decyzji,
+        która opiera się wyłącznie na zautomatyzowanym przetwarzaniu, w tym profilowaniu, i wywołuje wobec tej osoby
+        skutki prawne lub w podobny sposób istotnie na nią wpływa.</p>
+    <a href="#top" class="polityka-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec6" class="polityka-h2">6. Prawa osoby, której dane dotyczą</h2>
+    <p class="polityka-p"><strong>6.1. Prawo dostępu, sprostowania, ograniczenia, usunięcia lub przenoszenia</strong> –
+        osoba, której dane dotyczą, ma prawo żądania od Administratora dostępu do swoich danych osobowych, ich
+        sprostowania, usunięcia („prawo do bycia zapomnianym”) lub ograniczenia przetwarzania oraz ma prawo do
+        wniesienia sprzeciwu wobec przetwarzania, a także ma prawo do przenoszenia swoich danych. Szczegółowe warunki
+        wykonywania wskazanych wyżej praw wskazane są w art. 15-21 Rozporządzenia RODO.</p>
+    <p class="polityka-p"><strong>6.2. Prawo do cofnięcia zgody w dowolnym momencie</strong> – osoba, której dane
+        przetwarzane są przez Administratora na podstawie wyrażonej zgody (na podstawie art. 6 ust. 1 lit. a) lub art. 9
+        ust. 2 lit. a) Rozporządzenia RODO), to ma ona prawo do cofnięcia zgody w dowolnym momencie bez wpływu na
+        zgodność z prawem przetwarzania, którego dokonano na podstawie zgody przed jej cofnięciem.</p>
+    <p class="polityka-p"><strong>6.3. Prawo wniesienia skargi do organu nadzorczego</strong> – osoba, której dane
+        przetwarzane są przez Administratora, ma prawo wniesienia skargi do organu nadzorczego w sposób i trybie
+        określonym w przepisach Rozporządzenia RODO oraz prawa polskiego, w szczególności ustawy o ochronie danych
+        osobowych. Organem nadzorczym w Polsce jest Prezes Urzędu Ochrony Danych Osobowych.</p>
+    <p class="polityka-p"><strong>6.4. Prawo do sprzeciwu</strong> – osoba, której dane dotyczą, ma prawo w dowolnym
+        momencie wnieść sprzeciw – z przyczyn związanych z jej szczególną sytuacją – wobec przetwarzania dotyczących jej
+        danych osobowych opartego na art. 6 ust. 1 lit. e) (interes lub zadania publiczne) lub f) (prawnie uzasadniony
+        interes administratora), w tym profilowania na podstawie tych przepisów. Administratorowi w takim przypadku nie
+        wolno już przetwarzać tych danych osobowych, chyba że wykaże on istnienie ważnych prawnie uzasadnionych podstaw
+        do przetwarzania, nadrzędnych wobec interesów, praw i wolności osoby, której dane dotyczą, lub podstaw do
+        ustalenia, dochodzenia lub obrony roszczeń.</p>
+    <p class="polityka-p"><strong>6.5. Prawo do sprzeciwu dot. marketingu bezpośredniego</strong> – jeżeli dane osobowe
+        są przetwarzane na potrzeby marketingu bezpośredniego, osoba, której dane dotyczą, ma prawo w dowolnym momencie
+        wnieść sprzeciw wobec przetwarzania dotyczących jej danych osobowych na potrzeby takiego marketingu, w tym
+        profilowania, w zakresie, w jakim przetwarzanie jest związane z takim marketingiem bezpośrednim.</p>
+    <p class="polityka-p"><strong>6.6.</strong> W celu realizacji uprawnień, o których mowa w niniejszym punkcie
+        polityki prywatności, można kontaktować się z Administratorem poprzez przesłanie stosownej wiadomości pisemnie
+        lub pocztą elektroniczną na adres Administratora wskazany na wstępie polityki prywatności lub korzystając z
+        formularza kontaktowego dostępnego na stronie Sklepu Internetowego.</p>
+    <a href="#top" class="polityka-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec7" class="polityka-h2">7. Cookies w sklepie internetowym i analityka</h2>
+    <p class="polityka-p"><strong>7.1.</strong> Pliki Cookies (ciasteczka) są to niewielkie informacje tekstowe w
+        postaci plików tekstowych, wysyłane przez serwer i zapisywane po stronie osoby odwiedzającej stronę Sklepu
+        Internetowego (np. na dysku twardym komputera, laptopa, czy też na karcie pamięci smartfonu – w zależności z
+        jakiego urządzenia korzysta odwiedzający nasz Sklep Internetowy). Szczegółowe informacje dot. plików Cookies, a
+        także historię ich powstania można znaleźć m. in. tutaj: https://pl.wikipedia.org/wiki/HTTP_cookie.</p>
+    <p class="polityka-p"><strong>7.2.</strong> Pliki Cookies, które mogą być wysyłane przez stronę Sklepu Internetowego
+        można podzielić na różne rodzaje, według następujących kryteriów:</p>
+    <table class="polityka-original-table">
+        <tr>
+            <td style="background-color:#e2efd9">
+                <p><strong>Ze względu na ich dostawcę</strong>:</p>
+                <ul class="polityka-ul">
+                    <li class="polityka-li">własne (tworzone przez stronę Sklepu Internetowego Administratora) oraz</li>
+                    <li class="polityka-li">należące do osób/podmiotów trzecich (innych niż Administrator)</li>
+                </ul>
+            </td>
+            <td style="background-color:#e2efd9">
+                <p><strong>Ze względu na ich okres przechowywania na urządzeniu osoby odwiedzającej stronę Sklepu
+                    Internetowego</strong>:</p>
+                <ul class="polityka-ul">
+                    <li class="polityka-li">sesyjne (przechowywane do czasu wylogowania się ze Sklepu Internetowego lub
+                        wyłączenia przeglądarki internetowej) oraz
+                    </li>
+                    <li class="polityka-li">stałe (przechowywane przez określony czas, zdefiniowany przez parametry
+                        każdego pliku lub do czasu ręcznego usunięcia)
+                    </li>
+                </ul>
+            </td>
+            <td style="background-color:#e2efd9">
+                <p><strong>Ze względu na cel ich stosowania</strong>:</p>
+                <ul class="polityka-ul">
+                    <li class="polityka-li">niezbędne (umożliwiające prawidłowe funkcjonowanie strony Sklepu
+                        Internetowego),
+                    </li>
+                    <li class="polityka-li">funkcjonalne/preferencyjne (umożliwiające dostosowanie strony Sklepu
+                        Internetowego do preferencji osoby odwiedzającej stronę),
+                    </li>
+                    <li class="polityka-li">analityczne i wydajnościowe (gromadzące informacje o sposobie korzystania ze
+                        strony Sklepu Internetowego),
+                    </li>
+                    <li class="polityka-li">marketingowe, reklamowe i społecznościowe (zbierające informacje o osobie
+                        odwiedzającej stronę Sklepu Internetowego w celu wyświetlania tej osobie reklam, ich
+                        personalizacji, mierzeniu skuteczności i prowadzenia innych działań marketingowych w tym również
+                        na stronach internetowych odrębnych od strony Sklepu Internetowego, takich jak portale
+                        społecznościowe albo inne strony należące do tych samych sieci reklamowych co Sklep Internetowy)
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    <p class="polityka-p"><strong>7.3.</strong> Administrator może przetwarzać dane zawarte w plikach Cookies podczas
+        korzystania przez odwiedzających ze strony Sklepu Internetowego w następujących konkretnych celach:</p>
+    <table class="polityka-original-table">
+        <tr>
+            <td rowspan="6" style="background-color:#e2efd9">
+                <p><strong>Cele stosowanie plików Cookies w Sklepie Internetowym Administratora</strong></p>
+            </td>
+            <td>
+                <p>identyfikacji Usługobiorców jako zalogowanych w Sklepie Internetowym i pokazywania, że są zalogowani
+                    (pliki Cookies niezbędne)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>zapamiętywania Produktów dodanych do koszyka w celu złożenia Zamówienia (pliki Cookies niezbędne)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>zapamiętywania danych z wypełnianych Formularzy Zamówienia, ankiet lub danych logowania do Sklepu
+                    Internetowego (pliki Cookies niezbędne lub/i funkcjonalne/preferencyjne)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>dostosowywania zawartości strony Sklepu Internetowego do indywidualnych preferencji Usługobiorcy (np.
+                    dotyczących kolorów, rozmiaru czcionki, układu strony) oraz optymalizacji korzystania ze stron
+                    Sklepu Internetowego (pliki Cookies funkcjonalne/preferencyjne)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>prowadzenia anonimowych statystyk przedstawiających sposób korzystania ze strony Sklepu Internetowego
+                    (pliki Cookies analityczne i wydajnościowe)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>wyświetlania i renderowania reklam, ograniczania liczby wyświetleń reklam oraz ignorowania reklam,
+                    których Usługobiorca nie chce oglądać, mierzenia skuteczności reklam, a także personalizacji reklam,
+                    to jest badania cech zachowania osób odwiedzających Sklep Internetowy poprzez anonimową analizę ich
+                    działań (np. powtarzające się wizyty na określonych stronach, słowa kluczowe itp.) w celu stworzenia
+                    ich profilu i dostarczenia im reklam dopasowanych do ich przewidywanych zainteresowań, także wtedy
+                    kiedy odwiedzają oni inne strony internetowe w sieci reklamowej firmy Google Ireland Ltd. oraz
+                    Facebook, tj. Meta Platforms Ireland Ltd. (pliki Cookies marketingowe, reklamowe i
+                    społecznościowe)</p>
+            </td>
+        </tr>
+    </table>
+    <p class="polityka-p"><strong>7.4.</strong> Sprawdzenie w najpopularniejszych przeglądarkach internetowych, jakie
+        pliki Cookies (w tym okres funkcjonowania plików Cookies oraz ich dostawca) są wysyłane w danej chwili przez
+        stronę Sklepu Internetowego jest możliwe w następujący sposób:</p>
+    <table class="polityka-original-table">
+        <tr>
+            <td style="background-color:#e2efd9">
+                <p><strong>W przeglądarce Chrome</strong>:<br>(1) w pasku adresu kliknij w ikonkę kłódki po lewej
+                    stronie, (2) przejdź do zakładki „Pliki cookie”.</p>
+            </td>
+            <td style="background-color:#e2efd9">
+                <p><strong>W przeglądarce Firefox</strong>:<br>(1) w pasku adresu kliknij w ikonkę tarczy po lewej
+                    stronie, (2) przejdź do zakładki „Dopuszczone” lub „Zablokowane”, (3) kliknij pole „Ciasteczka
+                    śledzące między witrynami”, „Elementy śledzące serwisów społecznościowych” lub „Treści z elementami
+                    śledzącymi”</p>
+            </td>
+            <td style="background-color:#e2efd9">
+                <p><strong>W przeglądarce Internet Explorer</strong>:<br>(1) kliknij menu „Narzędzia”, (2) przejdź do
+                    zakładki „Opcje internetowe”, (3) przejdź do zakładki „Ogólne”, (4) przejdź do zakładki
+                    „Ustawienia”, (5) kliknij pole „Wyświetl pliki”</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="background-color:#e2efd9">
+                <p><strong>W przeglądarce Opera</strong>:<br>(1) w pasku adresu kliknij w ikonkę kłódki po lewej
+                    stronie, (2) przejdź do zakładki „Pliki cookie”.</p>
+            </td>
+            <td style="background-color:#e2efd9">
+                <p><strong>w przeglądarce Safari</strong>:<br>(1) kliknij menu „Preferencje”, (2) przejdź do zakładki
+                    „Prywatność”, (3) kliknij w pole „Zarządzaj danymi witryn”</p>
+            </td>
+            <td style="background-color:#e2efd9">
+                <p><strong>Niezależnie od przeglądarki, za pomocą narzędzi dostępnych np. na stronie</strong>:
+                    https://www.cookiemetrix.com/ lub: https://www.cookie-checker.com/</p>
+            </td>
+        </tr>
+    </table>
+    <p class="polityka-p"><strong>7.5.</strong> Standardowo większość przeglądarek internetowych dostępnych na rynku
+        domyślnie akceptuje zapisywanie plików Cookies. Każdy ma możliwość określenia warunków korzystania z plików
+        Cookies za pomocą ustawień własnej przeglądarki internetowej. Oznacza to, że można np. częściowo ograniczyć (np.
+        czasowo) lub całkowicie wyłączyć możliwość zapisywania plików Cookies – w tym ostatnim wypadku jednak może to
+        mieć wpływ na niektóre funkcjonalności Sklepu Internetowego (przykładowo niemożliwym może okazać się przejście
+        ścieżki Zamówienia poprzez Formularz Zamówienia z uwagi na niezapamiętywanie Produktów w koszyku podczas
+        kolejnych kroków składania Zamówienia).</p>
+    <p class="polityka-p"><strong>7.6.</strong> Ustawienia przeglądarki internetowej w zakresie plików Cookies są
+        istotne z punktu widzenia zgody na korzystanie z plików Cookies przez nasz Sklep Internetowy – zgodnie z
+        przepisami taka zgoda może być również wyrażona poprzez ustawienia przeglądarki internetowej. Szczegółowe
+        informacje na temat zmiany ustawień dotyczących plików Cookies oraz ich samodzielnego usuwania w
+        najpopularniejszych przeglądarkach internetowych dostępne są w dziale pomocy przeglądarki internetowej oraz na
+        poniższych stronach (wystarczy kliknąć w dany link):</p>
+    <ul class="polityka-ul">
+        <li class="polityka-li"><a href="http://support.google.com/chrome/bin/answer.py?hl=pl&amp;answer=95647">w
+            przeglądarce Chrome</a></li>
+        <li class="polityka-li"><a
+            href="http://support.mozilla.org/pl/kb/W%C5%82%C4%85czanie%20i%20wy%C5%82%C4%85czanie%20obs%C5%82ugi%20ciasteczek">w
+            przeglądarce Firefox</a></li>
+        <li class="polityka-li"><a
+            href="https://support.microsoft.com/pl-pl/help/17442/windows-internet-explorer-delete-manage-cookies">w
+            przeglądarce Internet Explorer</a></li>
+        <li class="polityka-li"><a href="https://help.opera.com/pl/latest/web-preferences/#cookies">w przeglądarce
+            Opera</a></li>
+        <li class="polityka-li"><a href="https://support.apple.com/pl-pl/guide/safari/sfri11471/11.0/mac/10.13">w
+            przeglądarce Safari</a></li>
+        <li class="polityka-li"><a href="http://windows.microsoft.com/pl-pl/windows-10/edge-privacy-faq">w przeglądarce
+            Microsoft Edge</a></li>
+    </ul>
+    <p class="polityka-p"><strong>7.7.</strong> Administrator może korzystać w Sklepie Internetowym z usług Google
+        Analytics, Universal Analytics dostarczanych przez firmę Google Ireland Limited (Gordon House, Barrow Street,
+        Dublin 4, Irlandia). Usługi te pomagają Administratorowi prowadzić statystyki i analizować ruch w Sklepie
+        Internetowym. Gromadzone dane przetwarzane są w ramach powyższych usług do generowania statystyk pomocnych w
+        administrowaniu Sklepu Internetowego i analizie ruchu w Sklepie Internetowym. Dane te mają charakter zbiorczy.
+        Administrator korzystając z powyższych usług w Sklepie Internetowym gromadzi takie dane jak źródła i medium
+        pozyskania osób odwiedzających Sklep Internetowy oraz sposób ich zachowania na stronie Sklepu Internetowego,
+        informacje na temat urządzeń i przeglądarek z których odwiedzają stronę, IP oraz domenę, dane geograficzne oraz
+        dane demograficzne (wiek, płeć) i zainteresowania.</p>
+    <p class="polityka-p"><strong>7.8.</strong> Możliwe jest zablokowanie w łatwy sposób przez daną osobę udostępniania
+        do Google Analytics informacji o jej aktywności na stronie Sklepu Internetowego – w tym celu można na przykład
+        zainstalować dodatek do przeglądarki udostępniany przez firmę Google Ireland Ltd. dostępny tutaj: <a
+            href="https://tools.google.com/dlpage/gaoptout?hl=pl">https://tools.google.com/dlpage/gaoptout?hl=pl</a>.
+    </p>
+    <p class="polityka-p"><strong>7.9.</strong> W związku z możliwością korzystania przez Administratora w Sklepie
+        Internetowym z usług reklamowych i analitycznych dostarczanych przez Google Ireland Ltd., Administrator
+        wskazuje, że pełna informacja o zasadach przetwarzania danych osób odwiedzających Sklep Internetowy (w tym
+        informacji zapisanych w plikach Cookies) przez Google Ireland Ltd. znajduje się w polityce prywatności usług
+        Google dostępnej pod adresem internetowym: <a href="https://policies.google.com/technologies/partner-sites">https://policies.google.com/technologies/partner-sites</a>.
+    </p>
+    <a href="#top" class="polityka-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec8" class="polityka-h2">8. Postanowienia końcowe</h2>
+    <p class="polityka-p"><strong>8.1.</strong> Sklep Internetowy może zawierać odnośniki do innych stron internetowych.
+        Administrator namawia, by po przejściu na inne strony, zapoznać się z polityką prywatności tam ustaloną.
+        Niniejsza polityka prywatności dotyczy tylko Sklepu Internetowego Administratora.</p>
+    <a href="#top" class="polityka-back-to-top">Powrót do spisu treści</a>
+</div>

@@ -1,0 +1,32 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+?>
+<div class="terms-conditions-container prose max-w-none">
+    <h1><?= $escaper->escapeHtml(__('legal_terms_title')) ?></h1>
+    <p><?= $escaper->escapeHtml(__('legal_terms_intro')) ?></p>
+
+    <h2><?= $escaper->escapeHtml(__('legal_terms_general_title')) ?></h2>
+    <p><?= $escaper->escapeHtml(__('legal_terms_general_content')) ?></p>
+
+    <h2><?= $escaper->escapeHtml(__('legal_terms_account_title')) ?></h2>
+    <p><?= $escaper->escapeHtml(__('legal_terms_account_content')) ?></p>
+
+    <h2><?= $escaper->escapeHtml(__('legal_terms_orders_title')) ?></h2>
+    <p><?= $escaper->escapeHtml(__('legal_terms_orders_content')) ?></p>
+
+    <h2><?= $escaper->escapeHtml(__('legal_terms_returns_title')) ?></h2>
+    <p><?= $escaper->escapeHtml(__('legal_terms_returns_content')) ?></p>
+
+    <h2><?= $escaper->escapeHtml(__('legal_terms_contact_title')) ?></h2>
+    <p><?= $escaper->escapeHtml(__('legal_terms_contact_content')) ?></p>
+</div>

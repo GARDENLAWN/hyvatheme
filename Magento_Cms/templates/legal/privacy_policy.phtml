@@ -1,0 +1,37 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+?>
+<div class="privacy-policy-container prose max-w-none">
+    <h1><?= $escaper->escapeHtml(__('legal_privacy_title')) ?></h1>
+    <p><?= $escaper->escapeHtml(__('legal_privacy_intro')) ?></p>
+
+    <h2><?= $escaper->escapeHtml(__('legal_privacy_admin_title')) ?></h2>
+    <p><?= $escaper->escapeHtml(__('legal_privacy_admin_content')) ?></p>
+
+    <h2><?= $escaper->escapeHtml(__('legal_privacy_account_title')) ?></h2>
+    <p><?= $escaper->escapeHtml(__('legal_privacy_account_content')) ?></p>
+    <ul>
+        <li><?= $escaper->escapeHtml(__('legal_privacy_account_li1')) ?></li>
+        <li><?= $escaper->escapeHtml(__('legal_privacy_account_li2')) ?></li>
+        <li><?= $escaper->escapeHtml(__('legal_privacy_account_li3')) ?></li>
+    </ul>
+
+    <h2><?= $escaper->escapeHtml(__('legal_privacy_purposes_title')) ?></h2>
+    <p><?= $escaper->escapeHtml(__('legal_privacy_purposes_content')) ?></p>
+
+    <h2><?= $escaper->escapeHtml(__('legal_privacy_rights_title')) ?></h2>
+    <p><?= $escaper->escapeHtml(__('legal_privacy_rights_content')) ?></p>
+
+    <h2><?= $escaper->escapeHtml(__('legal_privacy_contact_title')) ?></h2>
+    <p><?= $escaper->escapeHtml(__('legal_privacy_contact_content')) ?></p>
+</div>

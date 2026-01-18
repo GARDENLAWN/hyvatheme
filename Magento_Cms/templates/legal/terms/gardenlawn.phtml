@@ -1,0 +1,1179 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+?>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #f3f4f6;
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .regulamin-scope {
+        background-color: #ffffff;
+        color: #374151;
+        line-height: 1.75;
+        padding: 40px;
+        max-width: 900px;
+        margin: 40px auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .regulamin-scope * {
+        box-sizing: border-box;
+    }
+
+    .regulamin-scope h1, .regulamin-scope h2, .regulamin-scope h3, .regulamin-scope h4 {
+        color: #111827;
+        font-weight: 700;
+        line-height: 1.3;
+        margin-top: 2em;
+        margin-bottom: 1em;
+    }
+
+    .regulamin-scope .regulamin-main-title {
+        font-size: 2rem;
+        text-align: center;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 1.5rem;
+        margin-bottom: 2.5rem;
+        margin-top: 0;
+        font-variant: normal;
+    }
+
+    .regulamin-scope .regulamin-h2 {
+        font-size: 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 0.5rem;
+        margin-top: 3rem;
+        font-variant: normal;
+    }
+
+    .regulamin-scope .regulamin-h3 {
+        font-size: 1.25rem;
+        margin-top: 1.5rem;
+    }
+
+    .regulamin-scope p, .regulamin-scope li {
+        margin-bottom: 1em;
+        font-size: 1rem;
+        text-align: left;
+    }
+
+    .regulamin-scope ul, .regulamin-scope ol {
+        padding-left: 1.5rem;
+    }
+
+    .regulamin-scope a {
+        color: #2563eb;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .regulamin-scope a:hover {
+        color: #1d4ed8;
+        text-decoration: underline;
+    }
+
+    /* TOC */
+    .regulamin-scope .regulamin-toc {
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .regulamin-scope .regulamin-toc .regulamin-h3 {
+        margin-top: 0;
+        text-align: center;
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+        border-bottom: none;
+    }
+
+    .regulamin-scope .regulamin-toc ol {
+        columns: 2;
+        column-gap: 2rem;
+        list-style-position: inside;
+    }
+
+    .regulamin-scope .regulamin-toc ol li {
+        margin-bottom: 0.5rem;
+        break-inside: avoid;
+    }
+
+    @media (max-width: 768px) {
+        .regulamin-scope .regulamin-toc ol {
+            columns: 1;
+        }
+    }
+
+    /* Tables */
+    .regulamin-scope table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2rem 0;
+        font-size: 0.95rem;
+        display: block;
+        overflow-x: auto;
+        border: 1px solid #d1d5db;
+    }
+
+    .regulamin-scope table td, .regulamin-scope table th {
+        border: 1px solid #d1d5db;
+        padding: 0.75rem 1rem;
+        vertical-align: top;
+        min-width: 150px;
+    }
+
+    .regulamin-scope table tr:nth-child(even) {
+        background-color: #f9fafb;
+    }
+
+    .regulamin-scope table td p {
+        margin: 0;
+    }
+
+    /* Special elements */
+    .regulamin-scope .regulamin-prokonsumencki-info {
+        font-style: italic;
+        text-align: center;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        background-color: #eff6ff;
+        border-left: 4px solid #3b82f6;
+        border-radius: 4px;
+        font-size: 0.95rem;
+        color: #1e40af;
+    }
+
+    .regulamin-scope .regulamin-form-example {
+        border: 2px dashed #d1d5db;
+        padding: 2rem;
+        margin-top: 2rem;
+        background-color: #f9fafb;
+        border-radius: 8px;
+    }
+
+    .regulamin-scope .regulamin-center {
+        text-align: center;
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+        .regulamin-scope {
+            padding: 20px;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .regulamin-scope .regulamin-main-title {
+            font-size: 1.5rem;
+        }
+
+        .regulamin-scope .regulamin-h2 {
+            font-size: 1.25rem;
+        }
+    }
+
+    .regulamin-back-to-top {
+        display: inline-block;
+        margin-top: 1rem;
+        font-size: 0.875rem;
+        color: #6b7280;
+        float: right;
+    }
+
+    .regulamin-back-to-top:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+</style>
+<div class="regulamin-scope" id="top">
+    <h1 class="regulamin-main-title">Regulamin Sklepu Internetowego<br>GARDENLAWN.PL</h1>
+
+    <div class="regulamin-toc">
+        <h3 class="regulamin-h3">Spis Treści</h3>
+        <ol>
+            <li><a href="#sec1">Postanowienia ogólne</a></li>
+            <li><a href="#sec2">Usługi elektroniczne w sklepie internetowym</a></li>
+            <li><a href="#sec3">Warunki zawierania umowy sprzedaży</a></li>
+            <li><a href="#sec4">Sposoby i terminy płatności za produkt</a></li>
+            <li><a href="#sec5">Koszt, sposoby i termin dostawy oraz odbioru produktu</a></li>
+            <li><a href="#sec6">Procedura rozpatrywania reklamacji</a></li>
+            <li><a href="#sec7">Pozasądowe sposoby rozpatrywania reklamacji</a></li>
+            <li><a href="#sec8">Prawo odstąpienia od umowy</a></li>
+            <li><a href="#sec9">Postanowienia dotyczące przedsiębiorców</a></li>
+            <li><a href="#sec10">Opinie o produktach</a></li>
+            <li><a href="#sec11">Nielegalne treści i inne treści niezgodne z regulaminem</a></li>
+            <li><a href="#sec12">Postanowienia końcowe</a></li>
+            <li><a href="#sec13">Wzór formularza odstąpienia od umowy</a></li>
+        </ol>
+    </div>
+
+    <p class="regulamin-p regulamin-prokonsumencki-info">
+        <em>Ten <a href="https://prokonsumencki.pl/">Regulamin Sklepu Internetowego</a> został przygotowany przez
+            prawników serwisu <a href="https://prokonsumencki.pl/">Prokonsumencki.pl</a>. Sklep Internetowy
+            www.gardenlawn.pl dba o prawa konsumenta. Konsument nie może zrzec się praw przyznanych mu w Ustawie o
+            Prawach Konsumenta. Postanowienia umów mniej korzystne dla konsumenta niż postanowienia Ustawy o Prawach
+            Konsumenta są nieważne, a w ich miejsce stosuje się przepisy Ustawy o Prawach Konsumenta. Dlatego też
+            postanowienia niniejszego Regulaminu nie mają na celu wyłączać ani ograniczać jakichkolwiek praw konsumentów
+            przysługujących im na mocy bezwzględnie wiążących przepisów prawa, a wszelkie ewentualne wątpliwości należy
+            tłumaczyć na korzyść konsumenta. W przypadku ewentualnej niezgodności postanowień niniejszego Regulaminu z
+            powyższymi przepisami, pierwszeństwo mają te przepisy i należy je stosować.</em>
+    </p>
+
+    <h2 id="sec1" class="regulamin-h2">1. Postanowienia ogólne</h2>
+    <p class="regulamin-p"><strong>1.1.</strong> Sklep Internetowy dostępny pod adresem internetowym www.gardenlawn.pl
+        prowadzony jest przez MARCINA PIECHOTĘ prowadzącego działalność gospodarczą pod firmą GARDEN LAWN &amp;
+        IRRIGATION MARCIN PIECHOTA wpisanego do Centralnej Ewidencji i Informacji o Działalności Gospodarczej
+        Rzeczypospolitej Polskiej prowadzonej przez ministra właściwego do spraw gospodarki, posiadającego: adres
+        miejsca wykonywania działalności i <u>adres do doręczeń</u>: ul. Namysłowska 2, 46-081 Dobrzeń Wielki, NIP:
+        9910370112, REGON: 383643646, adres poczty elektronicznej: sklep@gardenlawn.pl, numer telefonu: 795-997-947.</p>
+    <p class="regulamin-p"><strong>1.2.</strong> Niniejszy Regulamin skierowany jest zarówno do konsumentów, jak i do
+        przedsiębiorców korzystających ze Sklepu Internetowego, chyba że dane postanowienie Regulaminu stanowi inaczej.
+    </p>
+    <p class="regulamin-p"><strong>1.3.</strong> Administratorem danych osobowych przetwarzanych w Sklepie Internetowym
+        w związku z realizacją postanowień niniejszego Regulaminu jest Sprzedawca. Dane osobowe przetwarzane są w
+        celach, przez okres i w oparciu o podstawy i zasady wskazane w <strong>polityce prywatności</strong>
+        opublikowanej na stronie Sklepu Internetowego. Polityka prywatności zawiera przede wszystkim zasady dotyczące
+        przetwarzania danych osobowych przez Administratora w Sklepie Internetowym, w tym podstawy, cele i okres
+        przetwarzania danych osobowych oraz prawa osób, których dane dotyczą, a także informacje w zakresie stosowania w
+        Sklepie Internetowym plików cookies oraz narzędzi analitycznych. Korzystanie ze Sklepu Internetowego, w tym
+        dokonywanie zakupów jest dobrowolne. Podobnie związane z tym podanie danych osobowych przez korzystającego ze
+        Sklepu Internetowego Usługobiorcę lub Klienta jest dobrowolne, z zastrzeżeniem wyjątków wskazanych w polityce
+        prywatności (zawarcie umowy oraz obowiązki ustawowe Sprzedawcy).</p>
+
+    <h3 class="regulamin-h3">1.4. Definicje:</h3>
+    <p class="regulamin-p">1.4.1. <strong>AKT O USŁUGACH CYFROWYCH, AKT</strong> – rozporządzenie Parlamentu
+        Europejskiego i Rady (UE) 2022/2065 z dnia 19 października 2022 r. w sprawie jednolitego rynku usług cyfrowych
+        oraz zmiany dyrektywy 2000/31/WE (akt o usługach cyfrowych) (Dz.U. L 277 z 27.10.2022, s. 1–102).</p>
+    <p class="regulamin-p">1.4.2. <strong>CHAT</strong> – Usługa Elektroniczna, interaktywny formularz dostępny w
+        Sklepie Internetowy umożliwiający bezpośredni kontakt z Usługodawcą.</p>
+    <p class="regulamin-p">1.4.3. <strong>DZIEŃ ROBOCZY</strong> – jeden dzień od poniedziałku do piątku z wyłączeniem
+        dni ustawowo wolnych od pracy.</p>
+    <p class="regulamin-p">1.4.4. <strong>FORMULARZ KONTAKTOWY</strong> – Usługa Elektroniczna, interaktywny formularz
+        dostępny w Sklepie Internetowym umożliwiający bezpośredni kontakt z Usługodawcą.</p>
+    <p class="regulamin-p">1.4.5. <strong>FORMULARZ REJESTRACJI</strong> – formularz dostępny w Sklepie Internetowym
+        umożliwiający utworzenie Konta.</p>
+    <p class="regulamin-p">1.4.6. <strong>FORMULARZ ZAMÓWIENIA</strong> – Usługa Elektroniczna, interaktywny formularz
+        dostępny w Sklepie Internetowym umożliwiający złożenie Zamówienia, w szczególności poprzez dodanie Produktów do
+        elektronicznego koszyka oraz określenie warunków Umowy Sprzedaży, w tym sposobu dostawy i płatności.</p>
+    <p class="regulamin-p">1.4.7. <strong>KLIENT</strong> – (1) osoba fizyczna posiadająca pełną zdolność do czynności
+        prawnych, a w wypadkach przewidzianych przez przepisy powszechnie obowiązujące także osoba fizyczna posiadająca
+        ograniczoną zdolność do czynności prawnych; (2) osoba prawna; albo (3) jednostka organizacyjna nieposiadająca
+        osobowości prawnej, której ustawa przyznaje zdolność prawną – która zawarła lub zamierza zawrzeć Umowę Sprzedaży
+        ze Sprzedawcą.</p>
+    <p class="regulamin-p">1.4.8. <strong>KODEKS CYWILNY</strong> – ustawa Kodeks cywilny z dnia 23 kwietnia 1964 r.
+        (Dz.U. 1964 nr 16, poz. 93 ze zm.).</p>
+    <p class="regulamin-p">1.4.9. <strong>KONTO</strong> – Usługa Elektroniczna, oznaczony indywidualną nazwą (loginem)
+        i hasłem podanym przez Usługobiorcę zbiór zasobów w systemie teleinformatycznym Usługodawcy, w którym gromadzone
+        są dane podane przez Usługobiorcę oraz informacje o złożonych przez niego Zamówieniach w Sklepie Internetowym.
+    </p>
+    <p class="regulamin-p">1.4.10. <strong>NEWSLETTER</strong> – Usługa Elektroniczna, elektroniczna usługa
+        dystrybucyjna świadczona przez Usługodawcę za pośrednictwem poczty elektronicznej e-mail, która umożliwia
+        wszystkim korzystającym z niej Usługobiorcom automatyczne otrzymywanie od Usługodawcy cyklicznych treści
+        kolejnych edycji newslettera zawierającego informacje o Produktach, nowościach i promocjach w Sklepie
+        Internetowym.</p>
+    <p class="regulamin-p">1.4.11. <strong>NIELEGALNE TREŚCI</strong> – informacje, które same w
+        sobie lub przez odniesienie do działania, w tym sprzedaży Produktów lub świadczenia Usług Elektronicznych, nie
+        są zgodne z prawem Unii Europejskiej lub z prawem jakiegokolwiek państwa członkowskiego, które jest zgodne z
+        prawem Unii Europejskiej, niezależnie od konkretnego przedmiotu lub charakteru tego prawa.</p>
+    <p class="regulamin-p">1.4.12. <strong>PRODUKT</strong> – (1) rzecz ruchoma (w tym rzecz ruchoma z elementami
+        cyfrowymi, tj. zawierająca treść cyfrową lub usługę cyfrową lub z nimi połączona w taki sposób, że brak treści
+        cyfrowej lub usługi cyfrowej uniemożliwiłby jej prawidłowe funkcjonowanie), (2) treść cyfrowa, (3) usługa (w tym
+        usługa cyfrowa i inna niż cyfrowa) lub (4) prawo będące przedmiotem Umowy Sprzedaży między Klientem a
+        Sprzedawcą.</p>
+    <p class="regulamin-p">1.4.13. <strong>REGULAMIN</strong> – niniejszy regulamin Sklepu Internetowego.</p>
+    <p class="regulamin-p">1.4.14. <strong>SKLEP INTERNETOWY</strong> – sklep internetowy Usługodawcy dostępny pod
+        adresem internetowym: www.gardenlawn.pl.</p>
+    <p class="regulamin-p">1.4.15. <strong>SPRZEDAWCA; USŁUGODAWCA</strong> – MARCIN PIECHOTA prowadzący działalność
+        gospodarczą pod firmą GARDEN LAWN &amp; IRRIGATION MARCIN PIECHOTA wpisany do Centralnej Ewidencji i Informacji
+        o Działalności Gospodarczej Rzeczypospolitej Polskiej prowadzonej przez ministra właściwego do spraw gospodarki,
+        posiadający: adres miejsca wykonywania działalności i <u>adres do doręczeń</u>: ul. Namysłowska 2, 46-081
+        Dobrzeń Wielki, NIP: 9910370112, REGON: 383643646, adres poczty elektronicznej: sklep@gardenlawn.pl, numer
+        telefonu: 795-997-947.</p>
+    <p class="regulamin-p">1.4.16. <strong>UMOWA SPRZEDAŻY</strong> – (1) umowa sprzedaży Produktu (w przypadku rzeczy
+        ruchomych oraz rzeczy ruchomych z elementami cyfrowymi), (2) umowa o dostarczanie Produktu (w przypadku treści
+        cyfrowej lub usługi cyfrowej), (3) umowa o świadczenie lub korzystanie z Produktu (w przypadku usługi innej niż
+        cyfrowa oraz pozostałych Produktów) zawierana albo zawarta między Klientem a Sprzedawcą za pośrednictwem Sklepu
+        Internetowego.</p>
+    <p class="regulamin-p">1.4.17. <strong>USŁUGA ELEKTRONICZNA</strong> – usługa świadczona drogą elektroniczną przez
+        Usługodawcę na rzecz Usługobiorcy za pośrednictwem Sklepu Internetowego i niebędąca Produktem.</p>
+    <p class="regulamin-p">1.4.18. <strong>USŁUGOBIORCA</strong> – (1) osoba fizyczna posiadająca pełną zdolność do
+        czynności prawnych, a w wypadkach przewidzianych przez przepisy powszechnie obowiązujące także osoba fizyczna
+        posiadająca ograniczoną zdolność do czynności prawnych; (2) osoba prawna; albo (3) jednostka organizacyjna
+        nieposiadająca osobowości prawnej, której ustawa przyznaje zdolność prawną –korzystająca lub zamierzająca
+        korzystać z Usługi Elektronicznej.</p>
+    <p class="regulamin-p">1.4.19. <strong>USTAWA O PRAWACH KONSUMENTA</strong> – ustawa z dnia 30 maja 2014 r. o
+        prawach konsumenta (Dz.U. 2014 poz. 827 ze zm.)</p>
+    <p class="regulamin-p">1.4.20. <strong>WHATSAPP</strong> - komunikator, który dostarczany jest przez Meta Platforms
+        Ireland Ltd. (4 Grand Canal Square, Grand Canal Harbour, Dublin 2 Ireland), który pełni funkcję Chatu w Sklepie
+        Internetowym Usługodawcy.</p>
+    <p class="regulamin-p">1.4.21. <strong>ZAMÓWIENIE</strong> – oświadczenie woli Klienta składane za pomocą Formularza
+        Zamówienia i zmierzające bezpośrednio do zawarcia Umowy Sprzedaży Produktu ze Sprzedawcą.</p>
+    <a href="#top" class="regulamin-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec2" class="regulamin-h2">2. Usługi elektroniczne w sklepie internetowym</h2>
+    <p class="regulamin-p"><strong>2.1.</strong> W Sklepie Internetowym dostępne są następujące Usługi Elektroniczne:
+        Chat, Formularz Kontaktowy, Formularz Zamówienia, Konto oraz Newsletter.</p>
+    <p class="regulamin-p">2.1.1. <strong>Chat</strong> - korzystanie z Chatu możliwe jest po wykonaniu łącznie czterech
+        kolejnych kroków przez Usługobiorcę - (1) kliknięciu pola przedstawiającego słuchawkę telefonu stacjonarnego,
+        (2) wpisaniu treści wiadomości; (3) kliknięciu pola akcji na klawiaturze oraz (4) postępowania zgodnie z
+        komunikatami wyświetlanymi na ekranie.</p>
+    <p class="regulamin-p">2.1.1.1. Usługobiorca korzystając z Chatu akceptuje regulamin oraz politykę prywatności
+        właściciela Whatsapp.</p>
+    <p class="regulamin-p">2.1.1.2. Usługa Elektroniczna Chat świadczona jest nieodpłatnie oraz ma charakter jednorazowy
+        i ulega zakończeniu z chwilą zakończenia prowadzenia rozmowy przez Usługobiorcę i Usługodawcę za jego
+        pośrednictwem albo z chwilą wcześniejszego zaprzestania składania zapytania za jego pośrednictwem przez
+        Usługobiorcę lub Usługodawcę.</p>
+    <p class="regulamin-p">2.1.2. <strong>Formularz Kontaktowy</strong> – korzystanie z Formularza Kontaktowego
+        rozpoczyna się po wykonaniu przez Usługobiorcę łącznie dwóch kolejnych kroków – (1) przejścia do zakładki
+        „Kontakt” i (2) kliknięciu na stronie Sklepu Internetowego po wypełnieniu Formularza Kontaktowego pole „<strong>Wyślij</strong>”.
+        W Formularzu Kontaktowym niezbędne jest podanie przez Usługobiorcę następujących danych: nazwa, adres poczty
+        elektronicznej oraz wpisanie treści zapytania.</p>
+    <p class="regulamin-p">2.1.2.1. Usługa Formularza Kontaktowego świadczona jest nieodpłatnie oraz ma charakter
+        jednorazowy i ulega zakończeniu z chwilą przesłania zapytania.</p>
+    <p class="regulamin-p">2.1.3. <strong>Formularz Zamówienia – </strong>korzystanie z Formularza Zamówienia rozpoczyna
+        się z momentem dodania przez Klienta pierwszego Produktu do elektronicznego koszyka w Sklepie Internetowym.
+        Złożenie Zamówienia następuje po wykonaniu przez Klienta łącznie dwóch kolejnych kroków – (1) po wypełnieniu
+        Formularza Zamówienia i (2) kliknięciu na stronie Sklepu Internetowego po wypełnieniu Formularza Zamówienia pola
+        „<strong>Kupuję i płacę</strong>” – do tego momentu istnieje możliwość samodzielnej modyfikacji wprowadzanych
+        danych (w tym celu należy kierować się wyświetlanymi komunikatami oraz informacjami dostępnymi na stronie Sklepu
+        Internetowego). W Formularzu Zamówienia niezbędne jest podanie przez Klienta następujących danych dotyczących
+        Klienta: imię i nazwisko/nazwa firmy, adres (ulica, numer domu/mieszkania, kod pocztowy, miejscowość, kraj),
+        adres poczty elektronicznej, numer telefonu kontaktowego oraz danych dotyczących Umowy Sprzedaży: Produkt/y,
+        ilość Produktu/ów, miejsce i sposób dostawy Produktu/ów, sposób płatności. W wypadku Klientów niebędących
+        konsumentami niezbędne jest także podanie nazwy firmy oraz numeru NIP.</p>
+    <p class="regulamin-p">2.1.3.1. Usługa Elektroniczna Formularz Zamówienia świadczona jest nieodpłatnie oraz ma
+        charakter jednorazowy i ulega zakończeniu z chwilą złożenia Zamówienia za jego pośrednictwem albo z chwilą
+        wcześniejszego zaprzestania składania Zamówienia za jego pośrednictwem przez Usługobiorcę.</p>
+    <p class="regulamin-p">2.1.4. <strong>Konto</strong> – korzystanie z Konta możliwe jest po wykonaniu łącznie trzech
+        kolejnych kroków przez Usługobiorcę – (1) wypełnieniu Formularza Rejestracji, (2) kliknięciu pola
+        „<strong>Utwórz konto</strong>”, oraz (3) kliknięciu linka aktywacyjnego, który automatycznie zostaje doręczony
+        Usługobiorcy na wskazany przez niego adres poczty elektronicznej. W Formularzu Rejestracji niezbędne jest
+        podanie przez Usługobiorcę następujących danych Usługobiorcy: adres poczty elektronicznej oraz hasło.</p>
+    <p class="regulamin-p">2.1.4.1. Usługa Elektroniczna Konto świadczona jest nieodpłatnie przez czas nieoznaczony.
+        Usługobiorca ma możliwość, w każdej chwili i bez podania przyczyny, usunięcia Konta (rezygnacji z Konta) poprzez
+        wysłanie stosownego żądania do Usługodawcy, w szczególności za pośrednictwem poczty elektronicznej na adres:
+        sklep@gardenlawn.pl lub też pisemnie na adres: ul. Namysłowska 2, 46-081 Dobrzeń Wielki.</p>
+    <p class="regulamin-p">2.1.5. <strong>Newsletter</strong> – korzystanie z Newslettera możliwe jest poprzez - (1)
+        zaznaczenie odpowiedniego checkboxa w trakcie zakładania Konta – z chwilą utworzenia Konta Usługobiorca zostaje
+        zapisany na Newsletter, (2) zaznaczenie odpowiedniego checkboxa w ustawieniach Konta – z chwilą kliknięcia pola
+        „<strong>Zapisz</strong>” Usługobiorca zostaje zapisany na Newsletter, (3) zaznaczenie odpowiedniego checkboxa w
+        trakcie składania Zamówienia za pośrednictwem Formularza Zamówienia – z chwilą złożenia Zamówienia Usługobiorca
+        zostaje zapisany na Newsletter.</p>
+    <p class="regulamin-p">2.1.5.1. Usługa Elektroniczna Newsletter świadczona jest nieodpłatnie przez czas
+        nieoznaczony. Usługobiorca ma możliwość, w każdej chwili i bez podania przyczyny, wypisania się z Newslettera
+        (rezygnacji z Newslettera) poprzez (1) wysłanie stosownego żądania do Usługodawcy, w szczególności za
+        pośrednictwem
+        poczty elektronicznej na adres: sklep@gardenlawn.pl lub też pisemnie na adres: ul. Namysłowska 2, 46-081 Dobrzeń
+        Wielki, (2) zaznaczenie odpowiedniego checkboxa w ustawieniach Konta – z chwilą kliknięcia pola „Zapisz”
+        Usługobiorca zostaje wypisany z Newslettera.</p>
+    <p class="regulamin-p"><strong>2.2.</strong> Wymagania techniczne niezbędne do współpracy z systemem
+        teleinformatycznym, którym posługuje się Usługodawca: (1) komputer, laptop lub inne urządzenie multimedialne z
+        dostępem do Internetu; (2) dostęp do poczty elektronicznej; (3) przeglądarka internetowa w aktualnej wersji:
+        Mozilla Firefox; Opera; Google Chrome; Safari; Microsoft Edge; (4) zalecana minimalna rozdzielczość ekranu:
+        1024x768; (5) włączenie w przeglądarce internetowej możliwości zapisu plików Cookies oraz obsługi Javascript.
+    </p>
+    <p class="regulamin-p"><strong>2.3.</strong> Usługobiorca obowiązany jest do korzystania ze Sklepu Internetowego w
+        sposób zgodny z prawem i dobrymi obyczajami mając na uwadze poszanowanie dóbr osobistych oraz praw autorskich i
+        własności intelektualnej Usługodawcy oraz osób trzecich. Usługobiorca obowiązany jest do wprowadzania danych
+        zgodnych ze stanem faktycznym. Usługobiorcę obowiązuje zakaz dostarczania treści o charakterze bezprawnym, w tym
+        Nielegalnych Treści.</p>
+    <p class="regulamin-p"><strong>2.4.</strong> Tryb postępowania reklamacyjnego dotyczący Usług Elektronicznych
+        wskazany jest w punkcie 6. Regulaminu.</p>
+    <a href="#top" class="regulamin-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec3" class="regulamin-h2">3. Warunki zawierania umowy sprzedaży</h2>
+    <p class="regulamin-p"><strong>3.1.</strong> Zawarcie Umowy Sprzedaży między Klientem a Sprzedawcą następuje po
+        uprzednim złożeniu przez Klienta Zamówienia za pomocą Formularza Zamówień w Sklepie Internetowym zgodnie z
+        punktem 2.1.3. Regulaminu.</p>
+    <p class="regulamin-p"><strong>3.2.</strong> Cena Produktu lub
+        wynagrodzenie za produkt uwidoczniona na stronie Sklepu Internetowego podane jest w złotych polskich i
+        zawiera podatki. O łącznej cenie lub wynagrodzeniu wraz z podatkami, a gdy charakter Produktu nie pozwala,
+        rozsądnie oceniając, na wcześniejsze obliczenie
+        wysokości – sposobie, w jaki będą one obliczane, a także o kosztach dostawy (w tym opłatach za
+        transport, dostarczenie lub usługi pocztowe) oraz o innych kosztach, a gdy nie można
+        ustalić wysokości tych opłat – o obowiązku ich uiszczenia, Klient jest informowany na stronach Sklepu
+        Internetowego, w tym także w trakcie składania Zamówienia oraz w chwili wyrażenia przez Klienta woli związania
+        się Umową Sprzedaży. W razie Umowy Sprzedaży Produktu zawieranej na czas nieoznaczony lub obejmującej
+        prenumeratę Sprzedawca podaje w ten sam sposób łączną cenę lub wynagrodzenie obejmujące wszystkie płatności
+        za okres rozliczeniowy, a gdy Umowa Sprzedaży przewiduje stałą stawkę - także łączne miesięczne
+        płatności.</p>
+
+    <h3 class="regulamin-h3">3.3. Procedura zawarcia Umowy Sprzedaży w Sklepie Internetowym za pomocą Formularza
+        Zamówienia</h3>
+    <p class="regulamin-p">3.3.1. Zawarcie Umowy Sprzedaży między Klientem a Sprzedawcą następuje po uprzednim złożeniu
+        przez Klienta Zamówienia w Sklepie Internetowym zgodnie z punktem 2.1.3. Regulaminu.</p>
+    <p class="regulamin-p">3.3.2. Po złożeniu Zamówienia Sprzedawca niezwłocznie potwierdza jego otrzymanie oraz
+        jednocześnie przyjmuje Zamówienie do realizacji. Potwierdzenie otrzymania Zamówienia i jego przyjęcie do
+        realizacji następuje poprzez przesłanie przez Sprzedawcę Klientowi stosownej wiadomości e-mail na podany w
+        trakcie składania Zamówienia adres poczty elektronicznej Klienta, która zawiera co najmniej oświadczenia
+        Sprzedawcy o otrzymaniu Zamówienia i o jego przyjęciu do realizacji oraz potwierdzenie zawarcia Umowy Sprzedaży.
+        Z chwilą otrzymania przez Klienta powyższej wiadomości e-mail zostaje zawarta Umowa Sprzedaży między Klientem a
+        Sprzedawcą.</p>
+    <p class="regulamin-p"><strong>3.4.</strong> Utrwalenie, zabezpieczenie oraz udostępnienie Klientowi treści
+        zawieranej Umowy Sprzedaży następuje poprzez (1) udostępnienie niniejszego Regulaminu na stronie Sklepu
+        Internetowego oraz (2) przesłanie Klientowi wiadomości e-mail, o której mowa w punkcie 3.3.2. Regulaminu. Treść
+        Umowy Sprzedaży jest dodatkowo utrwalona i zabezpieczona w systemie informatycznym Sklepu Internetowego
+        Sprzedawcy.</p>
+    <a href="#top" class="regulamin-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec4" class="regulamin-h2">4. Sposoby i terminy płatności za produkt</h2>
+    <p class="regulamin-p"><strong>4.1.</strong> Sprzedawca udostępnia Klientowi następujące sposoby płatności z tytułu
+        Umowy Sprzedaży:</p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">4.1.1. Płatność gotówką za pobraniem przy odbiorze przesyłki.</li>
+        <li class="regulamin-li">4.1.2. Płatność gotówką przy odbiorze osobistym.</li>
+        <li class="regulamin-li">4.1.3. Płatność przelewem na rachunek bankowy Sprzedawcy.</li>
+        <li class="regulamin-li">4.1.4. Płatności elektroniczne i płatności kartą płatniczą za pośrednictwem serwisu
+            PayNow oraz PayPal.com – możliwe aktualne sposoby płatności określone są na stronie Sklepu Internetowego w
+            zakładce informacyjnej dotyczącej sposobów płatności oraz na stronie internetowej https://www.paynow.pl/
+            oraz https://www.paypal.com/pl.
+            <ul class="regulamin-ul">
+                <li class="regulamin-li">4.1.4.1. Rozliczenia transakcji płatnościami elektronicznymi i kartą płatniczą
+                    przeprowadzane są zgodnie z wyborem Klienta. Obsługę płatności elektronicznych i kartą płatniczą
+                    prowadzi:
+                </li>
+                <li class="regulamin-li">4.1.4.1.1. Paynow.pl - spółka MBANK SPÓŁKA AKCYJNA z siedzibą w Warszawie
+                    (adres siedziby: ul. Prosta 18, 00-850 Warszawa), wpisana do Rejestru Przedsiębiorców Krajowego
+                    Rejestru Sądowego pod numerem 0000025237, akta rejestrowe przechowywane przez Sąd Rejonowy dla m.st.
+                    Warszawy w Warszawie XII Wydział Gospodarczy Krajowego Rejestru Sądowego, kapitał 169.539.536,00 zł
+                    w całości opłacony, NIP: 5260215088, REGON: 001254524.
+                </li>
+                <li class="regulamin-li">4.1.4.1.2. InPost spółka z ograniczoną odpowiedzialnością z siedzibą w
+                    Krakowie, przy ul. Pana Tadeusza 4, 30-727 Kraków, wpisana do rejestru przedsiębiorców prowadzonego
+                    przez Sąd Rejonowy dla Krakowa – Śródmieścia w Krakowie, XI Wydział Gospodarczy Krajowego Rejestru
+                    Sądowego pod numerem KRS 0000543759, NIP: 6793108059 oraz REGON: 360781085.
+                </li>
+            </ul>
+        </li>
+        <li class="regulamin-li">4.1.5. Płatności w systemie ratalnym.
+            <ul class="regulamin-ul">
+                <li class="regulamin-li">4.1.5.1. Płatność odbywa się w całości lub części ze środków pochodzących z
+                    kredytu udzielonego przez jeden z następujących podmiotów:
+                </li>
+                <li class="regulamin-li">4.1.5.1.1. Santander Consumer Bank S.A. z siedzibą we Wrocławiu ul. Legnicka 48
+                    B, zarejestrowany w Krajowym Rejestrze Sądowym przez Sąd Rejonowy dla Wrocławia-Fabrycznej, VI
+                    Wydział Gospodarczy Krajowego Rejestru Sądowego pod numerem KRS 0000040562, o kapitale zakładowym
+                    wpłaconym w całości w wysokości 520.000.000,00 zł, REGON: 012736938, NIP: 527-20-46-102.
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3 class="regulamin-h3">4.2. Termin płatności:</h3>
+    <p class="regulamin-p">4.2.1. W przypadku wyboru przez Klienta płatności przelewem, płatności elektronicznych albo
+        płatności kartą płatniczą, Klient obowiązany jest do dokonania płatności w terminie 7 dni kalendarzowych od dnia
+        zawarcia Umowy Sprzedaży.</p>
+    <p class="regulamin-p">4.2.2. W przypadku wyboru przez Klienta płatności gotówką za pobraniem przy odbiorze
+        przesyłki albo płatności gotówką przy odbiorze osobistym, Klient obowiązany jest do dokonania płatności przy
+        odbiorze przesyłki.</p>
+    <a href="#top" class="regulamin-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec5" class="regulamin-h2">5. Koszt, sposoby i termin dostawy oraz odbioru produktu</h2>
+    <p class="regulamin-p"><strong>5.1.</strong> Dostawa Produktu dostępna jest na terytorium Rzeczypospolitej Polskiej
+        oraz poza jej granicami.</p>
+    <p class="regulamin-p"><strong>5.2.</strong> Dostawa Produktu do Klienta jest odpłatna, chyba że Umowa Sprzedaży
+        stanowi inaczej. Koszty dostawy Produktu (w tym opłaty za transport, dostarczenie i usługi pocztowe) są
+        wskazywane Klientowi na stronach Sklepu Internetowego w zakładce informacyjnej dotyczącej kosztów dostawy oraz w
+        trakcie składania Zamówienia, w tym także w chwili wyrażenia przez Klienta woli związania się Umową Sprzedaży.
+    </p>
+    <p class="regulamin-p"><strong>5.3.</strong> Odbiór osobisty Produktu przez Klienta jest bezpłatny.</p>
+    <p class="regulamin-p"><strong>5.4.</strong> Sprzedawca udostępnia Klientowi następujące sposoby dostawy lub odbioru
+        Produktu:</p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">5.4.1. Przesyłka pocztowa, przesyłka pocztowa pobraniowa.</li>
+        <li class="regulamin-li">5.4.2. Przesyłka kurierska, przesyłka kurierska pobraniowa.</li>
+        <li class="regulamin-li">5.4.3. Przesyłka paczkomatowa (odbiór w punkcie).</li>
+        <li class="regulamin-li">5.4.4. Przesyłka paletowa.</li>
+        <li class="regulamin-li">5.4.5. Spedycja.
+            <ul class="regulamin-ul">
+                <li class="regulamin-li">5.4.5.1. Sposób dostawy, o którym mowa w punkcie 5.4.5. Regulaminu obejmuje
+                    zorganizowanie przez Sprzedawcę spedytorów oraz łączonych transportów.
+                </li>
+            </ul>
+        </li>
+        <li class="regulamin-li">5.4.6. Odbiór osobisty dostępny pod adresem:
+            <ul class="regulamin-ul">
+                <li class="regulamin-li">5.4.6.1. dla Produktów z kategorii „Sprzedaż trawy w rolce”: ul. Piaskowa 21,
+                    Turowo, 78-400 Szczecinek – w Dni Robocze, w godzinach od 08:00 do 20:00.
+                </li>
+                <li class="regulamin-li">5.4.6.2. dla Produktów innych niż z kategorii, o której mowa w punkcie 5.4.6.1
+                    Regulaminu: ul. Namysłowska 2, 46-081 Dobrzeń Wielki - w Dni Robocze, w godzinach od 08:00 do 20:00.
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>5.5.</strong> W przypadku Produktów z kategorii „Sprzedaż trawy w rolce” Klient
+        zobowiązany jest do zapewnienia możliwości dojazdu pod adres dostawy ciągnika siodłowego z naczepą o masie
+        własnej 40 ton.</p>
+    <p class="regulamin-p"><strong>5.6.</strong> <strong>Termin dostawy Produktu - z kategorii „Sprzedaż trawy w rolce”
+        - do Klienta na terytorium Rzeczypospolitej Polskiej – </strong>jest indywidualnie ustalany przez Sprzedawcę z
+        Klientem przed zawarciem Umowy Sprzedaży, jednakże wynosi on nie mniej niż 3 Dni Robocze oraz nie więcej niż
+        14 Dni Roboczych, chyba że w opisie danego Produktu lub w trakcie składania Zamówienia podano krótszy termin. W
+        przypadku Produktów o różnych terminach dostawy, terminem dostawy jest najdłuższy podany termin, który jednak
+        nie może przekroczyć 14 Dni Roboczych. Początek biegu terminu dostawy Produktu do Klienta liczy się w
+        następujący
+        sposób:</p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">5.6.1. W przypadku wyboru przez Klienta sposobu płatności przelewem, płatności
+            elektronicznych lub kartą płatniczą – od dnia uznania rachunku bankowego lub rachunku rozliczeniowego
+            Sprzedawcy.
+        </li>
+        <li class="regulamin-li">5.6.2. W przypadku wyboru przez Klienta sposobu płatności gotówką za pobraniem – od
+            dnia zawarcia Umowy Sprzedaży.
+        </li>
+        <li class="regulamin-li">5.6.3. W przypadku wyboru przez Klienta sposobu płatności w systemie ratalnym – od dnia
+            powiadomienia Sprzedawcy przez kredytodawcę o zawarciu z Klientem umowy kredytowej, nie później jednak niż
+            od dnia uznania rachunku bankowego Sprzedawcy środkami z udzielonego Klientowi kredytu.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>5.7.</strong> <strong>Termin dostawy Produktu - innego niż z kategorii, o której mowa
+        w punkcie 5.6. Regulaminu - do Klienta na terytorium Rzeczypospolitej Polskiej – </strong>wynosi do 7 Dni
+        Roboczych, chyba że w opisie danego Produktu lub w trakcie składania Zamówienia podano krótszy termin. W
+        przypadku Produktów o różnych terminach dostawy, terminem dostawy jest najdłuższy podany termin, który jednak
+        nie może przekroczyć 7 Dni Roboczych. Początek biegu terminu dostawy Produktu do Klienta liczy się w następujący
+        sposób:</p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">5.7.1. W przypadku wyboru przez Klienta sposobu płatności przelewem, płatności
+            elektronicznych lub kartą płatniczą – od dnia uznania rachunku bankowego lub rachunku rozliczeniowego
+            Sprzedawcy.
+        </li>
+        <li class="regulamin-li">5.7.2. W przypadku wyboru przez Klienta sposobu płatności gotówką za pobraniem – od
+            dnia zawarcia Umowy Sprzedaży.
+        </li>
+        <li class="regulamin-li">5.7.3. W przypadku wyboru przez Klienta sposobu płatności w systemie ratalnym – od dnia
+            powiadomienia Sprzedawcy przez kredytodawcę o zawarciu z Klientem umowy kredytowej, nie później jednak niż
+            od dnia uznania rachunku bankowego Sprzedawcy środkami z udzielonego Klientowi kredytu.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>5.8.</strong> <strong>Termin dostawy Produktu - z kategorii „Sprzedaż trawy w rolce”
+        - do Klienta poza terytorium Rzeczypospolitej Polskiej – </strong>jest indywidualnie ustalany przez Sprzedawcę z
+        Klientem przed zawarciem Umowy Sprzedaży, jednakże wynosi on nie mniej niż 3 Dni Robocze oraz nie więcej niż
+        14 Dni Roboczych, chyba że w opisie danego Produktu lub w trakcie składania Zamówienia podano krótszy termin. W
+        przypadku Produktów o różnych terminach dostawy, terminem dostawy jest najdłuższy podany termin, który jednak
+        nie może przekroczyć 14 Dni Roboczych. Początek biegu terminu dostawy Produktu do Klienta liczy się w
+        następujący
+        sposób:</p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">5.8.1. W przypadku wyboru przez Klienta sposobu płatności przelewem, płatności
+            elektronicznych lub kartą płatniczą – od dnia uznania rachunku bankowego lub rachunku rozliczeniowego
+            Sprzedawcy.
+        </li>
+        <li class="regulamin-li">5.8.2. W przypadku wyboru przez Klienta sposobu płatności gotówką za pobraniem – od
+            dnia zawarcia Umowy Sprzedaży.
+        </li>
+        <li class="regulamin-li">5.8.3. W przypadku wyboru przez Klienta sposobu płatności w systemie ratalnym – od dnia
+            powiadomienia Sprzedawcy przez kredytodawcę o zawarciu z Klientem umowy kredytowej, nie później jednak niż
+            od dnia uznania rachunku bankowego Sprzedawcy środkami z udzielonego Klientowi kredytu.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>5.9.</strong> <strong>Termin dostawy Produktu - innego niż z kategorii, o której mowa
+        w punkcie 5.8. Regulaminu - do Klienta na terytorium Rzeczypospolitej Polskiej – </strong>wynosi do 15 Dni
+        Roboczych, chyba że w opisie danego Produktu lub w trakcie składania Zamówienia podano krótszy termin. W
+        przypadku Produktów o różnych terminach dostawy, terminem dostawy jest najdłuższy podany termin, który jednak
+        nie może przekroczyć 15 Dni Roboczych. Początek biegu terminu dostawy Produktu do Klienta liczy się w
+        następujący sposób:</p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">5.9.1. W przypadku wyboru przez Klienta sposobu płatności przelewem, płatności
+            elektronicznych lub kartą płatniczą – od dnia uznania rachunku bankowego lub rachunku rozliczeniowego
+            Sprzedawcy.
+        </li>
+        <li class="regulamin-li">5.9.2. W przypadku wyboru przez Klienta sposobu płatności gotówką za pobraniem – od
+            dnia zawarcia Umowy Sprzedaży.
+        </li>
+        <li class="regulamin-li">5.9.3. W przypadku wyboru przez Klienta sposobu płatności w systemie ratalnym – od dnia
+            powiadomienia Sprzedawcy przez kredytodawcę o zawarciu z Klientem umowy kredytowej, nie później jednak niż
+            od dnia uznania rachunku bankowego Sprzedawcy środkami z udzielonego Klientowi kredytu.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>5.10.</strong> <strong>Termin gotowości Produktu - z kategorii „Sprzedaż trawy w
+        rolce” - do odbioru przez Klienta </strong>– w przypadku wyboru przez Klienta odbioru osobistego Produktu,
+        Produkt będzie gotowy do odbioru przez Klienta w terminie do 2 Dni Roboczych, chyba że w opisie danego Produktu
+        lub w trakcie składania Zamówienia podano krótszy termin. W przypadku Produktów o różnych terminach gotowości do
+        odbioru, terminem gotowości do odbioru jest najdłuższy podany termin, który jednak nie może przekroczyć 2 Dni
+        Roboczych. O gotowości Produktu do odbioru Klient zostanie dodatkowo poinformowany przez Sprzedawcę. Początek
+        biegu terminu gotowości Produktu do odbioru przez Klienta liczy się w następujący sposób:</p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">5.10.1. W przypadku wyboru przez Klienta sposobu płatności przelewem, płatności
+            elektronicznych lub kartą płatniczą – od dnia uznania rachunku bankowego lub rachunku rozliczeniowego
+            Sprzedawcy.
+        </li>
+        <li class="regulamin-li">5.10.2. W przypadku wyboru przez Klienta sposobu gotówką przy odbiorze osobistym – od
+            dnia zawarcia Umowy Sprzedaży.
+        </li>
+        <li class="regulamin-li">5.10.3. W przypadku wyboru przez Klienta sposobu płatności w systemie ratalnym – od
+            dnia powiadomienia Sprzedawcy przez kredytodawcę o zawarciu z Klientem umowy kredytowej, nie później jednak
+            niż od dnia uznania rachunku bankowego Sprzedawcy środkami z udzielonego Klientowi kredytu.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>5.11.</strong> <strong>Termin gotowości Produktu - innego niż z kategorii, o której
+        mowa w punkcie 5.10. Regulaminu - do odbioru przez Klienta</strong> – w przypadku wyboru przez Klienta odbioru
+        osobistego Produktu, Produkt będzie gotowy do odbioru przez Klienta w terminie do 3 Dni Roboczych, chyba że w
+        opisie danego Produktu lub w trakcie składania Zamówienia podano krótszy termin. W przypadku Produktów o różnych
+        terminach gotowości do odbioru, terminem gotowości do odbioru jest najdłuższy podany termin, który jednak nie
+        może przekroczyć 3 Dni Roboczych. O gotowości Produktu do odbioru Klient zostanie dodatkowo poinformowany przez
+        Sprzedawcę. Początek biegu terminu gotowości Produktu do odbioru przez Klienta liczy się w następujący sposób:
+    </p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">5.11.1. W przypadku wyboru przez Klienta sposobu płatności przelewem, płatności
+            elektronicznych lub kartą płatniczą – od dnia uznania rachunku bankowego lub rachunku rozliczeniowego
+            Sprzedawcy.
+        </li>
+        <li class="regulamin-li">5.11.2. W przypadku wyboru przez Klienta sposobu gotówką przy odbiorze osobistym – od
+            dnia zawarcia Umowy Sprzedaży.
+        </li>
+        <li class="regulamin-li">5.11.3. W przypadku wyboru przez Klienta sposobu płatności w systemie ratalnym – od
+            dnia powiadomienia Sprzedawcy przez kredytodawcę o zawarciu z Klientem umowy kredytowej, nie później jednak
+            niż od dnia uznania rachunku bankowego Sprzedawcy środkami z udzielonego Klientowi kredytu.
+        </li>
+    </ul>
+    <a href="#top" class="regulamin-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec6" class="regulamin-h2">6. Procedura rozpatrywania reklamacji</h2>
+    <p class="regulamin-p"><strong>6.1.</strong> Niniejszy punkt 6. Regulaminu określa procedurę rozpatrywania
+        reklamacji <strong>wspólną dla wszystkich reklamacji</strong> składanych do Sprzedawcy, w szczególności
+        reklamacji dotyczących Produktów, Umów Sprzedaży, Usług Elektronicznych oraz pozostałych reklamacji związanych z
+        działaniem Sprzedawcy lub Sklepu Internetowego.</p>
+    <p class="regulamin-p"><strong>6.2.</strong> <strong>Reklamacja może zostać złożona na przykład:</strong></p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">6.2.1. pisemnie na adres: ul. Namysłowska 2, 46-081 Dobrzeń Wielki;</li>
+        <li class="regulamin-li">6.2.2. w formie elektronicznej za pośrednictwem poczty elektronicznej na adres:
+            sklep@gardenlawn.pl.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>6.3.</strong> Przesłanie lub zwrot Produktu w ramach reklamacji może nastąpić na
+        adres: ul. Namysłowska 2, 46-081 Dobrzeń Wielki.</p>
+    <p class="regulamin-p"><strong>6.4.</strong> Zaleca się podanie w opisie reklamacji: (1) informacji i okoliczności
+        dotyczących przedmiotu reklamacji, w szczególności rodzaju i daty wystąpienia nieprawidłowości lub braku
+        zgodności z umową; (2) żądania sposobu doprowadzenia do zgodności z umową lub oświadczenia o obniżeniu ceny albo
+        odstąpieniu od umowy lub innego roszczenia; oraz (3) danych kontaktowych składającego reklamację – ułatwi to i
+        przyspieszy rozpatrzenie reklamacji. Wymogi podane w zdaniu poprzednim mają formę jedynie zalecenia i nie
+        wpływają na skuteczność reklamacji złożonych z pominięciem zalecanego opisu reklamacji.</p>
+    <p class="regulamin-p"><strong>6.5.</strong> W razie zmiany podanych danych kontaktowych przez składającego
+        reklamację w trakcie rozpatrywania reklamacji zobowiązany jest on do powiadomienia o tym Sprzedawcy.</p>
+    <p class="regulamin-p"><strong>6.6.</strong> Do reklamacji mogą zostać załączone przez składającego reklamację
+        dowody (np. zdjęcia, dokumenty lub Produkt) związane z przedmiotem reklamacji. Sprzedawca może także zwrócić się
+        do składającego reklamację z prośbą o podanie dodatkowych informacji lub przesłanie dowodów (np. zdjęcia),
+        jeżeli ułatwi to i przyspieszy rozpatrzenie reklamacji przez Sprzedawcę.</p>
+    <p class="regulamin-p"><strong>6.7.</strong> Sprzedawca ustosunkuje się do reklamacji niezwłocznie, nie później niż
+        w terminie 14 dni kalendarzowych od dnia jej otrzymania.</p>
+    <p class="regulamin-p"><strong>6.8.</strong> Podstawa i zakres odpowiedzialności ustawowej Sprzedawcy są określone
+        powszechnie obowiązującymi przepisami prawa, w szczególności w Kodeksie Cywilnym, Ustawie o Prawach Konsumenta
+        oraz ustawie o świadczeniu usług drogą elektroniczną z dnia 18 lipca 2002 r. (Dz.U. Nr 144, poz. 1204 ze zm.).
+        Poniżej wskazane są dodatkowe informacje dotyczące przewidzianej przez prawo odpowiedzialności Sprzedawcy za
+        zgodność Produktu z Umową Sprzedaży:</p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">6.8.1. W przypadku reklamacji <strong>Produktu – rzeczy ruchomej</strong> – zakupionego
+            przez Klienta na podstawie Umowy Sprzedaży zawartej ze Sprzedawcą <strong>do dnia 31. grudnia 2022
+                r.</strong> określają przepisy Kodeksu Cywilnego w brzmieniu obowiązującym do dnia 31. grudnia 2022 r.,
+            w szczególności art. 556-576 Kodeksu Cywilnego. Przepisy te określają w szczególności podstawę i zakres
+            odpowiedzialności Sprzedawcy względem Klienta, jeżeli sprzedany Produkt ma wadę fizyczną lub prawną
+            (rękojmia). Zgodnie z art. 558 § 1 Kodeksu Cywilnego odpowiedzialność Sprzedawcy z tytułu rękojmi za Produkt
+            zakupiony zgodnie ze zdaniem poprzednim wobec Klienta niebędącego konsumentem zostaje wyłączona.
+        </li>
+        <li class="regulamin-li">6.8.2. W przypadku reklamacji <strong>Produktu – rzeczy ruchomej (w tym rzeczy ruchomej
+            z elementami cyfrowymi)</strong>, z wyłączeniem jednak rzeczy ruchomej, która służy wyłącznie jako nośnik
+            treści cyfrowej – zakupionego przez Klienta na podstawie Umowy Sprzedaży zawartej ze Sprzedawcą <strong>od
+                dnia 1. stycznia 2023 r.</strong> określają przepisy Ustawy o Prawach Konsumenta w brzmieniu
+            obowiązującym od dnia 1. stycznia 2023 r., w szczególności art. 43a - 43g Ustawy o Prawach Konsumenta.
+            Przepisy te określają w szczególności podstawę i zakres odpowiedzialności Sprzedawcy względem konsumenta, w
+            razie braku zgodności Produktu z Umową Sprzedaży.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>6.9.</strong> Poza odpowiedzialnością ustawową na Produkt może zostać udzielona
+        gwarancja – jest to odpowiedzialność umowna (dodatkowa) i można z niej skorzystać, gdy dany Produkt jest objęty
+        gwarancją. Gwarancja może być udzielona przez inny podmiot niż Sprzedawca (np. przez producenta lub
+        dystrybutora). Szczegółowe warunki dotyczące odpowiedzialności na podstawie gwarancji, w tym także dane podmiotu
+        odpowiedzialnego za realizację gwarancji oraz podmiotu uprawnionego do skorzystania z niej są dostępne w opisie
+        gwarancji, np. w karcie gwarancyjnej lub w innym miejscu dotyczącym udzielenia gwarancji. Sprzedawca wskazuje,
+        że w przypadku braku zgodności Produktu z umową Klientowi z mocy prawa przysługują środki ochrony prawnej ze
+        strony i na koszt Sprzedawcy oraz że gwarancja nie ma wpływu na te środki ochrony prawnej.</p>
+    <p class="regulamin-p"><strong>6.10.</strong> Zawarte w punkcie 6.8.2. Regulaminu postanowienia dotyczące konsumenta
+        stosuje się również do Klienta będącego osobą fizyczną zawierającą umowę bezpośrednio związaną z jej
+        działalnością gospodarczą, gdy z treści tej umowy wynika, że nie posiada ona dla tej osoby charakteru
+        zawodowego, wynikającego w szczególności z przedmiotu wykonywanej przez nią działalności gospodarczej,
+        udostępnionego na podstawie przepisów o Centralnej Ewidencji i Informacji o Działalności Gospodarczej.</p>
+    <a href="#top" class="regulamin-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec7" class="regulamin-h2">7. Pozasądowe sposoby rozpatrywania reklamacji i dochodzenia roszczeń oraz zasady
+        dostępu do tych procedur</h2>
+    <p class="regulamin-p"><strong>7.1.</strong> Metody rozwiązywania sporów bez udziału sądu to między innymi (1)
+        umożliwienie zbliżenia stanowisk stron, np. poprzez mediację; (2) zaproponowanie rozwiązania sporu, np. poprzez
+        koncyliację oraz (3) rozstrzygnięcie sporu i narzucenie stronom jego rozwiązania, np. w ramach arbitrażu (sąd
+        polubowny). Szczegółowe informacje dotyczące możliwości skorzystania przez Klienta będącego konsumentem z
+        pozasądowych sposobów rozpatrywania reklamacji i dochodzenia roszczeń, zasady dostępu do tych procedur oraz
+        przyjazna wyszukiwarka podmiotów zajmujących się polubownym rozwiązywaniem sporów dostępne są na stronie
+        internetowej Urzędu Ochrony Konkurencji i Konsumentów pod adresem: <a href="https://polubowne.uokik.gov.pl/">https://polubowne.uokik.gov.pl/</a>.
+    </p>
+    <p class="regulamin-p"><strong>7.2.</strong> Przy Prezesie Urzędu Ochrony Konkurencji i Konsumentów działa punkt
+        kontaktowy, którego zadaniem jest między innymi udzielanie konsumentom informacji dotyczących pozasądowego
+        rozwiązywania sporów konsumenckich. Z punktem konsument może się skontaktować: (1) telefonicznie – dzwoniąc pod
+        numer 22 55 60 332 lub 22 55 60 333; (2) za pomocą poczty elektronicznej – przesyłając wiadomość na adres:
+        kontakt.adr@uokik.gov.pl lub (3) pisemnie lub osobiście – w Centrali Urzędu przy placu Powstańców Warszawy 1 w
+        Warszawie (00-030).</p>
+    <p class="regulamin-p"><strong>7.3.</strong> Konsument posiada następujące przykładowe możliwości skorzystania z
+        pozasądowych sposobów rozpatrywania reklamacji i dochodzenia roszczeń: (1) wniosek o rozstrzygnięcie sporu do
+        stałego polubownego sądu konsumenckiego; (2) wniosek w sprawie pozasądowego rozwiązania sporu do wojewódzkiego
+        inspektora Inspekcji; lub (3) pomoc powiatowego (miejskiego) rzecznika konsumentów lub organizacji społecznej,
+        do której zadań statutowych należy ochrona konsumentów (m. in. Federacja Konsumentów, Stowarzyszenie Konsumentów
+        Polskich). Porady udzielane są między innymi mailowo pod adresem porady@dlakonsumentow.pl oraz pod numerem
+        infolinii konsumenckiej 801 440 220 (infolinia czynna w Dni Robocze, w godzinach 8:00-18:00, opłata za
+        połączenie wg taryfy operatora).</p>
+    <p class="regulamin-p"><strong>7.4.</strong> Pod adresem <a
+        href="http://ec.europa.eu/odr">http://ec.europa.eu/odr</a> dostępna jest platforma internetowego systemu
+        rozstrzygania sporów pomiędzy konsumentami i przedsiębiorcami na szczeblu unijnym (platforma ODR). Platforma ODR
+        stanowi interaktywną i wielojęzyczną stronę internetową z punktem kompleksowej obsługi dla konsumentów i
+        przedsiębiorców dążących do pozasądowego rozstrzygnięcia sporu dotyczącego zobowiązań umownych wynikających z
+        internetowej umowy sprzedaży lub umowy o świadczenie usług (więcej informacji na stronie samej platformy lub pod
+        adresem internetowym Urzędu Ochrony Konkurencji i Konsumentów:
+        https://polubowne.uokik.gov.pl/platforma-odr,161,pl.html).</p>
+    <a href="#top" class="regulamin-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec8" class="regulamin-h2">8. Prawo odstąpienia od umowy</h2>
+    <p class="regulamin-p"><strong>8.1.</strong> Konsument, który zawarł umowę na odległość, może
+        w terminie 14 dni kalendarzowych odstąpić od niej bez podawania przyczyny i bez ponoszenia kosztów, z wyjątkiem
+        kosztów określonych w punkcie 8.7. Regulaminu. Do zachowania terminu wystarczy wysłanie oświadczenia przed jego
+        upływem. Oświadczenie o odstąpieniu od umowy może zostać złożone na przykład: </p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">8.1.1. pisemnie na adres: ul. Namysłowska 2, 46-081 Dobrzeń Wielki;</li>
+        <li class="regulamin-li">8.1.2. w formie elektronicznej za pośrednictwem poczty elektronicznej na adres:
+            sklep@gardenlawn.pl.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>8.2.</strong> Zwrot Produktu - rzeczy ruchomych (w tym rzeczy ruchomych z elementami
+        cyfrowymi) w ramach odstąpienia od umowy może nastąpić na adres: ul. Namysłowska 2, 46-081 Dobrzeń Wielki.</p>
+    <p class="regulamin-p"><strong>8.3.</strong> Przykładowy wzór formularza odstąpienia od umowy zawarty jest w
+        załączniku nr 2 do Ustawy o Prawach Konsumenta oraz dodatkowo dostępny jest w punkcie 13. Regulaminu. Konsument
+        może skorzystać ze wzoru formularza, jednak nie jest to obowiązkowe.</p>
+    <p class="regulamin-p"><strong>8.4.</strong> Bieg terminu do odstąpienia od umowy rozpoczyna się:</p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">8.4.1. dla umowy, w wykonaniu której Sprzedawca wydaje Produkt, będąc zobowiązany do
+            przeniesienia jego własności – od objęcia Produktu w posiadanie przez konsumenta lub wskazaną przez niego
+            osobę trzecią inną niż przewoźnik, a w przypadku umowy, która: (1) obejmuje wiele Produktów, które są
+            dostarczane osobno, partiami lub w częściach – od objęcia w posiadanie ostatniego Produktu, partii lub
+            części albo (2) polega na regularnym dostarczaniu Produktów przez czas oznaczony – od objęcia w posiadanie
+            pierwszego z Produktów;
+        </li>
+        <li class="regulamin-li">8.4.2. dla pozostałych umów – od dnia zawarcia umowy.</li>
+    </ul>
+    <p class="regulamin-p"><strong>8.5.</strong> W przypadku odstąpienia od umowy zawartej na odległość umowę uważa się
+        za niezawartą.</p>
+    <p class="regulamin-p"><strong>8.6.</strong> <strong>Produkty - rzeczy ruchome, w tym rzeczy ruchome z elementami
+        cyfrowymi:</strong></p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">8.6.1. Sprzedawca ma obowiązek niezwłocznie, nie później niż w terminie 14 dni
+            kalendarzowych od dnia otrzymania oświadczenia konsumenta o odstąpieniu od umowy, zwrócić konsumentowi
+            wszystkie dokonane przez niego płatności, w tym koszty dostarczenia Produktu - rzeczy ruchomej, w tym rzeczy
+            ruchomej z elementami cyfrowymi (z wyjątkiem dodatkowych kosztów wynikających z wybranego przez konsumenta
+            sposobu dostarczenia innego niż najtańszy zwykły sposób dostawy dostępny w Sklepie Internetowym). Sprzedawca
+            dokonuje zwrotu płatności przy użyciu takiego samego sposobu płatności, jakiego użył konsument, chyba że
+            konsument wyraźnie zgodził się na inny sposób zwrotu, który nie wiąże się dla niego z żadnymi kosztami. W
+            przypadku Produktów - rzeczy ruchomych (w tym rzeczy ruchomych z elementami cyfrowymi) - jeżeli Sprzedawca
+            nie zaproponował, że sam odbierze Produkt od konsumenta, może wstrzymać się ze zwrotem płatności otrzymanych
+            od konsumenta do chwili otrzymania Produktu z powrotem lub dostarczenia przez konsumenta dowodu jego
+            odesłania, w zależności od tego, które zdarzenie nastąpi wcześniej.
+        </li>
+        <li class="regulamin-li">8.6.2. W przypadku Produktów - rzeczy ruchomych (w tym rzeczy ruchomych z elementami
+            cyfrowymi) - konsument ma obowiązek niezwłocznie, nie później niż w terminie 14 dni kalendarzowych od dnia,
+            w którym odstąpił od umowy, zwrócić Produkt Sprzedawcy lub przekazać go osobie upoważnionej przez Sprzedawcę
+            do odbioru, chyba że Sprzedawca zaproponował, że sam odbierze Produkt. Do zachowania terminu wystarczy
+            odesłanie Produktu przed jego upływem.
+        </li>
+        <li class="regulamin-li">8.6.3. Konsument ponosi odpowiedzialność za zmniejszenie wartości Produktu - rzeczy
+            ruchomej (w tym rzeczy ruchomej z elementami cyfrowymi) - będące wynikiem korzystania z niego w sposób
+            wykraczający poza konieczny do stwierdzenia charakteru, cech i funkcjonowania Produktu.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>8.7.</strong> Możliwe koszty związane z odstąpieniem przez konsumenta od umowy, które
+        obowiązany jest ponieść konsument:</p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">8.7.1. W przypadku Produktów - rzeczy ruchomych (w tym rzeczy ruchomych z elementami
+            cyfrowymi) - jeżeli konsument wybrał sposób dostawy Produktu inny niż najtańszy zwykły sposób dostawy
+            dostępny w Sklepie Internetowym, Sprzedawca nie jest zobowiązany do zwrotu konsumentowi poniesionych przez
+            niego dodatkowych kosztów.
+        </li>
+        <li class="regulamin-li">8.7.2. W przypadku Produktów - rzeczy ruchomych (w tym rzeczy ruchomych z elementami
+            cyfrowymi) - konsument ponosi bezpośrednie koszty zwrotu Produktu.
+        </li>
+        <li class="regulamin-li">8.7.3. W przypadku Produktu - usługi, której wykonywanie – na wyraźne żądanie
+            konsumenta – rozpoczęło się przed upływem terminu do odstąpienia od umowy, konsument, który wykonuje prawo
+            odstąpienia od umowy po zgłoszeniu takiego żądania, ma obowiązek zapłaty za świadczenia spełnione do chwili
+            odstąpienia od umowy. Kwotę zapłaty oblicza się proporcjonalnie do zakresu spełnionego świadczenia, z
+            uwzględnieniem uzgodnionej w umowie ceny lub wynagrodzenia. Jeżeli cena lub wynagrodzenie są nadmierne,
+            podstawą obliczenia tej kwoty jest wartość rynkowa spełnionego świadczenia.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>8.8.</strong> Prawo odstąpienia od umowy zawartej na odległość nie przysługuje
+        konsumentowi w odniesieniu do umów:</p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">8.8.1. w której przedmiotem świadczenia jest Produkt - rzecz ruchoma (w tym rzecz
+            ruchoma z elementami cyfrowymi) - ulegający szybkiemu zepsuciu lub mająca krótki termin przydatności do
+            użycia;
+        </li>
+        <li class="regulamin-li">8.8.2. w której przedmiotem świadczenia jest Produkt - rzecz ruchoma (w tym rzecz
+            ruchoma z elementami cyfrowymi) - dostarczany w zapieczętowanym opakowaniu, którego po otwarciu opakowania
+            nie można zwrócić ze względu na ochronę zdrowia lub ze względów higienicznych, jeżeli opakowanie zostało
+            otwarte po dostarczeniu; oraz
+        </li>
+        <li class="regulamin-li">8.8.3. (1) o świadczenie usług, za które konsument jest zobowiązany do zapłaty ceny,
+            jeżeli Sprzedawca wykonał w pełni usługę za wyraźną i uprzednią zgodą konsumenta, który został poinformowany
+            przed rozpoczęciem świadczenia, że po spełnieniu świadczenia przez Sprzedawcę utraci prawo odstąpienia od
+            umowy, i przyjął to do wiadomości; <br/>(2) w której cena lub wynagrodzenie zależy od wahań na rynku
+            finansowym, nad którymi Sprzedawca nie sprawuje kontroli, i które mogą wystąpić przed upływem terminu do
+            odstąpienia od umowy; (3) w której przedmiotem świadczenia jest Produkt - rzecz ruchoma (w tym rzecz ruchoma
+            z elementami cyfrowymi) - nieprefabrykowany, wyprodukowany według specyfikacji konsumenta lub służący
+            zaspokojeniu jego zindywidualizowanych potrzeb; (4) w której przedmiotem świadczenia są Produkty - rzeczy
+            ruchome (w tym rzeczy ruchome z elementami cyfrowymi) -, które po dostarczeniu, ze względu na swój
+            charakter, zostają nierozłącznie połączone z innymi rzeczami ruchomymi, w tym rzeczami ruchomymi z
+            elementami cyfrowymi; (5) w której przedmiotem świadczenia są napoje alkoholowe, których cena została
+            uzgodniona przy zawarciu Umowy Sprzedaży, a których dostarczenie może nastąpić dopiero po upływie 30 dni i
+            których wartość zależy od wahań na rynku, nad którymi Sprzedawca nie ma kontroli; (6) w której konsument
+            wyraźnie żądał, aby Sprzedawca do niego przyjechał w celu dokonania pilnej naprawy lub konserwacji; jeżeli
+            Sprzedawca świadczy dodatkowo inne usługi niż te, których wykonania konsument żądał, lub dostarcza Produkty
+            - rzeczy ruchome (w tym rzeczy ruchome z elementami cyfrowymi) -,inne niż części zamienne niezbędne do
+            wykonania naprawy lub konserwacji, prawo odstąpienia od umowy przysługuje konsumentowi w odniesieniu do
+            dodatkowych usług lub Produktów; (7) w której przedmiotem świadczenia są nagrania dźwiękowe lub wizualne
+            albo programy komputerowe dostarczane w zapieczętowanym opakowaniu, jeżeli opakowanie zostało otwarte po
+            dostarczeniu; (8) o dostarczanie dzienników, periodyków lub czasopism, z wyjątkiem umowy o prenumeratę; (9)
+            zawartej w drodze aukcji publicznej; (10) o świadczenie usług w zakresie zakwaterowania, innych niż do celów
+            mieszkalnych, przewozu towarów, najmu samochodów, gastronomii, usług związanych z wypoczynkiem, wydarzeniami
+            rozrywkowymi, sportowymi lub kulturalnymi, jeżeli w umowie oznaczono dzień lub okres świadczenia usługi;
+            (11) o dostarczanie treści cyfrowych niedostarczanych na nośniku materialnym, za które konsument jest
+            zobowiązany do zapłaty ceny, jeżeli Sprzedawca rozpoczął świadczenie za wyraźną i uprzednią zgodą
+            konsumenta, który został poinformowany przed rozpoczęciem świadczenia, że po spełnieniu świadczenia przez
+            Sprzedawcę utraci prawo odstąpienia od umowy, i przyjął to do wiadomości, a Sprzedawca przekazał
+            konsumentowi potwierdzenie, o którym mowa w art. 15 ust. 1 i 2 albo art. 21 ust. 1 Ustawy o Prawach
+            Konsumenta; (12) o świadczenie usług, za które konsument jest zobowiązany do zapłaty ceny w przypadku
+            których konsument wyraźnie zażądał od Sprzedawcy, aby przyjechał do niego w celu dokonania naprawy, a usługa
+            została już w pełni wykonana za wyraźną i uprzednią zgodą konsumenta.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>8.9.</strong> Zawarte w niniejszym punkcie 8. Regulaminu postanowienia dotyczące
+        konsumenta stosuje się dla umów zawartych od dnia 1 stycznia 2021 r. również do Usługobiorcy lub Klienta
+        będącego osobą fizyczną zawierającą umowę bezpośrednio związaną z jej działalnością gospodarczą, gdy z treści
+        tej umowy wynika, że nie posiada ona dla tej osoby charakteru zawodowego, wynikającego w szczególności z
+        przedmiotu wykonywanej przez nią działalności gospodarczej, udostępnionego na podstawie przepisów o Centralnej
+        Ewidencji i Informacji o Działalności Gospodarczej.</p>
+    <a href="#top" class="regulamin-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec9" class="regulamin-h2">9. Postanowienia dotyczące przedsiębiorców</h2>
+    <p class="regulamin-p"><strong>9.1.</strong> Niniejszy punkt 9. Regulaminu oraz wszystkie postanowienia w nim
+        zawarte są skierowane i tym samym wiążą wyłącznie Klienta lub Usługobiorcę niebędącego konsumentem, a od dnia 1
+        stycznia 2021 r. i dla umów zawartych od tego dnia niebędącego także osobą fizyczną zawierającą umowę
+        bezpośrednio związaną z jej działalnością gospodarczą, gdy z treści tej umowy wynika, że nie posiada ona dla tej
+        osoby charakteru zawodowego, wynikającego w szczególności z przedmiotu wykonywanej przez nią działalności
+        gospodarczej, udostępnionego na podstawie przepisów o Centralnej Ewidencji i Informacji o Działalności
+        Gospodarczej.</p>
+    <p class="regulamin-p"><strong>9.2.</strong> Sprzedawcy przysługuje prawo odstąpienia od Umowy Sprzedaży w terminie
+        14 dni kalendarzowych od dnia jej zawarcia. Odstąpienie od Umowy Sprzedaży w tym wypadku może nastąpić bez
+        podania przyczyny i nie rodzi po stronie Klienta żadnych roszczeń w stosunku do Sprzedawcy.</p>
+    <p class="regulamin-p"><strong>9.3.</strong> Odpowiedzialność Sprzedawcy z tytułu rękojmi za Produkt lub braku
+        zgodności Produktu z Umową Sprzedaży zostaje wyłączona.</p>
+    <p class="regulamin-p"><strong>9.4.</strong> Sprzedawca ustosunkuje się do reklamacji w terminie 30 dni
+        kalendarzowych od dnia jej otrzymania.</p>
+    <p class="regulamin-p"><strong>9.5.</strong> Sprzedawca ma prawo ograniczyć dostępne sposoby płatności, w tym także
+        wymagać dokonania przedpłaty w całości albo części i to niezależnie od wybranego przez Klienta sposobu płatności
+        oraz faktu zawarcia Umowy Sprzedaży.</p>
+    <p class="regulamin-p"><strong>9.6.</strong> Usługodawca może wypowiedzieć umowę o świadczenie Usługi Elektronicznej
+        ze skutkiem natychmiastowym i bez wskazywania przyczyn poprzez przesłanie Usługobiorcy stosownego oświadczenia.
+    </p>
+    <p class="regulamin-p"><strong>9.7.</strong> Odpowiedzialność Usługodawcy/Sprzedawcy w stosunku do
+        Usługobiorcy/Klienta, bez względu na jej podstawę prawną, jest ograniczona – zarówno w ramach pojedynczego
+        roszczenia, jak również za wszelkie roszczenia w sumie – do wysokości zapłaconej ceny oraz kosztów dostawy z
+        tytułu Umowy Sprzedaży, nie więcej jednak niż do kwoty jednego tysiąca złotych. Ograniczenie kwotowe, o którym
+        mowa w zdaniu poprzednim, ma zastosowanie do wszelkich roszczeń kierowanych przez Usługobiorcę/Klienta w
+        stosunku do Usługodawcy/Sprzedawcy, w tym także w przypadku braku zawarcia Umowy Sprzedaży lub niezwiązanych z
+        Umową Sprzedaży. Usługodawca/Sprzedawca ponosi odpowiedzialność w stosunku do Usługobiorcy/Klienta tylko za
+        typowe szkody przewidywalne w momencie zawarcia umowy i nie ponosi odpowiedzialności z tytułu utraconych
+        korzyści. Sprzedawca nie ponosi także odpowiedzialności za opóźnienie w przewozie przesyłki.</p>
+    <p class="regulamin-p"><strong>9.8.</strong> Wszelkie spory powstałe pomiędzy Sprzedawcą/Usługodawcą a
+        Klientem/Usługobiorcą zostają poddane sądowi właściwemu ze względu na siedzibę Sprzedawcy/Usługodawcy.</p>
+    <a href="#top" class="regulamin-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec10" class="regulamin-h2">10. Opinie o produktach</h2>
+    <p class="regulamin-p"><strong>10.1.</strong> Sprzedawca umożliwia wystawianie opinii o Produktach w Sklepie
+        Internetowym. Opinie mogą być dodawane przez każdego użytkownika. Wszystkie opinie przed publikacją podlegają
+        weryfikacji przez Sprzedawcę. Weryfikacja polega na sprawdzeniu czy opinia nie zawiera treści o charakterze bezprawnym lub niezgodnym z Regulaminem. Sprzedawca nie zapewnia, że publikowane opinie pochodzą od konsumentów, którzy używali danego Produktu lub go nabyli.</p>
+    <a href="#top" class="regulamin-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec11" class="regulamin-h2">11. Nielegalne treści i inne treści niezgodne z regulaminem</h2>
+    <p class="regulamin-p"><strong>11.1.</strong> Niniejszy punkt Regulaminu zawiera postanowienia wynikające z Aktu o
+        Usługach Cyfrowych w zakresie dotyczącym Sklepu Internetowego i Usługodawcy. Usługobiorca co do zasady nie jest
+        zobowiązany do dostarczania treści podczas korzystania ze Sklepu Internetowego, chyba że Regulamin wymaga
+        podania określonych danych (np. dane do złożenia Zamówienia). Usługobiorca może mieć możliwość dodania opinii
+        lub komentarza w Sklepie Internetowym korzystając z narzędzi udostępnionych w tym celu przez Usługodawcę. W
+        każdym wypadku dostarczania treści przez Usługobiorcę jest on zobowiązany do przestrzegania zasad zawartych w
+        Regulaminie.</p>
+    <p class="regulamin-p"><strong>11.2.</strong> <strong>PUNKT KONTAKTOWY</strong> - Usługodawca wyznacza adres poczty
+        elektronicznej sklep@gardenlawn.pl jako pojedynczy punkt kontaktowy. Punkt kontaktowy umożliwia bezpośrednią
+        komunikację Usługodawcy z organami państw członkowskich, Komisją Europejską i Radą Usług Cyfrowych oraz
+        jednocześnie umożliwia odbiorcom usługi (w tym Usługobiorcom) bezpośrednią, szybką i przyjazną komunikację z
+        Usługodawcą drogą elektroniczną, na potrzeby stosowania Aktu o Usługach Cyfrowych. Usługodawca wskazuje język
+        polski oraz język angielski do celów komunikacji z jego punktem kontaktowym.</p>
+    <p class="regulamin-p"><strong>11.3.</strong> <strong>Procedura zgłaszania Nielegalnych Treści i działania zgodnie z
+        art. 16 Aktu o Usługach Cyfrowych:</strong></p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">11.3.1. Na adres poczty elektronicznej sklep@gardenlawn.pl dowolna osoba lub dowolny
+            podmiot może zgłosić Usługodawcy obecność określonych informacji, które dana osoba lub dany podmiot uważają
+            za Nielegalne Treści.
+        </li>
+        <li class="regulamin-li">11.3.2. Zgłoszenie powinno być wystarczająco precyzyjne i odpowiednio uzasadnione. W
+            tym celu Usługodawca umożliwia i ułatwia dokonywanie na podany wyżej adres poczty elektronicznej zgłoszeń
+            zawierających wszystkie poniższe elementy: (1) wystarczająco uzasadnione wyjaśnienie powodów, dla których
+            dana osoba lub dany podmiot zarzucają, że zgłaszane informacje stanowią Nielegalne Treści; (2) jasne
+            wskazanie dokładnej elektronicznej lokalizacji informacji, takiej jak dokładny adres URL lub dokładne adresy
+            URL, oraz, w stosownych przypadkach, dodatkowe informacje umożliwiające identyfikację Nielegalnych Treści,
+            stosownie do rodzaju treści i konkretnego rodzaju usługi; (3) imię i nazwisko lub nazwę oraz adres e-mail
+            osoby lub podmiotu dokonujących zgłoszenia, z wyjątkiem zgłoszenia dotyczącego informacji uznawanych za
+            związane z jednym z przestępstw, o których mowa w art. 3–7 dyrektywy 2011/93/UE; oraz (4) oświadczenie
+            potwierdzające powzięte w dobrej wierze przekonanie osoby lub podmiotu dokonujących zgłoszenia, że
+            informacje i zarzuty w nim zawarte są prawidłowe i kompletne.
+        </li>
+        <li class="regulamin-li">11.3.3. Zgłoszenie, o którym mowa powyżej, uznaje się za dające podstawę do uzyskania
+            faktycznej wiedzy lub wiadomości do celów art. 6 Aktu o Usługach Cyfrowych w odniesieniu do informacji,
+            której dotyczy, jeżeli umożliwia Usługodawcy działającemu z należytą starannością stwierdzenie – bez
+            szczegółowej analizy prawnej – nielegalnego charakteru danej działalności lub informacji.
+        </li>
+        <li class="regulamin-li">11.3.4. Jeżeli zgłoszenie zawiera elektroniczne dane kontaktowe osoby lub podmiotu,
+            które dokonały zgłoszenia, Usługodawca bez zbędnej zwłoki przesyła takiej osobie lub takiemu podmiotowi
+            potwierdzenie otrzymania zgłoszenia. Usługodawca powiadamia także bez zbędnej zwłoki taką osobę lub taki
+            podmiot o swojej decyzji w odniesieniu do informacji, których dotyczy zgłoszenie, przekazując informacje na
+            temat możliwości odwołania się od podjętej decyzji.
+        </li>
+        <li class="regulamin-li">11.3.5. Usługodawca rozpatruje wszystkie zgłoszenia, które otrzymuje w ramach
+            mechanizmu, o których mowa powyżej, oraz podejmuje decyzje w odniesieniu do informacji, których dotyczą
+            zgłoszenia, w sposób terminowy, niearbitralny i obiektywny oraz z zachowaniem należytej staranności. Jeżeli
+            na potrzeby takiego rozpatrywania lub podejmowania decyzji Usługodawca korzysta ze zautomatyzowanych
+            środków, uwzględnia informacje na ten temat w powiadomieniu, o którym mowa poprzednim punkcie.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>11.4.</strong> <strong>Informacja na temat ograniczeń, które Usługodawca nakłada w
+        związku z korzystaniem z Sklepu Internetowego, w odniesieniu do informacji przekazywanych przez
+        Usługobiorców:</strong></p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">11.4.1. Usługobiorcę obowiązują następujące zasady w przypadku dostarczania
+            jakichkolwiek treści w ramach Sklepu Internetowego:
+            <ul class="regulamin-ul">
+                <li class="regulamin-li">11.4.1.1. obowiązek korzystania ze Sklepu Internetowego, w tym do zamieszczania
+                    treści (np. w ramach opinii lub komentarzy), zgodnie z jego przeznaczeniem, niniejszym Regulaminem
+                    oraz w sposób zgodny z prawem i dobrymi obyczajami, mając na uwadze poszanowanie dóbr osobistych
+                    oraz praw autorskich i własności intelektualnej Usługodawcy oraz osób trzecich;
+                </li>
+                <li class="regulamin-li">11.4.1.2. obowiązek wprowadzania treści zgodnych ze stanem faktycznym oraz w
+                    sposób niewprowadzający w błąd;
+                </li>
+                <li class="regulamin-li">11.4.1.3. zakaz dostarczania treści o charakterze bezprawnym, w tym zakaz
+                    dostarczania Nielegalnych Treści;
+                </li>
+                <li class="regulamin-li">11.4.1.4. zakaz przesyłania niezamówionych informacji handlowych (spam) za
+                    pośrednictwem Sklepu Internetowego;
+                </li>
+                <li class="regulamin-li">11.4.1.5. zakaz dostarczania treści naruszających powszechnie przyjęte zasady
+                    netykiety, w tym zawierających treści wulgarne lub obraźliwe;
+                </li>
+                <li class="regulamin-li">11.4.1.6. obowiązek posiadania – w przypadku, gdy jest to konieczne – wszelkich
+                    wymaganych praw i zezwoleń do dostarczania takich treści na stronach Sklepu Internetowego, w
+                    szczególności praw autorskich lub wymaganych licencji, zezwoleń i zgód na ich wykorzystywanie,
+                    rozpowszechnianie, udostępnianie, lub publikację, zwłaszcza prawa publikowania i rozpowszechniania w
+                    Sklepie Internetowym oraz prawo do wykorzystania i rozpowszechniania wizerunku bądź danych osobowych
+                    w przypadku treści, które obejmują wizerunek lub dane osobowe osób trzecich;
+                </li>
+                <li class="regulamin-li">11.4.1.7. obowiązek korzystania ze Sklepu Internetowego w sposób nie
+                    stwarzający zagrożenia bezpieczeństwa systemu teleinformatycznego Usługodawcy, Sklepu Internetowego
+                    lub osób trzecich.
+                </li>
+            </ul>
+        </li>
+        <li class="regulamin-li">11.4.2. Usługodawca zastrzega sobie prawo moderowania treści dostarczanych przez
+            Usługobiorców na stronę Sklepu Internetowego. Moderowanie odbywa się w dobrej wierze i z należytą
+            starannością oraz z własnej inicjatywy Usługodawcy lub na otrzymane zgłoszenie w celu wykrycia,
+            identyfikacji i usunięcia Nielegalnych Treści lub innych treści niezgodnych z Regulaminem lub
+            uniemożliwienia do nich dostępu lub podejmowania niezbędnych środków, aby spełnić wymogi prawa Unii
+            Europejskiej i prawa krajowego zgodnego z prawem Unii Europejskiej, w tym wymogi określone w Akcie o
+            usługach cyfrowych, bądź też wymogi zawarte w Regulaminie.
+        </li>
+        <li class="regulamin-li">11.4.3. Proces moderowania może odbywać się ręcznie przez człowieka lub opierać się na
+            zautomatyzowanych lub częściowo zautomatyzowanych narzędziach ułatwiających Usługodawcy identyfikację
+            Nielegalnych Treści lub innych treści niezgodnych z Regulaminem. Po zidentyfikowaniu takich treści
+            Usługodawca podejmuje decyzję co do ewentualnego usunięcia lub uniemożliwienia dostępu do treści lub w inny
+            sposób ogranicza ich widoczność lub podejmuje inne działania, które uzna za konieczne (np. kontaktuje się z
+            Usługobiorcą celem wyjaśnienia zastrzeżeń i zmiany treści). Usługodawca w sposób jasny i łatwo zrozumiały
+            poinformuje Usługobiorcę, który dostarczył treści (w razie posiadania jego danych kontaktowych) o swojej
+            decyzji, powodach jej podjęcia oraz dostępnych możliwościach odwołania się od tej decyzji.
+        </li>
+        <li class="regulamin-li">11.4.4. Usługodawca realizując swoje prawa i obowiązki z Aktu o Usługach Cyfrowych
+            zobowiązany jest działać z należytą starannością, w sposób obiektywny i proporcjonalny oraz z należytym
+            uwzględnieniem praw i prawnie uzasadnionych interesów wszystkich zaangażowanych stron, w tym odbiorców
+            usługi, w szczególności z uwzględnieniem praw zapisanych w Karcie praw podstawowych Unii Europejskiej,
+            takich jak wolność wypowiedzi, wolność i pluralizm mediów i inne prawa podstawowe i wolności.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>11.5.</strong> Wszelkie uwagi, skargi, reklamacje, odwołania lub zastrzeżenia
+        dotyczące decyzji lub innych działań lub brak działań podjętych przez Usługodawcę na podstawie otrzymanego
+        zgłoszenia lub decyzji Usługodawcy podjętej zgodnie z postanowieniami niniejszego Regulaminu mogą być zgłaszane
+        w trybie analogicznym do procedury reklamacyjnej wskazanej w punkcie 6. Regulaminu. Korzystanie z tej procedury
+        jest bezpłatne i umożliwia składanie skarg w sposób elektroniczny na podany adres poczty elektronicznej.
+        Skorzystanie z procedury zgłaszania i rozpatrywania skarg pozostaje bez uszczerbku dla prawa danej osoby lub
+        podmiotu do wszczęcia postępowania przed sądem oraz nie narusza jego innych praw.</p>
+    <p class="regulamin-p"><strong>11.6.</strong> Usługodawca rozpatruje wszelkie uwagi, skargi, reklamacje, odwołania
+        lub zastrzeżenia dotyczące decyzji lub innych działań lub brak działań podjętych przez Usługodawcę na podstawie
+        otrzymanego zgłoszenia lub podjętej decyzji w sposób terminowy, niedyskryminujący, obiektywny i niearbitralny.
+        Jeżeli skarga lub inne zgłoszenie zawiera wystarczające powody, aby Usługodawca uznał, że jego decyzja o
+        niepodejmowania działań w odpowiedzi na zgłoszenie jest nieuzasadniona lub że informacje, których dotyczy
+        skarga, nie są nielegalne i niezgodne z Regulaminem, lub zawiera informacje wskazujące, że działanie skarżącego
+        nie uzasadnia podjętego środka, Usługodawca bez zbędnej zwłoki uchyla lub zmienia swoją decyzję co do
+        ewentualnego usunięcia lub uniemożliwienia dostępu do treści lub w inny sposób ograniczenia ich widoczności lub
+        podejmuje inne działania, które uzna za konieczne.</p>
+    <p class="regulamin-p"><strong>11.7.</strong> Usługobiorcy, osoby lub podmioty, które dokonały zgłoszenia
+        Nielegalnych Treści, do których skierowane są decyzje Usługodawcy dotyczące Nielegalnych Treści lub treści
+        niezgodnych z Regulaminem, mają prawo wyboru dowolnego organu pozasądowego rozstrzygania sporów certyfikowanego
+        przez koordynatora ds. usług cyfrowych państwa członkowskiego w celu rozstrzygnięcia sporów dotyczących tych
+        decyzji, w tym w odniesieniu do skarg, które nie zostały rozstrzygnięte w ramach wewnętrznego systemu
+        rozpatrywania skarg Usługodawcy.</p>
+    <a href="#top" class="regulamin-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec12" class="regulamin-h2">12. Postanowienia końcowe</h2>
+    <p class="regulamin-p"><strong>12.1.</strong> Umowy zawierane poprzez Sklep Internetowy zawierane są w języku
+        polskim.</p>
+    <p class="regulamin-p"><strong>12.2.</strong> Zmiana Regulaminu:</p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">12.2.1. Usługodawca zastrzega sobie prawo do dokonywania zmian niniejszego Regulaminu z
+            ważnych przyczyn, to jest: zmiany przepisów prawa; zmiany sposobów lub terminów płatności lub dostaw,
+            podlegania obowiązkowi prawnemu lub regulacyjnemu; zmiany zakresu lub formy świadczonych Usług
+            Elektronicznych; dodania nowych Usług Elektronicznych; konieczności przeciwdziałania nieprzewidzianemu i
+            bezpośredniemu zagrożeniu związanemu z ochroną Sklepu Internetowego, w tym Usług Elektronicznych i
+            Usługobiorców/Klientów przed oszustwami, złośliwym oprogramowaniem, spamem, naruszeniem danych lub innymi
+            zagrożeniami dla cyberbezpieczeństwa – w zakresie, w jakim te zmiany wpływają na realizację postanowień
+            niniejszego Regulaminu.
+        </li>
+        <li class="regulamin-li">12.2.2. Powiadomienie o proponowanych zmianach wysyłane jest z wyprzedzeniem co
+            najmniej 15 dni przed dniem wejścia w życie tych zmian, z zastrzeżeniem zmiana może być wprowadzona bez
+            zachowania 15-dniowego okresu powiadomienia w przypadku, gdy Usługodawca: (1) podlega obowiązkowi prawnemu
+            lub regulacyjnemu, na podstawie którego zobowiązany jest do zmiany Regulaminu w sposób, który uniemożliwia
+            mu dotrzymanie 15-dniowego okresu powiadomienia; lub (2) musi w drodze wyjątku zmienić swój Regulamin, aby
+            przeciwdziałać nieprzewidzianemu i bezpośredniemu zagrożeniu związanemu z ochroną Sklepu Internetowego, w
+            tym Usług Elektronicznych i Usługobiorców/Klientów przed oszustwami, złośliwym oprogramowaniem, spamem,
+            naruszeniem danych lub innymi zagrożeniami dla cyberbezpieczeństwa. W dwóch ostatnich przypadkach, o których
+            mowa w zdaniu poprzednim, wprowadzenie zmian następuje ze skutkiem natychmiastowym, chyba że możliwe lub
+            konieczne jest zastosowanie dłuższego terminu wprowadzenia zmian, o czym każdorazowo powiadamia Usługodawca.
+        </li>
+        <li class="regulamin-li">12.2.3. W przypadku umów o charakterze ciągłym (np. świadczenie Usługi Elektronicznej –
+            Konto) Usługobiorca ma prawo rozwiązać umowę z Usługodawcą przed upływem okresu powiadomienia o
+            proponowanych zmianach. Rozwiązanie takie staje się skuteczne w terminie 15 dni od dnia otrzymania
+            powiadomienia. W przypadku zawarcia umowy o charakterze ciągłym, zmieniony Regulamin wiąże Usługobiorcę,
+            jeżeli został prawidłowo powiadomiony o zmianach, zgodnie z okresem powiadomienia przed ich wprowadzeniem i
+            nie rozwiązał w tym okresie umowy. Dodatkowo w dowolnym momencie po otrzymaniu powiadomienia o zmianach,
+            Usługobiorca może zaakceptować wprowadzane zmiany i tym samym zrezygnować z dalszego trwania okresu
+            powiadomienia. W przypadku zawarcia umowy o innym charakterze niż umowy ciągłe, zmiany Regulaminu nie będą w
+            żaden sposób naruszać praw nabytych Usługobiorcy przed dniem wejścia w życie zmian Regulaminu, w
+            szczególności zmiany Regulaminu nie będą miały wpływu na już składane lub złożone Zamówienia oraz zawarte,
+            realizowane lub wykonane Umowy Sprzedaży.
+        </li>
+        <li class="regulamin-li">12.2.4. W wypadku, gdyby zmiana Regulaminu skutkowała wprowadzeniem jakichkolwiek
+            nowych opłat lub podwyższeniem obecnych konsument ma prawo odstąpienia od umowy.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>12.3.</strong> Spełniając obowiązek informacyjny ciążący na dystrybutorach sprzętu w
+        rozumieniu art. 4 pkt 2 ustawy z dnia 11 września 2015 r. o zużytym sprzęcie elektrycznym i elektronicznym
+        (Dz.U. z 2015 r. poz. 1688 z późn. zm.):</p>
+    <ul class="regulamin-ul">
+        <li class="regulamin-li">12.3.1. Zakazane jest umieszczanie zużytego sprzętu elektrycznego i elektronicznego
+            (oznakowanego symbolem selektywnego zbierania) łącznie z innymi odpadami. Posiadacz zużytego sprzętu
+            pochodzącego z gospodarstw domowych jest obowiązany do przekazania go zbierającemu zużyty sprzęt lub
+            podmiotowi uprawnionemu do zbieraniu zużytego sprzętu.
+        </li>
+        <li class="regulamin-li">12.3.2. Sprzedawca obowiązany jest do nieodpłatnego odbioru zużytego sprzętu
+            pochodzącego z gospodarstw domowych w swoich punktach sprzedaży, o ile zużyty sprzęt jest tego samego
+            rodzaju i pełnił te same funkcje co sprzęt sprzedawany.
+        </li>
+        <li class="regulamin-li">12.3.3. Sprzedawca, dostarczając Klientowi sprzęt przeznaczony dla gospodarstw
+            domowych, obowiązany jest do nieodpłatnego odbioru zużytego sprzętu pochodzącego z gospodarstw domowych w
+            miejscu dostawy tego sprzętu, o ile zużyty sprzęt jest tego samego rodzaju i pełnił te same funkcje co
+            sprzęt dostarczony. Chęć przekazania Sprzedawcy zużytego sprzętu w wyżej wymienionym przypadku można zgłosić
+            w uwagach dla Sprzedawcy w trakcie składania Zamówienia lub niezwłocznie po złożeniu Zamówienia przez
+            Klienta na adres poczty elektronicznej: sklep@gardenlawn.pl.
+        </li>
+        <li class="regulamin-li">12.3.4. Klient, bez konieczności zakupu nowego sprzętu, ma możliwość zwrotu zużytego
+            sprzętu pochodzącego z gospodarstw domowych, którego żaden z zewnętrznych wymiarów nie przekracza 25 cm, w
+            każdym sklepie o powierzchni sprzedaży wynoszącej co najmniej 400 m2 poświęconej sprzedaży sprzętu
+            przeznaczonego dla gospodarstw domowych.
+        </li>
+        <li class="regulamin-li">12.3.5. Sprzedawca może odmówić przyjęcia:
+            <ul class="regulamin-ul">
+                <li class="regulamin-li">12.3.5.1. zużytego sprzętu, który z uwagi na jego zanieczyszczenie stwarza
+                    zagrożenie dla zdrowia lub życia osób przyjmujących zużyty sprzęt; oraz
+                </li>
+                <li class="regulamin-li">12.3.5.2. niekompletnego zużytego sprzętu oraz części pochodzących ze zużytego
+                    sprzętu, których zbieranie jest zakazane zgodnie z art. 35 ust. 1 ustawy z dnia 11 września 2015 r.
+                    o zużytym sprzęcie elektrycznym i elektronicznym (Dz.U. z 2015 r. poz. 1688 z późn. zm.).
+                </li>
+            </ul>
+        </li>
+        <li class="regulamin-li">12.3.6. W powyższych przypadkach Klient może przekazać zużyty sprzęt do właściwego
+            punktu zbierania zużytego sprzętu lub podmiotu prowadzącego zakład przetwarzania.
+        </li>
+        <li class="regulamin-li">12.3.7. Przykładowe punkty zbierania zużytego sprzętu na terenie miasta Dobrzeń Wielki:
+            <ul class="regulamin-ul">
+                <li class="regulamin-li">12.3.7.1. Punkt Selektywnej Zbiórki Odpadów Komunalnych (PSZOK), ul.
+                    Namysłowska 44.
+                </li>
+            </ul>
+        </li>
+        <li class="regulamin-li">12.3.8. Informacje o wszystkich punktach zbierania zużytego sprzętu na terenie całego
+            kraju dostępne są po skorzystaniu z wyszukiwarki znajdującej się w państwowym rejestrze podmiotów – BDO pod
+            adresem internetowym: https://rejestr-bdo.mos.gov.pl/Registry/Index Zgodnie z Ustawą z dnia 24 kwietnia 2009
+            r. o bateriach i akumulatorach (t.j. Dz. U. z 2022 r. poz. 1113), Sprzedawca jest obowiązany do przyjęcia
+            zużytych baterii (w rozumieniu ustawy o bateriach i akumulatorach) oraz zużytych akumulatorów (w rozumieniu
+            ustawy o bateriach i akumulatorach) od Klienta będącego użytkownikiem końcowym w rozumieniu ustawy o
+            bateriach i akumulatorach.
+        </li>
+    </ul>
+    <p class="regulamin-p"><strong>12.4.</strong> Niniejszy Regulamin nie wyłącza przepisów obowiązujących w państwie
+        zwykłego miejsca pobytu konsumenta zawierającego umowę z Usługodawcą/Sprzedawcą, których nie można wyłączyć w
+        drodze umowy. Usługodawca/Sprzedawca gwarantuje w takim wypadku konsumentowi ochronę przyznaną mu na podstawie
+        przepisów, których nie można wyłączyć w drodze umowy.</p>
+    <p class="regulamin-p"><strong>12.5.</strong> W sprawach nieuregulowanych w niniejszym Regulaminie mają zastosowanie
+        powszechnie obowiązujące przepisy prawa polskiego, w szczególności: Kodeksu Cywilnego; ustawy o świadczeniu
+        usług drogą elektroniczną z dnia 18 lipca 2002 r. (Dz.U. 2002 nr 144, poz. 1204 ze zm.); Ustawy o Prawach
+        Konsumenta; oraz inne właściwe przepisy powszechnie obowiązującego prawa.</p>
+    <a href="#top" class="regulamin-back-to-top">Powrót do spisu treści</a>
+
+    <h2 id="sec13" class="regulamin-h2">13. Wzór formularza odstąpienia od umowy<br>(załącznik numer 2 do ustawy o
+        prawach konsumenta)</h2>
+    <div class="regulamin-form-example">
+        <p class="regulamin-p regulamin-center"><strong>Wzór formularza odstąpienia od umowy</strong><br><em>(formularz
+            ten należy wypełnić i odesłać tylko w przypadku chęci odstąpienia od umowy)</em></p>
+        <p class="regulamin-p"><strong>Adresat:</strong><br>
+            GARDEN LAWN &amp; IRRIGATION MARCIN PIECHOTA<br>
+            ul. Namysłowska 2, 46-081 Dobrzeń Wielki<br>
+            gardenlawn.pl<br>
+            sklep@gardenlawn.pl</p>
+        <p class="regulamin-p">– Ja/My(*) niniejszym informuję/informujemy(*) o moim/naszym odstąpieniu od umowy
+            sprzedaży następujących towarów(*) umowy dostawy następujących towarów(*) umowy o dzieło polegającej na
+            wykonaniu następujących towarów(*)/o świadczenie następującej usługi(*)</p>
+        <p class="regulamin-p">– Data zawarcia umowy(*)/odbioru(*)</p>
+        <p class="regulamin-p">– Imię i nazwisko konsumenta(-ów)</p>
+        <p class="regulamin-p">– Adres konsumenta(-ów)</p>
+        <p class="regulamin-p">– Podpis konsumenta(-ów) (tylko jeżeli formularz jest przesyłany w wersji papierowej)</p>
+        <p class="regulamin-p">– Data</p>
+        <p class="regulamin-p"><em>(*) Niepotrzebne skreślić.</em></p>
+    </div>
+    <a href="#top" class="regulamin-back-to-top">Powrót do spisu treści</a>
+</div>

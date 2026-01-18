@@ -283,4 +283,19 @@ $heroIcons = $viewModels->require(HeroiconsSolid::class);
         { once: true }
     );
 </script>
+<script>
+    // Custom script to handle account deletion warning
+    window.addEventListener('DOMContentLoaded', () => {
+        const deleteAccountButton = document.querySelector('.action.delete');
+        if (deleteAccountButton) {
+            deleteAccountButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                const confirmationText = '<?= $escaper->escapeJs(__('Uwaga! Twoje konto jest profilem wspólnym dla domen gardenlawn.pl, am-robots.pl oraz finnpolska.pl. Usunięcie konta spowoduje utratę dostępu i historii zamówień we WSZYSTKICH tych sklepach. Czy na pewno chcesz kontynuować?')) ?>';
+                if (confirm(confirmationText)) {
+                    window.location.href = deleteAccountButton.getAttribute('href');
+                }
+            });
+        }
+    });
+</script>
 <?php isset($hyvaCsp) && $hyvaCsp->registerInlineScript() ?>
