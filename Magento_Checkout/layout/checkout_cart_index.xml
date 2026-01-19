@@ -6,5 +6,9 @@
                 <argument name="template" xsi:type="string">Magento_Checkout::php-cart/totals/shipping_custom.phtml</argument>
             </action>
         </referenceBlock>
+
+        <!-- Move Coupon and Shipping Estimation to the left column (main cart container) -->
+        <move element="checkout.cart.coupon" destination="checkout.cart" after="checkout.cart.form"/>
+        <move element="checkout.cart.shipping" destination="checkout.cart" after="checkout.cart.coupon"/>
     </body>
 </page>

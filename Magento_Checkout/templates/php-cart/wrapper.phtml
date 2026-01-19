@@ -19,6 +19,21 @@ use Magento\Framework\Escaper;
     <div class="w-full order-2 lg:order-1">
         <?= $block->getChildHtml('form_before') ?>
         <?= $block->getChildHtml('cart-items') ?>
+
+        <!-- Coupon Code -->
+        <?php if ($couponBlock = $block->getLayout()->getBlock('checkout.cart.coupon')): ?>
+            <div class="mt-8 card bg-white p-4 rounded shadow-sm border border-gray-200">
+                <?= $couponBlock->toHtml() ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Shipping Estimation -->
+        <?php if ($shippingBlock = $block->getLayout()->getBlock('checkout.cart.shipping')): ?>
+            <div class="mt-8 card bg-white p-4 rounded shadow-sm border border-gray-200">
+                <?= $shippingBlock->toHtml() ?>
+            </div>
+        <?php endif; ?>
+
         <?= $block->getChildHtml('checkout_cart_widget') ?>
     </div>
 
@@ -27,6 +42,8 @@ use Magento\Framework\Escaper;
         <h2 class="text-lg font-bold mb-4"><?= $escaper->escapeHtml(__('Summary')) ?></h2>
 
         <!-- The cart.summary container handles its own layout via XML (grid class) -->
-        <?= $block->getChildHtml('cart.summary') ?>
+        <div class="cart-summary">
+            <?= $block->getChildHtml('cart.summary') ?>
+        </div>
     </div>
 </div>
