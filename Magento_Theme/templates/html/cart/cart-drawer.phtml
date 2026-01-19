@@ -12,6 +12,7 @@ use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\LucideIcons;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
@@ -25,6 +26,9 @@ $maxItemsToDisplay = $storeConfig->getStoreConfig('checkout/sidebar/max_items_di
 
 /** @var HeroiconsSolid $heroiconsSolid */
 $heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
+
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
 
 $miniCartOptionQtyStyle = (string) $block->getQtyStyle() ?: 'default';
 $miniCartOptionShowSku = $block->getShowSku() !== null ? (bool) $block->getShowSku() : false;
@@ -443,20 +447,20 @@ $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniC
                                     <a
                                         :href="item.configure_url"
                                         x-show="productIsNotGroupedAndVisibleInSite"
-                                        class="btn btn-secondary rounded-full p-2 hover:bg-indigo-500 hover:text-white"
+                                        class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-blue-500 hover:text-white transition-colors"
                                         data-aria-label="<?= $escaper->escapeHtmlAttr(__('Edit product "%0"')) ?>"
                                         :aria-label="productAriaLabel"
                                     >
-                                        <?= $heroiconsSolid->pencilHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                                        <?= $lucideIcons->pencilHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
                                     </a>
                                     <button
                                         type="button"
-                                        class="btn text-slate-700 border-slate-400 rounded-full p-2 hover:bg-gray-800 hover:text-white"
+                                        class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-gray-700 hover:text-white transition-colors"
                                         @click="deleteItemFromCart"
                                         data-aria-label="<?= $escaper->escapeHtmlAttr(__('Remove product "%0" from cart')) ?>"
                                         :aria-label="productAriaLabel"
                                     >
-                                        <?= $heroiconsSolid->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                                        <?= $lucideIcons->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
                                     </button>
                                 </div>
                                 <template x-if="item.message">

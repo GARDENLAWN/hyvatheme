@@ -33,7 +33,7 @@ $productId = $product->getId();
 $productAttribute = $viewModels->require(ProductAttributes::class);
 $productName = $productAttribute->getValue($product, 'name');
 
-$classlist = $block->getData('class') ?: 'rounded-full w-9 h-9 bg-gray-200 p-0 border-0 inline-flex shrink-0 items-center justify-center text-gray-500 hover:text-red-600';
+$classlist = $block->getData('class') ?: 'shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-yellow-500 hover:text-black';
 ?>
 <button
     type="button"
