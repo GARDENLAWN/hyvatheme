@@ -1,0 +1,79 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\Catalog\Pricing\Price\FinalPrice;
+use Magento\Catalog\Pricing\Price\RegularPrice;
+use Magento\Framework\Pricing\Render;
+use Magento\Framework\Pricing\Render\PriceBox;
+
+/** @var PriceBox $block */
+
+/** @var FinalPrice $finalPriceModel */
+$finalPriceModel = $block->getPrice();
+$priceId = $block->getPriceId();
+$productId = $finalPriceModel->getProduct()->getId();
+
+$idSuffix = $block->getIdSuffix() ? $block->getIdSuffix() : '';
+$htmlPriceId = 'product-price-' . $productId . $idSuffix;
+
+// Regular Price (Old Price)
+/** @var RegularPrice $regularPriceModel */
+$regularPriceModel = $finalPriceModel->getProduct()->getPriceInfo()->getPrice(RegularPrice::PRICE_CODE);
+
+// Use Base Amount
+$regularPriceBase = $regularPriceModel->getAmount()->getBaseAmount();
+$finalPriceBase = $finalPriceModel->getAmount()->getBaseAmount();
+
+// For discount check
+$regularPriceVal = $regularPriceModel->getAmount()->getValue();
+$finalPriceVal = $finalPriceModel->getAmount()->getValue();
+$hasDiscount = $regularPriceVal > $finalPriceVal;
+
+// Tax Logic
+$catalogHelper = $this->helper(Magento\Catalog\Helper\Data::class);
+$priceHelper = $this->helper(Magento\Framework\Pricing\Helper\Data::class);
+$product = $finalPriceModel->getProduct();
+
+// Initial values (PHP side)
+$finalPriceIncl = $catalogHelper->getTaxPrice($product, $finalPriceBase, true);
+$finalPriceExcl = $catalogHelper->getTaxPrice($product, $finalPriceBase, false);
+$regularPriceIncl = $catalogHelper->getTaxPrice($product, $regularPriceBase, true);
+
+$showNet = $finalPriceIncl != $finalPriceExcl;
+
+?>
+<div class="price-box price-final_price flex flex-col items-start">
+
+    <!-- Old Price -->
+    <?php if ($hasDiscount): ?>
+        <div class="old-price text-gray-400 line-through text-xs mb-0.5">
+            <span class="price-wrapper">
+                <span class="price"><?= $priceHelper->currency($regularPriceIncl, true, false) ?></span>
+            </span>
+        </div>
+    <?php endif; ?>
+
+    <!-- Final Price (Gross) -->
+    <div class="final-price font-bold text-gray-900 text-2xl leading-none">
+        <?php if ($block->hasSpecialPrice()): ?>
+            <span class="price-label text-xs text-gray-500 font-normal mr-1"><?= $block->escapeHtml(__('As low as')) ?></span>
+        <?php endif; ?>
+        <span id="<?= $htmlPriceId ?>" class="price-wrapper">
+            <span class="price"><?= $priceHelper->currency($finalPriceIncl, true, false) ?></span>
+        </span>
+    </div>
+
+    <!-- Net Price -->
+    <?php if ($showNet): ?>
+        <div class="final-price-excl-tax text-gray-500 text-xs mt-1 font-medium">
+            <span class="price-wrapper">
+                <span class="price"><?= $priceHelper->currency($finalPriceExcl, true, false) ?></span>
+                <span><?= $block->escapeHtml(__('netto')) ?></span>
+            </span>
+        </div>
+    <?php endif; ?>
+</div>

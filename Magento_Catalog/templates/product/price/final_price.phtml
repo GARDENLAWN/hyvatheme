@@ -7,6 +7,7 @@
 
 use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Catalog\Pricing\Price\RegularPrice;
+use Magento\Catalog\Pricing\Price\TierPrice;
 use Magento\Framework\Pricing\Render;
 use Magento\Framework\Pricing\Render\PriceBox;
 
@@ -24,19 +25,39 @@ $htmlPriceId = 'product-price-' . $productId . $idSuffix;
 /** @var RegularPrice $regularPriceModel */
 $regularPriceModel = $finalPriceModel->getProduct()->getPriceInfo()->getPrice(RegularPrice::PRICE_CODE);
 
-// Use Base Amount to avoid double tax calculation if catalog prices are configured as Net but displayed as Gross
+// Use Base Amount
 $regularPriceBase = $regularPriceModel->getAmount()->getBaseAmount();
 $finalPriceBase = $finalPriceModel->getAmount()->getBaseAmount();
 
-// For discount check, we can use values
+// For discount check
 $regularPriceVal = $regularPriceModel->getAmount()->getValue();
 $finalPriceVal = $finalPriceModel->getAmount()->getValue();
 $hasDiscount = $regularPriceVal > $finalPriceVal;
 
+// Check for Tier Prices (As Low As)
+$product = $finalPriceModel->getProduct();
+$tierPriceModel = $product->getPriceInfo()->getPrice(TierPrice::PRICE_CODE);
+$minTierPriceBase = null;
+$showAsLowAs = false;
+
+if ($tierPriceModel->getTierPriceList()) {
+    foreach ($tierPriceModel->getTierPriceList() as $tier) {
+        $tierValBase = $tier['price']->getBaseAmount();
+        if ($minTierPriceBase === null || $tierValBase < $minTierPriceBase) {
+            $minTierPriceBase = $tierValBase;
+        }
+    }
+
+    if ($minTierPriceBase !== null && $minTierPriceBase < $finalPriceBase) {
+        $finalPriceBase = $minTierPriceBase; // Use tier price as main price
+        $showAsLowAs = true;
+        $hasDiscount = false; // Don't show old price if showing "As low as" (usually)
+    }
+}
+
 // Tax Logic
 $catalogHelper = $this->helper(Magento\Catalog\Helper\Data::class);
 $priceHelper = $this->helper(Magento\Framework\Pricing\Helper\Data::class);
-$product = $finalPriceModel->getProduct();
 
 // Initial values (PHP side)
 $finalPriceIncl = $catalogHelper->getTaxPrice($product, $finalPriceBase, true);
@@ -45,6 +66,14 @@ $regularPriceIncl = $catalogHelper->getTaxPrice($product, $regularPriceBase, tru
 $regularPriceExcl = $catalogHelper->getTaxPrice($product, $regularPriceBase, false);
 
 $showNet = $finalPriceIncl != $finalPriceExcl;
+
+// Determine context (List vs View)
+$isListing = $block->getZone() !== Render::ZONE_ITEM_VIEW;
+
+// Styles based on context
+$containerClass = $isListing ? 'items-start' : 'items-end';
+$grossClass = $isListing ? 'text-2xl' : 'text-4xl';
+$netClass = $isListing ? 'text-xs' : 'text-sm';
 
 ?>
 <script>
@@ -87,7 +116,7 @@ $showNet = $finalPriceIncl != $finalPriceExcl;
     window.addEventListener('alpine:init', () => Alpine.data('initPrice<?= (int)$productId ?>', initPrice<?= (int)$productId ?>), {once: true})
 </script>
 
-<div x-data="initPrice<?= (int)$productId ?>" x-bind="eventListeners" class="price-box price-final_price flex flex-col items-end">
+<div x-data="initPrice<?= (int)$productId ?>" x-bind="eventListeners" class="price-box price-final_price flex flex-col <?= $containerClass ?>">
 
     <!-- Old Price -->
     <?php if ($hasDiscount): ?>
@@ -99,7 +128,10 @@ $showNet = $finalPriceIncl != $finalPriceExcl;
     <?php endif; ?>
 
     <!-- Final Price (Gross) -->
-    <div class="final-price font-extrabold text-gray-900 text-4xl leading-none tracking-tight">
+    <div class="final-price font-extrabold text-gray-900 <?= $grossClass ?> leading-none tracking-tight">
+        <?php if ($showAsLowAs): ?>
+            <span class="text-xs text-gray-500 font-normal mr-1"><?= $block->escapeHtml(__('As low as')) ?></span>
+        <?php endif; ?>
         <span id="<?= $htmlPriceId ?>" class="price-wrapper">
             <span class="price" x-html="getFormattedFinalPrice"><?= $priceHelper->currency($finalPriceIncl, true, false) ?></span>
         </span>
@@ -107,7 +139,7 @@ $showNet = $finalPriceIncl != $finalPriceExcl;
 
     <!-- Net Price -->
     <?php if ($showNet): ?>
-        <div class="final-price-excl-tax text-gray-500 text-xs mt-1 font-medium">
+        <div class="final-price-excl-tax text-gray-500 <?= $netClass ?> mt-1 font-medium">
             <span class="price-wrapper">
                 <span class="price" x-html="getFormattedBasePrice"><?= $priceHelper->currency($finalPriceExcl, true, false) ?></span>
                 <span><?= $block->escapeHtml(__('netto')) ?></span>
