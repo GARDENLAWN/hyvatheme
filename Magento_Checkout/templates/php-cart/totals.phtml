@@ -21,8 +21,8 @@ use Magento\Framework\View\Element\Template;
             shippingMethod: null,
             totalsSort: {"discount":"20","grand_total":"100","shipping":"30","subtotal":"10","tax":"40","weee":"35","weee_tax":"35","mollie_payment_fee":"25"},
             isLoading: false,
-            wrapperClass: 'grid grid-cols-[1.5fr_1fr] md:grid-cols-2 gap-x-1 py-3 border-b border-gray-300 text-fg-secondary',
-            wrapperClassTotals: 'mt-4 grid grid-cols-[1.5fr_1fr] md:grid-cols-2 gap-x-1 py-3 text-xl font-semibold',
+            wrapperClass: 'flex justify-between items-center py-2 text-gray-600',
+            wrapperClassTotals: 'flex justify-between items-center py-3 text-lg font-bold text-gray-900 border-t border-gray-200 mt-2',
             init() {
                 this.totalsData = window.checkoutConfig.totalsData;
                 this.quoteData = window.checkoutConfig.quoteData;
@@ -86,156 +86,161 @@ use Magento\Framework\View\Element\Template;
     window.addEventListener('alpine:init', () => Alpine.data('initCartTotals', initCartTotals), {once: true})
 </script>
 
-<div id="cart-totals" class="cart-totals relative my-4" x-data="initCartTotals" x-bind="eventListeners">
+<div id="cart-totals" class="cart-totals relative bg-white border border-gray-200 rounded-lg shadow-sm p-6" x-data="initCartTotals" x-bind="eventListeners">
+    <h3 class="text-lg font-bold text-gray-900 mb-4"><?= $escaper->escapeHtml(__('Summary')) ?></h3>
     <template x-if="isLoading">
-    <div class="z-10 absolute w-full h-full flex items-center justify-center bg-white/60">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 40 40" fill="currentColor" class="loader-dancers" aria-hidden="true">
-    <rect x="6" y="20" width="14" height="14" rx="0"></rect>
-    <rect x="20" y="20" width="14" height="14" rx="0"></rect>
-</svg>
-    </div>
-</template>
-    <template x-for="(segment, index) in getSortedSegments" :key="index">
-        <div>
-            <div x-data="initDiscountTotalSegment">
-<template x-if="isDiscountSegment" data-total-code="discount">
-    <div :class="wrapperClass">
-        <div x-text="formatTotalLabel"></div>
-        <div x-text="formatDiscountValue" class="justify-self-end"></div>
-    </div>
-</template>
-</div>
-<!-- display subtotal excluding tax -->
-<div x-data="initGrandTotalSegment">
-<template x-if="isGrandTotalAndIncl">
-    <div class="divide-y">
-        <div :class="wrapperClassTotals">
-            <div x-text="formatTotalLabelInclTax"></div>
-            <div x-text="formatGrandTotal" class="justify-self-end"></div>
-        </div>
-
-        <div :class="wrapperClass" class="text-base">
-            <div x-html="formatTotalLabelExclTax"></div>
-            <div x-text="formatGrandTotalExclTax" class="justify-self-end"></div>
-        </div>
-    </div>
-</template>
-
-<!-- display subtotal including tax -->
-<template x-if="isGrandTotalAndExcl">
-    <div :class="wrapperClassTotals">
-        <div x-text="formatTotalLabel"></div>
-        <div :data-amount="segment.value" x-text="formatGrandTotal" class="justify-self-end"></div>
-    </div>
-</template>
-</div>
-
-<div x-data="initShippingTotalSegment">
-    <!-- display shipping including and excluding tax -->
-    <template x-if="isShippingSegmentAndDisplayBoth">
-        <div class="border-b border-gray-300 py-3">
-            <div class="grid grid-cols-[1.5fr_1fr] md:grid-cols-2 gap-x-1">
-                <div x-text="formatTotalLabelInclTax" class="font-bold text-gray-900"></div>
-                <div x-text="formatShippingInclTax" class="font-bold text-gray-900 justify-self-end"></div>
-            </div>
-            <div class="grid grid-cols-[1.5fr_1fr] md:grid-cols-2 gap-x-1 mt-1 text-sm text-gray-500">
-                <div x-text="formatTotalLabelExclTax"></div>
-                <div x-text="formatShippingAmount" class="justify-self-end"></div>
-            </div>
+        <div class="z-10 absolute inset-0 flex items-center justify-center bg-white/60 rounded-lg">
+            <svg class="animate-spin h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
         </div>
     </template>
-
-    <!-- display shipping excluding tax -->
-    <template x-if="isShippingSegmentAndDisplayExcl">
-        <div :class="wrapperClass">
-            <div x-text="formatTotalLabel"></div>
-            <div x-text="formatShippingTotalValue" class="justify-self-end"></div>
-        </div>
-    </template>
-
-    <!-- display shipping including tax -->
-    <template x-if="isShippingSegmentAndDisplayIncl">
-        <div :class="wrapperClass">
-            <div x-text="formatTotalLabel"></div>
-            <div x-text="formatShippingInclTax" class="justify-self-end"></div>
-        </div>
-    </template>
-</div>
-<!-- display subtotal including and excluding tax -->
-<div x-data="initSubtotalSegment">
-<template x-if="isSubtotalSegmentAndDisplayBoth">
-    <div class="border-b border-gray-300 py-3">
-        <div class="grid grid-cols-[1.5fr_1fr] md:grid-cols-2 gap-x-1">
-            <div x-html="formatTotalLabelInclTax" class="font-bold text-gray-900"></div>
-            <div x-text="formatSubtotalInclTax" class="font-bold text-gray-900 justify-self-end"></div>
-        </div>
-        <div class="grid grid-cols-[1.5fr_1fr] md:grid-cols-2 gap-x-1 mt-1 text-sm text-gray-500">
-            <div x-html="formatTotalLabelExclTax"></div>
-            <div x-text="formatSubtotal" class="justify-self-end"></div>
-        </div>
-    </div>
-</template>
-
-<!-- display subtotal excluding tax -->
-<template x-if="isSubtotalSegmentAndDisplayExcl">
-    <div :class="wrapperClass">
-        <div x-html="formatTotalLabel"></div>
-        <div x-text="formatSubtotal" class="justify-self-end"></div>
-    </div>
-</template>
-
-<!-- display subtotal including tax -->
-<template x-if="isSubtotalSegmentAndDisplayIncl">
-    <div :class="wrapperClass">
-        <div x-html="formatTotalLabel"></div>
-        <div :data-amount="totalsData.subtotal_incl_tax" x-text="formatSubtotalInclTax" class="justify-self-end"></div>
-    </div>
-</template>
-</div>
-<template x-if="segment.code === 'tax' &amp;&amp; (segment.value &gt; 0 || checkoutConfig.isZeroTaxDisplayed)">
-    <div>
-        <template x-if="!(segment.value &gt; 0 &amp;&amp; checkoutConfig.isFullTaxSummaryDisplayed)">
-            <div :class="wrapperClass">
-                <div x-text="segment.title"></div>
-                <div x-text="hyva.formatPrice(segment.value)" class="justify-self-end"></div>
-            </div>
-        </template>
-
-        <template x-if="segment.value &gt; 0 &amp;&amp; checkoutConfig.isFullTaxSummaryDisplayed">
-            <details class="group">
-                <summary class="block cursor-pointer [&amp;::-webkit-details-marker]:hidden" :class="wrapperClass">
-                    <span x-text="segment.title"></span>
-                    <span class="inline-flex items-center gap-x-1 justify-self-end">
-                        <span x-text="hyva.formatPrice(segment.value)"></span>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="transform group-open:rotate-180" width="18" height="18" aria-hidden="true">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-</svg>
-                    </span>
-                </summary>
-                <template x-for="(taxItem, index) in segment.extension_attributes.tax_grandtotal_details" :key="index">
-                    <div :class="wrapperClass">
-                        <div>
-                            <template x-for="(taxRate, index) in taxItem.rates">
-                                <div x-text="`${taxRate.title}`"></div>
-                            </template>
+    <div class="space-y-1">
+        <template x-for="(segment, index) in getSortedSegments" :key="index">
+            <div>
+                <div x-data="initDiscountTotalSegment">
+                    <template x-if="isDiscountSegment" data-total-code="discount">
+                        <div :class="wrapperClass" class="text-green-600">
+                            <div x-text="formatTotalLabel"></div>
+                            <div x-text="formatDiscountValue" class="font-medium"></div>
                         </div>
-                        <div x-text="hyva.formatPrice(taxItem.amount)" class="justify-self-end"></div>
+                    </template>
+                </div>
+                <!-- display subtotal excluding tax -->
+                <div x-data="initGrandTotalSegment">
+                    <template x-if="isGrandTotalAndIncl">
+                        <div class="pt-2">
+                            <div :class="wrapperClassTotals">
+                                <div x-text="formatTotalLabelInclTax"></div>
+                                <div x-text="formatGrandTotal" class="text-primary"></div>
+                            </div>
+
+                            <div :class="wrapperClass" class="text-sm !py-0">
+                                <div x-html="formatTotalLabelExclTax"></div>
+                                <div x-text="formatGrandTotalExclTax"></div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- display subtotal including tax -->
+                    <template x-if="isGrandTotalAndExcl">
+                        <div :class="wrapperClassTotals">
+                            <div x-text="formatTotalLabel"></div>
+                            <div :data-amount="segment.value" x-text="formatGrandTotal" class="text-primary"></div>
+                        </div>
+                    </template>
+                </div>
+
+                <div x-data="initShippingTotalSegment">
+                    <!-- display shipping including and excluding tax -->
+                    <template x-if="isShippingSegmentAndDisplayBoth">
+                        <div class="py-2 border-b border-gray-100">
+                            <div class="flex justify-between items-center text-gray-900 font-medium">
+                                <div x-text="formatTotalLabelInclTax"></div>
+                                <div x-text="formatShippingInclTax"></div>
+                            </div>
+                            <div class="flex justify-between items-center text-sm text-gray-500 mt-1">
+                                <div x-text="formatTotalLabelExclTax"></div>
+                                <div x-text="formatShippingAmount"></div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- display shipping excluding tax -->
+                    <template x-if="isShippingSegmentAndDisplayExcl">
+                        <div :class="wrapperClass">
+                            <div x-text="formatTotalLabel"></div>
+                            <div x-text="formatShippingTotalValue" class="font-medium text-gray-900"></div>
+                        </div>
+                    </template>
+
+                    <!-- display shipping including tax -->
+                    <template x-if="isShippingSegmentAndDisplayIncl">
+                        <div :class="wrapperClass">
+                            <div x-text="formatTotalLabel"></div>
+                            <div x-text="formatShippingInclTax" class="font-medium text-gray-900"></div>
+                        </div>
+                    </template>
+                </div>
+                <!-- display subtotal including and excluding tax -->
+                <div x-data="initSubtotalSegment">
+                    <template x-if="isSubtotalSegmentAndDisplayBoth">
+                        <div class="py-2 border-b border-gray-100">
+                            <div class="flex justify-between items-center text-gray-900 font-medium">
+                                <div x-html="formatTotalLabelInclTax"></div>
+                                <div x-text="formatSubtotalInclTax"></div>
+                            </div>
+                            <div class="flex justify-between items-center text-sm text-gray-500 mt-1">
+                                <div x-html="formatTotalLabelExclTax"></div>
+                                <div x-text="formatSubtotal"></div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- display subtotal excluding tax -->
+                    <template x-if="isSubtotalSegmentAndDisplayExcl">
+                        <div :class="wrapperClass">
+                            <div x-html="formatTotalLabel"></div>
+                            <div x-text="formatSubtotal" class="font-medium text-gray-900"></div>
+                        </div>
+                    </template>
+
+                    <!-- display subtotal including tax -->
+                    <template x-if="isSubtotalSegmentAndDisplayIncl">
+                        <div :class="wrapperClass">
+                            <div x-html="formatTotalLabel"></div>
+                            <div :data-amount="totalsData.subtotal_incl_tax" x-text="formatSubtotalInclTax" class="font-medium text-gray-900"></div>
+                        </div>
+                    </template>
+                </div>
+                <template x-if="segment.code === 'tax' &amp;&amp; (segment.value &gt; 0 || checkoutConfig.isZeroTaxDisplayed)">
+                    <div>
+                        <template x-if="!(segment.value &gt; 0 &amp;&amp; checkoutConfig.isFullTaxSummaryDisplayed)">
+                            <div :class="wrapperClass">
+                                <div x-text="segment.title"></div>
+                                <div x-text="hyva.formatPrice(segment.value)" class="font-medium text-gray-900"></div>
+                            </div>
+                        </template>
+
+                        <template x-if="segment.value &gt; 0 &amp;&amp; checkoutConfig.isFullTaxSummaryDisplayed">
+                            <details class="group">
+                                <summary class="block cursor-pointer [&amp;::-webkit-details-marker]:hidden" :class="wrapperClass">
+                                    <span x-text="segment.title"></span>
+                                    <span class="inline-flex items-center gap-x-1 justify-self-end font-medium text-gray-900">
+                                        <span x-text="hyva.formatPrice(segment.value)"></span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="transform group-open:rotate-180 transition-transform" width="16" height="16" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </span>
+                                </summary>
+                                <div class="pl-4 text-sm text-gray-500 space-y-1 pb-2">
+                                    <template x-for="(taxItem, index) in segment.extension_attributes.tax_grandtotal_details" :key="index">
+                                        <div class="flex justify-between">
+                                            <div>
+                                                <template x-for="(taxRate, index) in taxItem.rates">
+                                                    <div x-text="`${taxRate.title}`"></div>
+                                                </template>
+                                            </div>
+                                            <div x-text="hyva.formatPrice(taxItem.amount)"></div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </details>
+                        </template>
                     </div>
                 </template>
-
-        </details></template>
+                <div x-data="initFixedProductTaxTotalSegment">
+                    <template x-if="isFptSegment">
+                        <div :class="wrapperClass">
+                            <div x-html="formatTotalLabel"></div>
+                            <div x-text="formatFptTotal" class="font-medium text-gray-900"></div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
     </div>
-</template>
-<div x-data="initFixedProductTaxTotalSegment">
-<template x-if="isFptSegment">
-    <div :class="wrapperClass">
-        <div x-html="formatTotalLabel"></div>
-        <div x-text="formatFptTotal" class="justify-self-end"></div>
-    </div>
-</template>
-</div>
-        </div>
-    </template>
 </div>
 
 <script>

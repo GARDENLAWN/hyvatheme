@@ -71,7 +71,7 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
     }
 </style>
 
-<article class="cart item flex gap-4 md:gap-6"
+<article class="cart item p-4 bg-white border border-gray-200 rounded-lg shadow-sm mb-4 flex flex-col md:flex-row gap-4 md:gap-6"
     <?php foreach ($block->getData('cart_item_data_attributes') ?? [] as $attribute => $include): ?>
         <?php if ($include): ?>
             <?php /** Append data-* attributes based on layout XML arguments */ ?>
@@ -112,13 +112,13 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
     <div class="flex flex-col grow">
         <div class="product-item-details grow">
             <div class="flex flex-col md:flex-row justify-between gap-4">
-                <h3 class="product-item-name text-xl break-all">
+                <h3 class="product-item-name text-lg font-bold text-gray-900 break-all">
                     <?php if ($block->hasProductUrl()): ?>
-                        <a href="<?= $escaper->escapeUrl($block->getProductUrl()) ?>">
-                            <strong><?= $escaper->escapeHtml($block->getProductName()) ?></strong>
+                        <a href="<?= $escaper->escapeUrl($block->getProductUrl()) ?>" class="hover:text-primary transition-colors">
+                            <?= $escaper->escapeHtml($block->getProductName()) ?>
                         </a>
                     <?php else: ?>
-                        <strong><?= $escaper->escapeHtml($block->getProductName()) ?></strong>
+                        <?= $escaper->escapeHtml($block->getProductName()) ?>
                     <?php endif; ?>
                 </h3>
 
@@ -131,21 +131,21 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                             <?= $block->getUnitPriceHtml($item) ?>
                         </span>
                     </div>
-                    <div class="font-bold text-lg">
+                    <div class="font-bold text-lg text-gray-900">
                         <?= $block->getRowTotalHtml($item) ?>
                     </div>
                 </div>
             </div>
 
             <?php if ($options = $block->getOptionList()): ?>
-                <dl class="mt-4 item-options table text-sm">
+                <dl class="mt-2 item-options text-sm text-gray-600">
                     <?php foreach ($options as $option): ?>
                         <?php $formatedOptionValue = $block->getFormatedOptionValue($option) ?>
-                        <div class="table-row">
-                            <dt class="table-cell font-normal min-w-16 pe-2 pb-1 text-fg-secondary">
-                                <?= $escaper->escapeHtml($option['label']) ?>
+                        <div class="flex gap-2">
+                            <dt class="font-medium min-w-16">
+                                <?= $escaper->escapeHtml($option['label']) ?>:
                             </dt>
-                            <dd class="table-cell font-bold pb-1">
+                            <dd class="font-normal">
                                 <?php if (isset($formatedOptionValue['full_view'])): ?>
                                     <?= $escaper->escapeHtml($formatedOptionValue['full_view']) ?>
                                 <?php else: ?>
@@ -159,7 +159,7 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
 
             <?php if ($messages = $block->getMessages()): ?>
                 <?php foreach ($messages as $message): ?>
-                    <div class="cart item message <?= $escaper->escapeHtmlAttr($message['type']) ?>">
+                    <div class="cart item message mt-2 p-2 rounded bg-red-50 text-red-700 text-sm border border-red-200 <?= $escaper->escapeHtmlAttr($message['type']) ?>">
                         <div><?= $escaper->escapeHtml($message['text']) ?></div>
                     </div>
                 <?php endforeach; ?>
@@ -167,12 +167,14 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
 
             <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
             <?php if ($addInfoBlock): ?>
-                <?= $addInfoBlock->setItem($item)->toHtml() ?>
+                <div class="mt-2">
+                    <?= $addInfoBlock->setItem($item)->toHtml() ?>
+                </div>
             <?php endif;?>
         </div>
 
-        <div class="mt-4 flex flex-wrap justify-between items-center gap-4">
-            <div class="flex items-center border border-gray-300 rounded-md overflow-hidden w-40">
+        <div class="mt-4 flex flex-wrap justify-between items-center gap-4 pt-4 border-t border-gray-100">
+            <div class="flex items-center border border-gray-300 rounded-md overflow-hidden w-32 h-10">
                 <style>
                     /* Hide number input arrows */
                     input[type=number]::-webkit-inner-spin-button,
@@ -186,7 +188,7 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                 </style>
                 <button type="button"
                         @click="decrement"
-                        class="px-3 py-2 bg-gray-50 text-gray-600 hover:bg-gray-100 border-r border-gray-300 focus:outline-none transition-colors"
+                        class="px-3 h-full bg-gray-50 text-gray-600 hover:bg-gray-100 border-r border-gray-300 focus:outline-none transition-colors flex items-center justify-center"
                         :class="{'opacity-50 cursor-not-allowed': qty <= minQty}"
                         :disabled="qty <= minQty"
                 >
@@ -203,7 +205,7 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                     name="cart[<?= $escaper->escapeHtmlAttr($item->getId()) ?>][qty]"
                     value="<?= $escaper->escapeHtmlAttr($qty) ?>"
                     title="<?= $escaper->escapeHtmlAttr(__('Qty')) ?>"
-                    class="form-input px-2 py-2 w-full text-center border-none focus:ring-0 text-gray-900 font-medium appearance-none"
+                    class="form-input px-2 h-full w-full text-center border-none focus:ring-0 text-gray-900 font-medium appearance-none"
                     required
                     <?php if ($stockItemViewModel->isQtyDecimal($product)): ?>
                     type="text"
@@ -223,7 +225,7 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
 
                 <button type="button"
                         @click="increment"
-                        class="px-3 py-2 bg-gray-50 text-gray-600 hover:bg-gray-100 border-l border-gray-300 focus:outline-none transition-colors"
+                        class="px-3 h-full bg-gray-50 text-gray-600 hover:bg-gray-100 border-l border-gray-300 focus:outline-none transition-colors flex items-center justify-center"
                         :class="{'opacity-50 cursor-not-allowed': qty >= maxQty}"
                         :disabled="qty >= maxQty"
                 >
@@ -233,18 +235,18 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                 </button>
             </div>
 
-            <div class="item-actions inline-flex flex-wrap items-center gap-1">
+            <div class="item-actions inline-flex flex-wrap items-center gap-2">
                 <a href="<?= $escaper->escapeUrl($block->getConfigureUrl()) ?>"
-                   class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-indigo-500 hover:text-white"
+                   class="shrink-0 btn btn-secondary rounded-md p-2 text-gray-600 hover:text-primary border-gray-300"
                    aria-label="<?= $escaper->escapeHtmlAttr(__('Edit item parameters')) ?>">
-                    <?= $lucideIcons->pencilHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                    <?= $lucideIcons->pencilHtml('', 18, 18, ['aria-hidden' => 'true']); ?>
                 </a>
                 <a href="#"
                    data-post='<?= /* @noEscape */ $block->getDeleteItemParams() ?>'
-                   class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-gray-800 hover:text-white action action-delete"
+                   class="shrink-0 btn btn-secondary rounded-md p-2 text-gray-600 hover:text-red-600 border-gray-300 action action-delete"
                    aria-label="<?= $escaper->escapeHtmlAttr(__('Remove item')) ?>"
                 >
-                    <?= $lucideIcons->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                    <?= $lucideIcons->trashHtml('', 18, 18, ['aria-hidden' => 'true']); ?>
                 </a>
             </div>
         </div>
