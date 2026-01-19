@@ -32,13 +32,13 @@ $defaultQty = $block->getProductDefaultQty() * 1;
 
 $step = $stockItemViewModel->getQtyIncrements($product)
     ? $stockItemViewModel->getQtyIncrements($product)
-    : null;
+    : 1;
 
 /**
  * sets minimum and maximum values taking into account the values set in the admin,
  * but taking into account the value of Qty Increments
  */
-if ($step) {
+if ($step > 1) {
     $minSalesQty = ceil($minSalesQty / $step) * $step;
     $maxSalesQty = floor($maxSalesQty / $step) * $step;
     $defaultQty = ceil($defaultQty / $step) * $step;
@@ -69,6 +69,9 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                 qty: <?= /** @noEscape */ $defaultQty ?>,
                 itemId: (new URLSearchParams(window.location.search)).get('id') || findPathParam('id'),
                 productId: '<?= (int)$product->getId() ?>',
+                step: <?= (float)$step ?>,
+                minQty: <?= (float)($minSalesQty ?: 1) ?>,
+                maxQty: <?= (float)($maxSalesQty ?: 10000) ?>,
                 init() {
                     this.$dispatch('update-qty-<?= (int)$product->getId() ?>', this.qty);
                 },
@@ -86,9 +89,24 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                         }
                     }
                 },
-                onInput() {
-                    this.qty = hyva.safeParseNumber(this.$event.target.value);
+                updateQty() {
                     this.$dispatch('update-qty-<?= (int)$product->getId() ?>', this.qty);
+                },
+                onInput(event) {
+                    this.qty = hyva.safeParseNumber(event.target.value);
+                    this.updateQty();
+                },
+                increment() {
+                    if (this.qty < this.maxQty) {
+                        this.qty += this.step;
+                        this.updateQty();
+                    }
+                },
+                decrement() {
+                    if (this.qty > this.minQty) {
+                        this.qty -= this.step;
+                        this.updateQty();
+                    }
                 },
                 onConfigurableSelectionChanged(event) {
                     // Check if the selection is complete (all options selected)
@@ -97,8 +115,8 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                     const candidates = event.detail.candidates;
                     if (candidates && candidates.length === 1) {
                          if (this.qty === 0 || !this.qty) {
-                            this.qty = <?= /** @noEscape */ $minSalesQty ?: 1 ?>;
-                            this.$dispatch('update-qty-<?= (int)$product->getId() ?>', this.qty);
+                            this.qty = this.minQty;
+                            this.updateQty();
                         }
                     }
                 }
@@ -109,14 +127,35 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
     <?php $hyvaCsp->registerInlineScript() ?>
     <div x-data="initQtyField"
          @configurable-selection-changed.window="onConfigurableSelectionChanged($event)"
+         class="mr-2"
     >
         <?php if ($product->isSaleable()): ?>
-            <div class="mr-2">
-                <label for="qty[<?= (int)$product->getId() ?>]"
-                    class="sr-only"
+            <label for="qty[<?= (int)$product->getId() ?>]" class="sr-only">
+                <?= $escaper->escapeHtml(__('Quantity')) ?>
+            </label>
+            <div class="flex items-center border border-gray-300 rounded-md overflow-hidden w-40">
+                <style>
+                    /* Hide number input arrows */
+                    input[type=number]::-webkit-inner-spin-button,
+                    input[type=number]::-webkit-outer-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
+                    input[type=number] {
+                        -moz-appearance: textfield;
+                    }
+                </style>
+                <button type="button"
+                        @click="decrement"
+                        class="px-3 py-2 bg-gray-50 text-gray-600 hover:bg-gray-100 border-r border-gray-300 focus:outline-none transition-colors"
+                        :class="{'opacity-50 cursor-not-allowed': qty <= minQty}"
+                        :disabled="qty <= minQty"
                 >
-                    <?= $escaper->escapeHtml(__('Quantity')) ?>
-                </label>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                    </svg>
+                </button>
+
                 <input name="qty"
                     @private-content-loaded.window="onGetCartData"
                     id="qty[<?= (int)$product->getId() ?>]"
@@ -133,11 +172,21 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                     <?php if ($maxSalesQty): ?>max="<?= /** @noEscape */ $maxSalesQty ?>"<?php endif; ?>
                     <?php if ($step): ?>step="<?= /** @noEscape */ $step ?>"<?php endif; ?>
                     <?php endif; ?>
-                    :value="qty"
-                    value="<?= $block->getProductDefaultQty() * 1 ?>"
-                    class="form-input px-2 py-2 w-20 text-center invalid:ring-2 invalid:ring-red-500"
+                    x-model="qty"
+                    class="form-input px-2 py-2 w-full text-center border-none focus:ring-0 text-gray-900 font-medium appearance-none"
                     @input="onInput"
                 >
+
+                <button type="button"
+                        @click="increment"
+                        class="px-3 py-2 bg-gray-50 text-gray-600 hover:bg-gray-100 border-l border-gray-300 focus:outline-none transition-colors"
+                        :class="{'opacity-50 cursor-not-allowed': qty >= maxQty}"
+                        :disabled="qty >= maxQty"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                </button>
             </div>
         <?php endif; ?>
     </div>

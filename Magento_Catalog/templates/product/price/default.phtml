@@ -1,0 +1,111 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\Catalog\Pricing\Price\FinalPrice;
+use Magento\Catalog\Pricing\Price\RegularPrice;
+use Magento\Framework\Pricing\Render;
+use Magento\Framework\Pricing\Render\PriceBox;
+
+/** @var PriceBox $block */
+
+/** @var FinalPrice $finalPriceModel */
+$finalPriceModel = $block->getPrice();
+$priceId = $block->getPriceId();
+$productId = $finalPriceModel->getProduct()->getId();
+
+$idSuffix = $block->getIdSuffix() ? $block->getIdSuffix() : '';
+$htmlPriceId = 'product-price-' . $productId . $idSuffix;
+
+// Regular Price (Old Price)
+/** @var RegularPrice $regularPriceModel */
+$regularPriceModel = $finalPriceModel->getProduct()->getPriceInfo()->getPrice(RegularPrice::PRICE_CODE);
+$regularPrice = $regularPriceModel->getAmount()->getValue();
+$finalPrice = $finalPriceModel->getAmount()->getValue();
+
+$hasDiscount = $regularPrice > $finalPrice;
+
+// Tax Logic
+$catalogHelper = $this->helper(Magento\Catalog\Helper\Data::class);
+$priceHelper = $this->helper(Magento\Framework\Pricing\Helper\Data::class);
+$product = $finalPriceModel->getProduct();
+
+// Initial values (PHP side)
+$finalPriceIncl = $catalogHelper->getTaxPrice($product, $finalPrice, true);
+$finalPriceExcl = $catalogHelper->getTaxPrice($product, $finalPrice, false);
+$regularPriceIncl = $catalogHelper->getTaxPrice($product, $regularPrice, true);
+$regularPriceExcl = $catalogHelper->getTaxPrice($product, $regularPrice, false);
+
+$showNet = $finalPriceIncl != $finalPriceExcl;
+
+?>
+<script>
+    function initPrice<?= (int)$productId ?>() {
+        return {
+            regularPriceKey: 'oldPrice',
+            finalPriceKey: 'finalPrice',
+            activeProductsPriceData: false,
+            initialFinalPrice: <?= (float)$finalPriceIncl ?>,
+            initialBasePrice: <?= (float)$finalPriceExcl ?>,
+            calculatedFinalPrice: false,
+            calculatedBasePrice: false,
+            qty: 1,
+
+            getFormattedFinalPrice() {
+                return hyva.formatPrice(this.calculatedFinalPrice || this.initialFinalPrice);
+            },
+            getFormattedBasePrice() {
+                return hyva.formatPrice(this.calculatedBasePrice || this.initialBasePrice);
+            },
+            formatOldPrice() {
+                return hyva.formatPrice(<?= (float)$regularPriceIncl ?>);
+            },
+
+            eventListeners: {
+                ['@update-prices-<?= (int)$productId ?>.window'](event) {
+                    this.activeProductsPriceData = event.detail;
+                    if (event.detail && event.detail.finalPrice) {
+                        this.calculatedFinalPrice = event.detail.finalPrice.amount;
+                        this.calculatedBasePrice = event.detail.basePrice.amount;
+                    }
+                },
+                ['@update-qty-<?= (int)$productId ?>.window'](event) {
+                    this.qty = event.detail;
+                }
+            }
+        }
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('initPrice<?= (int)$productId ?>', initPrice<?= (int)$productId ?>), {once: true})
+</script>
+
+<div x-data="initPrice<?= (int)$productId ?>" x-bind="eventListeners" class="price-box price-final_price flex flex-col items-end">
+
+    <!-- Old Price -->
+    <?php if ($hasDiscount): ?>
+        <div class="old-price text-gray-400 line-through text-sm mb-0.5">
+            <span class="price-wrapper">
+                <span class="price" x-html="formatOldPrice"><?= $priceHelper->currency($regularPriceIncl, true, false) ?></span>
+            </span>
+        </div>
+    <?php endif; ?>
+
+    <!-- Final Price (Gross) -->
+    <div class="final-price font-extrabold text-gray-900 text-4xl leading-none tracking-tight">
+        <span id="<?= $htmlPriceId ?>" class="price-wrapper">
+            <span class="price" x-html="getFormattedFinalPrice"><?= $priceHelper->currency($finalPriceIncl, true, false) ?></span>
+        </span>
+    </div>
+
+    <!-- Net Price -->
+    <?php if ($showNet): ?>
+        <div class="final-price-excl-tax text-gray-500 text-xs mt-1 font-medium">
+            <span class="price-wrapper">
+                <span class="price" x-html="getFormattedBasePrice"><?= $priceHelper->currency($finalPriceExcl, true, false) ?></span>
+                <span><?= $block->escapeHtml(__('netto')) ?></span>
+            </span>
+        </div>
+    <?php endif; ?>
+</div>

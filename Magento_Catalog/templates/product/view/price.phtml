@@ -1,0 +1,166 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\Catalog\Pricing\Price\FinalPrice;
+use Magento\Catalog\Pricing\Price\RegularPrice;
+use Magento\Catalog\Pricing\Price\TierPrice;
+use Magento\Framework\Pricing\Render;
+use Magento\Framework\Pricing\Render\PriceBox;
+
+/** @var \Magento\Framework\View\Element\Template $block */
+
+// Try to get product from block
+$product = $block->getProduct();
+
+if (!$product) {
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $registry = $objectManager->get('Magento\Framework\Registry');
+    $product = $registry->registry('current_product');
+}
+
+if (!$product) {
+    return;
+}
+
+$productId = $product->getId();
+$idSuffix = $block->getIdSuffix() ? $block->getIdSuffix() : '';
+$htmlPriceId = 'product-price-' . $productId . $idSuffix;
+
+// Get Prices from Product PriceInfo
+$priceInfo = $product->getPriceInfo();
+$regularPriceModel = $priceInfo->getPrice(RegularPrice::PRICE_CODE);
+$finalPriceModel = $priceInfo->getPrice(FinalPrice::PRICE_CODE);
+
+// Use Base Amount
+$regularPriceBase = $regularPriceModel->getAmount()->getBaseAmount();
+$finalPriceBase = $finalPriceModel->getAmount()->getBaseAmount();
+
+// For discount check
+$regularPriceVal = $regularPriceModel->getAmount()->getValue();
+$finalPriceVal = $finalPriceModel->getAmount()->getValue();
+$hasDiscount = $regularPriceVal > $finalPriceVal;
+
+// Tax Logic
+$catalogHelper = $this->helper(Magento\Catalog\Helper\Data::class);
+$priceHelper = $this->helper(Magento\Framework\Pricing\Helper\Data::class);
+
+// Initial values (PHP side)
+$finalPriceIncl = $catalogHelper->getTaxPrice($product, $finalPriceBase, true);
+$finalPriceExcl = $catalogHelper->getTaxPrice($product, $finalPriceBase, false);
+$regularPriceIncl = $catalogHelper->getTaxPrice($product, $regularPriceBase, true);
+$regularPriceExcl = $catalogHelper->getTaxPrice($product, $regularPriceBase, false);
+
+$showNet = $finalPriceIncl != $finalPriceExcl;
+
+// Prepare Tier Prices for JS
+$tierPricesJs = [];
+$tierPriceModel = $priceInfo->getPrice(TierPrice::PRICE_CODE);
+if ($tierPriceModel) {
+    foreach ($tierPriceModel->getTierPriceList() as $tier) {
+        $base = $tier['price']->getBaseAmount();
+        $tierPricesJs[] = [
+            'qty' => (float)$tier['price_qty'],
+            'final' => (float)$catalogHelper->getTaxPrice($product, $base, true),
+            'base' => (float)$catalogHelper->getTaxPrice($product, $base, false)
+        ];
+    }
+    // Sort by qty ascending
+    usort($tierPricesJs, function($a, $b) {
+        return $a['qty'] <=> $b['qty'];
+    });
+}
+
+?>
+<script>
+    function initPrice<?= (int)$productId ?>() {
+        return {
+            regularPriceKey: 'oldPrice',
+            finalPriceKey: 'finalPrice',
+            activeProductsPriceData: false,
+            initialFinalPrice: <?= (float)$finalPriceIncl ?>,
+            initialBasePrice: <?= (float)$finalPriceExcl ?>,
+            calculatedFinalPrice: false,
+            calculatedBasePrice: false,
+            qty: 1,
+            tierPrices: <?= json_encode($tierPricesJs) ?>,
+
+            getFormattedFinalPrice() {
+                return hyva.formatPrice(this.calculatedFinalPrice || this.initialFinalPrice);
+            },
+            getFormattedBasePrice() {
+                return hyva.formatPrice(this.calculatedBasePrice || this.initialBasePrice);
+            },
+            formatOldPrice() {
+                return hyva.formatPrice(<?= (float)$regularPriceIncl ?>);
+            },
+
+            updatePriceBasedOnQty() {
+                let finalPrice = this.initialFinalPrice;
+                let basePrice = this.initialBasePrice;
+
+                // Find applicable tier price
+                for (let i = 0; i < this.tierPrices.length; i++) {
+                    if (this.qty >= this.tierPrices[i].qty) {
+                        finalPrice = this.tierPrices[i].final;
+                        basePrice = this.tierPrices[i].base;
+                    }
+                }
+
+                // Only update if changed from initial or previous calculation
+                // Note: activeProductsPriceData takes precedence if set (e.g. configurable options)
+                if (!this.activeProductsPriceData) {
+                    this.calculatedFinalPrice = finalPrice;
+                    this.calculatedBasePrice = basePrice;
+                }
+            },
+
+            eventListeners: {
+                ['@update-prices-<?= (int)$productId ?>.window'](event) {
+                    this.activeProductsPriceData = event.detail;
+                    if (event.detail && event.detail.finalPrice) {
+                        this.calculatedFinalPrice = event.detail.finalPrice.amount;
+                        this.calculatedBasePrice = event.detail.basePrice.amount;
+                    }
+                },
+                ['@update-qty-<?= (int)$productId ?>.window'](event) {
+                    this.qty = event.detail;
+                    this.updatePriceBasedOnQty();
+                }
+            }
+        }
+    }
+    window.addEventListener('alpine:init', () => Alpine.data('initPrice<?= (int)$productId ?>', initPrice<?= (int)$productId ?>), {once: true})
+</script>
+
+<div x-data="initPrice<?= (int)$productId ?>" x-bind="eventListeners" class="price-box price-final_price flex flex-col items-end">
+
+    <!-- Old Price -->
+    <?php if ($hasDiscount): ?>
+        <div class="old-price text-gray-400 line-through text-sm mb-0.5">
+            <span class="price-wrapper">
+                <span class="price" x-html="formatOldPrice"><?= $priceHelper->currency($regularPriceIncl, true, false) ?></span>
+            </span>
+        </div>
+    <?php endif; ?>
+
+    <!-- Final Price (Gross) -->
+    <div class="final-price font-extrabold text-gray-900 text-4xl leading-none tracking-tight">
+        <span id="<?= $htmlPriceId ?>" class="price-wrapper">
+            <span class="price" x-html="getFormattedFinalPrice"><?= $priceHelper->currency($finalPriceIncl, true, false) ?></span>
+        </span>
+    </div>
+
+    <!-- Net Price -->
+    <?php if ($showNet): ?>
+        <div class="final-price-excl-tax text-gray-500 text-xs mt-1 font-medium">
+            <span class="price-wrapper">
+                <span class="price" x-html="getFormattedBasePrice"><?= $priceHelper->currency($finalPriceExcl, true, false) ?></span>
+                <span><?= $block->escapeHtml(__('netto')) ?></span>
+            </span>
+        </div>
+    <?php endif; ?>
+</div>
