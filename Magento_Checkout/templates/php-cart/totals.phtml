@@ -45,8 +45,16 @@ use Magento\Framework\View\Element\Template;
             updateTotals(totalsData) {
                 this.totalsData = totalsData
             },
-            updateShippingMethod(shippingMethod) {
-                this.shippingMethod = shippingMethod;
+            updateShippingMethod(data) {
+                if (data && typeof data === 'object' && data.method) {
+                    this.shippingMethod = {
+                        carrier_code: data.method.split('_')[0],
+                        method_code: data.method.split('_')[1],
+                        method_title: data.method_title
+                    };
+                } else {
+                    this.shippingMethod = data;
+                }
             },
             excludingTaxMessage: '<?= $escaper->escapeJs(__('net')) ?>',
             includingTaxMessage: '<?= $escaper->escapeJs(__('gross')) ?>',
@@ -55,7 +63,7 @@ use Magento\Framework\View\Element\Template;
                     this.updateTotals(this.$event.detail.data)
                 },
                 ['@update-shipping-method.window']() {
-                    this.updateShippingMethod(this.$event.detail.method);
+                    this.updateShippingMethod(this.$event.detail);
                 },
                 ['@update-totals-start.window']() {
                     this.isLoading = true;
@@ -251,14 +259,20 @@ use Magento\Framework\View\Element\Template;
             formatShippingAmount() {
                 return hyva.formatPrice(this.totalsData.shipping_amount);
             },
+            getShippingTitle() {
+                if (this.shippingMethod && this.shippingMethod.method_title) {
+                    return '<?= $escaper->escapeJs(__('Delivery')) ?> (' + this.shippingMethod.method_title + ')';
+                }
+                return this.segment.title;
+            },
             formatTotalLabelExclTax() {
-                return '<?= $escaper->escapeJs(__('Delivery')) ?> (<?= $escaper->escapeJs(__('net')) ?>)';
+                return `${this.getShippingTitle()} ${this.excludingTaxMessage}`;
             },
             formatTotalLabelInclTax() {
-                return '<?= $escaper->escapeJs(__('Delivery')) ?> (<?= $escaper->escapeJs(__('gross')) ?>)';
+                return `${this.getShippingTitle()} ${this.includingTaxMessage}`;
             },
             formatTotalLabel() {
-                return '<?= $escaper->escapeJs(__('Delivery')) ?>';
+                return this.getShippingTitle();
             }
         };
     }
