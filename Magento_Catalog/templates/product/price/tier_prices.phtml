@@ -53,21 +53,6 @@ $regularPrice = $product->getPriceInfo()->getPrice('regular_price')->getAmount()
             <?php foreach ($price->getTierPriceList() as $index => $tierPrice): ?>
                 <?php
                 $savePercent = $tierPrice['percentage_value'];
-                // Use getValue() which should be the final calculated price (likely Gross if configured so)
-                // But to be safe and recalculate Net/Gross explicitly, we need the base value or handle tax logic carefully.
-
-                // If user says tax is double applied, it means we took Gross and added tax again.
-                // Let's try to use the price directly from the object which handles tax logic.
-
-                // $tierPrice['price'] is an Amount object.
-                // It has getValue() (final) and getBaseAmount() (base).
-
-                // Let's try to use CatalogHelper with the value we have, but ensuring we know if it includes tax.
-                // Actually, getTaxPrice is smart. But if we pass a value that is already Gross, and ask for Gross, it might add tax again if it thinks input is Net.
-
-                // Safer approach: Use the Amount object itself if possible, or assume getValue() is correct for display and reverse calculate if needed?
-                // No, let's try getBaseAmount() as it should be the raw value from DB (Net usually).
-
                 $tierPriceBase = $tierPrice['price']->getBaseAmount();
                 $tierPriceValue = $tierPrice['price']->getValue();
 
@@ -78,8 +63,6 @@ $regularPrice = $product->getPriceInfo()->getPrice('regular_price')->getAmount()
                 $catalogHelper = $this->helper(Magento\Catalog\Helper\Data::class);
                 $priceHelper = $this->helper(Magento\Framework\Pricing\Helper\Data::class);
 
-                // We use the BASE amount to calculate tax, assuming base is Net (standard Magento)
-                // If base is Gross (config setting), getTaxPrice handles it.
                 $priceInclTax = $catalogHelper->getTaxPrice($product, $tierPriceBase, true);
                 $priceExclTax = $catalogHelper->getTaxPrice($product, $tierPriceBase, false);
 
@@ -96,7 +79,7 @@ $regularPrice = $product->getPriceInfo()->getPrice('regular_price')->getAmount()
                     <?php endif; ?>
 
                     <div class="text-center mb-2">
-                        <span class="text-sm text-gray-500 uppercase tracking-wide font-medium"><?= $escaper->escapeHtml(__('Buy %1+', $tierPrice['price_qty'])) ?></span>
+                        <span class="text-base font-bold text-primary uppercase tracking-wide"><?= $escaper->escapeHtml(__('Buy %1+', $tierPrice['price_qty'])) ?></span>
                     </div>
 
                     <div class="text-center my-1">
