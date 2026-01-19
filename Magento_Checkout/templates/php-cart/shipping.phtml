@@ -173,31 +173,31 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
             getEstimatedShippingRateCarriers() {
                 return Array.from(new Set(this.availableShippingMethods.map(rate => rate.carrier_title)));
             },
-            getRatesForCarrier() {
-                return this.availableShippingMethods.filter(rate => rate.carrier_title === this.carrier);
+            getRatesForCarrier(carrierTitle) {
+                return this.availableShippingMethods.filter(rate => rate.carrier_title === carrierTitle);
             },
             updateShippingMethod() {
                 this.$dispatch('update-shipping-method', {method: this.shippingCarrierRadioValue()});
                 this.shippingMethod = this.shippingCarrierRadioValue();
                 this.fetchTotals();
             },
-            shippingCarrierRadioId() {
-                return 'shipping_method_' + this.rate.method_code;
+            shippingCarrierRadioId(rate) {
+                return 'shipping_method_' + rate.method_code;
             },
-            shippingCarrierRadioValue() {
-                return this.rate.carrier_code + '_' + this.rate.method_code;
+            shippingCarrierRadioValue(rate) {
+                return rate.carrier_code + '_' + rate.method_code;
             },
-            isShippingMethodSelected() {
-                return this.shippingMethod === this.shippingCarrierRadioValue();
+            isShippingMethodSelected(rate) {
+                return this.shippingMethod === this.shippingCarrierRadioValue(rate);
             },
-            shippingCarrierRateIncl() {
-                return hyva.formatPrice(this.rate.price_incl_tax);
+            shippingCarrierRateIncl(rate) {
+                return hyva.formatPrice(rate.price_incl_tax);
             },
-            shippingCarrierRateExcl() {
-                return hyva.formatPrice(this.rate.price_excl_tax);
+            shippingCarrierRateExcl(rate) {
+                return hyva.formatPrice(rate.price_excl_tax);
             },
-            shippingRateHasTax() {
-                return this.rate.price_excl_tax !== this.rate.price_incl_tax
+            shippingRateHasTax(rate) {
+                return rate.price_excl_tax !== rate.price_incl_tax
             },
             abortTotalsController: null,
             fetchTotals() {
@@ -589,56 +589,59 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
 
                 <template x-if="hasShippingRateCarriers">
                     <div
-                        class="relative mt-4"
+                        class="relative mt-4 space-y-4"
                         role="radiogroup"
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Shipping Methods')) ?>"
                     >
                         <?= $block->getBlockHtml('block-loader') ?>
                         <template x-for="carrier in getEstimatedShippingRateCarriers" :key="carrier">
-                            <div>
-                                <p><strong class="font-medium" x-text="carrier"></strong></p>
-                                <template x-for="(rate, index) in getRatesForCarrier" :key="index">
-                                    <label class="flex items-start px-2 gap-2 cursor-pointer mt-4">
-                                        <input
-                                            type="radio"
-                                            name="shippingEstimationSelection"
-                                            class="mr-2 mt-1 cursor-pointer"
-                                            :id="shippingCarrierRadioId"
-                                            :value="shippingCarrierRadioValue"
-                                            :checked="isShippingMethodSelected"
-                                            @change="updateShippingMethod"
-                                        >
-                                        <div class="flex flex-col grow">
-                                            <span x-text="rate.method_title" class="break-words shrink hyphens-auto"></span>
-                                            <div x-show="rate.extension_attributes && rate.extension_attributes.description"
-                                                 class="text-xs text-gray-500 mt-1 w-full"
-                                                 x-text="rate.extension_attributes && rate.extension_attributes.description"></div>
+                            <div class="space-y-2">
+                                <h5 class="text-sm font-bold text-gray-800 border-b pb-1 mb-2" x-text="carrier"></h5>
+                                <template x-for="(rate, index) in getRatesForCarrier(carrier)" :key="index">
+                                    <label class="flex items-start justify-between p-3 border rounded-md cursor-pointer hover:bg-gray-50 transition-colors"
+                                           :class="isShippingMethodSelected(rate) ? 'border-primary bg-blue-50 ring-1 ring-primary' : 'border-gray-200 bg-white'">
+                                        <div class="flex items-start gap-3">
+                                            <input
+                                                type="radio"
+                                                name="shippingEstimationSelection"
+                                                class="text-primary focus:ring-primary mt-1"
+                                                :id="shippingCarrierRadioId(rate)"
+                                                :value="shippingCarrierRadioValue(rate)"
+                                                :checked="isShippingMethodSelected(rate)"
+                                                @change="updateShippingMethod"
+                                            >
+                                            <div class="w-full">
+                                                <span class="text-sm font-medium text-gray-900 block" x-text="rate.method_title"></span>
+                                                <div x-show="rate.extension_attributes && rate.extension_attributes.description"
+                                                     class="text-xs text-gray-500 mt-1 w-full"
+                                                     x-text="rate.extension_attributes && rate.extension_attributes.description"></div>
 
-                                            <!-- Promotion Message -->
-                                            <div x-show="rate.extension_attributes && rate.extension_attributes.promotion_message && rate.extension_attributes.promotion_message !== 'undefined'"
-                                                 class="mt-2 p-2 text-xs rounded"
-                                                 style="border: 1px solid #fcd34d; background-color: #fffbeb; color: #92400e;">
-                                                <strong class="block mb-1"><?= $block->escapeHtml(__('Special offer (included in cart):')) ?></strong>
-                                                <span x-html="rate.extension_attributes ? rate.extension_attributes.promotion_message : ''"></span>
+                                                <!-- Promotion Message -->
+                                                <div x-show="rate.extension_attributes && rate.extension_attributes.promotion_message && rate.extension_attributes.promotion_message !== 'undefined'"
+                                                     class="mt-2 p-2 text-xs rounded"
+                                                     style="border: 1px solid #fcd34d; background-color: #fffbeb; color: #92400e;">
+                                                    <strong class="block mb-1"><?= $block->escapeHtml(__('Special offer (included in cart):')) ?></strong>
+                                                    <span x-html="rate.extension_attributes ? rate.extension_attributes.promotion_message : ''"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="flex flex-col justify-end ml-auto shrink-0 text-right">
+                                        <div class="text-right">
                                             <?php if ($totalsOutput->displayCartShippingInclTax() || $totalsOutput->displayCartShippingBoth()): ?>
-                                                <div class="font-bold text-gray-900">
+                                                <div class="text-sm font-bold text-gray-900 whitespace-nowrap block">
                                                     <span
-                                                        x-text="shippingCarrierRateIncl"
+                                                        x-text="shippingCarrierRateIncl(rate)"
                                                         class="price-including-tax"
                                                     ></span>
                                                 </div>
                                             <?php endif; ?>
                                             <?php if ($totalsOutput->displayCartShippingExclTax() || $totalsOutput->displayCartShippingBoth()): ?>
-                                                <div class="text-sm text-gray-600" :class="{'mt-1': shippingRateHasTax}">
+                                                <div class="text-xs text-gray-500 whitespace-nowrap block" :class="{'mt-1': shippingRateHasTax(rate)}">
                                                     <span
-                                                        x-text="shippingCarrierRateExcl"
-                                                        x-show="shippingRateHasTax"
+                                                        x-text="shippingCarrierRateExcl(rate)"
+                                                        x-show="shippingRateHasTax(rate)"
                                                         class="price-excluding-tax"
                                                     ></span>
-                                                    <span x-show="shippingRateHasTax" class="text-xs text-gray-500"><?= $escaper->escapeHtml(__('net')) ?></span>
+                                                    <span x-show="shippingRateHasTax(rate)" class="text-xs text-gray-500"><?= $escaper->escapeHtml(__('net')) ?></span>
                                                 </div>
                                             <?php endif; ?>
                                         </div>
