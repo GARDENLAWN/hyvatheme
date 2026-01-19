@@ -73,6 +73,7 @@ use Magento\Framework\Escaper;
 
     .regulamin-scope ul, .regulamin-scope ol {
         padding-left: 1.5rem;
+        list-style-type: decimal;
     }
 
     .regulamin-scope a {
@@ -106,12 +107,18 @@ use Magento\Framework\Escaper;
     .regulamin-scope .regulamin-toc ol {
         columns: 2;
         column-gap: 2rem;
-        list-style-position: inside;
+        list-style-position: outside;
+        margin-left: 1.5rem;
     }
 
     .regulamin-scope .regulamin-toc ol li {
         margin-bottom: 0.5rem;
         break-inside: avoid;
+    }
+
+    .regulamin-scope .regulamin-toc ol li a {
+        display: inline-block;
+        padding: 2px 0;
     }
 
     @media (max-width: 768px) {

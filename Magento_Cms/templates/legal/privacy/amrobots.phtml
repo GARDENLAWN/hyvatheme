@@ -73,6 +73,7 @@ use Magento\Framework\Escaper;
 
     .polityka-scope ul, .polityka-scope ol {
         padding-left: 1.5rem;
+        list-style-type: decimal;
     }
 
     .polityka-scope a {
@@ -106,12 +107,18 @@ use Magento\Framework\Escaper;
     .polityka-scope .polityka-toc ol {
         columns: 2;
         column-gap: 2rem;
-        list-style-position: inside;
+        list-style-position: outside;
+        margin-left: 1.5rem;
     }
 
     .polityka-scope .polityka-toc ol li {
         margin-bottom: 0.5rem;
         break-inside: avoid;
+    }
+
+    .polityka-scope .polityka-toc ol li a {
+        display: inline-block;
+        padding: 2px 0;
     }
 
     @media (max-width: 768px) {
@@ -449,7 +456,7 @@ use Magento\Framework\Escaper;
         przekazywane następującym odbiorcom lub kategoriom odbiorców:</p>
     <ul class="polityka-ul">
         <li class="polityka-li"><strong>przewoźnicy / spedytorzy / brokerzy kurierscy / podmioty obsługujące magazyn
-            i/lub proces wysyłki</strong> – w przypadku Klienta, który korzysta w Sklepie Internetowym ze sposobu
+                i/lub proces wysyłki</strong> – w przypadku Klienta, który korzysta w Sklepie Internetowym ze sposobu
             dostawy Produktu przesyłką pocztową lub przesyłką kurierską, Administrator udostępnia zebrane dane osobowe
             Klienta wybranemu przewoźnikowi, spedytorowi lub pośrednikowi realizującemu przesyłki na zlecenie
             Administratora, a jeżeli wysyłka następuje z magazynu zewnętrznego – podmiotowi obsługującemu magazyn i/lub
@@ -468,8 +475,9 @@ use Magento\Framework\Escaper;
             płatności realizowanej przez Klienta.
         </li>
         <li class="polityka-li"><strong>dostawcy usług zaopatrujący Administratora w rozwiązania techniczne,
-            informatyczne oraz organizacyjne, umożliwiające Administratorowi prowadzenie działalności gospodarczej, w
-            tym Sklepu Internetowego i świadczonych za jego pośrednictwem Usług Elektronicznych</strong> (w
+                informatyczne oraz organizacyjne, umożliwiające Administratorowi prowadzenie działalności gospodarczej,
+                w
+                tym Sklepu Internetowego i świadczonych za jego pośrednictwem Usług Elektronicznych</strong> (w
             szczególności dostawcy oprogramowania komputerowego do prowadzenia Sklepu Internetowego, dostawcy poczty
             elektronicznej i hostingu oraz dostawcy oprogramowania do zarządzania firmą i udzielania pomocy technicznej
             Administratorowi) – Administrator udostępnia zebrane dane osobowe Klienta wybranemu dostawcy działającemu na
@@ -477,14 +485,17 @@ use Magento\Framework\Escaper;
             danych zgodnego z niniejszą polityką prywatności.
         </li>
         <li class="polityka-li"><strong>dostawcy usług księgowych, prawnych i doradczych zapewniający Administratorowi
-            wsparcie księgowe, prawne lub doradcze</strong> (w szczególności biuro księgowe, kancelaria prawna lub firma
+                wsparcie księgowe, prawne lub doradcze</strong> (w szczególności biuro księgowe, kancelaria prawna lub
+            firma
             windykacyjna) – Administrator udostępnia zebrane dane osobowe Klienta wybranemu dostawcy działającemu na
             jego zlecenie jedynie w przypadku oraz w zakresie niezbędnym do zrealizowania danego celu przetwarzania
             danych zgodnego z niniejszą polityką prywatności.
         </li>
         <li class="polityka-li"><strong>dostawcy umieszczonych na stronie Sklepu Internetowego wtyczek
-            społecznościowych, skryptów oraz innych podobnych narzędzi umożliwiających przeglądarce osoby odwiedzającej
-            stronę Sklepu Internetowego pobieranie treści od dostawców wspomnianych wtyczek</strong> (np. logowanie za
+                społecznościowych, skryptów oraz innych podobnych narzędzi umożliwiających przeglądarce osoby
+                odwiedzającej
+                stronę Sklepu Internetowego pobieranie treści od dostawców wspomnianych wtyczek</strong> (np. logowanie
+            za
             pomocą danych logowania do serwisu społecznościowego) i przekazywanie w tym celu tym dostawcom danych
             osobowych osoby odwiedzającej, w tym również:
             <ul class="polityka-ul">
@@ -582,7 +593,7 @@ use Magento\Framework\Escaper;
             </td>
             <td style="background-color:#e2efd9">
                 <p><strong>Ze względu na ich okres przechowywania na urządzeniu osoby odwiedzającej stronę Sklepu
-                    Internetowego</strong>:</p>
+                        Internetowego</strong>:</p>
                 <ul class="polityka-ul">
                     <li class="polityka-li">sesyjne (przechowywane do czasu wylogowania się ze Sklepu Internetowego lub
                         wyłączenia przeglądarki internetowej) oraz
@@ -714,19 +725,19 @@ use Magento\Framework\Escaper;
         poniższych stronach (wystarczy kliknąć w dany link):</p>
     <ul class="polityka-ul">
         <li class="polityka-li"><a href="http://support.google.com/chrome/bin/answer.py?hl=pl&amp;answer=95647">w
-            przeglądarce Chrome</a></li>
+                przeglądarce Chrome</a></li>
         <li class="polityka-li"><a
-            href="http://support.mozilla.org/pl/kb/W%C5%82%C4%85czanie%20i%20wy%C5%82%C4%85czanie%20obs%C5%82ugi%20ciasteczek">w
-            przeglądarce Firefox</a></li>
+                href="http://support.mozilla.org/pl/kb/W%C5%82%C4%85czanie%20i%20wy%C5%82%C4%85czanie%20obs%C5%82ugi%20ciasteczek">w
+                przeglądarce Firefox</a></li>
         <li class="polityka-li"><a
-            href="https://support.microsoft.com/pl-pl/help/17442/windows-internet-explorer-delete-manage-cookies">w
-            przeglądarce Internet Explorer</a></li>
+                href="https://support.microsoft.com/pl-pl/help/17442/windows-internet-explorer-delete-manage-cookies">w
+                przeglądarce Internet Explorer</a></li>
         <li class="polityka-li"><a href="https://help.opera.com/pl/latest/web-preferences/#cookies">w przeglądarce
-            Opera</a></li>
+                Opera</a></li>
         <li class="polityka-li"><a href="https://support.apple.com/pl-pl/guide/safari/sfri11471/11.0/mac/10.13">w
-            przeglądarce Safari</a></li>
+                przeglądarce Safari</a></li>
         <li class="polityka-li"><a href="http://windows.microsoft.com/pl-pl/windows-10/edge-privacy-faq">w przeglądarce
-            Microsoft Edge</a></li>
+                Microsoft Edge</a></li>
     </ul>
     <p class="polityka-p"><strong>7.7.</strong> Administrator może korzystać w Sklepie Internetowym z usług Google
         Analytics, Universal Analytics dostarczanych przez firmę Google Ireland Limited (Gordon House, Barrow Street,
