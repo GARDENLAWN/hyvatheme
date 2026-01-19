@@ -27,71 +27,13 @@ if (!$product) {
 /** @var \Magento\Framework\Pricing\Price\PriceInterface $price */
 $price = $product->getPriceInfo()->getPrice(TierPrice::PRICE_CODE);
 $regularPrice = $product->getPriceInfo()->getPrice('regular_price')->getAmount()->getValue();
-
-$catalogHelper = $this->helper(Magento\Catalog\Helper\Data::class);
-$priceHelper = $this->helper(Magento\Framework\Pricing\Helper\Data::class);
 ?>
 
 <?php if ($price->getTierPriceList()): ?>
-    <div class="py-4 my-2 tier-price-container">
-        <style>
-            .tier-price-container .prices-tier.items {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 1rem;
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-            .tier-price-container .prices-tier.items .item {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                flex-wrap: nowrap;
-                gap: 0.5rem;
-                background-color: #f9fafb;
-                border: 1px solid #e5e7eb;
-                border-radius: 0.5rem;
-                padding: 1rem;
-                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-                transition: all 0.2s ease-in-out;
-            }
-            .tier-price-container .prices-tier.items .item:hover {
-                border-color: #9ca3af;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            }
+    <div class="py-6 my-4 tier-price-container">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4"><?= $escaper->escapeHtml(__('Buy more, save more')) ?></h3>
 
-            .tier-price-container .prices-tier.items .item .price-wrapper {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-end;
-                text-align: right;
-                line-height: 1.2;
-            }
-
-            .tier-price-container .prices-tier.items .item .price-wrapper .price-gross {
-                font-weight: 700;
-                color: #111827;
-                font-size: 1.1rem;
-            }
-            .tier-price-container .prices-tier.items .item .price-wrapper .price-net {
-                font-weight: 400;
-                color: #6b7280;
-                font-size: 0.8rem;
-            }
-
-            .tier-price-container .prices-tier.items .item .benefit {
-                font-size: 0.75rem;
-                color: #059669;
-                background-color: #ecfdf5;
-                padding: 0.25rem 0.5rem;
-                border-radius: 9999px;
-                font-weight: 600;
-                white-space: nowrap;
-            }
-        </style>
-
-        <ul role="list" class="prices-tier items mb-4">
+        <ul role="list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <?php foreach ($price->getTierPriceList() as $index => $tierPrice): ?>
                 <?php
                 $savePercent = $tierPrice['percentage_value'];
@@ -102,27 +44,38 @@ $priceHelper = $this->helper(Magento\Framework\Pricing\Helper\Data::class);
                 }
 
                 // Calculate Gross and Net
+                $catalogHelper = $this->helper(Magento\Catalog\Helper\Data::class);
+                $priceHelper = $this->helper(Magento\Framework\Pricing\Helper\Data::class);
+
                 $priceInclTax = $catalogHelper->getTaxPrice($product, $tierPriceValue, true);
                 $priceExclTax = $catalogHelper->getTaxPrice($product, $tierPriceValue, false);
 
                 $formattedIncl = $priceHelper->currency($priceInclTax, true, false);
                 $formattedExcl = $priceHelper->currency($priceExclTax, true, false);
                 ?>
-                <li class="item bg-white p-2 shadow mb-2 border-l-4 border-green-400 mx-1">
-                    <div class="text-sm text-gray-700">
-                        <?= $escaper->escapeHtml(__('Buy %1', $tierPrice['price_qty'])) ?>
+                <li class="relative flex flex-col justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-primary transition-all duration-200 group">
+
+                    <!-- Badge -->
+                    <?php if ($savePercent > 0): ?>
+                        <div class="absolute -top-3 -right-2 bg-green-100 text-green-800 text-xs font-bold px-2.5 py-1 rounded-full border border-green-200 shadow-sm">
+                            <?= $escaper->escapeHtml(__('Save %1%', $savePercent)) ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="text-center mb-2">
+                        <span class="text-sm text-gray-500 uppercase tracking-wide font-medium"><?= $escaper->escapeHtml(__('Buy %1+', $tierPrice['price_qty'])) ?></span>
                     </div>
 
-                    <div class="price-wrapper mx-2">
-                        <span class="price-gross"><?= $formattedIncl ?></span>
+                    <div class="text-center my-1">
+                        <div class="text-2xl font-bold text-gray-900 tracking-tight group-hover:text-primary transition-colors">
+                            <?= $formattedIncl ?>
+                        </div>
                         <?php if ($priceInclTax != $priceExclTax): ?>
-                            <span class="price-net"><?= $formattedExcl ?> <?= $escaper->escapeHtml(__('netto')) ?></span>
+                            <div class="text-xs text-gray-500 mt-0.5">
+                                <?= $formattedExcl ?> <?= $escaper->escapeHtml(__('netto')) ?>
+                            </div>
                         <?php endif; ?>
-                        <span class="text-xs text-gray-500 block text-right"><?= $escaper->escapeHtml(__('each')) ?></span>
-                    </div>
-
-                    <div class="benefit">
-                        <?= $escaper->escapeHtml(__('save')) ?> <span class="percent tier-<?= (int)$index ?>"><?= (int)$savePercent ?>%</span>
+                        <div class="text-[10px] text-gray-400 mt-1 uppercase"><?= $escaper->escapeHtml(__('per item')) ?></div>
                     </div>
                 </li>
             <?php endforeach; ?>
