@@ -129,7 +129,7 @@ $isCallForPrice = $product->getData('call_for_price');
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    flex-wrap: wrap;
+                    flex-wrap: nowrap;
                     gap: 0.5rem;
                     background-color: #f9fafb;
                     border: 1px solid #e5e7eb;
@@ -142,20 +142,42 @@ $isCallForPrice = $product->getData('call_for_price');
                     border-color: #9ca3af;
                     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
                 }
-                .tier-price-container .prices-tier.items .item .price-container {
-                    display: inline-flex;
-                    align-items: baseline;
-                    gap: 0.25rem;
-                    font-weight: 600;
-                    color: #111827;
+
+                /* Price Container Styling */
+                .tier-price-container .prices-tier.items .item .price-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                    text-align: right;
+                    line-height: 1.2;
                 }
+
+                /* Target Magento generated price container */
+                .tier-price-container .prices-tier.items .item .price-wrapper [class*="price-container"] {
+                    display: flex !important;
+                    flex-direction: column !important;
+                    align-items: flex-end !important;
+                }
+
+                .tier-price-container .prices-tier.items .item .price-wrapper .price-including-tax .price {
+                    font-weight: 700;
+                    color: #111827;
+                    font-size: 1.1rem;
+                }
+                .tier-price-container .prices-tier.items .item .price-wrapper .price-excluding-tax .price {
+                    font-weight: 400;
+                    color: #6b7280;
+                    font-size: 0.8rem;
+                }
+
                 .tier-price-container .prices-tier.items .item .benefit {
-                    font-size: 0.875rem;
+                    font-size: 0.75rem;
                     color: #059669;
                     background-color: #ecfdf5;
                     padding: 0.25rem 0.5rem;
                     border-radius: 9999px;
                     font-weight: 600;
+                    white-space: nowrap;
                 }
             </style>
             <?= /** @noEscape */ $tierPriceBlock ?>

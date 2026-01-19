@@ -1,0 +1,131 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\Catalog\Block\Product\View;
+use Magento\Catalog\Pricing\Price\TierPrice;
+use Magento\Framework\Escaper;
+
+/** @var View $block */
+/** @var Escaper $escaper */
+
+$product = $block->getProduct();
+
+if (!$product) {
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $registry = $objectManager->get('Magento\Framework\Registry');
+    $product = $registry->registry('current_product');
+}
+
+if (!$product) {
+    return;
+}
+
+/** @var \Magento\Framework\Pricing\Price\PriceInterface $price */
+$price = $product->getPriceInfo()->getPrice(TierPrice::PRICE_CODE);
+$regularPrice = $product->getPriceInfo()->getPrice('regular_price')->getAmount()->getValue();
+
+$catalogHelper = $this->helper(Magento\Catalog\Helper\Data::class);
+$priceHelper = $this->helper(Magento\Framework\Pricing\Helper\Data::class);
+?>
+
+<?php if ($price->getTierPriceList()): ?>
+    <div class="py-4 my-2 tier-price-container">
+        <style>
+            .tier-price-container .prices-tier.items {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1rem;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .tier-price-container .prices-tier.items .item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: nowrap;
+                gap: 0.5rem;
+                background-color: #f9fafb;
+                border: 1px solid #e5e7eb;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+                transition: all 0.2s ease-in-out;
+            }
+            .tier-price-container .prices-tier.items .item:hover {
+                border-color: #9ca3af;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+
+            .tier-price-container .prices-tier.items .item .price-wrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                text-align: right;
+                line-height: 1.2;
+            }
+
+            .tier-price-container .prices-tier.items .item .price-wrapper .price-gross {
+                font-weight: 700;
+                color: #111827;
+                font-size: 1.1rem;
+            }
+            .tier-price-container .prices-tier.items .item .price-wrapper .price-net {
+                font-weight: 400;
+                color: #6b7280;
+                font-size: 0.8rem;
+            }
+
+            .tier-price-container .prices-tier.items .item .benefit {
+                font-size: 0.75rem;
+                color: #059669;
+                background-color: #ecfdf5;
+                padding: 0.25rem 0.5rem;
+                border-radius: 9999px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+        </style>
+
+        <ul role="list" class="prices-tier items mb-4">
+            <?php foreach ($price->getTierPriceList() as $index => $tierPrice): ?>
+                <?php
+                $savePercent = $tierPrice['percentage_value'];
+                $tierPriceValue = $tierPrice['price']->getValue();
+
+                if (!$savePercent && $regularPrice > 0) {
+                    $savePercent = round((1 - ($tierPriceValue / $regularPrice)) * 100);
+                }
+
+                // Calculate Gross and Net
+                $priceInclTax = $catalogHelper->getTaxPrice($product, $tierPriceValue, true);
+                $priceExclTax = $catalogHelper->getTaxPrice($product, $tierPriceValue, false);
+
+                $formattedIncl = $priceHelper->currency($priceInclTax, true, false);
+                $formattedExcl = $priceHelper->currency($priceExclTax, true, false);
+                ?>
+                <li class="item bg-white p-2 shadow mb-2 border-l-4 border-green-400 mx-1">
+                    <div class="text-sm text-gray-700">
+                        <?= $escaper->escapeHtml(__('Buy %1', $tierPrice['price_qty'])) ?>
+                    </div>
+
+                    <div class="price-wrapper mx-2">
+                        <span class="price-gross"><?= $formattedIncl ?></span>
+                        <?php if ($priceInclTax != $priceExclTax): ?>
+                            <span class="price-net"><?= $formattedExcl ?> <?= $escaper->escapeHtml(__('netto')) ?></span>
+                        <?php endif; ?>
+                        <span class="text-xs text-gray-500 block text-right"><?= $escaper->escapeHtml(__('each')) ?></span>
+                    </div>
+
+                    <div class="benefit">
+                        <?= $escaper->escapeHtml(__('save')) ?> <span class="percent tier-<?= (int)$index ?>"><?= (int)$savePercent ?>%</span>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
