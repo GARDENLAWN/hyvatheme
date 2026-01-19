@@ -236,18 +236,18 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                     </button>
                 </div>
 
-                <div class="flex items-center gap-1">
+                <div class="shrink-0 flex flex-wrap gap-2">
                     <a href="<?= $escaper->escapeUrl($block->getConfigureUrl()) ?>"
-                       class="btn btn-secondary btn-square rounded-lg p-2 text-gray-500 hover:text-primary hover:bg-gray-50 transition-colors"
+                       class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-blue-500 hover:text-white transition-colors"
                        aria-label="<?= $escaper->escapeHtmlAttr(__('Edit item parameters')) ?>">
-                        <?= $lucideIcons->pencilHtml('', 18, 18, ['aria-hidden' => 'true']); ?>
+                        <?= $lucideIcons->pencilHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
                     </a>
                     <a href="#"
                        data-post='<?= /* @noEscape */ $block->getDeleteItemParams() ?>'
-                       class="btn btn-secondary btn-square rounded-lg p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors action action-delete"
+                       class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-gray-700 hover:text-white transition-colors action action-delete"
                        aria-label="<?= $escaper->escapeHtmlAttr(__('Remove item')) ?>"
                     >
-                        <?= $lucideIcons->trashHtml('', 18, 18, ['aria-hidden' => 'true']); ?>
+                        <?= $lucideIcons->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
                     </a>
                 </div>
             </div>
