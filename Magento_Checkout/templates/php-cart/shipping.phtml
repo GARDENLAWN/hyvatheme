@@ -616,25 +616,24 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                                                 <span x-html="rate.extension_attributes.promotion_message"></span>
                                             </div>
                                         </div>
-                                        <div class="flex flex-col justify-end ml-auto shrink-0">
+                                        <div class="flex flex-col justify-end ml-auto shrink-0 text-right">
                                             <?php if ($totalsOutput->displayCartShippingInclTax() || $totalsOutput->displayCartShippingBoth()): ?>
-                                                <p>
+                                                <div class="font-bold text-gray-900">
                                                     <span
                                                         x-text="shippingCarrierRateIncl"
-                                                        class="price-including-tax text-right"
-                                                        data-label="<?= $escaper->escapeHtmlAttr(__('Incl. Tax')) ?>"
-                                                    ></span> <?= $escaper->escapeHtmlAttr(__('Incl. Tax')) ?>
-                                                </p>
+                                                        class="price-including-tax"
+                                                    ></span>
+                                                </div>
                                             <?php endif; ?>
                                             <?php if ($totalsOutput->displayCartShippingExclTax() || $totalsOutput->displayCartShippingBoth()): ?>
-                                                <p>
+                                                <div class="text-sm text-gray-600" :class="{'mt-1': shippingRateHasTax}">
                                                     <span
                                                         x-text="shippingCarrierRateExcl"
-                                                    <?= $totalsOutput->displayCartShippingBoth() ? 'x-show="shippingRateHasTax"' : '' ?>
-                                                    class="price-excluding-tax"
-                                                        data-label="<?= $escaper->escapehtmlAttr(__('Excl. Tax')) ?>"
-                                                    ></span> <?= $escaper->escapeHtmlAttr(__('Excl. Tax')) ?>
-                                                </p>
+                                                        x-show="shippingRateHasTax"
+                                                        class="price-excluding-tax"
+                                                    ></span>
+                                                    <span x-show="shippingRateHasTax" class="text-xs text-gray-500"><?= $escaper->escapeHtml(__('netto')) ?></span>
+                                                </div>
                                             <?php endif; ?>
                                         </div>
                                     </label>
