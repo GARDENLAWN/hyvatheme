@@ -30,30 +30,63 @@ $regularPrice = $product->getPriceInfo()->getPrice('regular_price')->getAmount()
 ?>
 
 <?php if ($price->getTierPriceList()): ?>
-    <div class="py-6 my-4 tier-price-container">
+    <div class="py-6 my-4 tier-price-container" x-data="{
+        updateQty(qty) {
+            const qtyInput = document.querySelector('input[name=\'qty\']');
+            if (qtyInput) {
+                qtyInput.value = qty;
+                qtyInput.dispatchEvent(new Event('change'));
+                qtyInput.dispatchEvent(new Event('input')); // For Alpine x-model binding
+
+                // Optional: Dispatch custom event for other components
+                window.dispatchEvent(new CustomEvent('update-qty-' + <?= (int)$product->getId() ?>, { detail: qty }));
+
+                // Visual feedback (scroll to qty)
+                qtyInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                qtyInput.focus();
+            }
+        }
+    }">
         <h3 class="text-lg font-semibold text-gray-900 mb-4"><?= $escaper->escapeHtml(__('Buy more, save more')) ?></h3>
 
         <ul role="list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <?php foreach ($price->getTierPriceList() as $index => $tierPrice): ?>
                 <?php
                 $savePercent = $tierPrice['percentage_value'];
+                // Use getValue() which should be the final calculated price (likely Gross if configured so)
+                // But to be safe and recalculate Net/Gross explicitly, we need the base value or handle tax logic carefully.
+
+                // If user says tax is double applied, it means we took Gross and added tax again.
+                // Let's try to use the price directly from the object which handles tax logic.
+
+                // $tierPrice['price'] is an Amount object.
+                // It has getValue() (final) and getBaseAmount() (base).
+
+                // Let's try to use CatalogHelper with the value we have, but ensuring we know if it includes tax.
+                // Actually, getTaxPrice is smart. But if we pass a value that is already Gross, and ask for Gross, it might add tax again if it thinks input is Net.
+
+                // Safer approach: Use the Amount object itself if possible, or assume getValue() is correct for display and reverse calculate if needed?
+                // No, let's try getBaseAmount() as it should be the raw value from DB (Net usually).
+
+                $tierPriceBase = $tierPrice['price']->getBaseAmount();
                 $tierPriceValue = $tierPrice['price']->getValue();
 
                 if (!$savePercent && $regularPrice > 0) {
                     $savePercent = round((1 - ($tierPriceValue / $regularPrice)) * 100);
                 }
 
-                // Calculate Gross and Net
                 $catalogHelper = $this->helper(Magento\Catalog\Helper\Data::class);
                 $priceHelper = $this->helper(Magento\Framework\Pricing\Helper\Data::class);
 
-                $priceInclTax = $catalogHelper->getTaxPrice($product, $tierPriceValue, true);
-                $priceExclTax = $catalogHelper->getTaxPrice($product, $tierPriceValue, false);
+                // We use the BASE amount to calculate tax, assuming base is Net (standard Magento)
+                // If base is Gross (config setting), getTaxPrice handles it.
+                $priceInclTax = $catalogHelper->getTaxPrice($product, $tierPriceBase, true);
+                $priceExclTax = $catalogHelper->getTaxPrice($product, $tierPriceBase, false);
 
                 $formattedIncl = $priceHelper->currency($priceInclTax, true, false);
                 $formattedExcl = $priceHelper->currency($priceExclTax, true, false);
                 ?>
-                <li class="relative flex flex-col justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-primary transition-all duration-200 group">
+                <li @click="updateQty(<?= (float)$tierPrice['price_qty'] ?>)" class="relative flex flex-col justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-primary transition-all duration-200 group cursor-pointer">
 
                     <!-- Badge -->
                     <?php if ($savePercent > 0): ?>
