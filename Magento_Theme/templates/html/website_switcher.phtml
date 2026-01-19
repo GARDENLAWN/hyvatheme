@@ -31,18 +31,18 @@ try {
             <!-- Mobile Dropdown -->
             <div class="relative lg:hidden w-full max-w-md">
                 <button @click="toggle"
-                        class="group flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 transition-all hover:bg-white hover:border-gray-300 hover:shadow-sm"
+                        class="group flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-4 transition-all hover:bg-white hover:border-gray-300 hover:shadow-sm"
                         :class="{ 'ring-2 ring-primary-100 border-primary-300': open }"
                         :aria-expanded="open">
                     <div class="flex items-center gap-4 overflow-hidden w-full">
-                        <div class="flex h-12 w-20 shrink-0 items-center justify-center rounded-lg bg-white p-1 shadow-sm border border-gray-100">
+                        <div class="flex h-16 w-1/2 shrink-0 items-center justify-center rounded-lg bg-white p-1 shadow-sm border border-gray-100">
                             <img src="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteLogo($currentWebsite)) ?>"
                                  alt="<?= $escaper->escapeHtmlAttr($currentWebsite->getName()) ?>"
                                  class="h-full w-full object-contain" />
                         </div>
-                        <div class="flex flex-col min-w-0 text-left">
+                        <div class="flex flex-col min-w-0 text-left w-1/2">
                             <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider"><?= __('Current Shop') ?></span>
-                            <span class="text-lg font-bold text-gray-900 truncate"><?= $escaper->escapeHtml($currentWebsite->getName()) ?></span>
+                            <span class="text-lg font-bold text-gray-900 whitespace-normal leading-tight"><?= $escaper->escapeHtml($currentWebsite->getName()) ?></span>
                         </div>
                     </div>
                     <svg class="h-6 w-6 text-gray-400 shrink-0 transition-transform duration-200 group-hover:text-gray-600" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,15 +63,15 @@ try {
                         <?php foreach ($websites as $website): ?>
                             <?php $isActive = $website->getId() == $currentWebsite->getId(); ?>
                             <?php if ($isActive): ?>
-                                <div class="flex items-center gap-4 rounded-lg bg-primary-50 px-3 py-3 text-primary-900">
-                                    <div class="flex h-12 w-20 shrink-0 items-center justify-center rounded-md bg-white p-1 shadow-sm">
+                                <div class="flex items-center gap-4 rounded-lg bg-primary-50 px-3 py-4 text-primary-900">
+                                    <div class="flex h-16 w-1/2 shrink-0 items-center justify-center rounded-md bg-white p-1 shadow-sm">
                                         <img src="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteLogo($website)) ?>"
                                              alt="<?= $escaper->escapeHtmlAttr($website->getName()) ?>"
                                              class="h-full w-full object-contain" />
                                     </div>
-                                    <div class="flex flex-col min-w-0">
+                                    <div class="flex flex-col min-w-0 w-1/2">
                                         <span class="text-[10px] font-bold text-primary-600 uppercase tracking-wider"><?= __('Current Shop') ?></span>
-                                        <span class="truncate text-base font-bold"><?= $escaper->escapeHtml($website->getName()) ?></span>
+                                        <span class="whitespace-normal leading-tight text-base font-bold"><?= $escaper->escapeHtml($website->getName()) ?></span>
                                     </div>
                                     <svg class="ml-auto h-6 w-6 text-primary-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -79,15 +79,15 @@ try {
                                 </div>
                             <?php else: ?>
                                 <a href="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteUrl($website)) ?>"
-                                   class="group flex items-center gap-4 rounded-lg px-3 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900">
-                                    <div class="flex h-12 w-20 shrink-0 items-center justify-center rounded-md bg-gray-50 p-1 border border-gray-100 group-hover:bg-white">
+                                   class="group flex items-center gap-4 rounded-lg px-3 py-4 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900">
+                                    <div class="flex h-16 w-1/2 shrink-0 items-center justify-center rounded-md bg-gray-50 p-1 border border-gray-100 group-hover:bg-white">
                                         <img src="<?= $escaper->escapeUrl($websiteSwitcher->getWebsiteLogo($website)) ?>"
                                              alt="<?= $escaper->escapeHtmlAttr($website->getName()) ?>"
                                              class="h-full w-full object-contain opacity-80 group-hover:opacity-100" />
                                     </div>
-                                    <div class="flex flex-col min-w-0">
+                                    <div class="flex flex-col min-w-0 w-1/2">
                                         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider transition-colors group-hover:text-primary-500"><?= __('Switch to') ?></span>
-                                        <span class="truncate text-base font-bold"><?= $escaper->escapeHtml($website->getName()) ?></span>
+                                        <span class="whitespace-normal leading-tight text-base font-bold"><?= $escaper->escapeHtml($website->getName()) ?></span>
                                     </div>
                                 </a>
                             <?php endif; ?>
