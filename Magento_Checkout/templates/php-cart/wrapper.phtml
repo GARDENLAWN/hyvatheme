@@ -14,20 +14,21 @@ use Magento\Framework\Escaper;
 /** @var Escaper $escaper */
 ?>
 
+<style>
+    /* Hide duplicated blocks in the right column summary */
+    .cart-summary .coupon-form,
+    .cart-summary .estimate-shipping-form {
+        display: none !important;
+    }
+</style>
+
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
     <!-- Left Column: Cart Items -->
     <div class="w-full order-2 lg:order-1">
         <?= $block->getChildHtml('form_before') ?>
         <?= $block->getChildHtml('cart-items') ?>
 
-        <!-- Coupon Code -->
-        <?php if ($couponBlock = $block->getLayout()->getBlock('checkout.cart.coupon')): ?>
-            <div class="mt-8 card bg-white p-4 rounded shadow-sm border border-gray-200">
-                <?= $couponBlock->toHtml() ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Shipping Estimation -->
+        <!-- Shipping Estimation moved here -->
         <?php if ($shippingBlock = $block->getLayout()->getBlock('checkout.cart.shipping')): ?>
             <div class="mt-8 card bg-white p-4 rounded shadow-sm border border-gray-200">
                 <?= $shippingBlock->toHtml() ?>
@@ -40,6 +41,13 @@ use Magento\Framework\Escaper;
     <!-- Right Column: Summary & Tools -->
     <div class="card w-full lg:sticky lg:top-4 order-1 lg:order-2">
         <h2 class="text-lg font-bold mb-4"><?= $escaper->escapeHtml(__('Summary')) ?></h2>
+
+        <!-- Coupon Code moved here -->
+        <?php if ($couponBlock = $block->getLayout()->getBlock('checkout.cart.coupon')): ?>
+            <div class="mb-4">
+                <?= $couponBlock->toHtml() ?>
+            </div>
+        <?php endif; ?>
 
         <!-- The cart.summary container handles its own layout via XML (grid class) -->
         <div class="cart-summary">

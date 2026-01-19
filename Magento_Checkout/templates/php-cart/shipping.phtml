@@ -63,7 +63,7 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
 <script>
     function initShippingEstimation() {
         return {
-            showEstimateShipping: false,
+            showEstimateShipping: true, // Default to true
             cart: false,
             cartIsVirtual: false,
             customer: false,
@@ -102,7 +102,13 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                 }
 
                 const browserStorageShowEstimateShipping = hyva.getBrowserStorage().getItem('hyva.showEstimateShipping');
-                this.showEstimateShipping = browserStorageShowEstimateShipping === 'true' ? true : false;
+                // Default to true if not set in storage
+                this.showEstimateShipping = browserStorageShowEstimateShipping === null ? true : (browserStorageShowEstimateShipping === 'true');
+
+                // If open, fetch methods immediately
+                if (this.showEstimateShipping) {
+                    // We need to wait for data, but receiveCustomerData handles it.
+                }
             },
             toggleEstimateShipping() {
                 this.showEstimateShipping = !this.showEstimateShipping;

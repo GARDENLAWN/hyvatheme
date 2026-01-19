@@ -1,0 +1,117 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\LucideIcons;
+use Magento\Checkout\Block\Cart\Coupon;
+use Magento\Framework\Escaper;
+
+/** @var Coupon $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
+?>
+<script>
+    function initCouponForm() {
+        return {
+            errors: 0,
+            hasCaptchaToken: 0,
+            showCouponForm: true, // Default to true
+            hideCouponForm() {
+                return ! this.showCouponForm;
+            },
+            formData: {
+                coupon_code: '',
+                remove: '0'
+            },
+            init(){
+                const browserStorageShowCouponForm = hyva.getBrowserStorage().getItem('hyva.showCouponForm');
+                // Default to true if not set
+                this.showCouponForm = browserStorageShowCouponForm === null ? true : (browserStorageShowCouponForm === 'true');
+
+                this.formData.coupon_code = '<?= $escaper->escapeJs($block->getCouponCode()) ?>';
+                this.formData.remove = '<?= $escaper->escapeJs($block->getCouponCode() ? '1' : '0') ?>';
+            },
+            toggleShowCoupon() {
+                this.showCouponForm = !this.showCouponForm;
+
+                hyva.getBrowserStorage().setItem('hyva.showCouponForm', this.showCouponForm);
+
+                this.$nextTick(() => this.$refs.couponInput.select());
+            },
+            onInput() {
+                this.formData.coupon_code = this.$event.target.value;
+            },
+            submitForm() {
+                const $form = document.querySelector('#discount-coupon-form');
+
+                if (this.errors === 0) {
+                    hyva.postCart($form);
+                }
+            }
+        };
+    };
+
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('initCouponForm', initCouponForm)
+    }, { once: true });
+</script>
+
+<details class="coupon-form group" x-data="initCouponForm" :open="showCouponForm">
+    <summary
+        @click.prevent="toggleShowCoupon"
+        class="list-none flex justify-between items-center gap-2 py-2 font-semibold"
+    >
+        <span class="inline-flex items-center gap-2">
+            <?= $lucideIcons->tagHtml('text-primary', 20, 20, ['aria-hidden' => 'true']) ?>
+            <span><?= $escaper->escapeHtml(__('Apply Discount Code')) ?></span>
+        </span>
+        <?= $lucideIcons->chevronDownHtml('transform group-open:rotate-180', 20, 20, ['aria-hidden' => 'true']); ?>
+    </summary>
+    <form id="discount-coupon-form"
+          class="mt-2 mb-4"
+          action="<?= $escaper->escapeUrl($block->getUrl('checkout/cart/couponPost')) ?>"
+          method="post"
+          @submit.prevent="submitForm"
+    >
+        <?= $block->getBlockHtml('formkey') ?>
+        <label for="coupon_code" class="label sr-only">
+            <?= $escaper->escapeHtml(__('Enter discount code')) ?>
+        </label>
+        <div class="fieldset coupon space-y-2">
+            <div class="control">
+                <input type="text"
+                       id="coupon_code"
+                       name="coupon_code"
+                       class="form-input w-full"
+                       value="<?= $escaper->escapeHtmlAttr($block->getCouponCode()) ?>"
+                       @input="onInput"
+                       x-ref="couponInput"
+                       placeholder="<?= $escaper->escapeHtmlAttr(__('Enter discount code')) ?>"
+                       <?php if ($block->getCouponCode()): ?>disabled="disabled"<?php endif; ?>
+                       required
+                />
+            </div>
+            <?php if (!$block->getCouponCode()): ?>
+                <button class="btn btn-secondary w-full" type="submit" value="<?= $escaper->escapeHtmlAttr(__('Apply Discount')) ?>">
+                    <?= $escaper->escapeHtml(__('Apply Discount')) ?>
+                </button>
+            <?php else: ?>
+                <button  type="button" class="btn w-full" @click="formData.remove='1'; submitForm()" value="<?= $escaper->escapeHtmlAttr(__('Cancel Coupon')) ?>">
+                    <?= $escaper->escapeHtml(__('Cancel Coupon')) ?>
+                </button>
+            <?php endif; ?>
+            <?php if ($block->getCouponCode()): ?>
+                <input type="hidden" name="remove" :value="formData.remove" />
+            <?php endif; ?>
+        </div>
+    </form>
+</details>
