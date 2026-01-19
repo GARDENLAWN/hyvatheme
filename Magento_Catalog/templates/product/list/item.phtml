@@ -87,7 +87,7 @@ if ($isCallForPrice && $product) {
 <?php if ($product->isSaleable()): ?>
     <form method="post"
           action="<?= $escaper->escapeUrl($productViewModel->getAddToCartUrl($product, ['useUencPlaceholder' => true])) ?>"
-          class="item product product-item product_addtocart_form card border-transparent shadow rounded-md p-4 grow flex flex-col hover:shadow-lg w-full <?= $viewIsGrid ? '' : 'md:flex-row' ?>"
+          class="item product product-item product_addtocart_form card border-transparent shadow rounded-md p-4 flex flex-col h-full hover:shadow-lg w-full <?= $viewIsGrid ? '' : 'md:flex-row' ?>"
           <?php if ($product->getOptions()): ?>
               enctype="multipart/form-data"
           <?php endif; ?>
@@ -106,7 +106,7 @@ if ($isCallForPrice && $product) {
                value="<?= $escaper->escapeHtml($optionItem['value']) ?>">
         <?php endforeach; ?>
 <?php else: ?>
-    <div class="item product product-item card border-transparent shadow rounded-md p-4 grow flex flex-col hover:shadow-lg w-full <?= $viewIsGrid ? '' : 'md:flex-row' ?>"
+    <div class="item product product-item card border-transparent shadow rounded-md p-4 flex flex-col h-full hover:shadow-lg w-full <?= $viewIsGrid ? '' : 'md:flex-row' ?>"
         <?php foreach ($block->getData('product_data_attributes')  ?? [] as $attribute => $include): ?>
             <?php if ($include): ?>
                 <?php /** Append data-* attributes based on layout XML arguments */ ?>
@@ -129,7 +129,7 @@ if ($isCallForPrice && $product) {
                 ?>
             </a>
         <?php endif; ?>
-        <div class="product-info flex flex-col flex-1">
+        <div class="product-info flex flex-col flex-grow">
             <div class="flex justify-between items-center">
                 <div class="text-sm leading-5 text-blue-500">
                     <?= $product->getAttributeText('manufacturer') ?>
@@ -139,7 +139,7 @@ if ($isCallForPrice && $product) {
                 <?php endif; ?>
             </div>
 
-            <div class="flex justify-between gap-2 items-baseline">
+            <div class="flex justify-between gap-2 items-baseline mb-2">
                 <a
                     class="product-item-link flex-1 text-lg leading-7 font-bold text-slate-800"
                     href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
@@ -169,87 +169,89 @@ if ($isCallForPrice && $product) {
                 </span>
             <?php endif; ?>
 
-            <div class="pt-1">
-                <?php if (!$isCallForPrice): ?>
-                    <?= /* @noEscape */ $productListItemViewModel->getProductPriceHtml($product) ?>
-                <?php endif; ?>
-            </div>
-
-            <?php if (!$isCallForPrice): ?>
-            <div class="flex flex-row justify-between mt-1 mb-4 text-sm leading-5">
-                <?= $block->getChildBlock('stockstatus')->setData('product', $product)->toHtml() ?>
-            </div>
-            <?php endif; ?>
-            <div class="flex gap-4 items-center <?= $viewIsGrid ? 'flex-nowrap' : 'flex-wrap md:flex-nowrap' ?>">
-                <div class="grow">
-                    <?php if ($isCallForPrice): ?>
-                        <a
-                            href="<?= $escaper->escapeUrl($contactUrl) ?>"
-                            class="btn btn-secondary w-full py-3 <?= $viewIsGrid ? 'px-3 2xl:px-6' : 'px-5 sm:w-auto' ?>"
-                            title="<?= $escaper->escapeHtmlAttr(__('Ask for price')) ?>"
-                            aria-label="<?= $escaper->escapeHtmlAttr(__('Ask for price')) ?>"
-                        >
-                            <?= $lucideIcons->mailHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
-                            <span class="<?= $viewIsGrid ? 'hidden lg:inline' : '' ?>">
-                                <?= $escaper->escapeHtml(__('Ask for price')) ?>
-                            </span>
-                        </a>
-                    <?php elseif ($product->isSaleable()): ?>
-                        <?php if ($isProductGroupedOrBundle): ?>
-                            <a
-                                href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
-                                class="btn btn-primary w-full"
-                                aria-label="<?= $escaper->escapeHtmlAttr(__('Configure %1 on the product page', $productName)) ?>"
-                            >
-                                <?= $lucideIcons->pencilHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
-                                <?= $escaper->escapeHtml(__('Configure')) ?>
-                            </a>
-                            <?php else: ?>
-                            <button
-                                class="btn btn-primary w-full"
-                                aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Cart') . ' ' . $productName) ?>"
-                                data-addto="cart"
-                            >
-                                <?= $lucideIcons->shoppingCartHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
-                                <?= $escaper->escapeHtml(__('Add to Cart')) ?>
-                            </button>
-                        <?php endif; ?>
-                    <?php else: ?>
-                        <?php
-                            $availabilitySubject = __('Inquiry about availability: %1 (SKU: %2)', $product->getName(), $product->getSku());
-                            $availabilityContactUrl = $block->getUrl('contact') . '?subject=' . rawurlencode((string)$availabilitySubject);
-                        ?>
-                        <a
-                            href="<?= $escaper->escapeUrl($availabilityContactUrl) ?>"
-                            class="btn btn-secondary w-full py-3 <?= $viewIsGrid ? 'px-3 2xl:px-6' : 'px-5 sm:w-auto' ?>"
-                            title="<?= $escaper->escapeHtmlAttr(__('Ask about availability')) ?>"
-                            aria-label="<?= $escaper->escapeHtmlAttr(__('Ask about availability')) ?>"
-                        >
-                            <?= $lucideIcons->mailHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
-                            <span class="<?= $viewIsGrid ? 'hidden lg:inline' : '' ?>">
-                                <?= $escaper->escapeHtml(__('Ask about availability')) ?>
-                            </span>
-                        </a>
+            <div class="mt-auto">
+                <div class="pt-1">
+                    <?php if (!$isCallForPrice): ?>
+                        <?= /* @noEscape */ $productListItemViewModel->getProductPriceHtml($product) ?>
                     <?php endif; ?>
                 </div>
 
-                <div class="shrink-0 flex flex-wrap gap-2">
-                    <?php $addToClasses = "shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent"; ?>
-                    <?php if ($showAddToWishlist): ?>
-                        <?= $block->getChildBlock('wishlist')
-                            ->setData('product', $product)
-                            ->setData('class', "{$addToClasses} hover:bg-red-500 hover:text-white")
-                            ->toHtml() ?>
-                    <?php endif; ?>
-                    <?php if ($showAddToCompare): ?>
-                        <?= $block->getChildBlock('compare')
-                            ->setData('product', $product)
-                            ->setData('class', "{$addToClasses} hover:bg-yellow-500 hover:text-black")
-                            ->toHtml() ?>
-                    <?php endif; ?>
-                    <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
-                        <?= $addToBlock->setProduct($product)->getChildHtml() ?>
-                    <?php endif; ?>
+                <?php if (!$isCallForPrice): ?>
+                <div class="flex flex-row justify-between mt-1 mb-4 text-sm leading-5">
+                    <?= $block->getChildBlock('stockstatus')->setData('product', $product)->toHtml() ?>
+                </div>
+                <?php endif; ?>
+                <div class="flex gap-4 items-center <?= $viewIsGrid ? 'flex-nowrap' : 'flex-wrap md:flex-nowrap' ?>">
+                    <div class="grow">
+                        <?php if ($isCallForPrice): ?>
+                            <a
+                                href="<?= $escaper->escapeUrl($contactUrl) ?>"
+                                class="btn btn-secondary w-full py-3 <?= $viewIsGrid ? 'px-3 2xl:px-6' : 'px-5 sm:w-auto' ?>"
+                                title="<?= $escaper->escapeHtmlAttr(__('Ask for price')) ?>"
+                                aria-label="<?= $escaper->escapeHtmlAttr(__('Ask for price')) ?>"
+                            >
+                                <?= $lucideIcons->mailHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
+                                <span class="<?= $viewIsGrid ? 'hidden lg:inline' : '' ?>">
+                                    <?= $escaper->escapeHtml(__('Ask for price')) ?>
+                                </span>
+                            </a>
+                        <?php elseif ($product->isSaleable()): ?>
+                            <?php if ($isProductGroupedOrBundle): ?>
+                                <a
+                                    href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
+                                    class="btn btn-primary w-full"
+                                    aria-label="<?= $escaper->escapeHtmlAttr(__('Configure %1 on the product page', $productName)) ?>"
+                                >
+                                    <?= $lucideIcons->pencilHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
+                                    <?= $escaper->escapeHtml(__('Configure')) ?>
+                                </a>
+                                <?php else: ?>
+                                <button
+                                    class="btn btn-primary w-full"
+                                    aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Cart') . ' ' . $productName) ?>"
+                                    data-addto="cart"
+                                >
+                                    <?= $lucideIcons->shoppingCartHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
+                                    <?= $escaper->escapeHtml(__('Add to Cart')) ?>
+                                </button>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <?php
+                                $availabilitySubject = __('Inquiry about availability: %1 (SKU: %2)', $product->getName(), $product->getSku());
+                                $availabilityContactUrl = $block->getUrl('contact') . '?subject=' . rawurlencode((string)$availabilitySubject);
+                            ?>
+                            <a
+                                href="<?= $escaper->escapeUrl($availabilityContactUrl) ?>"
+                                class="btn btn-secondary w-full py-3 <?= $viewIsGrid ? 'px-3 2xl:px-6' : 'px-5 sm:w-auto' ?>"
+                                title="<?= $escaper->escapeHtmlAttr(__('Ask about availability')) ?>"
+                                aria-label="<?= $escaper->escapeHtmlAttr(__('Ask about availability')) ?>"
+                            >
+                                <?= $lucideIcons->mailHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
+                                <span class="<?= $viewIsGrid ? 'hidden lg:inline' : '' ?>">
+                                    <?= $escaper->escapeHtml(__('Ask about availability')) ?>
+                                </span>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="shrink-0 flex flex-wrap gap-2">
+                        <?php $addToClasses = "shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent"; ?>
+                        <?php if ($showAddToWishlist): ?>
+                            <?= $block->getChildBlock('wishlist')
+                                ->setData('product', $product)
+                                ->setData('class', "{$addToClasses} hover:bg-red-500 hover:text-white")
+                                ->toHtml() ?>
+                        <?php endif; ?>
+                        <?php if ($showAddToCompare): ?>
+                            <?= $block->getChildBlock('compare')
+                                ->setData('product', $product)
+                                ->setData('class', "{$addToClasses} hover:bg-yellow-500 hover:text-black")
+                                ->toHtml() ?>
+                        <?php endif; ?>
+                        <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
+                            <?= $addToBlock->setProduct($product)->getChildHtml() ?>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
