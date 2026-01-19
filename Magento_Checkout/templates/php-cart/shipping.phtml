@@ -609,7 +609,7 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                                                  x-text="rate.extension_attributes && rate.extension_attributes.description"></div>
 
                                             <!-- Promotion Message -->
-                                            <div x-show="rate.extension_attributes && rate.extension_attributes.promotion_message"
+                                            <div x-show="rate.extension_attributes && rate.extension_attributes.promotion_message && rate.extension_attributes.promotion_message !== 'undefined'"
                                                  class="mt-2 p-2 text-xs rounded"
                                                  style="border: 1px solid #fcd34d; background-color: #fffbeb; color: #92400e;">
                                                 <strong class="block mb-1"><?= $block->escapeHtml(__('Special offer (included in cart):')) ?></strong>
@@ -632,7 +632,7 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                                                         x-show="shippingRateHasTax"
                                                         class="price-excluding-tax"
                                                     ></span>
-                                                    <span x-show="shippingRateHasTax" class="text-xs text-gray-500"><?= $escaper->escapeHtml(__('netto')) ?></span>
+                                                    <span x-show="shippingRateHasTax" class="text-xs text-gray-500"><?= $escaper->escapeHtml(__('net')) ?></span>
                                                 </div>
                                             <?php endif; ?>
                                         </div>
