@@ -341,7 +341,23 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                 this.fetchShippingMethods();
             },
             updatePostcode() {
-                const value = this.$event.target.value;
+                let value = this.$event.target.value;
+
+                // Remove non-digits
+                const digits = value.replace(/\D/g, '');
+
+                // Format as 00-000
+                if (digits.length > 2) {
+                    value = digits.substring(0, 2) + '-' + digits.substring(2, 5);
+                } else {
+                    value = digits;
+                }
+
+                // Update input value if changed
+                if (this.$event.target.value !== value) {
+                    this.$event.target.value = value;
+                }
+
                 this.cartData.address.postcode = value;
                 this.checkoutData.shippingAddressFromData.postcode = value;
                 this.saveToCustomerSectionData();
@@ -557,6 +573,7 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                     <input class="form-input w-full"
                            type="text"
                            name="postcode"
+                           placeholder="00-000"
                            @input="updatePostcode"
                            @input.debounce.1000ms="fetchShippingMethods"
                            @keydown.enter.prevent="fetchShippingMethods"
