@@ -590,7 +590,7 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                         <?= $block->getBlockHtml('block-loader') ?>
                         <template x-for="carrier in getEstimatedShippingRateCarriers" :key="carrier">
                             <div>
-                                <p><strong class="font-medium" x-text="carrier"></strong></p>
+                                <p class="hidden"><strong class="font-medium" x-text="carrier"></strong></p>
                                 <template x-for="(rate, index) in getRatesForCarrier" :key="index">
                                     <label class="flex items-start px-2 gap-2 cursor-pointer mt-4">
                                         <input
