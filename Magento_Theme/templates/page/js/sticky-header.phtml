@@ -35,7 +35,27 @@ $enableCssOnlyStickyStyle = $block->getEnableCssOnlyStickyStyle() !== null
             const observer = new IntersectionObserver(([e]) => {
                 e.target.dataset.sticky = e.intersectionRatio < 1
             }, { threshold: 1 });
-            observer.observe(pageHeader)
+            observer.observe(pageHeader);
+
+            // Dynamiczne obliczanie offsetu dla Website Switchera
+            const calculateHeaderOffset = () => {
+                const switcher = document.querySelector('.website-switcher-container');
+                if (switcher) {
+                    const height = switcher.offsetHeight;
+                    pageHeader.style.setProperty('--header-top-offset', `-${height}px`);
+                    // Ustawienie wysokości animacji scrolla dla CSS-only sticky
+                    pageHeader.style.setProperty('--header-scroll-range', `${height}px`);
+                } else {
+                    pageHeader.style.setProperty('--header-top-offset', '0px');
+                    pageHeader.style.setProperty('--header-scroll-range', '0px');
+                }
+            };
+
+            // Oblicz na starcie i przy zmianie rozmiaru okna
+            calculateHeaderOffset();
+            window.addEventListener('resize', calculateHeaderOffset);
+            // Również po załadowaniu wszystkich zasobów (np. obrazków w switcherze), co może zmienić wysokość
+            window.addEventListener('load', calculateHeaderOffset);
         });
     <?php endif; ?>
 
@@ -61,30 +81,27 @@ $enableCssOnlyStickyStyle = $block->getEnableCssOnlyStickyStyle() !== null
         <?php endif; ?>
 
         .page-header {
-            z-index: 30;
             position: sticky;
-            top: -1px;
+            /* Używamy zmiennej CSS ustawianej przez JS, z fallbackiem na 0 */
+            top: var(--header-top-offset, 0px);
+            z-index: 30;
             background-color: #fff;
-            transition: background-color 150ms, color 150ms, box-shadow 150ms, translate 300ms;
+            transition: background-color 150ms, box-shadow 150ms;
         }
 
         <?php if ($enableCssOnlyStickyStyle): ?>
             @supports (animation-timeline: scroll()) {
                 .page-header {
                     background-color: transparent;
-                    transition: translate 300ms;
                     animation: add-sticky linear both;
                     animation-timeline: scroll();
-                    animation-range: 0 6px;
+                    /* Zakres animacji dopasowany do wysokości switchera */
+                    animation-range: 0 var(--header-scroll-range, 60px);
                 }
             }
         <?php endif; ?>
 
         <?php if (!$enableCssOnlyStickyStyle): ?>
-            .page-header[data-sticky="false"] {
-                background-color: transparent;
-            }
-
             .page-header[data-sticky="true"] {
                 box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
             }
@@ -94,7 +111,7 @@ $enableCssOnlyStickyStyle = $block->getEnableCssOnlyStickyStyle() !== null
             html[data-header-can-sticky][data-scroll-dir-y="down"] .page-header {
                 box-shadow: none;
                 translate: 0 -100%;
-                transition: background-color 150ms, color 150ms, box-shadow 150ms, translate 300ms 150ms;
+                transition: translate 300ms;
             }
         <?php endif; ?>
     }
@@ -104,9 +121,10 @@ $enableCssOnlyStickyStyle = $block->getEnableCssOnlyStickyStyle() !== null
             position: sticky;
             top: 0;
             z-index: 30;
-        }
-        .page-header .website-switcher {
-            display: none;
+            /* Całkowita przezroczystość na mobile */
+            background-color: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
         }
     }
 </style>
