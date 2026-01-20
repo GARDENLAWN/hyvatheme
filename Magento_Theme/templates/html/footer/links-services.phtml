@@ -16,27 +16,27 @@ use Magento\Framework\View\Element\Template;
 ?>
 
 <nav aria-label="<?= $escaper->escapeUrl($escaper->escapeHtmlAttr('Customer Services')) ?>">
-    <ul>
+    <ul class="space-y-3">
         <li>
             <a href="<?= $escaper->escapeUrl($block->getUrl('kontakt')) ?>"
-               class="block py-1.5 hover:underline">
+               class="block text-gray-600 hover:text-primary transition-colors">
                 <?= $escaper->escapeHtml(__('Contact')) ?>
             </a>
         </li>
         <li>
             <a href="<?= $escaper->escapeUrl($block->getUrl('zamowienia-i-zwroty')) ?>"
-               class="block py-1.5 hover:underline">
+               class="block text-gray-600 hover:text-primary transition-colors">
                 <?= $escaper->escapeHtml(__('Orders and Returns')) ?>
             </a>
         </li>
         <li>
             <a href="<?= $escaper->escapeUrl($block->getUrl('regulamin')) ?>"
-                class="block py-1.5 hover:underline"
+                class="block text-gray-600 hover:text-primary transition-colors"
             ><?= $escaper->escapeHtml(__('Terms & Conditions')) ?></a>
         </li>
         <li>
             <a href="<?= $escaper->escapeUrl($block->getUrl('polityka-prywatnosci')) ?>"
-                class="block py-1.5 hover:underline"
+                class="block text-gray-600 hover:text-primary transition-colors"
             ><?= $escaper->escapeHtml(__('Privacy Policy')) ?></a>
         </li>
     </ul>

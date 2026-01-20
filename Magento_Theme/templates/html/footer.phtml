@@ -25,31 +25,35 @@ $footerColumns = array_diff(
 
 <?= $block->getChildHtml('footer-content-before') ?>
 <?= $block->getChildHtml('subscribe') ?>
-<div class="bg-zinc-100 border-t border-zinc-200">
-    <div class="container py-8 mx-auto">
-        <div class="grid grid-cols-1 lg:grid-cols-4 lg:gap-6 text-slate-600">
+<div class="bg-white border-t border-gray-100">
+    <div class="container py-12 mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12 text-gray-600">
             <?php foreach ($footerColumns as $childName): ?>
                 <?= $block->getBlockHtml($childName) ?>
             <?php endforeach; ?>
         </div>
     </div>
     <?php if ($footerContentAfter = $block->getChildHtml('footer-content-after')): ?>
-        <div class="space-y-10 bg-zinc-50 py-4">
-            <?= /** @noEscape */ $footerContentAfter ?>
+        <div class="bg-gray-50 py-8 border-t border-gray-100">
+            <div class="container mx-auto px-6 space-y-8">
+                <?= /** @noEscape */ $footerContentAfter ?>
+            </div>
         </div>
     <?php endif; ?>
-    <div class="container pt-7 pb-5 border-t border-zinc-200 flex justify-between items-center flex-col sm:flex-row text-sm">
-        <?= $block->getChildHtml('copyright') ?>
-        <nav class="text-slate-600" aria-label="<?= $escaper->escapeHtml(__('Legal Menu')) ?>">
-            <a
-                href="<?= $escaper->escapeUrl($block->getUrl('regulamin')) ?>"
-                class="inline-block py-1 px-2 sm:px-0 sm:mr-4 sm:last:mr-0 hover:underline"
-            ><?= $escaper->escapeHtml(__('Terms & Conditions')) ?></a>
-            <a
-                href="<?= $escaper->escapeUrl($block->getUrl('polityka-prywatnosci')) ?>"
-                class="inline-block py-1 px-2 sm:px-0 sm:mr-4 sm:last:mr-0 hover:underline"
-            ><?= $escaper->escapeHtml(__('Privacy Policy')) ?></a>
-        </nav>
+    <div class="border-t border-gray-100 bg-white">
+        <div class="container py-6 px-6 mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+            <?= $block->getChildHtml('copyright') ?>
+            <nav class="flex flex-wrap justify-center gap-6" aria-label="<?= $escaper->escapeHtml(__('Legal Menu')) ?>">
+                <a
+                    href="<?= $escaper->escapeUrl($block->getUrl('regulamin')) ?>"
+                    class="hover:text-primary transition-colors"
+                ><?= $escaper->escapeHtml(__('Terms & Conditions')) ?></a>
+                <a
+                    href="<?= $escaper->escapeUrl($block->getUrl('polityka-prywatnosci')) ?>"
+                    class="hover:text-primary transition-colors"
+                ><?= $escaper->escapeHtml(__('Privacy Policy')) ?></a>
+            </nav>
+        </div>
     </div>
 </div>
 <script>
@@ -107,4 +111,3 @@ $footerColumns = array_diff(
     window.addEventListener('alpine:init', () => Alpine.data('mobileFooterCollpase', mobileFooterCollpase), { once: true })
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
-

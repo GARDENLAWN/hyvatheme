@@ -25,22 +25,22 @@ $storeConfig = $viewModels->require(StoreConfig::class);
 ?>
 
 <nav aria-label="<?= $escaper->escapeUrl($escaper->escapeHtmlAttr('Company')) ?>">
-    <ul>
+    <ul class="space-y-3">
         <li>
-            <a href="/" class="block py-1.5 hover:underline">
+            <a href="/" class="block text-gray-600 hover:text-primary transition-colors">
                 <?= __("About Us") ?>
             </a>
         </li>
         <li>
             <a href="<?= $escaper->escapeUrl($block->getUrl('mapa-strony')) ?>"
-               class="block py-1.5 hover:underline">
+               class="block text-gray-600 hover:text-primary transition-colors">
                 <?= $escaper->escapeHtml(__('Site Map')) ?>
             </a>
         </li>
         <?php if ($storeConfig->getStoreConfig('catalog/seo/search_terms')): ?>
             <li>
                 <a href="<?= $escaper->escapeUrl($block->getUrl('wyszukiwane-frazy')) ?>"
-                   class="block py-1.5 hover:underline">
+                   class="block text-gray-600 hover:text-primary transition-colors">
                     <?= $escaper->escapeHtml(__('Search Terms')) ?>
                 </a>
             </li>
