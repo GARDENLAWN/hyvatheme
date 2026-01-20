@@ -170,8 +170,16 @@ x-data="{
                     this.log('fetchAndReplaceCart: HTML received');
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
-                    const newItems = doc.querySelector('#form-validate');
-                    const currentItems = document.querySelector('#form-validate');
+
+                    // Try to replace only the table to avoid replacing nested blocks like shipping
+                    let newItems = doc.querySelector('#shopping-cart-table');
+                    let currentItems = document.querySelector('#shopping-cart-table');
+
+                    // Fallback to form-validate if table not found (e.g. different layout)
+                    if (!newItems) {
+                        newItems = doc.querySelector('#form-validate');
+                        currentItems = document.querySelector('#form-validate');
+                    }
 
                     if (newItems && currentItems) {
                         newItems.querySelectorAll('script').forEach(s => s.remove());
