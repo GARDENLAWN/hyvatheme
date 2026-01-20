@@ -65,25 +65,23 @@ $lucideIcons = $viewModels->require(LucideIcons::class);
     }, { once: true });
 </script>
 
-<div class="coupon-form" x-data="initCouponForm">
+<div class="coupon-form bg-gray-50 p-4 rounded-xl border border-gray-100" x-data="initCouponForm">
     <form id="discount-coupon-form"
           action="<?= $escaper->escapeUrl($block->getUrl('checkout/cart/couponPost')) ?>"
           method="post"
           @submit.prevent="submitForm"
     >
         <?= $block->getBlockHtml('formkey') ?>
-        <label for="coupon_code" class="block text-sm font-medium text-gray-700 mb-2">
+        <label for="coupon_code" class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-3">
+            <?= $lucideIcons->ticketHtml('text-primary', 20, 20, ['aria-hidden' => 'true']) ?>
             <?= $escaper->escapeHtml(__('Discount Code')) ?>
         </label>
         <div class="fieldset coupon flex gap-2">
             <div class="control grow relative">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <?= $lucideIcons->tagHtml('text-gray-400', 18, 18, ['aria-hidden' => 'true']) ?>
-                </div>
                 <input type="text"
                        id="coupon_code"
                        name="coupon_code"
-                       class="form-input w-full pl-10 border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                       class="form-input w-full border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white shadow-sm placeholder-gray-400 text-sm py-2.5"
                        value="<?= $escaper->escapeHtmlAttr($block->getCouponCode()) ?>"
                        @input="onInput"
                        x-ref="couponInput"
@@ -93,11 +91,11 @@ $lucideIcons = $viewModels->require(LucideIcons::class);
                 />
             </div>
             <?php if (!$block->getCouponCode()): ?>
-                <button class="btn btn-primary shrink-0 rounded-lg px-6" type="submit" value="<?= $escaper->escapeHtmlAttr(__('Apply Discount')) ?>">
+                <button class="btn btn-primary shrink-0 rounded-lg px-5 py-2.5 text-sm font-semibold shadow-sm hover:shadow transition-all" type="submit" value="<?= $escaper->escapeHtmlAttr(__('Apply Discount')) ?>">
                     <?= $escaper->escapeHtml(__('Apply')) ?>
                 </button>
             <?php else: ?>
-                <button  type="button" class="btn btn-secondary shrink-0 rounded-lg px-6" @click="formData.remove='1'; submitForm()" value="<?= $escaper->escapeHtmlAttr(__('Cancel Coupon')) ?>">
+                <button  type="button" class="btn btn-secondary shrink-0 rounded-lg px-5 py-2.5 text-sm font-semibold shadow-sm hover:shadow transition-all text-red-600 hover:text-red-700 bg-white border-gray-200" @click="formData.remove='1'; submitForm()" value="<?= $escaper->escapeHtmlAttr(__('Cancel Coupon')) ?>">
                     <?= $escaper->escapeHtml(__('Cancel')) ?>
                 </button>
             <?php endif; ?>
