@@ -31,9 +31,9 @@ if (!$item) {
 }
 
 $menuId = str_replace('-', '_',$item['id']);
-$itemClasses = (string) $block->getItemClasses() ?: "flex items-center gap-2 py-3 px-6 border-b border-slate-200 text-slate-500 hover:text-slate-700 -outline-offset-1";
+$itemClasses = (string) $block->getItemClasses() ?: "flex items-center gap-2 py-4 px-6 border-b border-gray-100 text-gray-700 font-medium hover:bg-gray-50 hover:text-primary transition-colors -outline-offset-1";
 $itemIconSize = (int) $block->getItemIconSize() ?: 20;
-$itemIndent = 'ms-7';
+$itemIndent = 'ms-4'; // Zmniejszone wcięcie
 ?>
 
 <?php if (!empty($item['childData'])): ?>
@@ -48,34 +48,38 @@ $itemIndent = 'ms-7';
             :disabled="isOpen"
             @click="open"
         >
-            <span class="<?= $level > 0 ? $itemIndent : '' ?>"><?= $escaper->escapeHtml($item['name']) ?></span>
-            <span class="btn p-1.5 border border-slate-300 bg-transparent text-current">
+            <span class="<?= $level > 0 ? $itemIndent : '' ?> truncate"><?= $escaper->escapeHtml($item['name']) ?></span>
+            <span class="btn btn-secondary btn-square rounded-full p-1.5 bg-gray-100 text-gray-500 border-none hover:bg-primary hover:text-white transition-colors shrink-0">
                 <?= $heroiconsSolid->chevronRightHtml('', $itemIconSize, $itemIconSize, ['aria-hidden' => 'true']) ?>
             </span>
         </button>
         <ul
             id="<?= $escaper->escapeHtml($item['id']) ?>-mobile-menu-panel"
-            class="z-10 absolute inset-0 bg-white overflow-y-auto overscroll-y-contain transition duration-300"
+            class="z-10 absolute inset-0 bg-white overflow-y-auto overscroll-y-contain transition duration-300 flex flex-col"
             x-show="isOpen"
-            x-transition:enter-start="opacity-0 translate-x-8"
+            x-transition:enter-start="opacity-0 translate-x-full"
             x-transition:enter-end="opacity-100 translate-x-0"
             x-transition:leave-start="opacity-100 translate-x-0"
-            x-transition:leave-end="opacity-0 translate-x-8"
+            x-transition:leave-end="opacity-0 translate-x-full"
             @keydown.escape.stop.prevent="close"
         >
-            <li data-level="<?= $level + 1 ?>">
+            <li data-level="<?= $level + 1 ?>" class="sticky top-0 z-20 bg-white border-b border-gray-100 shadow-sm">
                 <button
                     type="button"
-                    class="w-full bg-slate-50 font-bold <?= $escaper->escapeHtmlAttr($itemClasses) ?>"
+                    class="w-full bg-gray-50 font-bold text-gray-900 flex items-center gap-3 py-4 px-6 hover:bg-gray-100 transition-colors"
                     @click="close"
                     x-ref="closeSubMenuBtn"
                 >
-                    <?= $heroiconsSolid->chevronLeftHtml('', $itemIconSize, $itemIconSize, ['aria-hidden' => 'true']) ?>
-                    <?= $escaper->escapeHtml($item['name']) ?>
+                    <span class="btn btn-secondary btn-square rounded-full p-1.5 bg-white text-gray-500 border border-gray-200 shrink-0">
+                        <?= $heroiconsSolid->chevronLeftHtml('', $itemIconSize, $itemIconSize, ['aria-hidden' => 'true']) ?>
+                    </span>
+                    <span class="truncate"><?= $escaper->escapeHtml($item['name']) ?></span>
                 </button>
+            </li>
+            <li class="border-b border-gray-100">
                 <a
                     href="<?= $escaper->escapeUrl($item['url']) ?>"
-                    class="<?= $escaper->escapeHtmlAttr($itemClasses) ?>"
+                    class="<?= $escaper->escapeHtmlAttr($itemClasses) ?> bg-gray-50/50 font-semibold text-primary"
                 >
                     <span class="<?= $escaper->escapeHtmlAttr($itemIndent) ?>">
                         <?= $escaper->escapeHtml(__('See all %1', $item['name'])) ?>
@@ -96,7 +100,7 @@ $itemIndent = 'ms-7';
             href="<?= $escaper->escapeUrl($item['url']) ?>"
             class="<?= $escaper->escapeHtmlAttr($itemClasses) ?>"
         >
-            <span class="<?= $level > 0 ? $itemIndent : '' ?>"><?= $escaper->escapeHtml($item['name']) ?></span>
+            <span class="<?= $level > 0 ? $itemIndent : '' ?> truncate"><?= $escaper->escapeHtml($item['name']) ?></span>
         </a>
     </li>
 <?php endif; ?>

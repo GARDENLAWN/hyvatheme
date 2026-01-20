@@ -47,24 +47,24 @@ $showSettingsNav = $block->getShowSettingsNav() !== null ? $block->getShowSettin
 $showSearch = $block->getShowSearch() !== null ? $block->getShowSearch() : true;
 $showSocials = $block->getShowSocials() !== null ? $block->getShowSocials() : true;
 
-$itemClasses = "flex items-center gap-1 py-3 px-6 border-b border-slate-200 hover:text-slate-700 aria-[current=page]:text-blue-700 aria-[current=page]:font-bold -outline-offset-1";
+$itemClasses = "flex items-center gap-2 py-4 px-6 border-b border-gray-100 text-gray-700 font-medium hover:bg-gray-50 hover:text-primary transition-colors aria-[current=page]:text-primary aria-[current=page]:font-bold aria-[current=page]:bg-primary-50";
 $itemIconSize = 20;
 ?>
 
 <div class="navigation lg:hidden" x-data="initMobileMenu" @sub-menu-state-change.window="hasActiveSubMenu">
     <button
         type="button"
-        class="align-middle"
+        class="align-middle p-2 -ml-2 rounded-lg hover:bg-gray-100 transition-colors"
         aria-label="<?= $escaper->escapeHtmlAttr(__('Open menu')) ?>"
         aria-controls="mobileMenu"
         @click="open"
     >
-        <?= $heroicons->menuHtml('', 32, 32, ["aria-hidden" => "true"]) ?>
+        <?= $heroicons->menuHtml('', 28, 28, ["aria-hidden" => "true"]) ?>
     </button>
 
     <dialog
         id="mobileMenu"
-        class="max-h-full h-screen w-full ml-0 open:flex flex-col transition ease-out duration-300 open:duration-500"
+        class="max-h-full h-screen w-full ml-0 open:flex flex-col transition ease-out duration-300 open:duration-500 bg-white"
         x-show="isOpen"
         x-htmldialog.noscroll="close"
         x-transition:enter-start="-translate-x-full"
@@ -72,25 +72,25 @@ $itemIconSize = 20;
         x-transition:leave-start="translate-x-0"
         x-transition:leave-end="-translate-x-full"
     >
-        <div class="border-b border-slate-200">
+        <div class="border-b border-gray-100 bg-white sticky top-0 z-20">
             <div class="flex justify-between items-center gap-2 py-4 px-6">
-                <div><?= $block->getChildHtml('logo') ?></div>
+                <div class="w-32"><?= $block->getChildHtml('logo') ?></div>
                 <button
                     type="button"
                     @click="close"
-                    class="btn btn-secondary ms-auto p-2 bg-slate-200 text-slate-700"
+                    class="btn btn-secondary btn-square rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors"
                     aria-label="<?= $escaper->escapeHtmlAttr(__('Close menu')) ?>"
                 >
                     <?= $heroicons->xHtml('', 24, 24, ["aria-hidden" => "true"]) ?>
                 </button>
             </div>
             <?php if ($showSearch && $block->getChildHtml('search')): ?>
-                <div class="pb-2 px-6"><?= $block->getChildHtml('search') ?></div>
+                <div class="pb-4 px-6"><?= $block->getChildHtml('search') ?></div>
             <?php endif; ?>
         </div>
-        <div class="grow relative text-slate-500 overflow-y-auto overflow-x-hidden" :style="lockWrapperScroll">
+        <div class="grow relative text-gray-600 overflow-y-auto overflow-x-hidden bg-white" :style="lockWrapperScroll">
             <nav aria-label="<?= $escaper->escapeHtmlAttr(__('Mobile Main Menu')) ?>">
-                <ul>
+                <ul class="flex flex-col">
                     <?php foreach ($additionalMenuItemsBefore as $item): ?>
                         <li data-level="0">
                             <a
@@ -125,25 +125,27 @@ $itemIconSize = 20;
                 </ul>
             </nav>
             <?php if ($showSettingsNav): ?>
-                <nav aria-label="<?= $escaper->escapeHtmlAttr(__('Mobile Store Settings')) ?>" :inert="isSubMenuOpen">
-                    <p class="uppercase text-xs pt-6 pb-3 px-6"><?= $escaper->escapeHtml(__('Settings')) ?></p>
+                <nav aria-label="<?= $escaper->escapeHtmlAttr(__('Mobile Store Settings')) ?>" :inert="isSubMenuOpen" class="mt-4 border-t border-gray-100 pt-4">
+                    <p class="uppercase text-xs font-bold text-gray-400 tracking-wider pb-2 px-6"><?= $escaper->escapeHtml(__('Settings')) ?></p>
                     <?= $block->getChildHtml('store-language-switcher') ?>
                     <?= $block->getChildHtml('currency-switcher') ?>
                     <a
                         href="<?= $escaper->escapeUrl($block->getUrl('customer/account/index')) ?>"
                         class="<?= $escaper->escapeHtmlAttr($itemClasses) ?>"
                     >
-                        <?= $heroiconsSolid->userCircleHtml('', $itemIconSize, $itemIconSize, ['aria-hidden' => 'true']); ?>
+                        <?= $heroiconsSolid->userCircleHtml('text-gray-400', $itemIconSize, $itemIconSize, ['aria-hidden' => 'true']); ?>
                         <?= $escaper->escapeHtml(__('My Account')) ?>
                     </a>
             </nav>
             <?php endif; ?>
-            <div aria-hidden="true" class="sticky bottom-0 h-4 bg-gradient-to-t from-white"></div>
+            <div aria-hidden="true" class="sticky bottom-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
         </div>
         <?php if ($showSocials): ?>
             <?= $block->getChildHtml('socials') ?>
         <?php endif; ?>
-        <?= $block->getChildHtml('additional') ?>
+        <div class="border-t border-gray-100 bg-gray-50">
+            <?= $block->getChildHtml('additional') ?>
+        </div>
     </dialog>
 </div>
 
