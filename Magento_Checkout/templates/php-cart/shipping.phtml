@@ -76,6 +76,14 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                     },
                     ['@update-totals-end.window']() {
                         this.isLoading = false;
+                    },
+                    ['@cart-updated.window.debounce.50ms']() {
+                        this.isLoading = true;
+                        if (this.showEstimateShipping) {
+                            this.fetchShippingMethods();
+                        } else {
+                            this.fetchTotals();
+                        }
                     }
                 },
                 cartData: {
@@ -147,10 +155,11 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                         : '/V1/guest-carts/' + this.cart.cartId + '/estimate-shipping-methods';
 
                     // ensure a new controller is used for the new request
-                    this.abortShippingController = new AbortController();
+                    const controller = new AbortController();
+                    this.abortShippingController = controller;
 
                     fetch(BASE_URL + 'rest/' + CURRENT_STORE_CODE + path + '?form_key=' + hyva.getFormKey(), {
-                        signal: this.abortShippingController.signal,
+                        signal: controller.signal,
                         method: 'post',
                         headers: {
                             'Content-Type': 'application/json',
@@ -173,9 +182,10 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                         })
                         .catch(this.displayError)
                         .finally(() => {
-                                this.$dispatch('update-shipping-method-end', {});
-                                this.fetchTotals();
-                                this.isLoading = false;
+                                if (!controller.signal.aborted) {
+                                    this.$dispatch('update-shipping-method-end', {});
+                                    this.fetchTotals();
+                                }
                             }
                         );
                 },
@@ -233,10 +243,11 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                         : '/V1/guest-carts/' + this.cart.cartId + '/totals-information';
 
                     // ensure a new controller is used for the new request
-                    this.abortTotalsController = new AbortController();
+                    const controller = new AbortController();
+                    this.abortTotalsController = controller;
 
                     fetch(BASE_URL + 'rest/' + CURRENT_STORE_CODE + path + '?form_key=' + hyva.getFormKey(), {
-                        signal: this.abortTotalsController.signal,
+                        signal: controller.signal,
                         method: 'post',
                         headers: {
                             'Content-Type': 'application/json',
@@ -270,7 +281,11 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                         })
                         .catch(this.displayError)
                         .finally(() => {
-                                this.$dispatch('update-totals-end', {});
+                                if (!controller.signal.aborted) {
+                                    this.$dispatch('update-totals-end', {});
+                                    // Ensure loading is false here as this is the end of the chain
+                                    this.isLoading = false;
+                                }
                             }
                         );
                 },

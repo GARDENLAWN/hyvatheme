@@ -141,13 +141,6 @@ x-data="{
             })
             .then(response => {
                 if (response.ok) {
-                    // Reload sections using Hyva event
-                    window.dispatchEvent(new CustomEvent('reload-customer-section-data', {
-                        detail: {
-                            sections: ['cart', 'messages']
-                        }
-                    }));
-
                     this.fetchAndReplaceCart();
                 } else {
                     console.error('Cart update failed');
@@ -162,54 +155,32 @@ x-data="{
             });
         },
         fetchAndReplaceCart() {
-             fetch(window.location.href)
+             fetch(BASE_URL + 'gardenlawn_core/cart/render')
                 .then(response => response.text())
                 .then(html => {
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
-
-                    const removeScripts = (el) => {
-                        el.querySelectorAll('script').forEach(s => s.remove());
-                    };
-
-                    // Replace Cart Items
                     const newItems = doc.querySelector('#form-validate');
                     const currentItems = document.querySelector('#form-validate');
+
                     if (newItems && currentItems) {
-                        removeScripts(newItems);
+                        newItems.querySelectorAll('script').forEach(s => s.remove());
                         currentItems.innerHTML = newItems.innerHTML;
                     }
 
-                    // Replace Totals
-                    const newTotals = doc.querySelector('.cart-summary');
-                    const currentTotals = document.querySelector('.cart-summary');
-                    if (newTotals && currentTotals) {
-                        removeScripts(newTotals);
-                        currentTotals.replaceWith(newTotals);
-                    }
-
-                    // Replace Shipping
-                    const newShipping = doc.querySelector('#block-shipping');
-                    const currentShipping = document.querySelector('#block-shipping');
-                    if (newShipping && currentShipping) {
-                        removeScripts(newShipping);
-                        currentShipping.replaceWith(newShipping);
-                    }
-
-                    // Replace Messages
-                    const newMessages = doc.querySelector('.page.messages');
-                    const currentMessages = document.querySelector('.page.messages');
-                    if (newMessages) {
-                        removeScripts(newMessages);
-                        if (currentMessages) {
-                            currentMessages.replaceWith(newMessages);
-                        } else {
-                             // Insert if missing
-                             const main = document.querySelector('#maincontent');
-                             if (main) main.prepend(newMessages);
+                    // Trigger messages and cart reload
+                    window.dispatchEvent(new CustomEvent('reload-customer-section-data', {
+                        detail: {
+                            sections: ['cart', 'messages']
                         }
-                    }
+                    }));
 
+                    this.isLoading = false;
+                    window.dispatchEvent(new CustomEvent('cart-updated'));
+                    // update-totals-end will be dispatched by shipping/totals fetch completion
+                })
+                .catch(error => {
+                    console.error('Error fetching cart:', error);
                     this.isLoading = false;
                     window.dispatchEvent(new CustomEvent('update-totals-end'));
                 });
