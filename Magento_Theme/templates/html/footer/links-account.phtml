@@ -1,0 +1,43 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+?>
+
+<nav aria-label="<?= $escaper->escapeUrl($escaper->escapeHtmlAttr('My Account')) ?>">
+    <ul class="space-y-3">
+        <?php if ($block->getChildHtml()): ?>
+            <?= $block->getChildHtml() ?>
+        <?php else: ?>
+            <li>
+                <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account')) ?>"
+                   class="block text-gray-600 hover:text-primary transition-colors">
+                    <?= $escaper->escapeHtml(__('My Account')) ?>
+                </a>
+            </li>
+            <li>
+                <a href="<?= $escaper->escapeUrl($block->getUrl('sales/order/history')) ?>"
+                   class="block text-gray-600 hover:text-primary transition-colors">
+                    <?= $escaper->escapeHtml(__('Orders')) ?>
+                </a>
+            </li>
+            <li>
+                <a href="<?= $escaper->escapeUrl($block->getUrl('wishlist')) ?>"
+                   class="block text-gray-600 hover:text-primary transition-colors">
+                    <?= $escaper->escapeHtml(__('Wishlist')) ?>
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</nav>

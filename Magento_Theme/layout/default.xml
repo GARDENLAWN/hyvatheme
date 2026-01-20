@@ -262,32 +262,37 @@
         </referenceBlock>
 
         <move element="footer-static-links" destination="footer_column_1"/>
+        <move element="footer_links" destination="footer_column_4"/>
 
         <referenceBlock name="footer-content">
             <container name="footer-content-before"/>
             <block name="footer_column_1" template="Magento_Theme::html/footer/collapse.phtml">
                 <arguments>
                     <argument name="title" xsi:type="string" translate="true">Shop</argument>
-                    <argument name="open" xsi:type="boolean">true
-                    </argument> <!-- Set the collapse to be open by default on mobile (true/false) -->
+                    <argument name="open" xsi:type="boolean">true</argument>
+                    <argument name="icon" xsi:type="string">shopping-bag</argument>
                 </arguments>
             </block>
             <block name="footer_column_2" template="Magento_Theme::html/footer/collapse.phtml" after="footer_column_1">
                 <arguments>
                     <argument name="title" xsi:type="string" translate="true">Customer Service</argument>
+                    <argument name="icon" xsi:type="string">chat-alt-2</argument>
                 </arguments>
                 <block name="footer-static-links-services" template="Magento_Theme::html/footer/links-services.phtml"/>
             </block>
             <block name="footer_column_3" template="Magento_Theme::html/footer/collapse.phtml" after="footer_column_2">
                 <arguments>
                     <argument name="title" xsi:type="string" translate="true">Our Company</argument>
+                    <argument name="icon" xsi:type="string">office-building</argument>
                 </arguments>
                 <block name="footer-static-links-company" template="Magento_Theme::html/footer/links-company.phtml"/>
             </block>
             <block name="footer_column_4" template="Magento_Theme::html/footer/collapse.phtml" after="footer_column_3">
                 <arguments>
                     <argument name="title" xsi:type="string" translate="true">My Account</argument>
+                    <argument name="icon" xsi:type="string">user</argument>
                 </arguments>
+                <block name="footer-static-links-account" template="Magento_Theme::html/footer/links-account.phtml"/>
             </block>
             <container name="footer-content-after">
                 <block name="footer-payment" template="Magento_Theme::html/footer/payment.phtml"/>

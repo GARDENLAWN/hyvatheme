@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
@@ -20,9 +21,34 @@ use Magento\Framework\View\Element\Template;
 /** @var HeroiconsSolid $heroiconsSolid */
 $heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
 
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
 $blockId = (string) $block->getBlockId() ?: $block->getNameInLayout() ?: uniqid();
 $title = (string) $block->getTitle() ?: __("Details");
 $open = (bool) $block->getOpen() ? 'true' : 'false';
+$iconName = (string) $block->getIcon();
+
+$iconHtml = null;
+if ($iconName) {
+    // Convert kebab-case to camelCase + Html suffix (e.g. shopping-bag -> shoppingBagHtml)
+    $camelCaseName = str_replace('-', '', ucwords($iconName, '-'));
+    $method = lcfirst($camelCaseName) . 'Html';
+
+    try {
+        // Try to load the icon using magic method
+        $iconHtml = $heroicons->$method('text-primary', 24, 24);
+    } catch (\Exception $e) {
+        // If icon not found, try fallbacks for common issues
+        try {
+            if ($iconName === 'user') {
+                $iconHtml = $heroicons->usersHtml('text-primary', 24, 24);
+            }
+        } catch (\Exception $e2) {
+            // Icon definitely not found
+        }
+    }
+}
 ?>
 
 <?php if ($childrenHtml = $block->getChildHtml()): ?>
@@ -33,16 +59,23 @@ $open = (bool) $block->getOpen() ? 'true' : 'false';
         data-open="<?= /** @noEscape */ $open ?>"
     >
         <div
-            class="group flex w-full items-center justify-between py-4 lg:py-0 gap-2 cursor-pointer lg:cursor-default select-none lg:select-auto"
+            class="group flex w-full items-center justify-between py-4 lg:py-0 gap-3 cursor-pointer lg:cursor-default select-none lg:select-auto transition-colors hover:bg-gray-50 lg:hover:bg-transparent px-2 lg:px-0 -mx-2 lg:mx-0 rounded-lg lg:rounded-none"
             data-id="<?= $blockId ?>"
             x-bind="setToggleRoles"
             @click="toggle"
             @keyup.enter="toggle"
             @keyup.space="toggle"
         >
-            <h3 class="font-bold text-gray-900 text-lg lg:mb-4"><?= $escaper->escapeHtml($title); ?></h3>
+            <div class="flex items-center gap-3">
+                <?php if ($iconHtml): ?>
+                    <div class="p-2 bg-primary-50 rounded-lg shrink-0 flex items-center justify-center">
+                        <?= $iconHtml ?>
+                    </div>
+                <?php endif; ?>
+                <h3 class="font-bold text-gray-900 text-lg lg:text-xl"><?= $escaper->escapeHtml($title); ?></h3>
+            </div>
             <span
-                class="transition-transform duration-300 group-aria-expanded:rotate-180 lg:hidden text-gray-400"
+                class="transition-transform duration-300 group-aria-expanded:rotate-180 lg:hidden text-gray-400 bg-gray-100 rounded-full p-1.5"
                 x-ref="toggleIcon"
             >
                 <?= $heroiconsSolid->chevronDownHtml('', 20, 20, ["aria-hidden" => 'true']); ?>
@@ -57,7 +90,7 @@ $open = (bool) $block->getOpen() ? 'true' : 'false';
             x-transition:enter-start="opacity-0 -translate-y-2"
             x-transition:enter-end="opacity-100 translate-y-0"
         >
-            <div class="pt-2 pb-6 lg:pt-0 lg:pb-0">
+            <div class="pt-2 pb-6 lg:pt-6 lg:pb-0 px-2 lg:px-0">
                 <?= /** @noEscape */ $childrenHtml ?>
             </div>
         </div>
