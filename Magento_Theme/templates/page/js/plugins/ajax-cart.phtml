@@ -38,6 +38,44 @@ $showAjaxCartModal = $block->getDisplayOnSuccess() === 'modal' || $block->getDis
 
 ?>
 
+<style>
+    /* Custom styles for ajax cart prices */
+    .ajax-cart-price {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ajax-cart-price .price-including-tax,
+    .ajax-cart-price .price-excluding-tax {
+        display: block;
+        line-height: 1.2;
+    }
+
+    /* Brutto (Including Tax) */
+    .ajax-cart-price .price-including-tax .price {
+        font-weight: 700;
+        font-size: 1.125rem; /* 18px */
+        color: #111827; /* gray-900 */
+    }
+
+    /* Netto (Excluding Tax) */
+    .ajax-cart-price .price-excluding-tax .price {
+        font-weight: 400;
+        font-size: 0.875rem; /* 14px */
+        color: #6b7280; /* gray-500 */
+    }
+
+    /* Netto Label from data-label attribute - positioned AFTER price */
+    .ajax-cart-price .price-excluding-tax::after {
+        content: attr(data-label);
+        font-size: 0.75rem; /* 12px */
+        text-transform: lowercase;
+        color: #9ca3af; /* gray-400 */
+        margin-left: 4px;
+    }
+</style>
+
 <script>
     function createAjaxLoader() {
         const loader = document.createElement('div');
@@ -159,7 +197,7 @@ $showAjaxCartModal = $block->getDisplayOnSuccess() === 'modal' || $block->getDis
 
 <?php if ($showAjaxCartModal): ?>
     <dialog
-        class="w-[640px] rounded-xl bg-white text-slate-800 p-0 shadow-xl backdrop:bg-black/75 backdrop:backdrop-blur-sm"
+        class="w-[640px] rounded-2xl bg-white text-slate-800 p-0 shadow-2xl backdrop:bg-black/50 backdrop:backdrop-blur-sm border border-gray-100"
         x-data="initAjaxCartModal"
         x-show="open"
         x-htmldialog="closeDialog"
@@ -168,21 +206,26 @@ $showAjaxCartModal = $block->getDisplayOnSuccess() === 'modal' || $block->getDis
     >
         <template x-if="hasCartItem">
             <div>
-                <div class="flex gap-6 justify-between items-center p-6">
-                    <span class="text-xl font-bold">
-                        <?= $escaper->escapeHtml(__('The product was added to your cart.')) ?>
-                    </span>
+                <div class="flex gap-6 justify-between items-center p-6 border-b border-gray-100">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-600">
+                            <?= $heroicons->checkHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">
+                            <?= $escaper->escapeHtml(__('Added to Cart')) ?>
+                        </span>
+                    </div>
                     <button
-                        title="<?= $escaper->escapeHtml(__('Close fullscreen')) ?>"
-                        aria-label="<?= $escaper->escapeHtml(__('Close fullscreen')) ?>"
+                        title="<?= $escaper->escapeHtml(__('Close')) ?>"
+                        aria-label="<?= $escaper->escapeHtml(__('Close')) ?>"
                         @click="closeDialog"
-                        class="text-slate-300 hover:text-slate-500 focus:text-slate-500"
+                        class="text-gray-400 hover:text-gray-600 focus:text-gray-600 transition-colors p-2 rounded-full hover:bg-gray-100"
                     >
-                        <?= $heroicons->xHtml('', 32, 32, ['aria-hidden' => 'true']); ?>
+                        <?= $heroicons->xHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
                     </button>
                 </div>
-                <div class="flex gap-3 sm:gap-x-6 items-start p-6">
-                    <div class="shrink-0 max-w-[theme(spacing.20)] sm:max-w-[theme(spacing.32)]">
+                <div class="flex gap-6 items-start p-6">
+                    <div class="shrink-0 w-24 sm:w-32 aspect-square rounded-lg overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center">
                         <img
                             loading="lazy"
                             :data-product-name="cartItem.product_name"
@@ -190,51 +233,51 @@ $showAjaxCartModal = $block->getDisplayOnSuccess() === 'modal' || $block->getDis
                             :width="cartItem.product_image.width"
                             :height="cartItem.product_image.height"
                             :alt="getProductAlt"
+                            class="object-contain w-full h-full"
                         >
                     </div>
-                    <div class="grow flex gap-2 flex-col sm:flex-row">
-                        <div class="grow">
-                            <p class="text-lg">
-                                <strong class="font-bold" x-html="cartItem.product_name"></strong>
-                            </p>
-                            <template x-if="canShowDetails">
-                                <dl class="table mt-2 text-sm">
-                                    <template x-if="canShowSku">
-                                        <div class="table-row">
-                                            <dt class="table-cell pb-1.5 pr-2 min-w-[theme(spacing.12)] sm:min-w-[theme(spacing.24)] font-normal text-slate-500 uppercase">
-                                                <?= $escaper->escapeHtml(__('Sku')) ?>
-                                            </dt>
-                                            <dd class="table-cell pb-1.5 font-bold" x-text="cartItem.product_sku"></dd>
-                                        </div>
-                                    </template>
-                                    <template x-for="option in cartItem.options">
-                                        <div class="table-row">
-                                            <dt class="table-cell pb-1.5 pr-2 min-w-[theme(spacing.12)] sm:min-w-[theme(spacing.24)] font-normal text-slate-500" x-html="option.label"></dt>
-                                            <dd class="table-cell pb-1.5 font-bold" x-html="option.value"></dd>
-                                        </div>
-                                    </template>
-                                </dl>
-                            </template>
-                        </div>
-                        <div class="leading-7 shrink-0 [&_.price]:font-normal" x-html="cartItem.product_price"></div>
+                    <div class="grow flex flex-col gap-2">
+                        <p class="text-lg font-bold text-gray-900 leading-tight" x-html="cartItem.product_name"></p>
+                        <div class="ajax-cart-price" x-html="cartItem.product_price"></div>
+
+                        <template x-if="canShowDetails">
+                            <dl class="mt-2 text-sm text-gray-600 space-y-1">
+                                <template x-if="canShowSku">
+                                    <div class="flex gap-2">
+                                        <dt class="font-medium min-w-[3rem]">
+                                            <?= $escaper->escapeHtml(__('SKU')) ?>:
+                                        </dt>
+                                        <dd x-text="cartItem.product_sku"></dd>
+                                    </div>
+                                </template>
+                                <template x-for="option in cartItem.options">
+                                    <div class="flex gap-2">
+                                        <dt class="font-medium min-w-[3rem]" x-html="option.label + ':'"></dt>
+                                        <dd x-html="option.value"></dd>
+                                    </div>
+                                </template>
+                            </dl>
+                        </template>
                     </div>
                 </div>
-                <div class="flex gap-2 justify-between items-end p-6 text-slate-600 font-bold">
-                    <span>
-                        <span><?= $escaper->escapeHtml(__('Cart Subtotal')) ?></span>
-                        <span x-text="getItemCountText"></span>
+
+                <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
+                    <span class="text-gray-600 font-medium">
+                        <?= $escaper->escapeHtml(__('Cart Subtotal')) ?>
+                        <span class="text-gray-500 font-normal" x-text="getItemCountText"></span>
                     </span>
-                    <span x-html="cart.subtotal"></span>
+                    <span class="text-lg font-bold text-gray-900" x-html="cart.subtotal"></span>
                 </div>
-                <div class="flex flex-col sm:flex-row lg:justify-end gap-4 p-6 bg-slate-100">
+
+                <div class="p-6 flex flex-col sm:flex-row gap-3">
                     <button
                         @click="closeDialog"
-                        class="sm:w-1/2 lg:w-auto btn"
+                        class="btn btn-secondary w-full sm:w-1/2 justify-center"
                     ><?= $escaper->escapeHtml(__('Continue Shopping')) ?></button>
                     <a
                         href="<?= $escaper->escapeUrl($block->getUrl('checkout')) ?>"
                         @click.prevent.stop="openAuthentication"
-                        class="sm:w-1/2 lg:w-auto btn btn-primary"
+                        class="btn btn-primary w-full sm:w-1/2 justify-center"
                     ><?= $escaper->escapeHtml(__('Checkout')) ?></a>
                 </div>
             </div>
