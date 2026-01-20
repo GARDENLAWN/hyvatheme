@@ -16,29 +16,29 @@ use Magento\Framework\View\Element\Template;
 ?>
 
 <nav aria-label="<?= $escaper->escapeUrl($escaper->escapeHtmlAttr('Shop')) ?>">
-    <ul>
+    <ul class="space-y-3">
         <li>
             <a
                 href="<?= $escaper->escapeUrl($block->getUrl('https://am-robots.pl/kosiarki-roboty')) ?>"
-                class="block py-1.5 hover:underline"
+                class="block text-gray-600 hover:text-primary transition-colors"
             ><?= $escaper->escapeHtml(__('Roboty koszące')) ?></a>
         </li>
         <li>
             <a
                 href="<?= $escaper->escapeUrl($block->getUrl('https://am-robots.pl/garaze')) ?>"
-                class="block py-1.5 hover:underline"
+                class="block text-gray-600 hover:text-primary transition-colors"
             ><?= $escaper->escapeHtml(__('Garaże dla robotów')) ?></a>
         </li>
         <li>
             <a
                 href="<?= $escaper->escapeUrl($block->getUrl('https://am-robots.pl/noze')) ?>"
-                class="block py-1.5 hover:underline"
+                class="block text-gray-600 hover:text-primary transition-colors"
             ><?= $escaper->escapeHtml(__('Noże do robotów koszacych')) ?></a>
         </li>
         <li>
             <a
                 href="<?= $escaper->escapeUrl($block->getUrl('https://gardenlawn.pl/sprzedaz-trawy-w-rolce/trawa-w-rolce')) ?>"
-                class="block py-1.5 hover:underline"
+                class="block text-gray-600 hover:text-primary transition-colors"
             ><?= $escaper->escapeHtml(__('Trawa w rolce')) ?></a>
         </li>
     </ul>

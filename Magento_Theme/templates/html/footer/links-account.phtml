@@ -41,3 +41,18 @@ use Magento\Framework\View\Element\Template;
         <?php endif; ?>
     </ul>
 </nav>
+
+<style>
+    /* Fix for dynamically injected links in My Account section */
+    .footer-col-links a {
+        display: block;
+        color: #4b5563; /* text-gray-600 */
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+    }
+    .footer-col-links a:hover {
+        color: var(--color-primary, #2563eb); /* text-primary */
+        text-decoration: none;
+    }
+</style>
