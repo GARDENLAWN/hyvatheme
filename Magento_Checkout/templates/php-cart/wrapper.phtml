@@ -14,41 +14,32 @@ use Magento\Framework\Escaper;
 /** @var Escaper $escaper */
 ?>
 
-<style>
-    /* Hide duplicated blocks in the right column summary */
-    .cart-summary .coupon-form,
-    .cart-summary .estimate-shipping-form {
-        display: none !important;
-    }
-</style>
-
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-    <!-- Left Column: Cart Items -->
-    <div class="w-full order-2 lg:order-1">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+    <!-- Left Column: Cart Items (2/3 width) -->
+    <div class="w-full lg:col-span-2 order-2 lg:order-1">
         <?= $block->getChildHtml('form_before') ?>
         <?= $block->getChildHtml('cart-items') ?>
-
-        <!-- Shipping Estimation moved here -->
-        <?php if ($shippingBlock = $block->getLayout()->getBlock('checkout.cart.shipping')): ?>
-            <div class="mt-8 card bg-white p-4 rounded shadow-sm border border-gray-200">
-                <?= $shippingBlock->toHtml() ?>
-            </div>
-        <?php endif; ?>
-
         <?= $block->getChildHtml('checkout_cart_widget') ?>
     </div>
 
-    <!-- Right Column: Summary & Tools -->
-    <div class="card w-full lg:sticky lg:top-4 order-1 lg:order-2">
-        <!-- Coupon Code moved here -->
+    <!-- Right Column: Summary & Tools (1/3 width) -->
+    <div class="w-full lg:col-span-1 lg:sticky lg:top-4 order-1 lg:order-2 space-y-6">
+        <!-- Coupon Code -->
         <?php if ($couponBlock = $block->getLayout()->getBlock('checkout.cart.coupon')): ?>
-            <div class="mb-4">
+            <div class="card bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <?= $couponBlock->toHtml() ?>
             </div>
         <?php endif; ?>
 
-        <!-- The cart.summary container handles its own layout via XML (grid class) -->
-        <div class="cart-summary">
+        <!-- Shipping Estimation -->
+        <?php if ($shippingBlock = $block->getLayout()->getBlock('checkout.cart.shipping')): ?>
+            <div class="card bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                <?= $shippingBlock->toHtml() ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Cart Summary (Totals & Checkout Button) -->
+        <div class="cart-summary card bg-white p-6 rounded-xl shadow-sm border border-gray-200">
             <?= $block->getChildHtml('cart.summary') ?>
         </div>
     </div>
