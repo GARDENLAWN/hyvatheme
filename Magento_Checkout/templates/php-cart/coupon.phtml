@@ -26,12 +26,21 @@ $lucideIcons = $viewModels->require(LucideIcons::class);
                 errors: 0,
                 hasCaptchaToken: 0,
                 showCouponForm: true, // Default to true
+                isLoading: false,
                 hideCouponForm() {
                     return ! this.showCouponForm;
                 },
                 formData: {
                     coupon_code: '',
                     remove: '0'
+                },
+                eventListeners: {
+                    ['@update-totals-start.window']() {
+                        this.isLoading = true;
+                    },
+                    ['@update-totals-end.window']() {
+                        this.isLoading = false;
+                    }
                 },
                 init(){
                     const browserStorageShowCouponForm = hyva.getBrowserStorage().getItem('hyva.showCouponForm');
@@ -67,7 +76,15 @@ $lucideIcons = $viewModels->require(LucideIcons::class);
     }, { once: true });
 </script>
 
-<div class="coupon-form bg-gray-50 p-4 rounded-xl border border-gray-100" x-data="initCouponForm">
+<div id="block-coupon" class="coupon-form bg-gray-50 p-4 rounded-xl border border-gray-100 relative" x-data="initCouponForm" x-bind="eventListeners">
+    <template x-if="isLoading">
+        <div class="z-10 absolute inset-0 flex items-center justify-center bg-white/60 rounded-lg">
+            <svg class="animate-spin h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+        </div>
+    </template>
     <form id="discount-coupon-form"
           action="<?= $escaper->escapeUrl($block->getUrl('checkout/cart/couponPost')) ?>"
           method="post"

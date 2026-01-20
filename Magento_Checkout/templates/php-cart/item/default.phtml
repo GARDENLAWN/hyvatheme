@@ -122,6 +122,7 @@ x-data="{
         },
         updateCart() {
             this.isLoading = true;
+            window.dispatchEvent(new CustomEvent('update-totals-start'));
             const form = this.$el.closest('form');
             const formData = new FormData(form);
 
@@ -151,11 +152,13 @@ x-data="{
                 } else {
                     console.error('Cart update failed');
                     this.isLoading = false;
+                    window.dispatchEvent(new CustomEvent('update-totals-end'));
                 }
             })
             .catch(error => {
                 console.error('Error updating cart:', error);
                 this.isLoading = false;
+                window.dispatchEvent(new CustomEvent('update-totals-end'));
             });
         },
         fetchAndReplaceCart() {
@@ -185,6 +188,14 @@ x-data="{
                         currentTotals.replaceWith(newTotals);
                     }
 
+                    // Replace Shipping
+                    const newShipping = doc.querySelector('#block-shipping');
+                    const currentShipping = document.querySelector('#block-shipping');
+                    if (newShipping && currentShipping) {
+                        removeScripts(newShipping);
+                        currentShipping.replaceWith(newShipping);
+                    }
+
                     // Replace Messages
                     const newMessages = doc.querySelector('.page.messages');
                     const currentMessages = document.querySelector('.page.messages');
@@ -200,6 +211,7 @@ x-data="{
                     }
 
                     this.isLoading = false;
+                    window.dispatchEvent(new CustomEvent('update-totals-end'));
                 });
         },
         increment() {
