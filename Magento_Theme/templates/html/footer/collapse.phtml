@@ -30,6 +30,8 @@ $open = (bool) $block->getOpen() ? 'true' : 'false';
 $iconName = (string) $block->getIcon();
 
 $iconHtml = null;
+$debugMsg = '';
+
 if ($iconName) {
     // Convert kebab-case to camelCase + Html suffix (e.g. shopping-bag -> shoppingBagHtml)
     $camelCaseName = str_replace('-', '', ucwords($iconName, '-'));
@@ -37,19 +39,22 @@ if ($iconName) {
 
     try {
         // Try to load the icon using magic method
-        $iconHtml = $heroicons->$method('text-primary', 24, 24);
+        if (method_exists($heroicons, $method)) {
+             $iconHtml = $heroicons->$method('text-primary', 24, 24);
+        } else {
+             // Force inline SVG for user-circle if method missing
+             if ($iconName === 'user-circle') {
+                $iconHtml = '<svg xmlns="http://www.w3.org/2000/svg" class="text-primary" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+             } else {
+                 // Fallback for other icons or try generic call which might throw exception if file missing
+                 $iconHtml = $heroicons->$method('text-primary', 24, 24);
+             }
+        }
     } catch (\Exception $e) {
-        // If icon not found, try fallbacks for common issues
-        try {
-            if ($iconName === 'user') {
-                $iconHtml = $heroicons->usersHtml('text-primary', 24, 24);
-            }
-            if ($iconName === 'user-circle') {
-                // Fallback to 'user' if 'user-circle' is missing
-                $iconHtml = $heroicons->userHtml('text-primary', 24, 24);
-            }
-        } catch (\Exception $e2) {
-            // Icon definitely not found
+        $debugMsg = '<!-- Icon Error: ' . $e->getMessage() . ' -->';
+        // Fallback to inline SVG if Heroicons fails
+        if ($iconName === 'user-circle') {
+            $iconHtml = '<svg xmlns="http://www.w3.org/2000/svg" class="text-primary" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
         }
     }
 }
@@ -62,6 +67,7 @@ if ($iconName) {
         class="border-b border-gray-100 lg:border-b-0 last:border-b-0"
         data-open="<?= /** @noEscape */ $open ?>"
     >
+        <?= $debugMsg ?>
         <div
             class="group flex w-full items-center justify-between py-4 lg:py-0 gap-3 cursor-pointer lg:cursor-default select-none lg:select-auto transition-colors hover:bg-gray-50 lg:hover:bg-transparent px-2 lg:px-0 -mx-2 lg:mx-0 rounded-lg lg:rounded-none"
             data-id="<?= $blockId ?>"
@@ -74,6 +80,11 @@ if ($iconName) {
                 <?php if ($iconHtml): ?>
                     <div class="p-2 bg-primary-50 rounded-lg shrink-0 flex items-center justify-center">
                         <?= $iconHtml ?>
+                    </div>
+                <?php else: ?>
+                     <!-- TEST DEBUG: Icon Name: <?= $escaper->escapeHtml($iconName) ?> -->
+                     <div class="p-2 bg-yellow-100 rounded-lg shrink-0 flex items-center justify-center text-yellow-600 font-bold border border-yellow-300">
+                        TEST
                     </div>
                 <?php endif; ?>
                 <h3 class="font-bold text-gray-900 text-lg lg:text-xl"><?= $escaper->escapeHtml($title); ?></h3>

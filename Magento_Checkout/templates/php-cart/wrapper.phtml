@@ -40,8 +40,6 @@ use Magento\Framework\Escaper;
 
     <!-- Right Column: Summary & Tools -->
     <div class="card w-full lg:sticky lg:top-4 order-1 lg:order-2">
-        <h2 class="text-lg font-bold mb-4"><?= $escaper->escapeHtml(__('Summary')) ?></h2>
-
         <!-- Coupon Code moved here -->
         <?php if ($couponBlock = $block->getLayout()->getBlock('checkout.cart.coupon')): ?>
             <div class="mb-4">
