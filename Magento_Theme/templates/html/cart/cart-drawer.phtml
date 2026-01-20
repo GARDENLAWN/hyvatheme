@@ -35,6 +35,44 @@ $miniCartOptionShowSku = $block->getShowSku() !== null ? (bool) $block->getShowS
 $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniCartOptionQtyStyle === "select";
 ?>
 
+<style>
+    /* Custom styles for cart drawer prices */
+    .cart-drawer-price {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cart-drawer-price .price-including-tax,
+    .cart-drawer-price .price-excluding-tax {
+        display: block;
+        line-height: 1.2;
+    }
+
+    /* Brutto (Including Tax) */
+    .cart-drawer-price .price-including-tax .price {
+        font-weight: 700;
+        font-size: 1rem; /* 16px */
+        color: #111827; /* gray-900 */
+    }
+
+    /* Netto (Excluding Tax) */
+    .cart-drawer-price .price-excluding-tax .price {
+        font-weight: 400;
+        font-size: 0.875rem; /* 14px */
+        color: #6b7280; /* gray-500 */
+    }
+
+    /* Netto Label */
+    .cart-drawer-price .price-excluding-tax::after {
+        content: attr(data-label);
+        font-size: 0.75rem; /* 12px */
+        text-transform: lowercase;
+        color: #9ca3af; /* gray-400 */
+        margin-left: 4px;
+    }
+</style>
+
 <script>
     function initCartDrawer() {
         return {
@@ -328,33 +366,32 @@ $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniC
     <section
         id="cart-drawer"
         aria-labelledby="cart-drawer-title"
-        class="flex flex-col gap-y-8 py-6 px-4 [&_>*]:px-2 max-w-full z-30 fixed top-1/2 -translate-y-1/2
-            inset-x-2 md:right-[calc(var(--cart-drawer-offset-right,1rem)_-_1rem)] md:left-auto
-            max-h-[95vh] md:w-[420px] rounded-lg
-            shadow-lg bg-white text-slate-800 border-t-4 border-blue-500"
-        x-show="open"
-        x-transition.origin.top.right
+        class="flex flex-col gap-y-6 py-6 px-4 [&_>*]:px-2 max-w-full z-30 fixed top-0 right-0 h-full
+            md:w-[450px] w-full bg-white text-slate-800 shadow-2xl transform transition-transform duration-300 ease-in-out"
+        :class="open ? 'translate-x-0' : 'translate-x-full'"
         x-ref="cartDialogContent"
         x-cloak
     >
         <?= $block->getChildHtml('cart-drawer.top'); ?>
 
-        <div class="flex gap-2 justify-between items-center">
-            <p id="cart-drawer-title" class="text-2xl">
-                <strong><?= $escaper->escapeHtml(__('My Cart')) ?></strong>
+        <div class="flex gap-4 justify-between items-center border-b border-gray-100 pb-4">
+            <div class="flex items-center gap-2">
+                <h2 id="cart-drawer-title" class="text-2xl font-bold text-gray-900">
+                    <?= $escaper->escapeHtml(__('My Cart')) ?>
+                </h2>
                 <span
-                    class="items-total text-xs"
+                    class="bg-gray-100 text-gray-600 text-xs font-bold px-2 py-1 rounded-full"
                     x-show="shouldShowItemCount"
-                    x-text="getItemCountTitle"
+                    x-text="itemsCount"
                 ></span>
-            </p>
+            </div>
             <button
                 type="button"
-                class="btn rounded-full p-2.5"
+                class="btn btn-secondary btn-square rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors"
                 @click="closeCartDrawer"
                 aria-label="<?= $escaper->escapeHtmlAttr(__('Close minicart')) ?>"
             >
-                <?= $heroiconsSolid->xHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                <?= $heroiconsSolid->xHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
             </button>
         </div>
 
@@ -362,28 +399,32 @@ $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniC
 
         <template x-if="cartIsEmpty">
             <div class="grow grid place-items-center">
-                <div class="text-center">
-                    <div class="max-w-full max-h-full aspect-square w-44 h-44 inline-flex items-center justify-center rounded-full
-                        bg-sky-100 text-blue-400 outline-2 outline-dashed outline-blue-300 outline-offset-8">
-                        <?= $heroiconsSolid->shoppingCartHtml('', 120, 120, ['aria-hidden' => 'true']); ?>
+                <div class="text-center p-8">
+                    <div class="w-32 h-32 mx-auto mb-6 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
+                        <?= $heroiconsSolid->shoppingCartHtml('', 64, 64, ['aria-hidden' => 'true']); ?>
                     </div>
-                    <p class="mt-10 text-xl">
-                        <strong><?= $escaper->escapeHtml(__('Your cart is empty')) ?></strong>
-                    </p>
-                    <p class="text-slate-500">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">
+                        <?= $escaper->escapeHtml(__('Your cart is empty')) ?>
+                    </h3>
+                    <p class="text-gray-500 mb-8">
                         <?= $escaper->escapeHtml(__("Looks like you haven't made your choice yet.")) ?>
                     </p>
+                    <button
+                        type="button"
+                        @click="closeCartDrawer"
+                        class="btn btn-primary"
+                    ><?= $escaper->escapeHtml(__('Start Shopping')) ?></button>
                 </div>
             </div>
         </template>
 
         <template x-if="itemsCount">
-            <ul class="grow flex flex-col overflow-y-auto overscroll-y-contain mask-overflow mask-dir-y">
+            <ul class="grow flex flex-col overflow-y-auto overscroll-y-contain pr-2 -mr-2 space-y-6">
                 <template x-for="item in cartItems">
-                    <li class="flex gap-4 md:gap-6 items-start py-7 border-b border-slate-200">
+                    <li class="flex gap-4 items-start pb-6 border-b border-gray-100 last:border-0 last:pb-0">
                         <template x-if="productIsVisibleInSite">
                             <a
-                                class="block shrink-0 max-w-[25%]"
+                                class="block shrink-0 w-24 aspect-square bg-gray-50 rounded-lg overflow-hidden border border-gray-100 flex items-center justify-center"
                                 :href="item.product_url"
                                 data-aria-label="<?= $escaper->escapeHtmlAttr(__('Product "%0"')) ?>"
                                 :title="item.product_name"
@@ -394,56 +435,59 @@ $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniC
                                     :height="item.product_image.height"
                                     loading="lazy"
                                     :alt="item.product_name"
+                                    class="object-contain w-full h-full"
                                 >
                             </a>
                         </template>
                         <template x-if="productIsNotVisibleInSite">
-                            <div class="block shrink-0 max-w-[25%]">
+                            <div class="block shrink-0 w-24 aspect-square bg-gray-50 rounded-lg overflow-hidden border border-gray-100 flex items-center justify-center">
                                 <img
                                     :src="item.product_image.src"
                                     :width="item.product_image.width"
                                     :height="item.product_image.height"
                                     loading="lazy"
                                     :alt="item.product_name"
+                                    class="object-contain w-full h-full"
                                 />
                             </div>
                         </template>
-                        <div class="grow space-y-4">
-                            <div class="flex gap-2 justify-between items-center">
-                                <p class="text-lg">
-                                    <?php if ($miniCartOptionQtyStyle === "text"): ?>
-                                        <span x-html="item.qty"></span> x <span x-html="item.product_name"></span>
-                                    <?php endif; ?>
-                                    <strong x-html="item.product_name"></strong>
-                                </p>
-                                <span class="[&_.price]:font-normal" x-html="item.product_price"></span>
+                        <div class="grow flex flex-col gap-2">
+                            <div class="flex justify-between items-start gap-2">
+                                <h3 class="text-base font-bold text-gray-900 leading-tight">
+                                    <template x-if="productIsVisibleInSite">
+                                        <a :href="item.product_url" class="hover:text-primary transition-colors" x-html="item.product_name"></a>
+                                    </template>
+                                    <template x-if="productIsNotVisibleInSite">
+                                        <span x-html="item.product_name"></span>
+                                    </template>
+                                </h3>
                             </div>
+
+                            <div class="cart-drawer-price" x-html="item.product_price"></div>
+
                             <template x-if="showDetails">
-                                <dl class="table text-sm">
+                                <dl class="text-xs text-gray-500 space-y-1">
                                     <template x-if="showSku">
-                                        <div class="table-row">
-                                            <dt class="table-cell font-normal text-slate-500 min-w-[theme(spacing.16)] pr-2 pb-2">
-                                                <?= $escaper->escapeHtml(__('Sku')) ?>
-                                            </dt>
-                                            <dd class="table-cell font-bold pb-2" x-html="item.product_sku"></dd>
+                                        <div class="flex gap-1">
+                                            <dt class="font-medium uppercase"><?= $escaper->escapeHtml(__('Sku')) ?>:</dt>
+                                            <dd x-html="item.product_sku"></dd>
                                         </div>
                                     </template>
                                     <template x-for="option in item.options">
-                                        <div class="table-row">
-                                            <dt
-                                                class="table-cell font-normal text-slate-500 min-w-[theme(spacing.16)] pr-2 pb-2"
-                                                x-text="option.label"
-                                            ></dt>
-                                            <dd class="table-cell font-bold pb-2" x-html="option.value"></dd>
+                                        <div class="flex gap-1">
+                                            <dt class="font-medium" x-text="option.label + ':'"></dt>
+                                            <dd x-html="option.value"></dd>
                                         </div>
                                     </template>
                                 </dl>
                             </template>
-                            <div class="flex flex-wrap gap-2 <?= $miniCartOptionQtyStyle === "text" ? 'justify-end' : 'justify-between' ?> items-center">
+
+                            <div class="flex items-center justify-between mt-auto pt-2">
                                 <?= $block->getLayout()->getBlock('cart-drawer.qtybox')
                                     ->setMiniCartOptionQtyStyle($miniCartOptionQtyStyle)
                                     ->toHtml() ?>
-                                <div class="inline-flex flex-wrap items-center gap-1">
+
+                                <div class="shrink-0 flex flex-wrap gap-2">
                                     <a
                                         :href="item.configure_url"
                                         x-show="productIsNotGroupedAndVisibleInSite"
@@ -455,7 +499,7 @@ $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniC
                                     </a>
                                     <button
                                         type="button"
-                                        class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-gray-700 hover:text-white transition-colors"
+                                        class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-gray-700 hover:text-white transition-colors action action-delete"
                                         @click="deleteItemFromCart"
                                         data-aria-label="<?= $escaper->escapeHtmlAttr(__('Remove product "%0" from cart')) ?>"
                                         :aria-label="productAriaLabel"
@@ -463,10 +507,10 @@ $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniC
                                         <?= $lucideIcons->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
                                     </button>
                                 </div>
-                                <template x-if="item.message">
-                                    <div class="message error" x-text="item.message"></div>
-                                </template>
                             </div>
+                            <template x-if="item.message">
+                                <div class="text-xs text-red-600 mt-1" x-text="item.message"></div>
+                            </template>
                         </div>
                     </li>
                 </template>
@@ -476,41 +520,31 @@ $miniCartOptionQtySaveAuto = $miniCartOptionQtyStyle === "incrementor" || $miniC
         <?= $block->getChildHtml('cart-drawer.bottom'); ?>
 
         <template x-if="itemsCount">
-            <div>
+            <div class="border-t border-gray-100 pt-6 mt-auto bg-white">
                 <?= $block->getChildHtml('cart-drawer.totals.before'); ?>
 
-                <dl class="flex gap-2 justify-between items-center text-sm font-bold">
-                    <dt class="text-slate-500"><?= $escaper->escapeHtml(__('Subtotal')) ?></dt>
-                    <dd x-html="cart.subtotal"></dd>
-                </dl>
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-lg font-medium text-gray-600"><?= $escaper->escapeHtml(__('Subtotal')) ?></span>
+                    <span class="text-2xl font-bold text-gray-900" x-html="cart.subtotal"></span>
+                </div>
 
-                <div class="flex flex-col gap-y-4 mt-8">
+                <div class="flex flex-col gap-3">
                     <a
                         @click.prevent.stop="proceedToCheckout"
                         href="<?= $escaper->escapeUrl($block->getUrl('checkout')) ?>"
-                        class="btn btn-primary"
+                        class="btn btn-primary w-full justify-center py-3 text-base"
                     >
                         <?= $escaper->escapeHtml(__('Checkout')) ?>
                     </a>
                     <a
                         href="<?= $escaper->escapeUrl($block->getUrl('checkout/cart')) ?>"
-                        class="btn"
+                        class="btn btn-secondary w-full justify-center py-3 text-base"
                     >
-                        <?= $escaper->escapeHtml(__('View and Edit Cart')) ?>
+                        <?= $escaper->escapeHtml(__('View Cart')) ?>
                     </a>
                     <div x-html="getSectionDataExtraActions"></div>
                     <?= $block->getChildHtml('extra_actions'); ?>
                 </div>
-            </div>
-        </template>
-
-        <template x-if="cartIsEmpty">
-            <div class="flex flex-col">
-                <button
-                    type="button"
-                    @click="closeCartDrawer"
-                    class="btn btn-primary"
-                ><?= $escaper->escapeHtml(__('Continue Shopping')) ?></button>
             </div>
         </template>
 
