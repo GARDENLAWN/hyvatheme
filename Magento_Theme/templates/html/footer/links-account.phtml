@@ -16,7 +16,7 @@ use Magento\Framework\View\Element\Template;
 ?>
 
 <nav aria-label="<?= $escaper->escapeUrl($escaper->escapeHtmlAttr('My Account')) ?>">
-    <ul class="space-y-3">
+    <ul class="space-y-3 footer-account-links">
         <?php if ($block->getChildHtml()): ?>
             <?= $block->getChildHtml() ?>
         <?php else: ?>
@@ -43,16 +43,26 @@ use Magento\Framework\View\Element\Template;
 </nav>
 
 <style>
-    /* Fix for dynamically injected links in My Account section */
-    .footer-col-links a {
-        display: block;
-        color: #4b5563; /* text-gray-600 */
+    /* Force styling for dynamically injected account links */
+    .footer-account-links a {
+        display: block !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        color: #4b5563 !important; /* text-gray-600 */
+        text-decoration: none !important;
         transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         transition-duration: 150ms;
     }
-    .footer-col-links a:hover {
-        color: var(--color-primary, #2563eb); /* text-primary */
-        text-decoration: none;
+    .footer-account-links a:hover {
+        color: var(--color-primary, #2563eb) !important; /* text-primary */
+        text-decoration: none !important;
+    }
+    /* Reset margins/paddings on li elements if any */
+    .footer-account-links li {
+        margin-bottom: 0.75rem; /* space-y-3 equivalent */
+    }
+    .footer-account-links li:last-child {
+        margin-bottom: 0;
     }
 </style>
