@@ -54,6 +54,7 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string)$maxSalesQty) : 4)
     + (/* add one if decimal for separator */
     (int)$stockItemViewModel->isQtyDecimal($product));
 
+$deleteParams = json_decode($block->getDeleteItemParams() ?: '{}', true);
 ?>
 <style>
     /* Custom styles for cart item prices to enforce Net/Gross styling */
@@ -108,6 +109,96 @@ x-data="{
         minQty: <?= (float)($minSalesQty ?: 1) ?>,
         maxQty: <?= (float)($maxSalesQty ?: 10000) ?>,
         step: <?= (float)$step ?>,
+        timeout: null,
+        isLoading: false,
+        init() {
+            this.$watch('qty', () => this.debouncedUpdate());
+        },
+        debouncedUpdate() {
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+                this.updateCart();
+            }, 800);
+        },
+        updateCart() {
+            this.isLoading = true;
+            const form = this.$el.closest('form');
+            const formData = new FormData(form);
+
+            // Add form key if missing
+            if (!formData.has('form_key')) {
+                const formKey = hyva.getCookie('form_key');
+                if (formKey) formData.append('form_key', formKey);
+            }
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Reload sections using Hyva event
+                    window.dispatchEvent(new CustomEvent('reload-customer-section-data', {
+                        detail: {
+                            sections: ['cart', 'messages']
+                        }
+                    }));
+
+                    this.fetchAndReplaceCart();
+                } else {
+                    console.error('Cart update failed');
+                    this.isLoading = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error updating cart:', error);
+                this.isLoading = false;
+            });
+        },
+        fetchAndReplaceCart() {
+             fetch(window.location.href)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+
+                    // Replace Cart Items
+                    const newItems = doc.querySelector('#form-validate');
+                    const currentItems = document.querySelector('#form-validate');
+                    if (newItems && currentItems) {
+                        // Remove scripts to avoid redeclaration errors
+                        const scripts = newItems.querySelectorAll('script');
+                        scripts.forEach(script => script.remove());
+
+                        currentItems.innerHTML = newItems.innerHTML;
+                    }
+
+                    // Replace Totals
+                    const newTotals = doc.querySelector('.cart-summary');
+                    const currentTotals = document.querySelector('.cart-summary');
+                    if (newTotals && currentTotals) {
+                         const scripts = newTotals.querySelectorAll('script');
+                         scripts.forEach(script => script.remove());
+                        currentTotals.replaceWith(newTotals);
+                    }
+
+                    // Replace Messages
+                    const newMessages = doc.querySelector('.page.messages');
+                    const currentMessages = document.querySelector('.page.messages');
+                    if (newMessages && currentMessages) {
+                        currentMessages.replaceWith(newMessages);
+                    } else if (newMessages) {
+                         // Insert if missing
+                         const main = document.querySelector('#maincontent');
+                         if (main) main.prepend(newMessages);
+                    }
+
+                    this.isLoading = false;
+                });
+        },
         increment() {
             if (this.qty < this.maxQty) this.qty += this.step;
         },
@@ -204,12 +295,20 @@ x-data="{
 
         <!-- Qty & Actions -->
         <div class="flex flex-wrap items-center gap-4">
-            <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden h-10 shadow-sm">
+            <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden h-10 shadow-sm relative">
+                <!-- Loading Overlay -->
+                <div x-show="isLoading" class="absolute inset-0 bg-white/80 z-10 flex items-center justify-center">
+                    <svg class="animate-spin h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </div>
+
                 <button type="button"
                         @click="decrement"
                         class="px-3 h-full bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900 border-r border-gray-300 focus:outline-none transition-colors flex items-center justify-center"
                         :class="{'opacity-50 cursor-not-allowed': qty <= minQty}"
-                        :disabled="qty <= minQty"
+                        :disabled="qty <= minQty || isLoading"
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Decrease quantity')) ?>"
                 >
                     <?= $lucideIcons->minusHtml('', 16, 16) ?>
@@ -244,13 +343,14 @@ x-data="{
                     <?php endif; ?>
                     data-role="cart-item-qty"
                     x-model="qty"
+                    :disabled="isLoading"
                 >
 
                 <button type="button"
                         @click="increment"
                         class="px-3 h-full bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900 border-l border-gray-300 focus:outline-none transition-colors flex items-center justify-center"
                         :class="{'opacity-50 cursor-not-allowed': qty >= maxQty}"
-                        :disabled="qty >= maxQty"
+                        :disabled="qty >= maxQty || isLoading"
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Increase quantity')) ?>"
                 >
                     <?= $lucideIcons->plusHtml('', 16, 16) ?>
@@ -263,14 +363,13 @@ x-data="{
                    aria-label="<?= $escaper->escapeHtmlAttr(__('Edit item parameters')) ?>">
                     <?= $lucideIcons->pencilHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
                 </a>
-                <a href="#"
-                   data-post='<?= /* @noEscape */
-                   $block->getDeleteItemParams() ?>'
+                <button type="button"
+                   @click="hyva.postForm('<?= $escaper->escapeJs($deleteParams['action'] ?? '') ?>', <?= json_encode($deleteParams['data'] ?? []) ?>)"
                    class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-gray-700 hover:text-white transition-colors action action-delete"
                    aria-label="<?= $escaper->escapeHtmlAttr(__('Remove item')) ?>"
                 >
                     <?= $lucideIcons->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
-                </a>
+                </button>
             </div>
         </div>
 

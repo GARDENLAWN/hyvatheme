@@ -177,14 +177,18 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                 return this.availableShippingMethods.filter(rate => rate.carrier_title === carrierTitle);
             },
             updateShippingMethod() {
-                this.$dispatch('update-shipping-method', {method: this.shippingCarrierRadioValue()});
-                this.shippingMethod = this.shippingCarrierRadioValue();
-                this.fetchTotals();
+                const method = this.$event.target.value;
+                if (method) {
+                    this.$dispatch('update-shipping-method', {method: method});
+                    this.shippingMethod = method;
+                    this.fetchTotals();
+                }
             },
             shippingCarrierRadioId(rate) {
                 return 'shipping_method_' + rate.method_code;
             },
             shippingCarrierRadioValue(rate) {
+                if (!rate) return null;
                 return rate.carrier_code + '_' + rate.method_code;
             },
             isShippingMethodSelected(rate) {
