@@ -26,7 +26,7 @@ $viewModelNavigation = $viewModels->require(Navigation::class, $block);
 $heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
 
 $maxLevel = $block->getmaxLevel() ?: 3;
-$canOpenOnHover = $block->getOpenTopLevelMenuOnHover();
+$canOpenOnHover = true; // Force open on hover as requested
 $topMenuCtaItem = $block->getTopMenuCtaItem();
 
 // Order is important here: 1. build the menu data, 2. then set the cache tags from the view model identities
@@ -55,18 +55,16 @@ function hasSubcategories($item): bool
     x-ref="nav-desktop"
     @load.window="setActiveMenu"
 >
-    <ul class="flex flex-wrap gap-x-8">
+    <ul class="flex flex-wrap gap-x-6">
         <?php foreach ($menu as $item): ?>
             <?php if (!empty($item['childData'])): ?>
                 <li
-                    class="level-0"
+                    class="level-0 relative"
                     x-data="initMenuDesktopItem"
                     @click.outside="close"
                     @keydown.escape="close"
-                    <?php if ($canOpenOnHover): ?>
-                        @mouseenter="canHoverOpen"
-                        @mouseleave="canHoverClose"
-                    <?php endif ?>
+                    @mouseenter="canHoverOpen"
+                    @mouseleave="canHoverClose"
                 >
                     <?php
                         $menuId = 'desktop-menu-' . str_replace('-node', '', $item['id']);
@@ -78,10 +76,11 @@ function hasSubcategories($item): bool
                     ?>
                     <button
                         type="button"
-                        class="level-0 group w-full flex justify-between items-center gap-1 pt-4 pb-[calc(theme(padding.4)_-_3px)]
-                            border-b-[3px] border-transparent hover:border-blue-500 transition
-                            aria-expanded:text-blue-500 aria-expanded:border-blue-500 data-[has-current]:aria-expanded:border-primary
-                            data-[has-current]:border-primary data-[has-current]:hover:border-primary"
+                        class="level-0 group w-full flex justify-between items-center gap-1.5 py-3 px-4 rounded-lg
+                            text-gray-700 font-medium transition-all duration-200
+                            hover:bg-gray-50 hover:text-primary
+                            aria-expanded:bg-primary-50 aria-expanded:text-primary
+                            data-[has-current]:text-primary data-[has-current]:font-bold"
                         @click="toggle"
                         aria-expanded="false"
                         :aria-expanded="open"
@@ -89,23 +88,28 @@ function hasSubcategories($item): bool
                     >
                         <?= $escaper->escapeHtml($item['name']) ?>
                         <?= $heroiconsSolid->chevronDownHtml(
-                            'transition group-aria-expanded:rotate-180 text-slate-400 group-aria-expanded:text-inherit',
-                            24,
-                            24,
+                            'w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180 text-gray-400 group-hover:text-primary group-aria-expanded:text-primary',
+                            16,
+                            16,
                             ['aria-hidden' => 'true']
                         ) ?>
                     </button>
                     <div
                         id="<?= $escaper->escapeHtml($menuId) ?>"
-                        class="z-30 absolute top-full inset-x-0 border-t border-slate-100 rounded-b-md bg-white shadow-md
+                        class="z-30 absolute top-full left-0 mt-2 min-w-[240px] rounded-xl bg-white shadow-xl ring-1 ring-black/5
                             <?= !empty($cmsBlockHtml) ? "grid grid-cols-[minmax(0px,1fr)_theme('spacing.72')]" : '' ?>"
                         x-show="open"
-                        x-transition
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 translate-y-1"
+                        x-transition:enter-end="opacity-100 translate-y-0"
+                        x-transition:leave="transition ease-in duration-150"
+                        x-transition:leave-start="opacity-100 translate-y-0"
+                        x-transition:leave-end="opacity-0 translate-y-1"
                         x-cloak
                     >
                         <?php
                             $childCount = count($item['childData']);
-                            $ulClass = 'flex gap-1 py-2.5 px-2 ';
+                            $ulClass = 'flex gap-1 p-2 ';
 
                             if ($hasSubcategories) {
                                 $ulClass .= 'flex-col w-80';
@@ -113,17 +117,20 @@ function hasSubcategories($item): bool
                                 if ($childCount > 8) {
                                     $ulClass .= 'grid grid-cols-2 w-[40rem]';
                                 } else {
-                                    $ulClass .= 'flex-col w-80';
+                                    $ulClass .= 'flex-col w-64';
                                 }
                             }
                         ?>
                         <div class="relative">
                             <ul class="<?= $ulClass ?>">
-                                <li>
+                                <li class="mb-1 pb-1 border-b border-gray-100">
                                     <a
                                         href="<?= $escaper->escapeUrl($item['url']) ?>"
-                                        class="flex p-2 rounded-md hover:bg-slate-50 aria-[current=page]:font-medium"
-                                    ><?= $escaper->escapeHtml(__('See all %1', $item['name'])) ?></a>
+                                        class="flex items-center justify-between p-2 rounded-lg text-sm font-semibold text-gray-900 hover:bg-gray-50 hover:text-primary transition-colors"
+                                    >
+                                        <?= $escaper->escapeHtml(__('All %1', $item['name'])) ?>
+                                        <?= $heroiconsSolid->arrowRightHtml('w-4 h-4', 16, 16, ['aria-hidden' => 'true']) ?>
+                                    </a>
                                 </li>
                                 <?php foreach ($item['childData'] as $subMenu): ?>
                                     <?= $block->getLayout()->getBlock('topmenu_desktop_item')
@@ -134,7 +141,9 @@ function hasSubcategories($item): bool
                             </ul>
                         </div>
                         <?php if (!empty($cmsBlockHtml)): ?>
-                            <div><?= /** @noEscape */ $cmsBlockHtml ?></div>
+                            <div class="bg-gray-50 p-4 border-l border-gray-100 rounded-r-xl">
+                                <?= /** @noEscape */ $cmsBlockHtml ?>
+                            </div>
                         <?php endif; ?>
                     </div>
                 </li>
@@ -143,9 +152,10 @@ function hasSubcategories($item): bool
                     <a
                         href="<?= $escaper->escapeUrl($item['url']) ?>"
                         title="<?= $escaper->escapeHtmlAttr($item['name']) ?>"
-                        class="level-0 flex pt-4 pb-[calc(theme(padding.4)_-_3px)] border-b-[3px] border-transparent hover:border-blue-500
-                            aria-[current=page]:border-primary aria-[current=page]:hover:border-primary
-                            <?= $item['name'] === $topMenuCtaItem ? 'text-red-700' : '' ?>"
+                        class="level-0 flex items-center py-3 px-4 rounded-lg text-gray-700 font-medium transition-all duration-200
+                            hover:bg-gray-50 hover:text-primary
+                            aria-[current=page]:text-primary aria-[current=page]:font-bold aria-[current=page]:bg-primary-50
+                            <?= $item['name'] === $topMenuCtaItem ? 'text-red-600 hover:text-red-700 hover:bg-red-50' : '' ?>"
                     >
                         <?= $escaper->escapeHtml($item['name']) ?>
                     </a>
@@ -212,6 +222,7 @@ function hasSubcategories($item): bool
             canHoverOpen() {
                 if (!this.canHover()) return;
                 this.open = true;
+                this.calculatePosition();
             },
             canHoverClose() {
                 if (!this.canHover()) return;
@@ -219,22 +230,34 @@ function hasSubcategories($item): bool
             },
             toggle() {
                 this.open = !this.open;
+                if (this.open) {
+                    this.calculatePosition();
+                }
+            },
+            calculatePosition() {
                 this.$nextTick(() => {
-                    if (this.$refs.childmenuWrapper.getBoundingClientRect().right > window.innerWidth) {
-                        this.$refs.childmenuWrapper.classList.remove('left-full');
-                        this.$refs.childmenuWrapper.classList.add('right-full');
+                    const wrapper = this.$refs.childmenuWrapper;
+                    if (!wrapper) return;
+
+                    // Reset to default
+                    wrapper.classList.remove('left-full', 'right-full', 'mr-1', 'ml-1');
+                    wrapper.classList.add('left-full', 'ml-1');
+
+                    // Ensure visibility
+                    wrapper.style.display = 'flex'; // Force display to calculate dimensions
+
+                    const rect = wrapper.getBoundingClientRect();
+                    if (rect.right > window.innerWidth) {
+                        wrapper.classList.remove('left-full', 'ml-1');
+                        wrapper.classList.add('right-full', 'mr-1');
                     }
-                    this.$refs.childmenuViewAll.focus();
-                    this.$refs.childmenuWrapper.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'nearest',
-                        inline: 'end'
-                    });
                 });
             },
             close() {
                 this.open = false;
-                this.$refs.childmenuToggle.focus();
+                if (this.$refs.childmenuToggle) {
+                    this.$refs.childmenuToggle.focus();
+                }
             },
         }
     }
