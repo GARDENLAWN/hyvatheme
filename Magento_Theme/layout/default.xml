@@ -290,7 +290,7 @@
             <block name="footer_column_4" template="Magento_Theme::html/footer/collapse.phtml" after="footer_column_3">
                 <arguments>
                     <argument name="title" xsi:type="string" translate="true">My Account</argument>
-                    <argument name="icon" xsi:type="string">user</argument>
+                    <argument name="icon" xsi:type="string">user-circle</argument>
                 </arguments>
                 <block name="footer-static-links-account" template="Magento_Theme::html/footer/links-account.phtml"/>
             </block>

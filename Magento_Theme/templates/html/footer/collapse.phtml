@@ -30,6 +30,8 @@ $open = (bool) $block->getOpen() ? 'true' : 'false';
 $iconName = (string) $block->getIcon();
 
 $iconHtml = null;
+$debugInfo = ''; // Variable to store debug info
+
 if ($iconName) {
     // Convert kebab-case to camelCase + Html suffix (e.g. shopping-bag -> shoppingBagHtml)
     $camelCaseName = str_replace('-', '', ucwords($iconName, '-'));
@@ -39,6 +41,7 @@ if ($iconName) {
         // Try to load the icon using magic method
         $iconHtml = $heroicons->$method('text-primary', 24, 24);
     } catch (\Exception $e) {
+        $debugInfo = '<!-- Icon Error: ' . $e->getMessage() . ' -->';
         // If icon not found, try fallbacks for common issues
         try {
             if ($iconName === 'user') {
@@ -57,7 +60,9 @@ if ($iconName) {
         x-bind="eventListeners"
         class="border-b border-gray-100 lg:border-b-0 last:border-b-0"
         data-open="<?= /** @noEscape */ $open ?>"
+        data-debug-icon="<?= $escaper->escapeHtmlAttr($iconName) ?>"
     >
+        <?= $debugInfo ?>
         <div
             class="group flex w-full items-center justify-between py-4 lg:py-0 gap-3 cursor-pointer lg:cursor-default select-none lg:select-auto transition-colors hover:bg-gray-50 lg:hover:bg-transparent px-2 lg:px-0 -mx-2 lg:mx-0 rounded-lg lg:rounded-none"
             data-id="<?= $blockId ?>"
@@ -70,6 +75,11 @@ if ($iconName) {
                 <?php if ($iconHtml): ?>
                     <div class="p-2 bg-primary-50 rounded-lg shrink-0 flex items-center justify-center">
                         <?= $iconHtml ?>
+                    </div>
+                <?php else: ?>
+                    <!-- DEBUG: Icon not found for '<?= $escaper->escapeHtml($iconName) ?>' -->
+                    <div class="p-2 bg-red-50 rounded-lg shrink-0 flex items-center justify-center text-red-500 text-xs font-mono border border-red-200">
+                        ?
                     </div>
                 <?php endif; ?>
                 <h3 class="font-bold text-gray-900 text-lg lg:text-xl"><?= $escaper->escapeHtml($title); ?></h3>
