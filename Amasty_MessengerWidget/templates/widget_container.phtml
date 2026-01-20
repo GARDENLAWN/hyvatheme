@@ -40,132 +40,134 @@ $closeIconActive = $block->getViewFileUrl('Amasty_MessengerWidget::images/icons/
 ?>
 
 <script>
-    function initAmastyMessenger() {
-        return {
-            opened: false,
-            chatOpen: false,
-            chatMessage: '',
-            activeMessenger: null,
-            messengers: <?= json_encode($messengers) ?>,
-            position: '<?= $escaper->escapeJs($position) ?>',
-            isPrivacyEnabled: <?= $isPrivacyEnabled ? 'true' : 'false' ?>,
-            privacyAccepted: false,
-            icons: {
-                chat: '<?= $escaper->escapeUrl($chatIcon) ?>',
-                chatHover: '<?= $escaper->escapeUrl($chatIconHover) ?>',
-                chatActive: '<?= $escaper->escapeUrl($chatIconActive) ?>',
-                close: '<?= $escaper->escapeUrl($closeIcon) ?>',
-                closeHover: '<?= $escaper->escapeUrl($closeIconHover) ?>',
-                closeActive: '<?= $escaper->escapeUrl($closeIconActive) ?>'
-            },
-            hover: false,
-            active: false,
+    if (typeof initAmastyMessenger === 'undefined') {
+        function initAmastyMessenger() {
+            return {
+                opened: false,
+                chatOpen: false,
+                chatMessage: '',
+                activeMessenger: null,
+                messengers: <?= json_encode($messengers) ?>,
+                position: '<?= $escaper->escapeJs($position) ?>',
+                isPrivacyEnabled: <?= $isPrivacyEnabled ? 'true' : 'false' ?>,
+                privacyAccepted: false,
+                icons: {
+                    chat: '<?= $escaper->escapeUrl($chatIcon) ?>',
+                    chatHover: '<?= $escaper->escapeUrl($chatIconHover) ?>',
+                    chatActive: '<?= $escaper->escapeUrl($chatIconActive) ?>',
+                    close: '<?= $escaper->escapeUrl($closeIcon) ?>',
+                    closeHover: '<?= $escaper->escapeUrl($closeIconHover) ?>',
+                    closeActive: '<?= $escaper->escapeUrl($closeIconActive) ?>'
+                },
+                hover: false,
+                active: false,
 
-            init() {
-                // Check local storage for privacy acceptance if needed
-            },
+                init() {
+                    // Check local storage for privacy acceptance if needed
+                },
 
-            toggle() {
-                this.opened = !this.opened;
-                if (!this.opened) {
+                toggle() {
+                    this.opened = !this.opened;
+                    if (!this.opened) {
+                        this.chatOpen = false;
+                    }
+                },
+
+                handleMessengerClick(messenger, event) {
+                    // Privacy Check
+                    if (this.isPrivacyEnabled && !this.privacyAccepted) {
+                        event.preventDefault();
+                        alert('Privacy Policy acceptance required');
+                        return;
+                    }
+
+                    // Check if it is WhatsApp (by link content)
+                    if (messenger.link.includes('wa.me') || messenger.link.includes('whatsapp.com')) {
+                        event.preventDefault();
+                        this.activeMessenger = messenger;
+                        this.chatOpen = true;
+                        this.opened = false; // Close the list if it was open
+
+                        // Focus textarea
+                        this.$nextTick(() => {
+                            if (this.$refs.chatInput) {
+                                this.$refs.chatInput.focus();
+                            }
+                        });
+                    }
+                    // If not WhatsApp, let the default link behavior happen
+                },
+
+                closeChat() {
                     this.chatOpen = false;
+                    this.chatMessage = '';
+                },
+
+                sendWhatsApp() {
+                    if (!this.activeMessenger) return;
+
+                    let url = this.activeMessenger.link;
+                    if (this.chatMessage.trim().length > 0) {
+                        // Check if link already has query params
+                        const separator = url.includes('?') ? '&' : '?';
+                        url += separator + 'text=' + encodeURIComponent(this.chatMessage);
+                    }
+
+                    window.open(url, '_blank');
+                    this.closeChat();
+                },
+
+                get componentClasses() {
+                    let classes = '';
+                    if (this.opened) {
+                        classes += ' -opened';
+                    }
+                    classes += ' -items-' + Math.min(this.messengers.length, 5);
+
+                    if (this.messengers.length > 5 || this.position.includes('center')) {
+                        classes += ' -drop-line';
+                    } else {
+                        classes += ' -drop-circle';
+                    }
+
+                    return classes;
+                },
+
+                get toggleIconSrc() {
+                    if (this.opened) {
+                        if (this.active) return this.icons.closeActive;
+                        if (this.hover) return this.icons.closeHover;
+                        return this.icons.close;
+                    } else {
+                        if (this.active) return this.icons.chatActive;
+                        if (this.hover) return this.icons.chatHover;
+                        return this.icons.chat;
+                    }
+                },
+
+                get chatWindowPositionClass() {
+                    // Mobile: always fixed bottom/center
+                    // Desktop: relative to widget position
+
+                    let base = 'fixed sm:absolute z-50 ';
+
+                    // Mobile positioning (fixed bottom sheet style or centered popup)
+                    // We'll use a centered approach for mobile that sits above the widget
+                    base += 'bottom-[100px] left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:bottom-full sm:mb-4 ';
+
+                    if (this.position.includes('left')) {
+                        base += 'sm:left-0 sm:right-auto ';
+                    } else {
+                        base += 'sm:right-0 sm:left-auto ';
+                    }
+
+                    if (this.position.includes('top')) {
+                        // Override for top position on desktop
+                        base = base.replace('sm:bottom-full', 'sm:top-full').replace('sm:mb-4', 'sm:mt-4');
+                    }
+
+                    return base;
                 }
-            },
-
-            handleMessengerClick(messenger, event) {
-                // Privacy Check
-                if (this.isPrivacyEnabled && !this.privacyAccepted) {
-                    event.preventDefault();
-                    alert('Privacy Policy acceptance required');
-                    return;
-                }
-
-                // Check if it is WhatsApp (by link content)
-                if (messenger.link.includes('wa.me') || messenger.link.includes('whatsapp.com')) {
-                    event.preventDefault();
-                    this.activeMessenger = messenger;
-                    this.chatOpen = true;
-                    this.opened = false; // Close the list if it was open
-
-                    // Focus textarea
-                    this.$nextTick(() => {
-                        if (this.$refs.chatInput) {
-                            this.$refs.chatInput.focus();
-                        }
-                    });
-                }
-                // If not WhatsApp, let the default link behavior happen
-            },
-
-            closeChat() {
-                this.chatOpen = false;
-                this.chatMessage = '';
-            },
-
-            sendWhatsApp() {
-                if (!this.activeMessenger) return;
-
-                let url = this.activeMessenger.link;
-                if (this.chatMessage.trim().length > 0) {
-                    // Check if link already has query params
-                    const separator = url.includes('?') ? '&' : '?';
-                    url += separator + 'text=' + encodeURIComponent(this.chatMessage);
-                }
-
-                window.open(url, '_blank');
-                this.closeChat();
-            },
-
-            get componentClasses() {
-                let classes = '';
-                if (this.opened) {
-                    classes += ' -opened';
-                }
-                classes += ' -items-' + Math.min(this.messengers.length, 5);
-
-                if (this.messengers.length > 5 || this.position.includes('center')) {
-                    classes += ' -drop-line';
-                } else {
-                    classes += ' -drop-circle';
-                }
-
-                return classes;
-            },
-
-            get toggleIconSrc() {
-                if (this.opened) {
-                    if (this.active) return this.icons.closeActive;
-                    if (this.hover) return this.icons.closeHover;
-                    return this.icons.close;
-                } else {
-                    if (this.active) return this.icons.chatActive;
-                    if (this.hover) return this.icons.chatHover;
-                    return this.icons.chat;
-                }
-            },
-
-            get chatWindowPositionClass() {
-                // Mobile: always fixed bottom/center
-                // Desktop: relative to widget position
-
-                let base = 'fixed sm:absolute z-50 ';
-
-                // Mobile positioning (fixed bottom sheet style or centered popup)
-                // We'll use a centered approach for mobile that sits above the widget
-                base += 'bottom-[100px] left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:bottom-full sm:mb-4 ';
-
-                if (this.position.includes('left')) {
-                    base += 'sm:left-0 sm:right-auto ';
-                } else {
-                    base += 'sm:right-0 sm:left-auto ';
-                }
-
-                if (this.position.includes('top')) {
-                    // Override for top position on desktop
-                    base = base.replace('sm:bottom-full', 'sm:top-full').replace('sm:mb-4', 'sm:mt-4');
-                }
-
-                return base;
             }
         }
     }

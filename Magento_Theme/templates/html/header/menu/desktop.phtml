@@ -263,9 +263,15 @@ function hasSubcategories($item): bool
     }
 
     window.addEventListener('alpine:init', () => {
-        Alpine.data('initMenuDesktop', initMenuDesktop);
-        Alpine.data('initMenuDesktopItem', initMenuDesktopItem);
-        Alpine.data('initSubMenuDesktopItem', initSubMenuDesktopItem);
+        if (typeof initMenuDesktop === 'undefined') {
+            Alpine.data('initMenuDesktop', initMenuDesktop);
+        }
+        if (typeof initMenuDesktopItem === 'undefined') {
+            Alpine.data('initMenuDesktopItem', initMenuDesktopItem);
+        }
+        if (typeof initSubMenuDesktopItem === 'undefined') {
+            Alpine.data('initSubMenuDesktopItem', initSubMenuDesktopItem);
+        }
     }, { once: true })
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>

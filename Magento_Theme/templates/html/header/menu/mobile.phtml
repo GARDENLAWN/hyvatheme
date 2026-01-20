@@ -151,60 +151,64 @@ $itemIconSize = 20;
 
 <script>
     document.addEventListener('alpine:init', () => {
-        Alpine.data('initMobileMenu', () => ({
-            isOpen: false,
-            isSubMenuOpen: false,
-            isOverflowing: false,
-            init() {
-                Array.from(this.$root.querySelectorAll('a')).forEach(link => {
-                    if (link.href === `${window.location.origin}${window.location.pathname}`) {
-                        link.setAttribute('aria-current', 'page');
-                    }
-                });
-            },
-            open() {
-                this.isOpen = true;
-            },
-            close() {
-                this.isOpen = false;
-            },
-            lockWrapperScroll() {
-                return this.isSubMenuOpen ? { overflow: 'hidden' } : {}
-            },
-            hasActiveSubMenu() {
-                this.isSubMenuOpen = !!this.$root.querySelector('[data-open]');
-            }
-        }));
-
-        Alpine.data('initMobileSubMenu', () => ({
-            isOpen: false,
-            open() {
-                this.isOpen = true;
-                this.$root.setAttribute('data-open', '');
-                this.$nextTick(() => {
-                    this.$dispatch('sub-menu-state-change');
-                    this.$refs.closeSubMenuBtn.focus();
-                    this.toggleInert();
-                })
-            },
-            close() {
-                this.isOpen = false;
-                this.$root.removeAttribute('data-open');
-                this.toggleInert();
-                this.$nextTick(() => {
-                    this.$dispatch('sub-menu-state-change')
-                    this.$refs.openSubMenuBtn.focus();
-                })
-            },
-            toggleInert() {
-                const items = this.$root.parentElement.children;
-
-                for (item of items) {
-                    if (item.hasAttribute('data-open')) continue;
-                    item.toggleAttribute('inert', this.isOpen);
+        if (typeof initMobileMenu === 'undefined') {
+            Alpine.data('initMobileMenu', () => ({
+                isOpen: false,
+                isSubMenuOpen: false,
+                isOverflowing: false,
+                init() {
+                    Array.from(this.$root.querySelectorAll('a')).forEach(link => {
+                        if (link.href === `${window.location.origin}${window.location.pathname}`) {
+                            link.setAttribute('aria-current', 'page');
+                        }
+                    });
+                },
+                open() {
+                    this.isOpen = true;
+                },
+                close() {
+                    this.isOpen = false;
+                },
+                lockWrapperScroll() {
+                    return this.isSubMenuOpen ? { overflow: 'hidden' } : {}
+                },
+                hasActiveSubMenu() {
+                    this.isSubMenuOpen = !!this.$root.querySelector('[data-open]');
                 }
-            }
-        }));
+            }));
+        }
+
+        if (typeof initMobileSubMenu === 'undefined') {
+            Alpine.data('initMobileSubMenu', () => ({
+                isOpen: false,
+                open() {
+                    this.isOpen = true;
+                    this.$root.setAttribute('data-open', '');
+                    this.$nextTick(() => {
+                        this.$dispatch('sub-menu-state-change');
+                        this.$refs.closeSubMenuBtn.focus();
+                        this.toggleInert();
+                    })
+                },
+                close() {
+                    this.isOpen = false;
+                    this.$root.removeAttribute('data-open');
+                    this.toggleInert();
+                    this.$nextTick(() => {
+                        this.$dispatch('sub-menu-state-change')
+                        this.$refs.openSubMenuBtn.focus();
+                    })
+                },
+                toggleInert() {
+                    const items = this.$root.parentElement.children;
+
+                    for (item of items) {
+                        if (item.hasAttribute('data-open')) continue;
+                        item.toggleAttribute('inert', this.isOpen);
+                    }
+                }
+            }));
+        }
     });
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>

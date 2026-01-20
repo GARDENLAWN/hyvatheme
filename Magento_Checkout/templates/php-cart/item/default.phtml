@@ -165,14 +165,15 @@ x-data="{
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
 
+                    const removeScripts = (el) => {
+                        el.querySelectorAll('script').forEach(s => s.remove());
+                    };
+
                     // Replace Cart Items
                     const newItems = doc.querySelector('#form-validate');
                     const currentItems = document.querySelector('#form-validate');
                     if (newItems && currentItems) {
-                        // Remove scripts to avoid redeclaration errors
-                        const scripts = newItems.querySelectorAll('script');
-                        scripts.forEach(script => script.remove());
-
+                        removeScripts(newItems);
                         currentItems.innerHTML = newItems.innerHTML;
                     }
 
@@ -180,20 +181,22 @@ x-data="{
                     const newTotals = doc.querySelector('.cart-summary');
                     const currentTotals = document.querySelector('.cart-summary');
                     if (newTotals && currentTotals) {
-                         const scripts = newTotals.querySelectorAll('script');
-                         scripts.forEach(script => script.remove());
+                        removeScripts(newTotals);
                         currentTotals.replaceWith(newTotals);
                     }
 
                     // Replace Messages
                     const newMessages = doc.querySelector('.page.messages');
                     const currentMessages = document.querySelector('.page.messages');
-                    if (newMessages && currentMessages) {
-                        currentMessages.replaceWith(newMessages);
-                    } else if (newMessages) {
-                         // Insert if missing
-                         const main = document.querySelector('#maincontent');
-                         if (main) main.prepend(newMessages);
+                    if (newMessages) {
+                        removeScripts(newMessages);
+                        if (currentMessages) {
+                            currentMessages.replaceWith(newMessages);
+                        } else {
+                             // Insert if missing
+                             const main = document.querySelector('#maincontent');
+                             if (main) main.prepend(newMessages);
+                        }
                     }
 
                     this.isLoading = false;

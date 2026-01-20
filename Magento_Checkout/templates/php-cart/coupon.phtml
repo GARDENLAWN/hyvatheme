@@ -20,45 +20,47 @@ use Magento\Framework\Escaper;
 $lucideIcons = $viewModels->require(LucideIcons::class);
 ?>
 <script>
-    function initCouponForm() {
-        return {
-            errors: 0,
-            hasCaptchaToken: 0,
-            showCouponForm: true, // Default to true
-            hideCouponForm() {
-                return ! this.showCouponForm;
-            },
-            formData: {
-                coupon_code: '',
-                remove: '0'
-            },
-            init(){
-                const browserStorageShowCouponForm = hyva.getBrowserStorage().getItem('hyva.showCouponForm');
-                // Default to true if not set
-                this.showCouponForm = browserStorageShowCouponForm === null ? true : (browserStorageShowCouponForm === 'true');
+    if (typeof initCouponForm === 'undefined') {
+        function initCouponForm() {
+            return {
+                errors: 0,
+                hasCaptchaToken: 0,
+                showCouponForm: true, // Default to true
+                hideCouponForm() {
+                    return ! this.showCouponForm;
+                },
+                formData: {
+                    coupon_code: '',
+                    remove: '0'
+                },
+                init(){
+                    const browserStorageShowCouponForm = hyva.getBrowserStorage().getItem('hyva.showCouponForm');
+                    // Default to true if not set
+                    this.showCouponForm = browserStorageShowCouponForm === null ? true : (browserStorageShowCouponForm === 'true');
 
-                this.formData.coupon_code = '<?= $escaper->escapeJs($block->getCouponCode()) ?>';
-                this.formData.remove = '<?= $escaper->escapeJs($block->getCouponCode() ? '1' : '0') ?>';
-            },
-            toggleShowCoupon() {
-                this.showCouponForm = !this.showCouponForm;
+                    this.formData.coupon_code = '<?= $escaper->escapeJs($block->getCouponCode()) ?>';
+                    this.formData.remove = '<?= $escaper->escapeJs($block->getCouponCode() ? '1' : '0') ?>';
+                },
+                toggleShowCoupon() {
+                    this.showCouponForm = !this.showCouponForm;
 
-                hyva.getBrowserStorage().setItem('hyva.showCouponForm', this.showCouponForm);
+                    hyva.getBrowserStorage().setItem('hyva.showCouponForm', this.showCouponForm);
 
-                this.$nextTick(() => this.$refs.couponInput.select());
-            },
-            onInput() {
-                this.formData.coupon_code = this.$event.target.value;
-            },
-            submitForm() {
-                const $form = document.querySelector('#discount-coupon-form');
+                    this.$nextTick(() => this.$refs.couponInput.select());
+                },
+                onInput() {
+                    this.formData.coupon_code = this.$event.target.value;
+                },
+                submitForm() {
+                    const $form = document.querySelector('#discount-coupon-form');
 
-                if (this.errors === 0) {
-                    hyva.postCart($form);
+                    if (this.errors === 0) {
+                        hyva.postCart($form);
+                    }
                 }
-            }
+            };
         };
-    };
+    }
 
     window.addEventListener('alpine:init', () => {
         Alpine.data('initCouponForm', initCouponForm)

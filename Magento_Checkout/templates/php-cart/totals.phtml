@@ -14,73 +14,75 @@ use Magento\Framework\View\Element\Template;
 /** @var Escaper $escaper */
 ?>
 <script>
-    function initCartTotals() {
-        return {
-            totalsData: null,
-            quoteData: null,
-            shippingMethod: null,
-            totalsSort: {"discount":"20","grand_total":"100","shipping":"30","subtotal":"10","tax":"40","weee":"35","weee_tax":"35","mollie_payment_fee":"25"},
-            isLoading: false,
-            wrapperClass: 'flex justify-between items-center py-2 text-gray-600',
-            wrapperClassTotals: 'flex justify-between items-center py-3 text-lg font-bold text-gray-900 border-t border-gray-200 mt-2',
-            init() {
-                this.totalsData = window.checkoutConfig.totalsData;
-                this.quoteData = window.checkoutConfig.quoteData;
-                this.shippingMethod = window.checkoutConfig.selectedShippingMethod;
-            },
-            getSortedSegments() {
-                const segments = this.totalsData.total_segments;
-
-                return Array.from(segments).sort((a,b) => {
-
-                    const valueA = this.totalsSort[a.code] || 0;
-                    const valueB = this.totalsSort[b.code] || 0;
-
-                    return valueA - valueB;
-                })
-            },
-            getTotals() {
-                return this.totalsData
-            },
-            updateTotals(totalsData) {
-                this.totalsData = totalsData
-            },
-            updateShippingMethod(data) {
-                if (data && typeof data === 'object' && data.method) {
-                    this.shippingMethod = {
-                        carrier_code: data.method.split('_')[0],
-                        method_code: data.method.split('_')[1],
-                        method_title: data.method_title
-                    };
-                } else {
-                    this.shippingMethod = data;
-                }
-            },
-            excludingTaxMessage: '<?= $escaper->escapeJs(__('net')) ?>',
-            includingTaxMessage: '<?= $escaper->escapeJs(__('gross')) ?>',
-            eventListeners: {
-                ['@update-totals.window']() {
-                    this.updateTotals(this.$event.detail.data)
+    if (typeof initCartTotals === 'undefined') {
+        function initCartTotals() {
+            return {
+                totalsData: null,
+                quoteData: null,
+                shippingMethod: null,
+                totalsSort: {"discount":"20","grand_total":"100","shipping":"30","subtotal":"10","tax":"40","weee":"35","weee_tax":"35","mollie_payment_fee":"25"},
+                isLoading: false,
+                wrapperClass: 'flex justify-between items-center py-2 text-gray-600',
+                wrapperClassTotals: 'flex justify-between items-center py-3 text-lg font-bold text-gray-900 border-t border-gray-200 mt-2',
+                init() {
+                    this.totalsData = window.checkoutConfig.totalsData;
+                    this.quoteData = window.checkoutConfig.quoteData;
+                    this.shippingMethod = window.checkoutConfig.selectedShippingMethod;
                 },
-                ['@update-shipping-method.window']() {
-                    this.updateShippingMethod(this.$event.detail);
+                getSortedSegments() {
+                    const segments = this.totalsData.total_segments;
+
+                    return Array.from(segments).sort((a,b) => {
+
+                        const valueA = this.totalsSort[a.code] || 0;
+                        const valueB = this.totalsSort[b.code] || 0;
+
+                        return valueA - valueB;
+                    })
                 },
-                ['@update-totals-start.window']() {
-                    this.isLoading = true;
+                getTotals() {
+                    return this.totalsData
                 },
-                ['@update-totals-end.window']() {
-                    this.isLoading = false;
-                }
-            },
-            formatTotalLabel() {
-                return `${this.segment.title} `;
-            },
-            formatTotalLabelInclTax() {
-                return `${this.segment.title} ${this.includingTaxMessage} `;
-            },
-            formatTotalLabelExclTax() {
-                return `${this.segment.title} ${this.excludingTaxMessage} `;
-            },
+                updateTotals(totalsData) {
+                    this.totalsData = totalsData
+                },
+                updateShippingMethod(data) {
+                    if (data && typeof data === 'object' && data.method) {
+                        this.shippingMethod = {
+                            carrier_code: data.method.split('_')[0],
+                            method_code: data.method.split('_')[1],
+                            method_title: data.method_title
+                        };
+                    } else {
+                        this.shippingMethod = data;
+                    }
+                },
+                excludingTaxMessage: '<?= $escaper->escapeJs(__('net')) ?>',
+                includingTaxMessage: '<?= $escaper->escapeJs(__('gross')) ?>',
+                eventListeners: {
+                    ['@update-totals.window']() {
+                        this.updateTotals(this.$event.detail.data)
+                    },
+                    ['@update-shipping-method.window']() {
+                        this.updateShippingMethod(this.$event.detail);
+                    },
+                    ['@update-totals-start.window']() {
+                        this.isLoading = true;
+                    },
+                    ['@update-totals-end.window']() {
+                        this.isLoading = false;
+                    }
+                },
+                formatTotalLabel() {
+                    return `${this.segment.title} `;
+                },
+                formatTotalLabelInclTax() {
+                    return `${this.segment.title} ${this.includingTaxMessage} `;
+                },
+                formatTotalLabelExclTax() {
+                    return `${this.segment.title} ${this.excludingTaxMessage} `;
+                },
+            }
         }
     }
     window.addEventListener('alpine:init', () => Alpine.data('initCartTotals', initCartTotals), {once: true})
@@ -244,98 +246,104 @@ use Magento\Framework\View\Element\Template;
 </div>
 
 <script>
-    function initShippingTotalSegment() {
-        return {
-            isShippingSegmentAndDisplayBoth() {
-                return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'both' === window.checkoutConfig.reviewShippingDisplayMode;
-            },
-            isShippingSegmentAndDisplayExcl() {
-                return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'excluding' === window.checkoutConfig.reviewShippingDisplayMode;
-            },
-            isShippingSegmentAndDisplayIncl() {
-                return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'including' === window.checkoutConfig.reviewShippingDisplayMode;
-            },
-            formatShippingTotalValue() {
-                return hyva.formatPrice(this.segment.value);
-            },
-            formatShippingInclTax() {
-                return hyva.formatPrice(this.totalsData.shipping_incl_tax);
-            },
-            formatShippingAmount() {
-                return hyva.formatPrice(this.totalsData.shipping_amount);
-            },
-            getShippingTitle() {
-                if (this.shippingMethod && this.shippingMethod.method_title) {
-                    return '<?= $escaper->escapeJs(__('Delivery')) ?> (' + this.shippingMethod.method_title + ')';
+    if (typeof initShippingTotalSegment === 'undefined') {
+        function initShippingTotalSegment() {
+            return {
+                isShippingSegmentAndDisplayBoth() {
+                    return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'both' === window.checkoutConfig.reviewShippingDisplayMode;
+                },
+                isShippingSegmentAndDisplayExcl() {
+                    return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'excluding' === window.checkoutConfig.reviewShippingDisplayMode;
+                },
+                isShippingSegmentAndDisplayIncl() {
+                    return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'including' === window.checkoutConfig.reviewShippingDisplayMode;
+                },
+                formatShippingTotalValue() {
+                    return hyva.formatPrice(this.segment.value);
+                },
+                formatShippingInclTax() {
+                    return hyva.formatPrice(this.totalsData.shipping_incl_tax);
+                },
+                formatShippingAmount() {
+                    return hyva.formatPrice(this.totalsData.shipping_amount);
+                },
+                getShippingTitle() {
+                    if (this.shippingMethod && this.shippingMethod.method_title) {
+                        return '<?= $escaper->escapeJs(__('Delivery')) ?> (' + this.shippingMethod.method_title + ')';
+                    }
+                    return this.segment.title;
+                },
+                formatTotalLabelExclTax() {
+                    return `${this.getShippingTitle()} ${this.excludingTaxMessage}`;
+                },
+                formatTotalLabelInclTax() {
+                    return `${this.getShippingTitle()} ${this.includingTaxMessage}`;
+                },
+                formatTotalLabel() {
+                    return this.getShippingTitle();
                 }
-                return this.segment.title;
-            },
-            formatTotalLabelExclTax() {
-                return `${this.getShippingTitle()} ${this.excludingTaxMessage}`;
-            },
-            formatTotalLabelInclTax() {
-                return `${this.getShippingTitle()} ${this.includingTaxMessage}`;
-            },
-            formatTotalLabel() {
-                return this.getShippingTitle();
-            }
-        };
+            };
+        }
     }
     window.addEventListener('alpine:init', () => Alpine.data('initShippingTotalSegment', initShippingTotalSegment), {once: true})
 </script>
 
 <script>
-    function initSubtotalSegment() {
-        return {
-            isSubtotalSegmentAndDisplayBoth() {
-                return this.segment.code === 'subtotal' && 'both' === window.checkoutConfig.reviewTotalsDisplayMode;
-            },
-            isSubtotalSegmentAndDisplayExcl() {
-                return this.segment.code === 'subtotal' && 'excluding' === window.checkoutConfig.reviewTotalsDisplayMode
-            },
-            isSubtotalSegmentAndDisplayIncl() {
-                return this.segment.code === 'subtotal' && 'including' === window.checkoutConfig.reviewTotalsDisplayMode
-            },
-            formatTotalLabelExclTax() {
-                return '<?= $escaper->escapeJs(__('Subtotal')) ?> (<?= $escaper->escapeJs(__('net')) ?>)';
-            },
-            formatTotalLabelInclTax() {
-                return '<?= $escaper->escapeJs(__('Subtotal')) ?> (<?= $escaper->escapeJs(__('gross')) ?>)';
-            },
-            formatSubtotal() {
-                return hyva.formatPrice(this.totalsData.subtotal);
-            },
-            formatSubtotalInclTax() {
-                return hyva.formatPrice(this.totalsData.subtotal_incl_tax);
-            },
-        };
+    if (typeof initSubtotalSegment === 'undefined') {
+        function initSubtotalSegment() {
+            return {
+                isSubtotalSegmentAndDisplayBoth() {
+                    return this.segment.code === 'subtotal' && 'both' === window.checkoutConfig.reviewTotalsDisplayMode;
+                },
+                isSubtotalSegmentAndDisplayExcl() {
+                    return this.segment.code === 'subtotal' && 'excluding' === window.checkoutConfig.reviewTotalsDisplayMode
+                },
+                isSubtotalSegmentAndDisplayIncl() {
+                    return this.segment.code === 'subtotal' && 'including' === window.checkoutConfig.reviewTotalsDisplayMode
+                },
+                formatTotalLabelExclTax() {
+                    return '<?= $escaper->escapeJs(__('Subtotal')) ?> (<?= $escaper->escapeJs(__('net')) ?>)';
+                },
+                formatTotalLabelInclTax() {
+                    return '<?= $escaper->escapeJs(__('Subtotal')) ?> (<?= $escaper->escapeJs(__('gross')) ?>)';
+                },
+                formatSubtotal() {
+                    return hyva.formatPrice(this.totalsData.subtotal);
+                },
+                formatSubtotalInclTax() {
+                    return hyva.formatPrice(this.totalsData.subtotal_incl_tax);
+                },
+            };
+        }
     }
     window.addEventListener('alpine:init', () => Alpine.data('initSubtotalSegment', initSubtotalSegment), {once: true})
 </script>
 
 <script>
-    function initGrandTotalSegment() {
-        return {
-            isGrandTotalAndIncl() {
-                return this.segment.code === 'grand_total' && window.checkoutConfig.includeTaxInGrandTotal;
-            },
-            isGrandTotalAndExcl() {
-                return this.segment.code === 'grand_total' && !window.checkoutConfig.includeTaxInGrandTotal;
-            },
-            formatGrandTotal() {
-                return hyva.formatPrice(this.segment.value);
-            },
-            formatGrandTotalExclTax() {
-                return hyva.formatPrice(window.checkoutConfig.totalsData.grand_total - window.checkoutConfig.totalsData.tax_amount);
-            },
-            formatTotalLabelInclTax() {
-                return '<?= $escaper->escapeJs(__('Grand Total')) ?> (<?= $escaper->escapeJs(__('gross')) ?>)';
-            },
-            formatTotalLabelExclTax() {
-                return '<?= $escaper->escapeJs(__('Grand Total')) ?> (<?= $escaper->escapeJs(__('net')) ?>)';
-            },
-            formatTotalLabel() {
-                return '<?= $escaper->escapeJs(__('Grand Total')) ?>';
+    if (typeof initGrandTotalSegment === 'undefined') {
+        function initGrandTotalSegment() {
+            return {
+                isGrandTotalAndIncl() {
+                    return this.segment.code === 'grand_total' && window.checkoutConfig.includeTaxInGrandTotal;
+                },
+                isGrandTotalAndExcl() {
+                    return this.segment.code === 'grand_total' && !window.checkoutConfig.includeTaxInGrandTotal;
+                },
+                formatGrandTotal() {
+                    return hyva.formatPrice(this.segment.value);
+                },
+                formatGrandTotalExclTax() {
+                    return hyva.formatPrice(window.checkoutConfig.totalsData.grand_total - window.checkoutConfig.totalsData.tax_amount);
+                },
+                formatTotalLabelInclTax() {
+                    return '<?= $escaper->escapeJs(__('Grand Total')) ?> (<?= $escaper->escapeJs(__('gross')) ?>)';
+                },
+                formatTotalLabelExclTax() {
+                    return '<?= $escaper->escapeJs(__('Grand Total')) ?> (<?= $escaper->escapeJs(__('net')) ?>)';
+                },
+                formatTotalLabel() {
+                    return '<?= $escaper->escapeJs(__('Grand Total')) ?>';
+                }
             }
         }
     }
@@ -343,64 +351,70 @@ use Magento\Framework\View\Element\Template;
 </script>
 
 <script>
-    function initDiscountTotalSegment() {
-        return {
-            isDiscountSegment() {
-                return this.segment.code === 'discount';
-            },
-            formatDiscountValue() {
-                return hyva.formatPrice(this.segment.value);
-            }
-        };
+    if (typeof initDiscountTotalSegment === 'undefined') {
+        function initDiscountTotalSegment() {
+            return {
+                isDiscountSegment() {
+                    return this.segment.code === 'discount';
+                },
+                formatDiscountValue() {
+                    return hyva.formatPrice(this.segment.value);
+                }
+            };
+        }
     }
     window.addEventListener('alpine:init', () => Alpine.data('initDiscountTotalSegment', initDiscountTotalSegment), {once: true})
 </script>
 
 <script>
-    function initTaxSegment() {
-        return {
-            taxSummaryIsOpen: false,
-            isTaxSegmentVisible() {
-                return this.segment.code === 'tax' && (this.segment.value > 0 || window.checkoutConfig.isZeroTaxDisplayed);
-            },
-            isTaxSummaryVisible() {
-                return this.segment.value > 0 && window.checkoutConfig.isFullTaxSummaryDisplayed;
-            },
-            isTaxSummaryHidden() {
-                return ! this.isTaxSummaryVisible()
-            },
-            toggle() {
-                this.taxSummaryIsOpen = ! this.taxSummaryIsOpen;
-            },
-            summaryCssClasses() {
-                return {
-                    'rotate-180': this.taxSummaryIsOpen
-                };
-            },
-            formatTaxRateLabel() {
-                return `${this.taxRate.title} (${this.taxRate.percent}%)`;
-            },
-            formatTaxTotal() {
-                return hyva.formatPrice(this.segment.value);
-            },
-            formatTaxDetailAmount() {
-                return hyva.formatPrice(this.taxItem.amount);
-            }
-        };
+    if (typeof initTaxSegment === 'undefined') {
+        function initTaxSegment() {
+            return {
+                taxSummaryIsOpen: false,
+                isTaxSegmentVisible() {
+                    return this.segment.code === 'tax' && (this.segment.value > 0 || window.checkoutConfig.isZeroTaxDisplayed);
+                },
+                isTaxSummaryVisible() {
+                    return this.segment.value > 0 && window.checkoutConfig.isFullTaxSummaryDisplayed;
+                },
+                isTaxSummaryHidden() {
+                    return ! this.isTaxSummaryVisible()
+                },
+                toggle() {
+                    this.taxSummaryIsOpen = ! this.taxSummaryIsOpen;
+                },
+                summaryCssClasses() {
+                    return {
+                        'rotate-180': this.taxSummaryIsOpen
+                    };
+                },
+                formatTaxRateLabel() {
+                    return `${this.taxRate.title} (${this.taxRate.percent}%)`;
+                },
+                formatTaxTotal() {
+                    return hyva.formatPrice(this.segment.value);
+                },
+                formatTaxDetailAmount() {
+                    return hyva.formatPrice(this.taxItem.amount);
+                }
+            };
+        }
     }
     window.addEventListener('alpine:init', () => Alpine.data('initTaxSegment', initTaxSegment), {once: true})
 </script>
 
 <script>
-    function initFixedProductTaxTotalSegment() {
-        return {
-            isFptSegment() {
-                return this.segment.code === 'weee_tax';
-            },
-            formatFptTotal() {
-                return hyva.formatPrice(this.segment.value);
-            }
-        };
+    if (typeof initFixedProductTaxTotalSegment === 'undefined') {
+        function initFixedProductTaxTotalSegment() {
+            return {
+                isFptSegment() {
+                    return this.segment.code === 'weee_tax';
+                },
+                formatFptTotal() {
+                    return hyva.formatPrice(this.segment.value);
+                }
+            };
+        }
     }
     window.addEventListener('alpine:init', () => Alpine.data('initFixedProductTaxTotalSegment', initFixedProductTaxTotalSegment), {once: true})
 </script>
