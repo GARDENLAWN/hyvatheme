@@ -34,7 +34,7 @@ $minSalesQty = $stockItemViewModel->getMinSaleQty($product);
 $maxSalesQty = $stockItemViewModel->getMaxSaleQty($product);
 $qty = $stockItemViewModel->isQtyDecimal($product)
     ? $block->getQty()
-    : (int) $block->getQty();
+    : (int)$block->getQty();
 
 $step = $stockItemViewModel->getQtyIncrements($product)
     ? $stockItemViewModel->getQtyIncrements($product)
@@ -50,8 +50,9 @@ if ($step > 1) {
     $qty = ceil($qty / $step) * $step;
 }
 
-$maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
-    + (/* add one if decimal for separator */ (int) $stockItemViewModel->isQtyDecimal($product));
+$maxSalesQtyLength = ($maxSalesQty ? strlen((string)$maxSalesQty) : 4)
+    + (/* add one if decimal for separator */
+    (int)$stockItemViewModel->isQtyDecimal($product));
 
 ?>
 <style>
@@ -61,42 +62,48 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
         display: block;
         line-height: 1.2;
     }
+
     .cart.item .price-box .price-including-tax .price,
     .cart.item .price-box .cart-price .price {
         font-weight: 700;
         font-size: 1.25rem; /* text-xl */
         color: #111827; /* text-gray-900 */
     }
+
     .cart.item .price-box .price-excluding-tax .price {
         font-weight: 400;
         font-size: 0.875rem; /* text-sm */
         color: #6b7280; /* text-gray-500 */
     }
+
     .cart.item .price-box .price-excluding-tax .label {
         font-size: 0.75rem;
         text-transform: uppercase;
         color: #9ca3af;
         margin-right: 4px;
     }
+
     /* Hide number input arrows */
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
         -webkit-appearance: none;
         margin: 0;
     }
+
     input[type=number] {
         -moz-appearance: textfield;
     }
 </style>
 
-<article class="cart item p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 mb-6 flex flex-col sm:flex-row gap-6"
-    <?php foreach ($block->getData('cart_item_data_attributes') ?? [] as $attribute => $include): ?>
-        <?php if ($include): ?>
-            <?php /** Append data-* attributes based on layout XML arguments */ ?>
-            <?= $escaper->escapeHtml(sprintf('data-%s', $attribute)); ?>="<?= $escaper->escapeHtmlAttr($item->getData($attribute)); ?>"
-        <?php endif; ?>
-    <?php endforeach; ?>
-    x-data="{
+<article
+    class="cart item p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 mb-6 flex flex-col sm:flex-row gap-6"
+<?php foreach ($block->getData('cart_item_data_attributes') ?? [] as $attribute => $include): ?>
+<?php if ($include): ?>
+<?php /** Append data-* attributes based on layout XML arguments */ ?>
+<?= $escaper->escapeHtml(sprintf('data-%s', $attribute)); ?>="<?= $escaper->escapeHtmlAttr($item->getData($attribute)); ?>"
+<?php endif; ?>
+<?php endforeach; ?>
+x-data="{
         qty: <?= (float)$qty ?>,
         minQty: <?= (float)($minSalesQty ?: 1) ?>,
         maxQty: <?= (float)($maxSalesQty ?: 10000) ?>,
@@ -109,166 +116,181 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
         }
     }"
 >
-    <!-- Product Image -->
-    <?php if ($block->hasProductUrl()): ?>
-        <a
-            href="<?= $escaper->escapeUrl($block->getProductUrl()) ?>"
-            tabindex="-1"
-            class="product-item-photo shrink-0 w-full sm:w-32 md:w-40 aspect-square flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden"
-        >
+<!-- Product Image -->
+<?php if ($block->hasProductUrl()): ?>
+<a
+    href="<?= $escaper->escapeUrl($block->getProductUrl()) ?>"
+    tabindex="-1"
+    class="product-item-photo shrink-0 w-full sm:w-32 md:w-40 aspect-square flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden"
+>
     <?php else: ?>
-        <div class="product-item-photo shrink-0 w-full sm:w-32 md:w-40 aspect-square flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden">
-    <?php endif;?>
+    <div
+        class="product-item-photo shrink-0 w-full sm:w-32 md:w-40 aspect-square flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden">
+        <?php endif; ?>
         <?= $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')
             ->setTemplate('Magento_Catalog::product/image.phtml')
             ->toHtml() ?>
-    <?php if ($block->hasProductUrl()): ?>
-        </a>
-    <?php else: ?>
-        </div>
-    <?php endif; ?>
+        <?php if ($block->hasProductUrl()): ?>
+</a>
+<?php else: ?>
+    </div>
+<?php endif; ?>
 
-    <!-- Product Details -->
-    <div class="flex flex-col grow justify-between">
-        <div class="product-item-details">
-            <!-- Header: Name -->
-            <div class="flex justify-between items-start gap-4 mb-2">
-                <h3 class="product-item-name text-lg font-bold text-gray-900 leading-tight">
-                    <?php if ($block->hasProductUrl()): ?>
-                        <a href="<?= $escaper->escapeUrl($block->getProductUrl()) ?>" class="hover:text-primary transition-colors">
-                            <?= $escaper->escapeHtml($block->getProductName()) ?>
-                        </a>
-                    <?php else: ?>
+<!-- Product Details -->
+<div class="flex flex-col grow justify-between">
+    <div class="product-item-details">
+        <!-- Header: Name -->
+        <div class="flex justify-between items-start gap-4 mb-2">
+            <h3 class="product-item-name text-lg font-bold text-gray-900 leading-tight">
+                <?php if ($block->hasProductUrl()): ?>
+                    <a href="<?= $escaper->escapeUrl($block->getProductUrl()) ?>"
+                       class="hover:text-primary transition-colors">
                         <?= $escaper->escapeHtml($block->getProductName()) ?>
-                    <?php endif; ?>
-                </h3>
-            </div>
+                    </a>
+                <?php else: ?>
+                    <?= $escaper->escapeHtml($block->getProductName()) ?>
+                <?php endif; ?>
+            </h3>
+        </div>
 
-            <!-- Options -->
-            <?php if ($options = $block->getOptionList()): ?>
-                <dl class="mt-2 item-options text-sm text-gray-600 space-y-1">
-                    <?php foreach ($options as $option): ?>
-                        <?php $formatedOptionValue = $block->getFormatedOptionValue($option) ?>
-                        <div class="flex gap-2">
-                            <dt class="font-medium min-w-[4rem]">
-                                <?= $escaper->escapeHtml($option['label']) ?>:
-                            </dt>
-                            <dd class="font-normal text-gray-800">
-                                <?php if (isset($formatedOptionValue['full_view'])): ?>
-                                    <?= $escaper->escapeHtml($formatedOptionValue['full_view']) ?>
-                                <?php else: ?>
-                                    <?= $escaper->escapeHtml($formatedOptionValue['value'], ['span', 'a']) ?>
-                                <?php endif; ?>
-                            </dd>
-                        </div>
-                    <?php endforeach; ?>
-                </dl>
-            <?php endif;?>
-
-            <!-- Messages -->
-            <?php if ($messages = $block->getMessages()): ?>
-                <?php foreach ($messages as $message): ?>
-                    <div class="cart item message mt-3 p-3 rounded-md bg-red-50 text-red-700 text-sm border border-red-200 flex items-start gap-2 <?= $escaper->escapeHtmlAttr($message['type']) ?>">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 w-5 h-5" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="8" x2="12" y2="12"></line>
-                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                        </svg>
-                        <div><?= $escaper->escapeHtml($message['text']) ?></div>
+        <!-- Options -->
+        <?php if ($options = $block->getOptionList()): ?>
+            <dl class="mt-2 item-options text-sm text-gray-600 space-y-1">
+                <?php foreach ($options as $option): ?>
+                    <?php $formatedOptionValue = $block->getFormatedOptionValue($option) ?>
+                    <div class="flex gap-2">
+                        <dt class="font-medium min-w-[4rem]">
+                            <?= $escaper->escapeHtml($option['label']) ?>:
+                        </dt>
+                        <dd class="font-normal text-gray-800">
+                            <?php if (isset($formatedOptionValue['full_view'])): ?>
+                                <?= $escaper->escapeHtml($formatedOptionValue['full_view']) ?>
+                            <?php else: ?>
+                                <?= $escaper->escapeHtml($formatedOptionValue['value'], ['span', 'a']) ?>
+                            <?php endif; ?>
+                        </dd>
                     </div>
                 <?php endforeach; ?>
-            <?php endif; ?>
+            </dl>
+        <?php endif; ?>
 
-            <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
-            <?php if ($addInfoBlock): ?>
-                <div class="mt-2">
-                    <?= $addInfoBlock->setItem($item)->toHtml() ?>
+        <!-- Messages -->
+        <?php if ($messages = $block->getMessages()): ?>
+            <?php foreach ($messages as $message): ?>
+                <div
+                    class="cart item message mt-3 p-3 rounded-md bg-red-50 text-red-700 text-sm border border-red-200 flex items-start gap-2 <?= $escaper->escapeHtmlAttr($message['type']) ?>">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 w-5 h-5" width="20" height="20"
+                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <div><?= $escaper->escapeHtml($message['text']) ?></div>
                 </div>
-            <?php endif;?>
-        </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
-        <!-- Footer: Controls & Price -->
-        <div class="mt-6 flex flex-wrap items-end justify-between gap-4 pt-4 border-t border-gray-100">
+        <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+        <?php if ($addInfoBlock): ?>
+            <div class="mt-2">
+                <?= $addInfoBlock->setItem($item)->toHtml() ?>
+            </div>
+        <?php endif; ?>
+    </div>
 
-            <!-- Qty & Actions -->
-            <div class="flex flex-wrap items-center gap-4">
-                <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden h-10 shadow-sm">
-                    <button type="button"
-                            @click="decrement"
-                            class="px-3 h-full bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900 border-r border-gray-300 focus:outline-none transition-colors flex items-center justify-center"
-                            :class="{'opacity-50 cursor-not-allowed': qty <= minQty}"
-                            :disabled="qty <= minQty"
-                            aria-label="<?= $escaper->escapeHtmlAttr(__('Decrease quantity')) ?>"
-                    >
-                        <?= $lucideIcons->minusHtml('', 16, 16) ?>
-                    </button>
+    <!-- Footer: Controls & Price -->
+    <div class="mt-6 flex flex-wrap items-end justify-between gap-4 pt-4 border-t border-gray-100">
 
-                    <label class="sr-only" for="cart-<?= $escaper->escapeHtmlAttr($item->getId()) ?>-qty">
-                        <?= $escaper->escapeHtml(__('Qty')) ?>
-                    </label>
-                    <input
-                        id="cart-<?= $escaper->escapeHtmlAttr($item->getId()) ?>-qty"
-                        name="cart[<?= $escaper->escapeHtmlAttr($item->getId()) ?>][qty]"
-                        value="<?= $escaper->escapeHtmlAttr($qty) ?>"
-                        title="<?= $escaper->escapeHtmlAttr(__('Qty')) ?>"
-                        class="form-input px-2 h-full w-14 text-center border-none focus:ring-0 text-gray-900 font-semibold appearance-none bg-white"
-                        required
-                        <?php if ($stockItemViewModel->isQtyDecimal($product)): ?>
+        <!-- Qty & Actions -->
+        <div class="flex flex-wrap items-center gap-4">
+            <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden h-10 shadow-sm">
+                <button type="button"
+                        @click="decrement"
+                        class="px-3 h-full bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900 border-r border-gray-300 focus:outline-none transition-colors flex items-center justify-center"
+                        :class="{'opacity-50 cursor-not-allowed': qty <= minQty}"
+                        :disabled="qty <= minQty"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Decrease quantity')) ?>"
+                >
+                    <?= $lucideIcons->minusHtml('', 16, 16) ?>
+                </button>
+
+                <label class="sr-only" for="cart-<?= $escaper->escapeHtmlAttr($item->getId()) ?>-qty">
+                    <?= $escaper->escapeHtml(__('Qty')) ?>
+                </label>
+                <input
+                    id="cart-<?= $escaper->escapeHtmlAttr($item->getId()) ?>-qty"
+                    name="cart[<?= $escaper->escapeHtmlAttr($item->getId()) ?>][qty]"
+                    value="<?= $escaper->escapeHtmlAttr($qty) ?>"
+                    title="<?= $escaper->escapeHtmlAttr(__('Qty')) ?>"
+                    class="form-input px-2 h-full w-14 text-center border-none focus:ring-0 text-gray-900 font-semibold appearance-none bg-white"
+                    required
+                    <?php if ($stockItemViewModel->isQtyDecimal($product)): ?>
                         type="text"
-                        pattern="[0-9]+(\.[0-9]{1,<?= /** @noEscape */ $maxSalesQtyLength ?>})?"
+                        pattern="[0-9]+(\.[0-9]{1,<?= /** @noEscape */
+                        $maxSalesQtyLength ?>})?"
                         inputmode="decimal"
-                        <?php else: ?>
+                    <?php else: ?>
                         type="number"
-                        pattern="[0-9]{0,<?= /** @noEscape */ $maxSalesQtyLength ?>}"
+                        pattern="[0-9]{0,<?= /** @noEscape */
+                        $maxSalesQtyLength ?>}"
                         inputmode="numeric"
-                        <?php if ($minSalesQty): ?>min="<?= /** @noEscape */ $minSalesQty ?>"<?php endif; ?>
-                        <?php if ($maxSalesQty): ?>max="<?= /** @noEscape */ $maxSalesQty ?>"<?php endif; ?>
-                        <?php if ($step): ?>step="<?= /** @noEscape */ $step ?>"<?php endif; ?>
-                        <?php endif; ?>
-                        data-role="cart-item-qty"
-                        x-model="qty"
-                    >
+                        <?php if ($minSalesQty): ?>min="<?= /** @noEscape */
+                        $minSalesQty ?>"<?php endif; ?>
+                        <?php if ($maxSalesQty): ?>max="<?= /** @noEscape */
+                        $maxSalesQty ?>"<?php endif; ?>
+                        <?php if ($step): ?>step="<?= /** @noEscape */
+                        $step ?>"<?php endif; ?>
+                    <?php endif; ?>
+                    data-role="cart-item-qty"
+                    x-model="qty"
+                >
 
-                    <button type="button"
-                            @click="increment"
-                            class="px-3 h-full bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900 border-l border-gray-300 focus:outline-none transition-colors flex items-center justify-center"
-                            :class="{'opacity-50 cursor-not-allowed': qty >= maxQty}"
-                            :disabled="qty >= maxQty"
-                            aria-label="<?= $escaper->escapeHtmlAttr(__('Increase quantity')) ?>"
-                    >
-                        <?= $lucideIcons->plusHtml('', 16, 16) ?>
-                    </button>
-                </div>
-
-                <div class="shrink-0 flex flex-wrap gap-2">
-                    <a href="<?= $escaper->escapeUrl($block->getConfigureUrl()) ?>"
-                       class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-blue-500 hover:text-white transition-colors"
-                       aria-label="<?= $escaper->escapeHtmlAttr(__('Edit item parameters')) ?>">
-                        <?= $lucideIcons->pencilHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
-                    </a>
-                    <a href="#"
-                       data-post='<?= /* @noEscape */ $block->getDeleteItemParams() ?>'
-                       class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-gray-700 hover:text-white transition-colors action action-delete"
-                       aria-label="<?= $escaper->escapeHtmlAttr(__('Remove item')) ?>"
-                    >
-                        <?= $lucideIcons->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
-                    </a>
-                </div>
+                <button type="button"
+                        @click="increment"
+                        class="px-3 h-full bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900 border-l border-gray-300 focus:outline-none transition-colors flex items-center justify-center"
+                        :class="{'opacity-50 cursor-not-allowed': qty >= maxQty}"
+                        :disabled="qty >= maxQty"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Increase quantity')) ?>"
+                >
+                    <?= $lucideIcons->plusHtml('', 16, 16) ?>
+                </button>
             </div>
 
-            <!-- Price Box -->
-            <div class="price-box flex flex-col items-end text-right">
-                <div class="text-xs text-gray-500 mb-1 flex items-center gap-1">
-                    <span class="bg-gray-100 px-1.5 py-0.5 rounded text-gray-600 font-medium" x-show="qty > 0" x-text="qty + ' x'"></span>
-                    <span class="text-gray-500">
+            <div class="shrink-0 flex flex-wrap gap-2">
+                <a href="<?= $escaper->escapeUrl($block->getConfigureUrl()) ?>"
+                   class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-blue-500 hover:text-white transition-colors"
+                   aria-label="<?= $escaper->escapeHtmlAttr(__('Edit item parameters')) ?>">
+                    <?= $lucideIcons->pencilHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                </a>
+                <a href="#"
+                   data-post='<?= /* @noEscape */
+                   $block->getDeleteItemParams() ?>'
+                   class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-gray-700 hover:text-white transition-colors action action-delete"
+                   aria-label="<?= $escaper->escapeHtmlAttr(__('Remove item')) ?>"
+                >
+                    <?= $lucideIcons->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
+                </a>
+            </div>
+        </div>
+
+        <!-- Price Box -->
+        <div class="price-box flex flex-col items-end text-right">
+            <div class="text-xs text-gray-500 mb-1 flex items-center gap-1">
+                <span class="bg-gray-100 px-1.5 py-0.5 rounded text-gray-600 font-bold" x-show="qty > 0"
+                      x-text="qty + ' x'"></span>
+                <span class="text-gray-500">
                         <?= $block->getUnitPriceHtml($item) ?>
                     </span>
-                </div>
-                <div class="price-total">
-                    <?= $block->getRowTotalHtml($item) ?>
-                </div>
             </div>
-
+            <div class="price-total mb-1 flex items-center gap-1">
+                <span class="bg-gray-100 px-1.5 py-0.5 rounded text-gray-600 font-bold"><?= __("Total") ?></span>
+                <span>
+                    <?= $block->getRowTotalHtml($item) ?>
+                </span>
+            </div>
         </div>
+
     </div>
+</div>
 </article>
