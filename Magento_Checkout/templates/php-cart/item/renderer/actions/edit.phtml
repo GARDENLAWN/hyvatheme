@@ -1,0 +1,38 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\LucideIcons;
+use Magento\Checkout\Block\Cart\Item\Renderer\Actions\Edit;
+use Magento\Framework\Escaper;
+
+/** @var Edit $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
+
+$item = $block->getItem();
+if ($item->getProductType() === 'configurable') {
+    $productOptions = $item->getProduct()->getTypeInstance()->getOrderOptions($item->getProduct());
+    $productName = $productOptions["simple_name"];
+} else {
+    $productName = $item->getName();
+}
+?>
+<?php if ($block->isProductVisibleInSiteVisibility()): ?>
+    <a
+        class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-blue-500 hover:text-white transition-colors"
+        href="<?= $escaper->escapeUrl($block->getConfigureUrl()) ?>"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Edit %1', $productName)) ?>"
+    >
+        <?= $lucideIcons->pencilHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
+    </a>
+<?php endif ?>

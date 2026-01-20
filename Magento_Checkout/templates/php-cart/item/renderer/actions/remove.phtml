@@ -1,0 +1,46 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\ViewModel\LucideIcons;
+use Magento\Checkout\Block\Cart\Item\Renderer\Actions\Remove;
+use Magento\Framework\Escaper;
+
+/** @var Remove $block */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+/** @var Escaper $escaper */
+
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
+
+$item = $block->getItem();
+if ($item->getProductType() === 'configurable') {
+    $productOptions = $item->getProduct()->getTypeInstance()->getOrderOptions($item->getProduct());
+    $productName = $productOptions["simple_name"];
+} else {
+    $productName = $item->getName();
+}
+?>
+<button
+    type="button"
+    class="shrink-0 btn rounded-full p-3 border-transparent bg-gray-200 text-gray-500 hover:border-transparent hover:bg-gray-700 hover:text-white transition-colors action action-delete"
+    data-delete-post-json="<?= $escaper->escapeHtmlAttr($block->getDeletePostJson()) ?>"
+    data-cart-item-removed-payload="<?= $escaper->escapeHtml(json_encode([
+        'product_sku' => $item->getSku(),
+        'product_name' => $item->getName(),
+        'product_price_value' => $item->getPrice(),
+        'quantity' => $item->getQty()
+    ])) ?>"
+    @click.prevent="removeItem"
+    aria-label="<?= $escaper->escapeHtmlAttr(__('Remove %1', $productName)) ?>"
+>
+    <?= $lucideIcons->trashHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
+</button>
