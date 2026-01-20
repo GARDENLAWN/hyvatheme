@@ -255,9 +255,7 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
             <!-- Price Box -->
             <div class="price-box flex flex-col items-end text-right">
                 <div class="text-xs text-gray-500 mb-1 flex items-center gap-1">
-                    <?php if ($qty > 1): ?>
-                        <span class="bg-gray-100 px-1.5 py-0.5 rounded text-gray-600 font-medium"><?= $escaper->escapeHtmlAttr(__('%1 x', $qty)) ?></span>
-                    <?php endif; ?>
+                    <span class="bg-gray-100 px-1.5 py-0.5 rounded text-gray-600 font-medium" x-show="qty > 0" x-text="qty + ' x'"></span>
                     <span class="text-gray-500">
                         <?= $block->getUnitPriceHtml($item) ?>
                     </span>
