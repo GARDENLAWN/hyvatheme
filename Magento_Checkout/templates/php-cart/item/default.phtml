@@ -120,7 +120,11 @@ x-data="{
                 this.updateCart();
             }, 800);
         },
+        log(message) {
+            console.log(`[${new Date().toISOString()}] ${message}`);
+        },
         updateCart() {
+            this.log('updateCart: Start');
             this.isLoading = true;
             window.dispatchEvent(new CustomEvent('update-totals-start'));
             const form = this.$el.closest('form');
@@ -140,6 +144,7 @@ x-data="{
                 }
             })
             .then(response => {
+                this.log('updateCart: Response received');
                 if (response.ok) {
                     this.fetchAndReplaceCart();
                 } else {
@@ -152,12 +157,17 @@ x-data="{
                 console.error('Error updating cart:', error);
                 this.isLoading = false;
                 window.dispatchEvent(new CustomEvent('update-totals-end'));
+            })
+            .finally(() => {
+                this.log('updateCart: End');
             });
         },
         fetchAndReplaceCart() {
+             this.log('fetchAndReplaceCart: Start');
              fetch(BASE_URL + 'gardenlawn_core/cart/render')
                 .then(response => response.text())
                 .then(html => {
+                    this.log('fetchAndReplaceCart: HTML received');
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
                     const newItems = doc.querySelector('#form-validate');
@@ -169,6 +179,7 @@ x-data="{
                     }
 
                     // Trigger messages and cart reload
+                    this.log('fetchAndReplaceCart: Dispatching reload-customer-section-data');
                     window.dispatchEvent(new CustomEvent('reload-customer-section-data', {
                         detail: {
                             sections: ['cart', 'messages']
@@ -176,6 +187,7 @@ x-data="{
                     }));
 
                     this.isLoading = false;
+                    this.log('fetchAndReplaceCart: Dispatching cart-updated');
                     window.dispatchEvent(new CustomEvent('cart-updated'));
                     // update-totals-end will be dispatched by shipping/totals fetch completion
                 })
@@ -183,6 +195,9 @@ x-data="{
                     console.error('Error fetching cart:', error);
                     this.isLoading = false;
                     window.dispatchEvent(new CustomEvent('update-totals-end'));
+                })
+                .finally(() => {
+                    this.log('fetchAndReplaceCart: End');
                 });
         },
         increment() {

@@ -34,14 +34,6 @@ $lucideIcons = $viewModels->require(LucideIcons::class);
                     coupon_code: '',
                     remove: '0'
                 },
-                eventListeners: {
-                    ['@update-totals-start.window']() {
-                        this.isLoading = true;
-                    },
-                    ['@update-totals-end.window']() {
-                        this.isLoading = false;
-                    }
-                },
                 init(){
                     const browserStorageShowCouponForm = hyva.getBrowserStorage().getItem('hyva.showCouponForm');
                     // Default to true if not set
@@ -61,6 +53,7 @@ $lucideIcons = $viewModels->require(LucideIcons::class);
                     this.formData.coupon_code = this.$event.target.value;
                 },
                 submitForm() {
+                    this.isLoading = true;
                     const $form = document.querySelector('#discount-coupon-form');
 
                     if (this.errors === 0) {
@@ -76,7 +69,7 @@ $lucideIcons = $viewModels->require(LucideIcons::class);
     }, { once: true });
 </script>
 
-<div id="block-coupon" class="coupon-form bg-gray-50 p-4 rounded-xl border border-gray-100 relative" x-data="initCouponForm" x-bind="eventListeners">
+<div id="block-coupon" class="coupon-form bg-gray-50 p-4 rounded-xl border border-gray-100 relative" x-data="initCouponForm">
     <template x-if="isLoading">
         <div class="z-10 absolute inset-0 flex items-center justify-center bg-white/60 rounded-lg">
             <svg class="animate-spin h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
