@@ -394,6 +394,7 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                 },
                 setPostcode() {
                     this.updatePostcode();
+                    this.fetchShippingMethods();
                 },
                 postcodeFieldValue() {
                     return this.cartData.address && this.cartData.address.postcode;
