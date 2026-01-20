@@ -169,7 +169,11 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
             <?php if ($messages = $block->getMessages()): ?>
                 <?php foreach ($messages as $message): ?>
                     <div class="cart item message mt-3 p-3 rounded-md bg-red-50 text-red-700 text-sm border border-red-200 flex items-start gap-2 <?= $escaper->escapeHtmlAttr($message['type']) ?>">
-                        <?= $lucideIcons->alertCircleHtml('shrink-0 w-5 h-5', 20, 20) ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 w-5 h-5" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
                         <div><?= $escaper->escapeHtml($message['text']) ?></div>
                     </div>
                 <?php endforeach; ?>
