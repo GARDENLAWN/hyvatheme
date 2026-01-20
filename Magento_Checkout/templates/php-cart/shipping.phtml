@@ -76,14 +76,6 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                     },
                     ['@update-totals-end.window']() {
                         this.isLoading = false;
-                    },
-                    ['@cart-updated.window.debounce.50ms']() {
-                        this.isLoading = true;
-                        if (this.showEstimateShipping) {
-                            this.fetchShippingMethods();
-                        } else {
-                            this.fetchTotals();
-                        }
                     }
                 },
                 cartData: {
@@ -137,10 +129,6 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                     this.showEstimateShipping = !this.showEstimateShipping;
 
                     hyva.getBrowserStorage().setItem('hyva.showEstimateShipping', this.showEstimateShipping);
-
-                    if (this.showEstimateShipping) {
-                        this.fetchShippingMethods();
-                    }
                 },
                 estimateShippingIconClasses() {
                     return {
@@ -347,22 +335,12 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                         this.saveToCustomerSectionData();
                         addressChanged = true;
                     }
-
-                    // Only fetch shipping methods if address changed or it's the first load and we have postcode
-                    // AND if we are not already loading (e.g. from cart-updated event)
-                    if (!this.isLoading && addressChanged && this.cartData.address.postcode && this.cartData.address.postcode !== '*') {
-                         this.fetchShippingMethods();
-                    } else if (!this.isLoading && !addressChanged && this.cartData.address.postcode && this.cartData.address.postcode !== '*' && this.availableShippingMethods.length === 0) {
-                        // If address didn't change but we have a postcode and no methods loaded yet (e.g. page reload), fetch them
-                        this.fetchShippingMethods();
-                    }
                 },
                 setCountry() {
                     const countryId = this.$event.target.value;
                     this.cartData.address.countryId = countryId;
                     this.checkoutData.shippingAddressFromData.country_id = countryId;
                     this.saveToCustomerSectionData();
-                    this.fetchShippingMethods();
                 },
                 setRegionSelect() {
                     this.setRegion(this.$event, 'select');
@@ -391,7 +369,6 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                     }
 
                     this.saveToCustomerSectionData();
-                    this.fetchShippingMethods();
                 },
                 updatePostcode() {
                     let value = this.$event.target.value;
@@ -417,7 +394,6 @@ if ((empty($initialPostcode) || $initialPostcode === '*') && $quote->getCustomer
                 },
                 setPostcode() {
                     this.updatePostcode();
-                    this.fetchShippingMethods();
                 },
                 postcodeFieldValue() {
                     return this.cartData.address && this.cartData.address.postcode;
