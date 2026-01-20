@@ -14,16 +14,16 @@ use Magento\Framework\Escaper;
 /** @var Escaper $escaper */
 ?>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-    <!-- Left Column: Cart Items (2/3 width) -->
-    <div class="w-full lg:col-span-2 order-2 lg:order-1">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+    <!-- Left Column: Cart Items (50% width) -->
+    <div class="w-full order-2 lg:order-1">
         <?= $block->getChildHtml('form_before') ?>
         <?= $block->getChildHtml('cart-items') ?>
         <?= $block->getChildHtml('checkout_cart_widget') ?>
     </div>
 
-    <!-- Right Column: Summary & Tools (1/3 width) -->
-    <div class="w-full lg:col-span-1 lg:sticky lg:top-4 order-1 lg:order-2 space-y-6">
+    <!-- Right Column: Summary & Tools (50% width) -->
+    <div class="w-full lg:sticky lg:top-4 order-1 lg:order-2 space-y-6">
         <!-- Coupon Code -->
         <?php if ($couponBlock = $block->getLayout()->getBlock('checkout.cart.coupon')): ?>
             <div class="card bg-white p-6 rounded-xl shadow-sm border border-gray-200">
