@@ -46,12 +46,7 @@
 
         <!-- 1. Usunięcie bloków NewRelic (niekompatybilne z Hyvä head) -->
         <referenceBlock name="newrelicreporting.browser_monitoring.script.header" remove="true"/>
-
-        <!-- 2. Usunięcie bloków Amasty Cookie/GDPR (wymagają modułu kompatybilności) -->
-        <referenceBlock name="amasty.cookie.cookiebar" remove="true"/>
-        <referenceBlock name="amasty.cookie.colors.sidebar" remove="true"/>
-        <referenceBlock name="gdprcookie_footer_link" remove="true"/>
-
+        
         <!-- 3. Usunięcie bloków Amasty SEO/Sitemap (wymagają modułu kompatybilności) -->
         <referenceBlock name="amseohtmlsitemap" remove="true"/>
 
