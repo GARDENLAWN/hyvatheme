@@ -37,8 +37,25 @@ $showLanguage = $block->getShowLanguage() !== null ? (bool) $block->getShowLangu
         return {
             searchOpen: false,
             cart: {},
+            showLogo: true,
             init() {
                 this.checkHeaderSize();
+                this.initLogoObserver();
+            },
+            initLogoObserver() {
+                const switcher = document.querySelector('.website-switcher-container');
+                if (!switcher) return;
+
+                const observer = new IntersectionObserver((entries) => {
+                    const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+                    if (!isDesktop) {
+                        this.showLogo = true;
+                        return;
+                    }
+                    // Jeśli switcher widoczny -> ukryj logo
+                    this.showLogo = !entries[0].isIntersecting;
+                });
+                observer.observe(switcher);
             },
             checkHeaderSize() {
                 const pageHeader = document.querySelector('.page-header');
@@ -163,7 +180,9 @@ $showLanguage = $block->getShowLanguage() !== null ? (bool) $block->getShowLangu
     @resize.window.debounce="checkHeaderSize"
 >
     <div class="relative container flex gap-4 lg:gap-8 items-center w-full px-6 py-1 mx-auto mt-0">
-        <?= $block->getChildHtml('logo'); ?>
+        <div x-show="showLogo" x-transition.opacity.duration.300ms class="flex items-center">
+            <?= $block->getChildHtml('logo'); ?>
+        </div>
 
         <div class="order-first lg:order-none">
             <?= $block->getChildHtml('topmenu') ?>
