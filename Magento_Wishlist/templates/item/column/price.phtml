@@ -16,7 +16,7 @@ $isCallForPrice = $product->getData('call_for_price');
 
 <?php if (!$isCallForPrice): ?>
     <?php foreach ($block->getChildNames() as $childName): ?>
-    <div>
+    <div class="min-h-[4rem] flex flex-col justify-end">
         <?= /* @noEscape */ $block->getLayout()->renderElement($childName, false) ?>
     </div>
     <?php endforeach;?>
