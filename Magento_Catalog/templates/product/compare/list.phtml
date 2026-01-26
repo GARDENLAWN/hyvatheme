@@ -108,19 +108,19 @@ $total = $block->getItems()->getSize();
             </div>
         </div>
 
-        <div class="relative overflow-hidden rounded-2xl shadow-2xl border border-gray-200 bg-white">
+        <div class="relative overflow-hidden rounded-2xl shadow-2xl border border-gray-200 bg-white z-0">
             <div x-ref="scrollContainer" @scroll.debounce.50ms="checkScroll()" class="overflow-x-auto custom-scrollbar scroll-smooth">
                 <table class="w-full text-sm text-left border-collapse table-fixed">
                     <thead>
                     <tr class="bg-gray-50 border-b border-gray-200">
-                        <th class="sticky left-0 z-50 bg-gray-100 p-6 w-[240px] border-r border-gray-200 shadow-[4px_0_10px_rgba(0,0,0,0.05)] sticky-table-header">
+                        <th class="sticky left-0 z-20 bg-gray-100 p-6 w-[240px] border-r border-gray-200 shadow-[4px_0_10px_rgba(0,0,0,0.05)] sticky-table-header align-bottom">
                             <div class="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
                                 <?= $escaper->escapeHtml(__('Specyfikacja')) ?>
                             </div>
                         </th>
 
                         <?php foreach ($block->getItems() as $product): ?>
-                            <th class="p-6 min-w-[320px] align-top relative group sticky z-30 bg-gray-50 border-b border-gray-200 sticky-table-header">
+                            <th class="p-6 min-w-[320px] align-top relative group sticky z-10 bg-gray-50 border-b border-gray-200 sticky-table-header">
                                 <div class="flex flex-col items-center text-center gap-4">
                                     <a href="<?= $escaper->escapeUrl($block->getProductUrl($product)) ?>" class="block transition-transform duration-300 group-hover:scale-105 h-32 flex items-center">
                                         <?= $block->getImage($product, 'product_comparison_list')->setTemplate('Magento_Catalog::product/image.phtml')->toHtml() ?>
@@ -169,7 +169,7 @@ $total = $block->getItems()->getSize();
                     <?php foreach ($block->getAttributes() as $attribute): ?>
                         <?php if ($block->hasAttributeValueForProducts($attribute)): ?>
                             <tr class="hover:bg-gray-50/50 transition-colors group">
-                                <th class="sticky left-0 z-20 bg-white p-6 font-bold text-gray-700 border-r border-gray-200 shadow-[4px_0_10px_rgba(0,0,0,0.02)] group-hover:bg-gray-50/50">
+                                <th class="sticky left-0 z-10 bg-white p-6 font-bold text-gray-700 border-r border-gray-200 shadow-[4px_0_10px_rgba(0,0,0,0.02)] group-hover:bg-gray-50/50">
                                     <?php
                                     $label = $attribute->getStoreLabel() ? $attribute->getStoreLabel() : $attribute->getFrontendLabel();
                                     echo $escaper->escapeHtml(__($label));
@@ -227,7 +227,7 @@ $total = $block->getItems()->getSize();
 <style>
     :root {
         /* TUTAJ DOPASUJ WYSOKOŚĆ SWOJEGO HEADERA STRONY */
-        --site-header-offset: 80px;
+        --site-header-offset: 140px;
     }
 
     .sticky-table-header {
