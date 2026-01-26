@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <update handle="hyva_modal"/>
         <referenceBlock name="checkout.billing-details.section">
             <arguments>
                 <argument name="view_model" xsi:type="object">GardenLawn\Core\Helper\Data</argument>
