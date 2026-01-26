@@ -1,0 +1,29 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2022-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+?>
+
+<div class="grid gap-6 grid-cols-1 lg:grid-cols-3 items-start">
+    <div class="area-main space-y-6 bg-white p-6 rounded-lg shadow-md border border-gray-200">
+        <?= $block->getChildHtml('column.main') ?>
+    </div>
+
+    <div class="area-center space-y-6 bg-white p-6 rounded-lg shadow-md border border-gray-200">
+        <?= $block->getChildHtml('column.center') ?>
+    </div>
+
+    <div class="area-right checkout-summary space-y-6 bg-white p-6 rounded-lg shadow-md border border-gray-200 lg:sticky lg:top-4">
+        <?= $block->getChildHtml('column.right') ?>
+        <?= $block->getChildHtml('hyva.checkout.navigation') ?>
+    </div>
+</div>

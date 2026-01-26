@@ -34,15 +34,14 @@ $cartItemsViewModel = $viewModels->require(CartItemsViewModel::class);
 $taxHelper = $this->helper(TaxHelper::class);
 
 $quoteItems = $magewire->getQuoteItemData();
+// $magewire->expand = true; // Removed as it didn't work as expected
 $quoteItemsCount = $quoteItems ? count($quoteItems) : 0;
 ?>
 
 <div
-    x-data="{
-        visible: true,
-        toggleVisible() { this.visible = !this.visible },
-        applyDownRotateClass() { return { 'transform rotate-180': this.visible } }
-    }"
+    x-data="hyvaCheckoutPriceSummaryCartItems"
+    x-init="show()"
+    x-bind:open="visible"
     class="pb-6">
     <button
         type="button"
@@ -72,6 +71,7 @@ $quoteItemsCount = $quoteItems ? count($quoteItems) : 0;
         id="checkout-cart-details"
         class="cart-items"
         x-show="visible"
+        x-cloak
     >
         <div class="flex flex-col h-full space-y-6">
             <div class="relative grid">

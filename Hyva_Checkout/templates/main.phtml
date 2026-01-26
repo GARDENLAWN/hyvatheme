@@ -1,0 +1,38 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2022-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Checkout\Magewire\Main as MagewireComponent;
+use Hyva\Checkout\ViewModel\Main as ViewModel;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Hyva\Theme\Model\ViewModelRegistry;
+
+/** @var Template $block */
+/** @var MagewireComponent $magewire */
+/** @var ViewModel $viewModel */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+$viewModel = $viewModels->require(ViewModel::class);
+?>
+<?php /* Change the Frontend API main.id when you change the id attribute value. */ ?>
+<div id="hyva-checkout-main" class="bg-gray-50 py-8 min-h-screen <?= $escaper->escapeHtmlAttr($viewModel->getStepClassesAsString()) ?>">
+    <div class="container mx-auto px-4">
+        <?= $block->getChildHtml('hyva.checkout.breadcrumbs') ?>
+
+        <?php /* Change the Frontend API main.container when you change the id attribute value. */ ?>
+        <div id="hyva-checkout-container">
+            <?= $block->getChildHtml('hyva.checkout.container') ?>
+        </div>
+
+        <?php /* Render if it is still is a child of "hyva.checkout.main", usually it will be moved into a column. */ ?>
+        <?= $block->getChildHtml('hyva.checkout.navigation') ?>
+    </div>
+</div>
