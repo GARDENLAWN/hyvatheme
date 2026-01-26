@@ -35,43 +35,97 @@ $taxHelper = $this->helper(TaxHelper::class);
 $storeViewModel = $viewModels->require(Store::class);
 $storeId = $storeViewModel->getStoreId();
 $methods = $viewModel->getList();
+
+// Group methods by carrier title
+$groupedMethods = [];
+if ($methods) {
+    foreach ($methods as $method) {
+        if ($method->getAvailable()) {
+            $groupedMethods[$method->getCarrierTitle()][] = $method;
+        }
+    }
+}
 ?>
 <div id="shipping-methods">
-    <?php if ($methods): ?>
-        <div id="shipping-method-list" class="flex flex-col space-y-2">
-            <?php foreach ($methods as $method): ?>
-                <?php if ($method->getAvailable()): ?>
-                    <?php $methodCode = $escaper->escapeHtml($method->getMethodCode()) ?>
-                    <?php $methodCodeAttr = $escaper->escapeHtmlAttr($method->getMethodCode()) ?>
-                    <?php $methodCarrierCode = $escaper->escapeHtmlAttr($method->getCarrierCode()) ?>
-                    <?php $methodTitle = $escaper->escapeHtml($viewModel->getMethodTitle($method)) ?>
-                    <?php /** @var ShippingMethodMetaData $methodMetaData */ ?>
-                    <?php $methodMetaData = $viewModel->getMethodMetaData($block, $method) ?>
+    <?php if (!empty($groupedMethods)): ?>
+        <div id="shipping-method-list" class="flex flex-col space-y-4">
+            <?php foreach ($groupedMethods as $carrierTitle => $carrierMethods): ?>
+                <div class="space-y-2">
+                    <h5 class="text-sm font-bold text-gray-800 border-b pb-1 mb-2"><?= $escaper->escapeHtml($carrierTitle) ?></h5>
+                    <?php foreach ($carrierMethods as $method): ?>
+                        <?php
+                        $methodCode = $escaper->escapeHtml($method->getMethodCode());
+                        $methodCodeAttr = $escaper->escapeHtmlAttr($method->getMethodCode());
+                        $methodCarrierCode = $escaper->escapeHtmlAttr($method->getCarrierCode());
+                        $methodTitle = $escaper->escapeHtml($viewModel->getMethodTitle($method));
+                        /** @var ShippingMethodMetaData $methodMetaData */
+                        $methodMetaData = $viewModel->getMethodMetaData($block, $method);
+                        $isSelected = $magewire->method === $methodCarrierCode . '_' . $methodCodeAttr;
 
-                    <div
-                        id="shipping-method-option-<?= /* @noEscape */ $methodCode ?>"
-                        class="border-2 rounded-md <?= $magewire->method === $methodCarrierCode . '_' . $methodCodeAttr ? 'active bg-primary bg-opacity-10 border-primary' : 'inactive bg-white' ?>"
-                        wire:key="<?= /* @noEscape */ $methodCodeAttr ?>"
-                        data-disabled="<?= ! $method->getErrorMessage() ? 'false' : 'true' ?>"
-                        x-data="hyvaCheckoutShippingMethodOption"
-                    >
-                        <label class="flex items-center gap-x-2.5 mb-0 p-4 cursor-pointer">
-                            <input
-                                type="radio"
-                                id="shipping-method-<?= /* @noEscape */ $methodCodeAttr ?>"
-                                name="shipping-method-option"
-                                class="form-radio"
-                                value="<?= $escaper->escapeHtmlAttr($methodCarrierCode . '_' . $methodCodeAttr) ?>"
-                                wire:model="method"
-                                x-bind:disabled="disabled"
-                            >
+                        // Extension attributes handling
+                        $description = '';
+                        $promotionMessage = '';
+                        $extAttributes = $method->getExtensionAttributes();
+                        if ($extAttributes) {
+                            if (method_exists($extAttributes, 'getDescription')) {
+                                $description = $extAttributes->getDescription();
+                            } elseif (method_exists($extAttributes, 'getData')) {
+                                $description = $extAttributes->getData('description');
+                            }
 
-                            <span class="flex flex-col md:flex-row md:flex-1 justify-between items-center gap-4">
-                                <span>
-                                    <span class="text-gray-700 font-medium break-words hyphens-auto">
-                                        <?= /** @noEscape */ $methodTitle ?>
-                                    </span>
-                                    <span class="block product-price price-box">
+                            if (method_exists($extAttributes, 'getPromotionMessage')) {
+                                $promotionMessage = $extAttributes->getPromotionMessage();
+                            } elseif (method_exists($extAttributes, 'getData')) {
+                                $promotionMessage = $extAttributes->getData('promotion_message');
+                            }
+                        }
+                        ?>
+
+                        <div
+                            id="shipping-method-option-<?= /* @noEscape */ $methodCode ?>"
+                            class="border rounded-md cursor-pointer hover:bg-gray-50 transition-colors <?= $isSelected ? 'border-primary bg-blue-50 ring-1 ring-primary' : 'border-gray-200 bg-white' ?>"
+                            wire:key="<?= /* @noEscape */ $methodCodeAttr ?>"
+                            data-disabled="<?= ! $method->getErrorMessage() ? 'false' : 'true' ?>"
+                            x-data="hyvaCheckoutShippingMethodOption"
+                        >
+                            <label class="flex items-start justify-between p-3 cursor-pointer w-full mb-0">
+                                <div class="flex items-start gap-3 w-full">
+                                    <input
+                                        type="radio"
+                                        id="shipping-method-<?= /* @noEscape */ $methodCodeAttr ?>"
+                                        name="shipping-method-option"
+                                        class="text-primary focus:ring-primary mt-1 form-radio"
+                                        value="<?= $escaper->escapeHtmlAttr($methodCarrierCode . '_' . $methodCodeAttr) ?>"
+                                        wire:model="method"
+                                        x-bind:disabled="disabled"
+                                    >
+                                    <div class="w-full">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-sm font-medium text-gray-900 block">
+                                                <?= /** @noEscape */ $methodTitle ?>
+                                            </span>
+                                            <?php if ($methodMetaData->canRenderIcon() && $iconHtml = $methodMetaData->renderIcon()): ?>
+                                                <span class="shrink-0"><?= /* @noEscape */ $iconHtml; ?></span>
+                                            <?php endif ?>
+                                        </div>
+
+                                        <?php if ($description): ?>
+                                            <div class="text-xs text-gray-500 mt-1 w-full">
+                                                <?= $escaper->escapeHtml($description) ?>
+                                            </div>
+                                        <?php endif; ?>
+
+                                        <?php if ($promotionMessage && $promotionMessage !== 'undefined'): ?>
+                                            <div class="mt-2 p-2 text-xs rounded" style="border: 1px solid #fcd34d; background-color: #fffbeb; color: #92400e;">
+                                                <strong class="block mb-1"><?= $escaper->escapeHtml(__('Special offer (included in cart):')) ?></strong>
+                                                <span><?= /* @noEscape */ $promotionMessage ?></span>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+
+                                <div class="text-right shrink-0 ml-2">
+                                    <div class="text-sm font-bold text-gray-900 whitespace-nowrap block">
                                         <?php if ($taxHelper->displayShippingPriceIncludingTax() || $taxHelper->displayShippingBothPrices()): ?>
                                             <span class="price-including-tax" data-label="<?= $escaper->escapeHtmlAttr(__('Incl. Tax')) ?>">
                                                 <span class="price">
@@ -79,9 +133,11 @@ $methods = $viewModel->getList();
                                                 </span>
                                             </span>
                                         <?php endif ?>
+                                    </div>
 
-                                        <?php if ($taxHelper->displayShippingPriceExcludingTax()
-                                            || ($taxHelper->displayShippingBothPrices() && $method->getPriceExclTax() !== $method->getPriceInclTax())): ?>
+                                    <?php if ($taxHelper->displayShippingPriceExcludingTax()
+                                        || ($taxHelper->displayShippingBothPrices() && $method->getPriceExclTax() !== $method->getPriceInclTax())): ?>
+                                        <div class="text-xs text-gray-500 whitespace-nowrap block <?= ($taxHelper->displayShippingPriceIncludingTax() || $taxHelper->displayShippingBothPrices()) ? 'mt-1' : '' ?>">
                                             <span class="price-excluding-tax"
                                                 <?php if ($taxHelper->displayShippingBothPrices()): ?>
                                                     data-label="<?= $escaper->escapeHtmlAttr(__('Excl. Tax')) ?>"
@@ -91,46 +147,39 @@ $methods = $viewModel->getList();
                                                     <?= /* @noEscape */ $formatterViewModel->currencyWithLabelingConditions($method->getPriceExclTax(), 'shipping-list-item') ?>
                                                 </span>
                                             </span>
-                                        <?php endif ?>
-                                    </span>
-                                </span>
-                                <?php if ($methodMetaData->canRenderIcon() && $iconHtml = $methodMetaData->renderIcon()): ?>
-                                    <span class="shrink-0">
-                                        <?= /* @noEscape */ $iconHtml; ?>
-                                    </span>
-                                <?php endif ?>
-                            </span>
-                        </label>
-                        <?php if (($method->getErrorMessage()) || ($viewModel->isCurrentShippingMethod($method, $magewire->method))): ?>
-                            <div class="flex-1 space-y-2">
-                                <?php if ($method->getErrorMessage()): ?>
-                                    <div class="p-4 pt-0">
+                                            <span class="text-xs text-gray-500"><?= $escaper->escapeHtml(__('net')) ?></span>
+                                        </div>
+                                    <?php endif ?>
+                                </div>
+                            </label>
+
+                            <?php if (($method->getErrorMessage()) || ($viewModel->isCurrentShippingMethod($method, $magewire->method))): ?>
+                                <div class="flex-1 space-y-2 px-3 pb-3">
+                                    <?php if ($method->getErrorMessage()): ?>
                                         <div role="alert" class="messages w-full">
                                             <p class="message error mb-0">
                                                 <?= $escaper->escapeHtml(__($method->getErrorMessage())) ?>
                                             </p>
                                         </div>
-                                    </div>
-                                <?php endif ?>
+                                    <?php endif ?>
 
-                                <?php if ($viewModel->isCurrentShippingMethod($method, $magewire->method)): ?>
-                                    <?php if ($viewModel->hasAdditionalView($block, $method)): ?>
-                                        <?php $html = $viewModel->getAdditionalViewBlock($block, $method)->toHtml() ?>
-                                        <?php if (! empty($html)): ?>
-                                            <div class="p-4 pt-0">
+                                    <?php if ($viewModel->isCurrentShippingMethod($method, $magewire->method)): ?>
+                                        <?php if ($viewModel->hasAdditionalView($block, $method)): ?>
+                                            <?php $html = $viewModel->getAdditionalViewBlock($block, $method)->toHtml() ?>
+                                            <?php if (! empty($html)): ?>
                                                 <div id="<?= /* @noEscape */ 'shipping-method-view-' . $methodCodeAttr ?>"
-                                                     class="w-full mt-4"
+                                                     class="w-full mt-2"
                                                 >
                                                     <?= /* @noEscape */ $html ?>
                                                 </div>
-                                            </div>
+                                            <?php endif ?>
                                         <?php endif ?>
                                     <?php endif ?>
-                                <?php endif ?>
-                            </div>
-                        <?php endif ?>
-                    </div>
-                <?php endif ?>
+                                </div>
+                            <?php endif ?>
+                        </div>
+                    <?php endforeach ?>
+                </div>
             <?php endforeach ?>
         </div>
     <?php endif ?>
