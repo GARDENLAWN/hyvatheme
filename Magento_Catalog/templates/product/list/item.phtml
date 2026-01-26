@@ -82,12 +82,15 @@ if ($isCallForPrice && $product) {
     $subject = __('Inquiry for price: %1 (SKU: %2)', $product->getName(), $product->getSku());
     $contactUrl .= '?subject=' . rawurlencode((string)$subject);
 }
+
+// Wspólne klasy dla kontenera produktu (form lub div)
+$containerClasses = "item product product-item product_addtocart_form card border-transparent shadow rounded-md p-4 flex flex-col h-full w-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group " . ($viewIsGrid ? '' : 'md:flex-row');
 ?>
 
 <?php if ($product->isSaleable()): ?>
     <form method="post"
           action="<?= $escaper->escapeUrl($productViewModel->getAddToCartUrl($product, ['useUencPlaceholder' => true])) ?>"
-          class="item product product-item product_addtocart_form card border-transparent shadow rounded-md p-4 flex flex-col h-full hover:shadow-lg w-full <?= $viewIsGrid ? '' : 'md:flex-row' ?>"
+          class="<?= $containerClasses ?>"
           <?php if ($product->getOptions()): ?>
               enctype="multipart/form-data"
           <?php endif; ?>
@@ -106,7 +109,7 @@ if ($isCallForPrice && $product) {
                value="<?= $escaper->escapeHtml($optionItem['value']) ?>">
         <?php endforeach; ?>
 <?php else: ?>
-    <div class="item product product-item card border-transparent shadow rounded-md p-4 flex flex-col h-full hover:shadow-lg w-full <?= $viewIsGrid ? '' : 'md:flex-row' ?>"
+    <div class="<?= $containerClasses ?>"
         <?php foreach ($block->getData('product_data_attributes')  ?? [] as $attribute => $include): ?>
             <?php if ($include): ?>
                 <?php /** Append data-* attributes based on layout XML arguments */ ?>
@@ -118,7 +121,7 @@ if ($isCallForPrice && $product) {
         <?php if ($blockImage = $block->getImage($product, $imageDisplayArea)): ?>
             <a href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
                 title="<?= $escaper->escapeHtmlAttr($product->getName()) ?>"
-                class="product photo product-item-photo block mx-auto mb-3 <?= $viewIsGrid ? '' : 'md:w-2/6 md:mb-0 md:shrink-0' ?>"
+                class="product photo product-item-photo block mx-auto mb-3 transition-transform duration-300 group-hover:scale-105 <?= $viewIsGrid ? '' : 'md:w-2/6 md:mb-0 md:shrink-0' ?>"
                 tabindex="-1"
             >
                 <?= $blockImage
@@ -141,7 +144,7 @@ if ($isCallForPrice && $product) {
 
             <div class="flex justify-between gap-2 items-baseline mb-2">
                 <a
-                    class="product-item-link flex-1 text-lg leading-7 font-bold text-slate-800"
+                    class="product-item-link flex-1 text-lg leading-7 font-bold text-slate-800 transition-colors duration-300 group-hover:text-primary"
                     href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
                     data-product-id="<?= $escaper->escapeHtmlAttr($product->getId()) ?>"
                 >
