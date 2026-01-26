@@ -180,7 +180,10 @@ $showLanguage = $block->getShowLanguage() !== null ? (bool) $block->getShowLangu
     @resize.window.debounce="checkHeaderSize"
 >
     <div class="relative container flex gap-4 lg:gap-8 items-center w-full px-6 py-1 mx-auto mt-0">
-        <div x-show="showLogo" x-transition.opacity.duration.300ms class="flex items-center">
+        <div
+            class="flex items-center transition-opacity duration-300"
+            :class="{ 'opacity-100 pointer-events-auto': showLogo, 'opacity-0 pointer-events-none': !showLogo }"
+        >
             <?= $block->getChildHtml('logo'); ?>
         </div>
 
