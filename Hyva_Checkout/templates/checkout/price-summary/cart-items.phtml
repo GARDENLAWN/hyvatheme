@@ -1,0 +1,149 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Checkout\Magewire\Checkout\PriceSummary\CartItems;
+use Hyva\Checkout\ViewModel\Checkout\PriceSummary\CartItems as CartItemsViewModel;
+use Hyva\Checkout\ViewModel\Checkout\Formatter as FormatterViewModel;
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Magento\Tax\Helper\Data as TaxHelper;
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+/** @var Escaper $escaper */
+/** @var Template $block */
+/** @var FormatterViewModel $formatterViewModel */
+/** @var ViewModelRegistry $viewModels */
+/** @var CartItems $magewire */
+/** @var CartItemsViewModel $cartItemsViewModel */
+/** @var TaxHelper $taxHelper */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+$formatterViewModel = $viewModels->require(FormatterViewModel::class);
+$cartItemsViewModel = $viewModels->require(CartItemsViewModel::class);
+$taxHelper = $this->helper(TaxHelper::class);
+
+$quoteItems = $magewire->getQuoteItemData();
+$quoteItemsCount = $quoteItems ? count($quoteItems) : 0;
+?>
+
+<div
+    x-data="{
+        visible: true,
+        toggleVisible() { this.visible = !this.visible },
+        applyDownRotateClass() { return { 'transform rotate-180': this.visible } }
+    }"
+    class="pb-6">
+    <button
+        type="button"
+        class="group w-full flex font-bold items-center gap-1.5 cursor-pointer text-slate-700"
+        aria-controls="checkout-cart-details"
+        x-on:click="toggleVisible"
+        x-bind:aria-expanded="visible"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Cart') . ' ' . ($quoteItemsCount > 1
+            ? __('%1 Items', $quoteItemsCount)
+            : __('%1 Item', $quoteItemsCount))) ?>"
+    >
+        <?= $heroicons->shoppingCartHtml('text-blue-900', 18, 18, ['aria-hidden' => 'true']) ?>
+        <?= $escaper->escapeHtml(__('Cart')) ?>
+        <span class="font-normal text-slate-600">
+            (<?= $escaper->escapeHtml($quoteItemsCount > 1 ? __('%1 Items', $quoteItemsCount) : __('%1 Item', $quoteItemsCount)) ?>)
+        </span>
+
+        <span
+            class="ml-auto"
+            x-bind:class="applyDownRotateClass"
+        >
+            <?= $heroicons->chevronDownHtml('text-slate-500', 16, 16, ['aria-hidden' => 'true']) ?>
+        </span>
+    </button>
+
+    <div
+        id="checkout-cart-details"
+        class="cart-items"
+        x-show="visible"
+    >
+        <div class="flex flex-col h-full space-y-6">
+            <div class="relative grid">
+                <?php if ($quoteItems): ?>
+                    <?php foreach ($quoteItems as $item): ?>
+                        <div class="border-b border-slate-300 flex gap-4 py-6">
+                            <div class="flex-none relative">
+                                <img
+                                    src="<?= $escaper->escapeUrl($item['thumbnail']) ?>"
+                                    width="96"
+                                    height="96"
+                                    alt="<?= $escaper->escapeHtmlAttr($item['name']) ?>"
+                                    loading="lazy"
+                                    class="rounded"
+                                >
+                            </div>
+
+                            <div class="flex-grow space-y-2">
+                                <div class="">
+                                    <div class="product-title">
+                                        <p class="font-bold pb-1 text-slate-800 text-lg">
+                                            <?= $escaper->escapeHtml($item['name']) ?>
+                                        </p>
+                                    </div>
+                                    <div class="product-price flex justify-between flex-wrap gap-x-1.5 self-start text-right">
+                                        <span class="text-slate-600 text-left price-box">
+                                            <span><?= /* @noEscape */ $item['qty'] ?> <?= $escaper->escapeHtml('x') ?></span>
+                                            <?php if ($taxHelper->displayCartPriceInclTax() || $taxHelper->displayCartBothPrices()): ?>
+                                                <span class="price-including-tax" data-label="<?= $escaper->escapeHtmlAttr(__('Incl. Tax')) ?>">
+                                                    <span class="price">
+                                                        <?= /* @noEscape */ $formatterViewModel->currency($item['base_price_incl_tax']) ?>
+                                                    </span>
+                                                </span>
+                                            <?php endif; ?>
+
+                                            <?php if ($taxHelper->displayCartPriceExclTax() || $taxHelper->displayCartBothPrices()): ?>
+                                                <span
+                                                    class="price-excluding-tax <?php if ($taxHelper->displayCartPriceExclTax()): ?> inline <?php endif ?>"
+                                                    data-label="<?= $escaper->escapeHtmlAttr(__('Excl. Tax')) ?>"
+                                                >
+                                                    <span class="price">
+                                                        <?= /* @noEscape */ $formatterViewModel->currency($item['base_price']) ?>
+                                                    </span>
+                                                </span>
+                                            <?php endif; ?>
+                                        </span>
+                                        <span class="text-right">
+                                            <?php if ($taxHelper->displayCartPriceInclTax() || $taxHelper->displayCartBothPrices()): ?>
+                                                <span class="price-including-tax block" data-label="<?= $escaper->escapeHtmlAttr(__('Incl. Tax')) ?>">
+                                                    <?= /* @noEscape */ $formatterViewModel->currency($item['row_total_incl_tax']) ?>
+                                                </span>
+                                            <?php endif ?>
+
+                                            <?php if ($taxHelper->displayCartPriceExclTax() || $taxHelper->displayCartBothPrices()): ?>
+                                                <span class="price-excluding-tax block" data-label="<?= $escaper->escapeHtmlAttr(__('Excl. Tax')) ?>">
+                                                    <?= /* @noEscape */ $formatterViewModel->currency($item['row_total']) ?>
+                                                </span>
+                                            <?php endif ?>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <?php $optionsRenderer = $cartItemsViewModel->getProductOptionsRenderer($block, $item['product_type']) ?>
+
+                                <?php if ($optionsRenderer): ?>
+                                    <?= /* @noEscape */ $optionsRenderer->setData('quote_item', $item)->toHtml() ?>
+                                <?php endif ?>
+                            </div>
+                        </div>
+                    <?php endforeach ?>
+                <?php endif ?>
+            </div>
+        </div>
+    </div>
+</div>
