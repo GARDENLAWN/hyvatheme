@@ -127,7 +127,7 @@ function hasSubcategories($item): bool
                                     href="<?= $escaper->escapeUrl($item['url']) ?>"
                                     class="group/link flex items-center justify-between p-3 rounded-xl text-sm font-bold text-gray-900 hover:bg-primary/5 hover:text-primary transition-all duration-200"
                                 >
-                                    <?= $escaper->escapeHtml(__('All %1', $item['name'])) ?>
+                                    <?= $escaper->escapeHtml(__('See all %1', $item['name'])) ?>
                                     <span class="bg-gray-100 text-gray-400 rounded-full p-1 group-hover/link:bg-primary group-hover/link:text-white transition-all duration-200">
                                         <?= $heroiconsSolid->arrowRightHtml('w-3 h-3', 12, 12, ['aria-hidden' => 'true']) ?>
                                     </span>
