@@ -1,0 +1,107 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Magento\Framework\Escaper;
+use Magento\Wishlist\Block\Customer\Wishlist;
+use Magento\Wishlist\Helper\Data as WishlistHelper;
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+
+/** @var Escaper $escaper */
+/** @var HyvaCsp $hyvaCsp */
+/** @var Wishlist $block */
+
+$wishlistHelper = $this->helper(WishlistHelper::class);
+?>
+
+<?php if ($wishlistHelper->isAllow()): ?>
+    <div class="toolbar wishlist-toolbar"><?= $block->getChildHtml('wishlist_item_pager'); ?></div>
+    <?= ($block->getChildHtml('wishlist.rss.link')) ?>
+    <form class="form-wishlist-items mt-4"
+          id="wishlist-view-form"
+          x-data="initMyWishList"
+          action="
+          <?= $escaper->escapeUrl(
+              $block->getUrl(
+                  'wishlist/index/update',
+                  ['wishlist_id' => $block->getWishlistInstance()->getId()]
+              )
+          ) ?>"
+          method="post">
+        <?= $block->getChildHtml('top') ?>
+        <?php if ($block->hasWishlistItems()): ?>
+            <?= $block->getBlockHtml('formkey') ?>
+            <?php $block->getChildBlock('items')->setItems($block->getWishlistItems()); ?>
+            <?= $block->getChildHtml('items') ?>
+        <?php else: ?>
+            <div class="message info empty">
+                <span>
+                    <?= $escaper->escapeHtml(__('You have no items in your wish list.')) ?>
+                </span>
+            </div>
+        <?php endif ?>
+        <?= $block->getChildHtml('bottom') ?>
+        <div class="actions-toolbar my-4">
+            <div class="flex flex-wrap gap-2">
+                <?= $block->getChildHtml('control_buttons') ?>
+            </div>
+            <div class="secondary mr-10">
+                <a href="<?= $escaper->escapeUrl($block->getBackUrl()) ?>"
+                   class="btn btn-secondary shrink-0"
+                   x-data="{ clicked: false }"
+                   @click="clicked = true">
+                    <span x-show="!clicked"><?= $escaper->escapeHtml(__('Back')) ?></span>
+                    <span x-show="clicked" class="flex items-center gap-2" style="display: none;">
+                        <svg class="animate-spin h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <?= $escaper->escapeHtml(__('Back')) ?>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </form>
+    <div class="toolbar wishlist-toolbar">
+        <?= $block->getChildHtml('wishlist_item_pager') ?>
+    </div>
+
+    <script>
+        function initMyWishList() {
+            return {
+                addToCart() {
+                    const productId = this.$el.dataset.itemId,
+                        postParams = JSON.parse(this.$el.dataset.addToCartParams)
+
+                    const qty = this.$refs['product-qty-'+productId] && this.$refs['product-qty-'+productId].value;
+
+                    postParams.data.qty = qty || postParams.data.qty;
+
+                    hyva.postForm(postParams);
+
+                },
+                addAllItemsToCart() {
+                    const urlParams = <?= /* @noEscape */ $block->getAddAllToCartParams() ?>;
+                    let separator = urlParams.action.indexOf('?') >= 0 ? '&' : '?';
+
+                    Array.from(document.querySelectorAll('input[name^=qty]')).map(qty => {
+                        urlParams.action += separator + qty.name + '=' + encodeURIComponent(qty.value);
+                        separator = '&';
+                    });
+                    hyva.postForm(urlParams);
+                },
+                removeItem() {
+                    hyva.postForm(JSON.parse(this.$el.dataset.removeItemParams));
+                }
+            }
+        }
+        window.addEventListener('alpine:init', () => Alpine.data('initMyWishList', initMyWishList), {once: true})
+    </script>
+    <?php $hyvaCsp->registerInlineScript() ?>
+<?php endif ?>
