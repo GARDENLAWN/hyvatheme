@@ -231,7 +231,7 @@ $isB2bCustomer = in_array($companyHelper->getCurrentCustomerGroupId(), $companyH
     <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_EDIT) : '' ?>
     <div class="actions-toolbar">
         <div class="btn btn-primary">
-            <button type="submit" class="action save primary" title="<?= $escaper->escapeHtmlAttr(__('Save')) ?>">
+            <button type="submit" class="shrink-0 btn btn-primary action save primary" title="<?= $escaper->escapeHtmlAttr(__('Save')) ?>">
                 <span><?= $escaper->escapeHtml(__('Save')) ?></span>
             </button>
         </div>
