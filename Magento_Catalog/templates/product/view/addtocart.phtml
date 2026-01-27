@@ -70,7 +70,7 @@ if ($isCallForPrice && $product) {
         data-addto="cart"
     >
         <?= $lucideIcons->shoppingCartHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
-        <span class="ml-2 inline"><?= $escaper->escapeHtml($buttonLabel) ?></span>
+        <span class="hidden md:inline ml-2"><?= $escaper->escapeHtml($buttonLabel) ?></span>
     </button>
 <?php endif; ?>
 

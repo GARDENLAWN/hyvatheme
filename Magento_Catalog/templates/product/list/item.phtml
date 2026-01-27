@@ -215,7 +215,7 @@ $containerClasses = "item product product-item product_addtocart_form card borde
                                     data-addto="cart"
                                 >
                                     <?= $lucideIcons->shoppingCartHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
-                                    <?= $escaper->escapeHtml(__('Add to Cart')) ?>
+                                    <span class="hidden md:inline ml-2"><?= $escaper->escapeHtml(__('Add to Cart')) ?></span>
                                 </button>
                             <?php endif; ?>
                         <?php else: ?>

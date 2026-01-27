@@ -117,7 +117,7 @@ if ($isCallForPrice && $product) {
                 data-addto="cart"
             >
                 <?= $lucideIcons->shoppingCartHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
-                <span class="sr-only sm:not-sr-only">
+                <span class="hidden md:inline">
                     <?= $block->getData('is_cart_configure')
                         ? $escaper->escapeHtml(__('Update item'))
                         : $escaper->escapeHtml(__('Add to Cart')) ?>

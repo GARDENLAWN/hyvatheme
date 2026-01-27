@@ -6,6 +6,8 @@
  */
 
 use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\ViewModel\LucideIcons;
+use Hyva\Theme\Model\ViewModelRegistry;
 use Magento\Framework\Escaper;
 use Magento\Framework\Pricing\Render;
 use Magento\Wishlist\Block\Share\Wishlist;
@@ -15,6 +17,10 @@ use Magento\Wishlist\Block\Share\Wishlist;
 /** @var Wishlist $block */
 /** @var Escaper $escaper */
 /** @var HyvaCsp $hyvaCsp */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
 
 ?>
 <script>
@@ -100,7 +106,8 @@ use Magento\Wishlist\Block\Share\Wishlist;
                                             data-item-add-to-cart-url="<?= $escaper->escapeHtmlAttr($block->getSharedItemAddToCartUrl($item)) ?>"
                                             data-addto="cart"
                                     >
-                                        <?= $escaper->escapeHtml(__('Add to Cart')) ?>
+                                        <?= $lucideIcons->shoppingCartHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
+                                        <span class="hidden md:inline ml-2"><?= $escaper->escapeHtml(__('Add to Cart')) ?></span>
                                     </button>
                                 <?php endif ?>
                             <?php endif; ?>
