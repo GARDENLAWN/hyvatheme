@@ -83,6 +83,10 @@ form .field.field-reserved {
     padding-bottom: 15px !important;
 }
 
+.actions-toolbar > .secondary:last-child {
+    margin-top: 0px !important;
+}
+
 /* For AlpineJS */
 [x-cloak] {
     display: none !important;

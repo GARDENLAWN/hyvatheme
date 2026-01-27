@@ -34,7 +34,7 @@ $order = $block->getOrder();
             <?= $block->getChildHtml('sales.order.info') ?>
         </div>
         <?= $block->getChildHtml('invoice_items') ?>
-        <div class="actions-toolbar">
+        <div class="actions-toolbar flex items-center gap-4">
             <div class="secondary">
                 <a class="btn btn-secondary shrink-0"
                    href="<?= $escaper->escapeUrl($block->getBackUrl()) ?>"

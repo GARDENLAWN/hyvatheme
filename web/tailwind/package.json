@@ -21,7 +21,11 @@
     "build-hyva": "npx tailwindcss -i tailwind-source.css -o ../css/styles.css --minify",
     "build-amrobots": "npx tailwindcss -i tailwind-source.css -o ../../../Amrobotstheme/web/css/styles.css --minify",
     "build-finn": "npx tailwindcss -i tailwind-source.css -o ../../../Finntheme/web/css/styles.css --minify",
-    "build": "npm run build-hyva && npm run build-amrobots && npm run build-finn"
+    "build": "npm run build-hyva && npm run build-amrobots && npm run build-finn",
+    "clean-npm": "npm config delete python && npm config delete python -g",
+    "clean-npm-cache": "npm cache clean --force",
+    "clean-all": "rm -rf node_modules && rm package-lock.json && npm cache clean --force",
+    "clean-all-and-install": "rm -rf node_modules && rm package-lock.json && npm cache clean --force && npm install"
   },
   "engine-strict": true,
   "engines": {
