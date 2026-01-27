@@ -14,7 +14,6 @@ use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Customer\Block\Form\Edit as CustomerEdit;
 use Magento\Customer\Block\Widget\Name;
 use Magento\Framework\Escaper;
-use GardenLawn\Company\Helper\Data as CompanyHelper;
 
 // phpcs:disable Generic.Files.LineLength.TooLong
 
@@ -33,8 +32,6 @@ $passwordMinCharacterSets = $block->getRequiredCharacterClassesNumber();
 $storeConfig = $viewModels->require(StoreConfig::class);
 $isAutocompleteEnabled = $storeConfig->getStoreConfig('customer/password/autocomplete_on_storefront');
 
-$companyHelper = $viewModels->require(CompanyHelper::class);
-$isB2bCustomer = in_array($companyHelper->getCurrentCustomerGroupId(), $companyHelper->getB2bCustomerGroups());
 ?>
 <form class="form form-edit-account"
       action="<?= $escaper->escapeUrl($block->getUrl('customer/account/editPost')) ?>"
@@ -48,7 +45,7 @@ $isB2bCustomer = in_array($companyHelper->getCurrentCustomerGroupId(), $companyH
         <legend class="legend"><span><?= $escaper->escapeHtml(__('Account Information')) ?></span></legend>
         <br>
         <div class="md:grid grid-cols-2 gap-4">
-            <?= $block->getLayout()->createBlock(Name::class)->setObject($block->getCustomer())->setData('disabled', $isB2bCustomer)->toHtml() ?>
+            <?= $block->getLayout()->createBlock(Name::class)->setObject($block->getCustomer())->toHtml() ?>
             <?php $dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
             <?php $taxvat = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Taxvat::class) ?>
             <?php $gender = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Gender::class) ?>
@@ -56,7 +53,7 @@ $isB2bCustomer = in_array($companyHelper->getCurrentCustomerGroupId(), $companyH
                 <?= $dob->setDate($block->getCustomer()->getDob())->toHtml() ?>
             <?php endif ?>
             <?php if ($taxvat->isEnabled()): ?>
-                <?= $taxvat->setTaxvat($block->getCustomer()->getTaxvat())->setData('disabled', $isB2bCustomer)->toHtml() ?>
+                <?= $taxvat->setTaxvat($block->getCustomer()->getTaxvat())->toHtml() ?>
             <?php endif ?>
             <?php if ($gender->isEnabled()): ?>
                 <?= $gender->setGender($block->getCustomer()->getGender())->toHtml() ?>
@@ -229,9 +226,9 @@ $isB2bCustomer = in_array($companyHelper->getCurrentCustomerGroupId(), $companyH
     </fieldset>
     <?= $block->getChildHtml('form_additional_info') ?>
     <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_EDIT) : '' ?>
-    <div class="actions-toolbar">
-        <div class="btn btn-primary">
-            <button type="submit" class="shrink-0 btn btn-primary action save primary" title="<?= $escaper->escapeHtmlAttr(__('Save')) ?>">
+    <div class="actions-toolbar flex items-center gap-4">
+        <div class="primary">
+            <button type="submit" class="btn btn-primary action save primary" title="<?= $escaper->escapeHtmlAttr(__('Save')) ?>">
                 <span><?= $escaper->escapeHtml(__('Save')) ?></span>
             </button>
         </div>

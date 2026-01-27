@@ -430,7 +430,7 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
         <div class="message info mb-4">
             <span><?= $escaper->escapeHtml(__('Zakładając konto w tym sklepie, zyskujesz uniwersalny profil klienta dla marek: gardenlawn.pl, am-robots.pl oraz finnpolska.pl. Twoje dane logowania będą działać w każdym z tych serwisów.')) ?></span>
         </div>
-        <div class="actions-toolbar">
+        <div class="actions-toolbar flex items-center gap-4">
             <div class="primary">
                 <button type="submit" class="shrink-0 btn btn-primary"
                         title="<?= $escaper->escapeHtmlAttr(__('Create an Account')) ?>"
@@ -438,7 +438,7 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
                         <span><?= $escaper->escapeHtml(__('Create an Account')) ?></span>
                 </button>
             </div>
-            <div class="secondary ml-4 self-center">
+            <div class="secondary self-center">
                 <a class="btn btn-secondary shrink-0"
                    href="<?= $escaper->escapeUrl($block->getBackUrl()) ?>"
                    x-data="{ clicked: false }"

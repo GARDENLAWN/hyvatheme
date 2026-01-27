@@ -1,0 +1,41 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+declare(strict_types=1);
+
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+?>
+<form action="" method="post">
+    <?= $block->getLayout()->getBlock('formkey')->toHtml() ?>
+    <fieldset class="fieldset">
+        <p class="">
+            <?= $escaper->escapeHtml(__('Please enter your email below and we will send you the confirmation link.')) ?>
+        </p>
+        <div class="flex-row md:flex justify-between gap-1.5 mt-2 items-baseline">
+            <label for="email_address"
+                   class="mb-3 text-sm font-medium tracking-widest text-gray-900 uppercase title-font">
+                <span><?= $escaper->escapeHtml(__('Email')) ?></span>
+            </label>
+            <input type="email" name="email" id="email_address" class="form-input inline-flex w-full"
+                   value="<?= $escaper->escapeHtmlAttr($block->getEmail()) ?>" autocomplete="off" required>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar flex items-center gap-4">
+        <div class="primary">
+            <button type="submit" class="btn btn-primary action send primary">
+                <span><?= $escaper->escapeHtml(__('Send confirmation link')) ?></span>
+            </button>
+        </div>
+        <div class="secondary">
+            <a href="<?= $escaper->escapeUrl($block->getLoginUrl()) ?>" class="btn btn-secondary shrink-0">
+                <span><?= $escaper->escapeHtml(__('Back to Sign In')) ?></span>
+            </a>
+        </div>
+    </div>
+</form>

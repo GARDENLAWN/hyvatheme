@@ -176,7 +176,7 @@ $recipients = $formData->getRecipientData() ?? '[]';
             <div class="w-full grecaptcha-legal">
                 <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_SEND_FRIEND) : '' ?>
             </div>
-            <div class="actions-toolbar">
+            <div class="actions-toolbar flex items-center gap-4">
                 <div class="primary">
                     <button type="submit"
                             class="shrink-0 btn btn-primary"
