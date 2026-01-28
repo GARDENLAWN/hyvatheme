@@ -37,8 +37,15 @@ $showLanguage = $block->getShowLanguage() !== null ? (bool) $block->getShowLangu
         return {
             searchOpen: false,
             cart: {},
-            showLogo: true,
+            showLogo: false,
             init() {
+                const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+                const switcher = document.querySelector('.website-switcher-container');
+
+                if (!isDesktop || !switcher) {
+                    this.showLogo = true;
+                }
+
                 this.checkHeaderSize();
                 this.initLogoObserver();
             },
@@ -181,7 +188,7 @@ $showLanguage = $block->getShowLanguage() !== null ? (bool) $block->getShowLangu
 >
     <div class="relative container flex gap-4 lg:gap-8 items-center w-full px-6 py-1 mx-auto mt-0">
         <div
-            class="flex items-center transition-opacity duration-300"
+            class="flex items-center transition-opacity duration-300 opacity-0 pointer-events-none"
             :class="{ 'opacity-100 pointer-events-auto': showLogo, 'opacity-0 pointer-events-none': !showLogo }"
         >
             <?= $block->getChildHtml('logo'); ?>
